@@ -3,13 +3,6 @@ import 'package:flutter/material.dart';
 import '../../constants/base_blogtruyen.dart';
 
 class HeaderMangaDetail extends StatefulWidget {
-  final String title;
-  final List author;
-  final String status;
-  final String like;
-  final String dislike;
-  final String thumbnailUrl;
-
   HeaderMangaDetail({
     this.title,
     this.author,
@@ -18,6 +11,13 @@ class HeaderMangaDetail extends StatefulWidget {
     this.like,
     this.dislike,
   });
+
+  final String title;
+  final List author;
+  final String status;
+  final String like;
+  final String dislike;
+  final String thumbnailUrl;
 
   @override
   _HeaderMangaDetailState createState() => _HeaderMangaDetailState();
@@ -30,7 +30,7 @@ class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
       children: <Widget>[
         ShaderMask(
           shaderCallback: (rectangle) {
-            return LinearGradient(
+            return const LinearGradient(
               colors: [Colors.black, Colors.transparent],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
@@ -79,28 +79,28 @@ class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Container(
-                      padding: EdgeInsets.only(right: 10),
+                      padding: const EdgeInsets.only(right: 10),
                       child: Text(widget.title,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 22,
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                           ),
                           textAlign: TextAlign.left),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     Text(
-                      widget.author.join(","),
-                      style: TextStyle(
+                      widget.author.join(','),
+                      style: const TextStyle(
                         fontSize: 15,
                         color: Colors.white70,
                       ),
                     ),
                     Text(
                       widget.status,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 15,
                         color: Colors.white70,
                       ),
@@ -108,7 +108,7 @@ class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
                     Container(
                       child: Row(
                         children: <Widget>[
-                          IconButton(
+                          const IconButton(
                               icon: Icon(
                                 Icons.thumb_up,
                                 color: Colors.green,
@@ -116,12 +116,12 @@ class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
                               onPressed: null),
                           Text(
                             widget.like,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 15,
                               color: Colors.white,
                             ),
                           ),
-                          IconButton(
+                          const IconButton(
                               icon: Icon(
                                 Icons.thumb_down,
                                 color: Colors.red,
@@ -129,7 +129,7 @@ class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
                               onPressed: null),
                           Text(
                             widget.dislike,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 15,
                               color: Colors.white,
                             ),

@@ -4,8 +4,8 @@ import '../../../src/resources/list_manga_repo.dart';
 import 'bloc.dart';
 
 class ListMangaBloc extends Bloc<ListMangaEvent, ListMangaState> {
-  final ListMangaRepo listRepo;
   ListMangaBloc(this.listRepo) : super(InitialListMangaState());
+  final ListMangaRepo listRepo;
 
   @override
   Stream<ListMangaState> mapEventToState(ListMangaEvent event) async* {
@@ -17,7 +17,6 @@ class ListMangaBloc extends Bloc<ListMangaEvent, ListMangaState> {
         } else {
           if(state is ListMangaLoadedState) {
             //load next page
-            //if "next page is empty" => yield "CommentStateSuccess" with hasReachedEnd = true
             final currentState = state as ListMangaLoadedState;
             // int finalIndexOfCurrentPage = currentState.data.length;
             final comments = await listRepo.getListManga();
@@ -26,7 +25,7 @@ class ListMangaBloc extends Bloc<ListMangaEvent, ListMangaState> {
               yield currentState.cloneWith(hasReachedEnd: true);
             } else {
               //not empty, means "not reached end",
-              yield ListMangaLoadedState();
+              yield const ListMangaLoadedState();
             }
           }
         }

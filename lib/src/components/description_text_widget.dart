@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class DescriptionTextWidget extends StatefulWidget {
-  final String text;
-
   DescriptionTextWidget({@required this.text});
+
+  final String text;
 
   @override
   _DescriptionTextWidgetState createState() => _DescriptionTextWidgetState();
@@ -24,7 +24,7 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget> {
       secondHalf = widget.text.substring(50, widget.text.length);
     } else {
       firstHalf = widget.text;
-      secondHalf = "";
+      secondHalf = '';
     }
   }
 
@@ -55,21 +55,26 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget> {
           //   ],
           // ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
             child: secondHalf.isEmpty
-                ? Text(firstHalf, style: TextStyle(color: Colors.white),)
+                ? Text(
+                    firstHalf,
+                    style: const TextStyle(color: Colors.white),
+                  )
                 : Column(
                     children: <Widget>[
-                      Text(flag
-                          ? (firstHalf + "...")
-                          : (firstHalf + secondHalf), style: TextStyle(color: Colors.white),),
+                      Text(
+                        flag ? ('$firstHalf  ...') : (firstHalf + secondHalf),
+                        style: const TextStyle(color: Colors.white),
+                      ),
                       InkWell(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: <Widget>[
                             Text(
-                              flag ? "show more" : "show less",
-                              style: TextStyle(color: Colors.blue),
+                              flag ? 'show more' : 'show less',
+                              style: const TextStyle(color: Colors.blue),
                             ),
                           ],
                         ),

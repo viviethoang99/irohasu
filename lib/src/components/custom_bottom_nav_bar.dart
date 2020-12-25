@@ -4,7 +4,7 @@ class CustomBottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         boxShadow: <BoxShadow>[
           BoxShadow(
             color: Colors.black26,
@@ -15,15 +15,15 @@ class CustomBottomNavBar extends StatelessWidget {
       child: BottomNavigationBar(
         currentIndex: 1,
         items: [
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(Icons.library_books),
             label: 'Library',
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(Icons.access_time_rounded),
             label: 'Recent',
           )

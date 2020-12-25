@@ -8,6 +8,6 @@ class ChapterEvent extends Equatable {
 }
 
 class FetchDataChapterEvent extends ChapterEvent{
-  final String endpoint;
   FetchDataChapterEvent({this.endpoint});
+  final String endpoint;
 }

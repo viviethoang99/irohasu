@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:irohasu/src/constants/base_blogtruyen.dart';
-import 'package:irohasu/src/ui/detail_screens/manga_detail_screen.dart';
+
+import '../../../src/constants/base_blogtruyen.dart';
+import '../../../src/ui/detail_screens/manga_detail_screen.dart';
 
 class ItemManga extends StatelessWidget {
-  final String title;
-  final String thumbnailUrl;
-  final String setUrlWithoutDomain;
-
   ItemManga({
     @required this.title,
     @required this.thumbnailUrl,
     @required this.setUrlWithoutDomain,
   });
 
+  final String title;
+  final String thumbnailUrl;
+  final String setUrlWithoutDomain;
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.of(context).pushNamed(MangaDetailScreen.routeName, arguments: setUrlWithoutDomain);
+        Navigator.of(context).pushNamed(MangaDetailScreen.routeName,
+            arguments: setUrlWithoutDomain);
       },
       child: Card(
         elevation: 0,
@@ -42,7 +44,7 @@ class ItemManga extends StatelessWidget {
                 padding: const EdgeInsets.all(6.0),
                 child: Text(
                   title,
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: Colors.white,
                       backgroundColor: Colors.black54,
                       fontWeight: FontWeight.w500,

@@ -13,18 +13,16 @@ class InitialMangaDetailState extends MangaDetailState{}
 class MangaDetailLoadingState extends MangaDetailState{}
 
 class MangaDetailLoadedState extends MangaDetailState{
-  final MangaDetail data;
-
   const MangaDetailLoadedState({this.data});
+  final MangaDetail data;
 
   @override
   List<Object> get props => [data];
 }
 
 class MangaDetailFailureState extends MangaDetailState{
-  final String msg;
-
   MangaDetailFailureState({this.msg});
+  final String msg;
 
   @override
   List<Object> get props => [msg];

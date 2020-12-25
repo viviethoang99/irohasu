@@ -13,12 +13,11 @@ class InitialListMangaState extends ListMangaState {}
 class ListMangaLoadingState extends ListMangaState{}
 
 class ListMangaLoadedState extends ListMangaState{
+  const ListMangaLoadedState({this.data});
   final List<ListManga> data;
 
-  const ListMangaLoadedState({this.data});
-
   @override
-  String toString() => "data : $data";
+  String toString() => 'data : $data';
 
   @override
   List<Object> get props => [data];
@@ -27,15 +26,14 @@ class ListMangaLoadedState extends ListMangaState{
     List<ListManga> comments,
     bool hasReachedEnd}) {
     return ListMangaLoadedState(
-        data: comments ?? this.data,
+        data: comments ?? data,
     );
   }
 }
 
 class ListMangaFailureState extends ListMangaState{
-  final String msg;
-
   ListMangaFailureState({this.msg});
+  final String msg;
 
   @override
   List<Object> get props => [msg];

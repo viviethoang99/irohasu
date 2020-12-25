@@ -7,6 +7,6 @@ abstract class MangaDetailEvent extends Equatable {
 }
 
 class FetchMangaDetailEvent extends MangaDetailEvent{
-  final String endpoint;
   FetchMangaDetailEvent(this.endpoint);
+  final String endpoint;
 }

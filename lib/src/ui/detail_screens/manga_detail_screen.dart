@@ -4,18 +4,17 @@ import 'package:flutter/material.dart';
 //
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-//
-import '../../blocs/manga_detail_bloc/bloc.dart';
 import '../../../src/components/custom_button_reading_widget.dart';
 import '../../../src/ui/chapter_screens/chapter_screen.dart';
+
+//
+import '../../blocs/manga_detail_bloc/bloc.dart';
 import 'header_manga_detail.dart';
 
 class MangaDetailScreen extends StatefulWidget {
-  static const routeName = '/mangaDetail';
-
-  final String endpoint;
-
   const MangaDetailScreen({Key key, this.endpoint}) : super(key: key);
+  static const routeName = '/mangaDetail';
+  final String endpoint;
 
   @override
   _MangaDetailScreenState createState() => _MangaDetailScreenState();
@@ -29,8 +28,8 @@ class _MangaDetailScreenState extends State<MangaDetailScreen> {
   @override
   void initState() {
     super.initState();
-    _mangaDetailBloc = BlocProvider.of<MangaDetailBloc>(context);
-    _mangaDetailBloc.add(FetchMangaDetailEvent(endpoint));
+    _mangaDetailBloc = BlocProvider.of<MangaDetailBloc>(context)
+      ..add(FetchMangaDetailEvent(endpoint));
   }
 
   @override
@@ -39,13 +38,13 @@ class _MangaDetailScreenState extends State<MangaDetailScreen> {
       builder: (context, state) {
         if (state is MangaDetailLoadingState) {
           return Container(
-            child: Center(
+            child: const Center(
               child: CircularProgressIndicator(),
             ),
           );
         }
         if (state is InitialMangaDetailState) {
-          return Center();
+          return const Center();
         }
         if (state is MangaDetailLoadedState) {
           return Scaffold(
@@ -53,28 +52,28 @@ class _MangaDetailScreenState extends State<MangaDetailScreen> {
             backgroundColor: Colors.black87,
             appBar: AppBar(
               leading: IconButton(
-                icon: Icon(Icons.arrow_back, color: Colors.white),
+                icon: const Icon(Icons.arrow_back, color: Colors.white),
                 onPressed: () => Navigator.of(context).pop(),
               ),
               centerTitle: true,
               backgroundColor: Colors.transparent,
               elevation: 0.0,
               actions: <Widget>[
-                IconButton(
+                const IconButton(
                   icon: Icon(
                     Icons.search,
                     color: Colors.white,
                   ),
                   onPressed: null,
                 ),
-                IconButton(
+                const IconButton(
                   icon: Icon(
                     Icons.get_app,
                     color: Colors.white,
                   ),
                   onPressed: null,
                 ),
-                IconButton(
+                const IconButton(
                   icon: Icon(
                     Icons.more_vert,
                     color: Colors.white,
@@ -102,7 +101,7 @@ class _MangaDetailScreenState extends State<MangaDetailScreen> {
                     padding: const EdgeInsets.only(left: 12),
                     child: Row(
                       children: <Widget>[
-                        IconButton(
+                        const IconButton(
                           icon: Icon(
                             Icons.cloud,
                             color: Colors.green,
@@ -110,7 +109,7 @@ class _MangaDetailScreenState extends State<MangaDetailScreen> {
                           ),
                           onPressed: null,
                         ),
-                        IconButton(
+                        const IconButton(
                           icon: Icon(
                             Icons.language,
                             color: Colors.green,
@@ -118,7 +117,7 @@ class _MangaDetailScreenState extends State<MangaDetailScreen> {
                           ),
                           onPressed: null,
                         ),
-                        IconButton(
+                        const IconButton(
                           icon: Icon(
                             Icons.share,
                             color: Colors.green,
@@ -129,7 +128,7 @@ class _MangaDetailScreenState extends State<MangaDetailScreen> {
                       ],
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   Container(
@@ -143,7 +142,7 @@ class _MangaDetailScreenState extends State<MangaDetailScreen> {
                       ],
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Padding(
@@ -154,7 +153,7 @@ class _MangaDetailScreenState extends State<MangaDetailScreen> {
                       children: <Widget>[
                         Text(
                           '${state.data.chapter.length} Chapters',
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: Colors.white,
                               fontSize: 18,
                               fontWeight: FontWeight.bold),
@@ -167,8 +166,8 @@ class _MangaDetailScreenState extends State<MangaDetailScreen> {
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 15),
                     child: Divider(color: Colors.amber),
                   ),
                   MediaQuery.removePadding(
@@ -178,25 +177,26 @@ class _MangaDetailScreenState extends State<MangaDetailScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: ListView.builder(
                         itemCount: state.data.chapter.length,
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         itemBuilder: (BuildContext context, index) {
                           return ListTile(
                             title: Text(
-                              state.data.chapter[index].chapterTitle,
-                              style: TextStyle(
+                              state.data.chapter[index].chapterTitle.toString(),
+                              style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold),
                             ),
                             subtitle: Text(
-                              state.data.chapter[index].chapterUpload,
-                              style: TextStyle(
+                              state.data.chapter[index].chapterUpload
+                                  .toString(),
+                              style: const TextStyle(
                                 color: Colors.white54,
                                 fontSize: 18,
                               ),
                             ),
-                            trailing: Icon(
+                            trailing: const Icon(
                               Icons.arrow_circle_down,
                               color: Colors.green,
                               size: 30,
@@ -218,7 +218,7 @@ class _MangaDetailScreenState extends State<MangaDetailScreen> {
             ),
           );
         }
-        return Center(child: Text('Other states..'));
+        return const Center(child: Text('Other states..'));
       },
     );
   }

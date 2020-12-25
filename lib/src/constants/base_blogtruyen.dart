@@ -5,4 +5,6 @@ class BlogTruyen {
 
   static const headersBuilder = {'Referer': BlogTruyen.baseUrl};
 
+  static const status = 'Trạng thái';
+
 }

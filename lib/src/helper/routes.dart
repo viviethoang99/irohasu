@@ -1,12 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:irohasu/src/ui/chapter_screens/chapter_screen.dart';
 
+import '../../src/ui/chapter_screens/chapter_screen.dart';
 import '../../src/ui/detail_screens/manga_detail_screen.dart';
 import '../../src/ui/home_screens/recent_screen.dart';
 
-MaterialPageRoute pageRoute({RouteSettings routeSettings, Widget builder, bool isFullscreen = false}) {
-  return MaterialPageRoute(
+MaterialPageRoute pageRoute(
+    {RouteSettings routeSettings, Widget builder, bool isFullscreen = false}) {
+  return MaterialPageRoute<dynamic>(
     builder: (BuildContext context) => builder,
     settings: routeSettings,
     fullscreenDialog: isFullscreen,
@@ -21,14 +21,14 @@ Route generateRoute(RouteSettings routeSettings) {
     case MangaDetailScreen.routeName:
       return pageRoute(
           routeSettings: routeSettings,
-          builder: MangaDetailScreen(endpoint: args));
+          builder: MangaDetailScreen(endpoint: args.toString()));
     case ChapterScreen.routeName:
       return pageRoute(
           routeSettings: routeSettings,
-          builder: ChapterScreen(endpoint: args));
+          builder: ChapterScreen(endpoint: args.toString()));
     default:
-      return MaterialPageRoute(
-        builder: (_) => Scaffold(
+      return MaterialPageRoute<dynamic>(
+        builder: (_) => const Scaffold(
           body: Center(child: Text('No route defined for app')),
         ),
       );
