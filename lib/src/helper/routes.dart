@@ -23,9 +23,13 @@ Route generateRoute(RouteSettings routeSettings) {
           routeSettings: routeSettings,
           builder: MangaDetailScreen(endpoint: args.toString()));
     case ChapterScreen.routeName:
+      var data = args as ChapterScreen;
       return pageRoute(
           routeSettings: routeSettings,
-          builder: ChapterScreen(endpoint: args.toString()));
+          builder: ChapterScreen(
+            endpoint: data.endpoint,
+            chapterList: data.chapterList,
+          ));
     default:
       return MaterialPageRoute<dynamic>(
         builder: (_) => const Scaffold(

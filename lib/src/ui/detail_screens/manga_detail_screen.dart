@@ -1,9 +1,8 @@
 //
 import 'package:flutter/material.dart';
-
-//
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+//
 import '../../../src/components/custom_button_reading_widget.dart';
 import '../../../src/ui/chapter_screens/chapter_screen.dart';
 
@@ -204,9 +203,14 @@ class _MangaDetailScreenState extends State<MangaDetailScreen> {
                             isThreeLine: true,
                             onTap: () {
                               Navigator.of(context).pushNamed(
-                                  ChapterScreen.routeName,
-                                  arguments: state
-                                      .data.chapter[index].chapterEndpoint);
+                                ChapterScreen.routeName,
+                                arguments: ChapterScreen(
+                                  endpoint: state
+                                      .data.chapter[index].chapterEndpoint
+                                      .toString(),
+                                  chapterList: state.data.chapter,
+                                ),
+                              );
                             },
                           );
                         },
@@ -218,7 +222,21 @@ class _MangaDetailScreenState extends State<MangaDetailScreen> {
             ),
           );
         }
-        return const Center(child: Text('Other states..'));
+        return Scaffold(
+          appBar: AppBar(
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back, color: Colors.black),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            title: const Text('Hello World'),
+            centerTitle: true,
+          ),
+          body: Container(
+            child: const Center(
+              child: Text('Lỗi rồi bạn ei'),
+            ),
+          ),
+        );
       },
     );
   }

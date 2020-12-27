@@ -11,3 +11,7 @@ class FetchDataChapterEvent extends ChapterEvent{
   FetchDataChapterEvent({this.endpoint});
   final String endpoint;
 }
+
+class ScrollNavigateEvent extends ChapterEvent {
+
+}

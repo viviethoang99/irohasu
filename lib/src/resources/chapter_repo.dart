@@ -10,13 +10,14 @@ class ChapterRepo extends BaseService {
     dio.Response response = await request(url: endpoint);
     final document = parse(response.data);
     final responseData = document.querySelectorAll('#content > img');
+    final responseLink = document.querySelectorAll('.linkchapter > a');
     final listImage = getChapter(responseData);
     final chapter = ChapterModel(
       chapterEndpoint: endpoint,
       title: document.querySelector('header > h1').toString(),
       listImageChapter: listImage,
+      mangaDetail: responseLink[3].attributes['href'].toString(),
     );
-    // print('breakpoint here');
     return chapter;
   }
 
