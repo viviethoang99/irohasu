@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 class DescriptionTextWidget extends StatefulWidget {
@@ -10,85 +12,91 @@ class DescriptionTextWidget extends StatefulWidget {
 }
 
 class _DescriptionTextWidgetState extends State<DescriptionTextWidget> {
-  String firstHalf;
-  String secondHalf;
-
   bool flag = true;
 
-  @override
-  void initState() {
-    super.initState();
-
-    if (widget.text.length > 50) {
-      firstHalf = widget.text.substring(0, 50);
-      secondHalf = widget.text.substring(50, widget.text.length);
-    } else {
-      firstHalf = widget.text;
-      secondHalf = '';
-    }
+  Widget showDescription() {
+    return flag
+        ? Text(
+            widget.text,
+            style: const TextStyle(color: Colors.white54, fontSize: 16),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          )
+        : Text(widget.text,
+            style: const TextStyle(color: Colors.white54, fontSize: 16));
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         children: [
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //   children: <Widget>[
-          //     const Text(
-          //       'Tóm tắt',
-          //       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-          //     ),
-          //     // flag
-          //     //     ? CustomButtonWidget(
-          //     //         status: 'More',
-          //     //         icon: Icons.keyboard_arrow_down,
-          //     //         flag: flag,
-          //     //       )
-          //     //     : CustomButtonWidget(
-          //     //         status: 'Less',
-          //     //         icon: Icons.keyboard_arrow_up,
-          //     //         flag: flag,
-          //     //       ),
-          //   ],
-          // ),
-          Container(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-            child: secondHalf.isEmpty
-                ? Text(
-                    firstHalf,
-                    style: const TextStyle(color: Colors.white),
-                  )
-                : Column(
-                    children: <Widget>[
-                      Text(
-                        flag ? ('$firstHalf  ...') : (firstHalf + secondHalf),
-                        style: const TextStyle(color: Colors.white),
-                      ),
-                      InkWell(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: <Widget>[
-                            Text(
-                              flag ? 'show more' : 'show less',
-                              style: const TextStyle(color: Colors.blue),
-                            ),
-                          ],
-                        ),
-                        onTap: () {
-                          setState(() {
-                            flag = !flag;
-                          });
-                        },
-                      ),
-                    ],
-                  ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              const Padding(
+                padding: EdgeInsets.only(top: 8.0),
+                child: Text(
+                  'Tóm tắt',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 22,
+                      color: Colors.white),
+                ),
+              ),
+              flag
+                  ? customButtonDescription(
+                      status: 'More',
+                      icon: Icons.keyboard_arrow_down,
+                    )
+                  : customButtonDescription(
+                      status: 'Less',
+                      icon: Icons.keyboard_arrow_up,
+                    ),
+            ],
+          ),
+          AnimatedContainer(
+              duration: const Duration(milliseconds: 900),
+              padding: const EdgeInsets.symmetric(vertical: 20.0),
+              height: flag ? 60 : (widget.text.length / 50 * 18 + 75),
+              child: showDescription()
           ),
         ],
       ),
     );
+  }
+
+  Widget customButtonDescription({String status, IconData icon}) {
+    return Material(
+        type: MaterialType.transparency,
+        child: Ink(
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.green, width: 2),
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          child: InkWell(
+            splashColor: Colors.transparent,
+            onTap: () {
+              setState(() {
+                flag = !flag;
+              });
+            },
+            child: Row(
+              children: <Widget>[
+                Icon(icon, color: Colors.white),
+                const SizedBox(width: 10),
+                Text(
+                  status,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: Colors.white),
+                ),
+              ],
+            ),
+          ),
+        ));
   }
 }

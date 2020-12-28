@@ -1,6 +1,7 @@
 //
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:irohasu/src/components/description_text_widget.dart';
 
 //
 import '../../../src/components/custom_button_reading_widget.dart';
@@ -97,7 +98,7 @@ class _MangaDetailScreenState extends State<MangaDetailScreen> {
                     dislike: state.data.dislike,
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 12),
+                    padding: const EdgeInsets.only(left: 12, bottom: 10),
                     child: Row(
                       children: <Widget>[
                         const IconButton(
@@ -127,9 +128,7 @@ class _MangaDetailScreenState extends State<MangaDetailScreen> {
                       ],
                     ),
                   ),
-                  const SizedBox(
-                    height: 15,
-                  ),
+                  DescriptionTextWidget(text: state.data.description,),
                   Container(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
