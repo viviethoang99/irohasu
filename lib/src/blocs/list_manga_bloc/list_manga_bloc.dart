@@ -1,36 +1,67 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rxdart/rxdart.dart';
 
+import '../../../src/models/list_manga_model.dart';
 import '../../../src/resources/list_manga_repo.dart';
 import 'bloc.dart';
 
 class ListMangaBloc extends Bloc<ListMangaEvent, ListMangaState> {
-  ListMangaBloc(this.listRepo) : super(InitialListMangaState());
-  final ListMangaRepo listRepo;
+  ListMangaBloc(this._listRepo) : super(InitialListMangaState());
+  final ListMangaRepo _listRepo;
+
+  bool _hasReachedMax(ListMangaState state) =>
+      state is ListMangaLoadedState && state.hasReachedEnd;
+
+  @override
+  Stream<Transition<ListMangaEvent, ListMangaState>> transformEvents(
+      Stream<ListMangaEvent> events, transitionFn) {
+    return super.transformEvents(
+        events.debounceTime(const Duration(milliseconds: 500)), transitionFn);
+  }
 
   @override
   Stream<ListMangaState> mapEventToState(ListMangaEvent event) async* {
-    if (event is FetchListMangaEvent && !(state is ListMangaLoadedState)) {
-      try{
-        if(state is InitialListMangaState) {
-          final data = await listRepo.getListManga();
-          yield ListMangaLoadedState(data: data);
-        } else {
-          if(state is ListMangaLoadedState) {
-            //load next page
-            final currentState = state as ListMangaLoadedState;
-            // int finalIndexOfCurrentPage = currentState.data.length;
-            final comments = await listRepo.getListManga();
-            if (comments.isEmpty) {
-              //change current state !
-              yield currentState.cloneWith(hasReachedEnd: true);
-            } else {
-              //not empty, means "not reached end",
-              yield const ListMangaLoadedState();
-            }
+    final currentState = state;
+    int page = 0;
+    if (event is FetchListMangaEvent && !_hasReachedMax(currentState)) {
+      try {
+        if (currentState is InitialListMangaState) {
+          yield ListMangaLoadingState();
+          List<ListManga> data = await _listRepo.getListManga(page: page += 1);
+          yield ListMangaLoadedState(
+              data: data, page: page + 1, hasReachedEnd: false);
+        }
+        if (currentState is ListMangaLoadedState) {
+          try {
+            var data = await _listRepo.getListManga(page: currentState.page);
+            yield data.isEmpty
+                ? currentState.cloneWith(
+                    hasReachedEnd: true, data: currentState.data)
+                : ListMangaLoadedState(
+                    data: currentState.data + data,
+                    hasReachedEnd: false,
+                    page: currentState.page+=1);
+          } catch (e) {
+            yield ListMangaLoadedState(
+                data: currentState.data,
+                hasReachedEnd: true,
+                page: currentState.page);
           }
         }
-      } catch(exception) {
-        yield ListMangaFailureState();
+      } catch (exception) {
+        yield ListMangaFailureState(msg: exception.toString());
+      }
+    }
+    if (state is InitialListMangaState) {
+      yield ListMangaLoadingState();
+      try {
+        List<ListManga> data = await _listRepo.getListManga(page: page);
+        yield data.length < 20
+            ? ListMangaLoadedState(data: data, page: page, hasReachedEnd: true)
+            : ListMangaLoadedState(
+                data: data, page: page += 1, hasReachedEnd: false);
+      } catch (e) {
+        yield ListMangaFailureState(msg: e.toString());
       }
     }
   }

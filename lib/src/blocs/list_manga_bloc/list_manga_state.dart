@@ -4,35 +4,40 @@ import '../../../src/models/list_manga_model.dart';
 
 abstract class ListMangaState extends Equatable {
   const ListMangaState();
+
   @override
   List<Object> get props => [];
 }
 
 class InitialListMangaState extends ListMangaState {}
 
-class ListMangaLoadingState extends ListMangaState{}
+class ListMangaLoadingState extends ListMangaState {}
 
-class ListMangaLoadedState extends ListMangaState{
-  const ListMangaLoadedState({this.data});
+class ListMangaLoadedState extends ListMangaState {
+  ListMangaLoadedState({this.data, this.hasReachedEnd, this.page});
+
   final List<ListManga> data;
+  final bool hasReachedEnd;
+  int page = 0;
 
   @override
-  String toString() => 'data : $data';
+  String toString() =>
+      'data : $data, hasReachedEnd : $hasReachedEnd, page : $page';
 
   @override
   List<Object> get props => [data];
 
-  ListMangaLoadedState cloneWith({
-    List<ListManga> comments,
-    bool hasReachedEnd}) {
+  ListMangaLoadedState cloneWith({List<ListManga> data, bool hasReachedEnd}) {
     return ListMangaLoadedState(
-        data: comments ?? data,
+      data: data ?? this.data,
+      hasReachedEnd: hasReachedEnd ?? this.hasReachedEnd
     );
   }
 }
 
-class ListMangaFailureState extends ListMangaState{
+class ListMangaFailureState extends ListMangaState {
   ListMangaFailureState({this.msg});
+
   final String msg;
 
   @override
