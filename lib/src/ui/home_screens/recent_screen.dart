@@ -20,11 +20,24 @@ class RecentScreen extends StatefulWidget {
 class _RecentScreenState extends State<RecentScreen> {
   ListMangaBloc _listMangaBloc;
 
+  // Scroll Controller
+  ScrollController _scrollController;
+  final _scrollThreshold = 400.0;
+
   @override
   void initState() {
     super.initState();
     _listMangaBloc = BlocProvider.of<ListMangaBloc>(context)
       ..add(FetchListMangaEvent());
+    _scrollController = ScrollController()
+      ..addListener(() {
+        final maxScrollExtent = _scrollController.position.maxScrollExtent;
+        final currentScroll = _scrollController.position.pixels;
+        if (maxScrollExtent - currentScroll <= _scrollThreshold) {
+          _listMangaBloc = BlocProvider.of<ListMangaBloc>(context)
+            ..add(FetchListMangaEvent());
+        }
+      });
   }
 
   @override
@@ -86,14 +99,17 @@ class _RecentScreenState extends State<RecentScreen> {
                 );
               }
               if (state is InitialListMangaState) {
-                return const Center();
+                return const Center(child: Text('Hihi Dang loading'));
               }
               if (state is ListMangaLoadedState) {
                 return Container(
                   decoration: const BoxDecoration(color: Colors.white),
                   child: GridView.builder(
                     padding: const EdgeInsets.all(12),
-                    itemCount: state.data.length,
+                    itemCount: state.hasReachedEnd
+                        ? state.data.length + 20
+                        : state.data.length,
+                    controller: _scrollController,
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                       childAspectRatio: 0.7,
