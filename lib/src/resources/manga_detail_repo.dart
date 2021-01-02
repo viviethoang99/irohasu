@@ -16,7 +16,8 @@ class MangaDetailRepo extends BaseService {
         .attributes['ng-init']
         .toString();
     final countLike = countTotalLike(getTotalLike);
-    final getAuthor = findElement(description, 'Tác giả').querySelectorAll('a');
+    final getAuthor =
+        findElement(description, 'Tác giả')?.querySelectorAll('a');
     // get chapter
     final getListChapters = document.querySelectorAll('#list-chapters > p');
     final urlThumb =
@@ -28,7 +29,6 @@ class MangaDetailRepo extends BaseService {
         .trim();
     // get List chapter
     final chapter = getChapter(getListChapters, title);
-
     final mangaDetail = MangaDetail(
       title: title,
       thumb: urlThumb,
@@ -66,6 +66,9 @@ class MangaDetailRepo extends BaseService {
   }
 
   List<String> getElement(List<dom.Element> element) {
+    if (element == null) {
+      return null;
+    }
     final List<String> author = [];
     for (var i = 0; i < element.length; i++) {
       author.add(element[i].text);
@@ -74,10 +77,8 @@ class MangaDetailRepo extends BaseService {
   }
 
   List<ChapterList> getChapter(List<dom.Element> elementList, String title) {
-    List<ChapterList> getData = <ChapterList>[];
-    for (var element in elementList) {
-      getData.add(
-        ChapterList(
+    final chapterList = elementList.map((element) {
+      return ChapterList(
           chapterTitle: element
               .querySelector('.title > a')
               .text
@@ -85,10 +86,8 @@ class MangaDetailRepo extends BaseService {
               .trim(),
           chapterEndpoint:
               element.querySelector('.title > a').attributes['href'].toString(),
-          chapterUpload: element.querySelector('.publishedDate').text,
-        ),
-      );
-    }
-    return getData;
+          chapterUpload: element.querySelector('.publishedDate').text);
+    }).toList();
+    return chapterList;
   }
 }

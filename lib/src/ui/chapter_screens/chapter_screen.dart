@@ -27,8 +27,8 @@ class _ChapterScreenState extends State<ChapterScreen> {
   final scrollDirection = Axis.vertical;
   ItemScrollController _scrollListController;
   int _getIndex;
-  double _containerMaxHeight = 56, _offset, _delta = 0, _oldOffset = 0;
-
+  double _offset, _delta = 0, _oldOffset = 0;
+  final double _containerMaxHeight = 56;
   String get getEndpoint => widget.endpoint;
 
   List get getChapterList => widget.chapterList.reversed.toList();
@@ -73,7 +73,7 @@ class _ChapterScreenState extends State<ChapterScreen> {
         }
         if (state is InitialChapterState) {
           return const Center(
-            child: Text('Sai cmnr'),
+            child: Text('Waiting!'),
           );
         }
         if (state is ChapterLoadedState) {

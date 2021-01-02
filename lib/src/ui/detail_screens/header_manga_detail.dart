@@ -92,7 +92,7 @@ class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
                       height: 15,
                     ),
                     Text(
-                      widget.author.join(','),
+                      widget.author != null ? widget.author.join(',') : "Chưa xác định",
                       style: const TextStyle(
                         fontSize: 15,
                         color: Colors.white70,

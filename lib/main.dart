@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:irohasu/src/blocs/search_bloc/bloc.dart';
+import 'package:irohasu/src/resources/search_repo.dart';
 
 import './src/blocs/chapter_bloc/bloc.dart';
 import './src/blocs/list_manga_bloc/bloc.dart';
@@ -28,6 +30,9 @@ class MyApp extends StatelessWidget {
         BlocProvider<ChapterBloc>(
           create: (context) => ChapterBloc(ChapterRepo()),
         ),
+        BlocProvider<SearchBloc>(
+          create: (context) => SearchBloc(SearchRepo()),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -35,6 +40,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
+          fontFamily: 'OpenSans',
         ),
         home: RecentScreen(),
         initialRoute: RecentScreen.routeName,

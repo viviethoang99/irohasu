@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:irohasu/src/components/description_text_widget.dart';
+import 'package:irohasu/src/ui/home_screens/recent_screen.dart';
 
 //
 import '../../../src/components/custom_button_reading_widget.dart';
@@ -9,7 +10,7 @@ import '../../../src/ui/chapter_screens/chapter_screen.dart';
 
 //
 import '../../blocs/manga_detail_bloc/bloc.dart';
-import 'header_manga_detail.dart';
+import './header_manga_detail.dart';
 
 class MangaDetailScreen extends StatefulWidget {
   const MangaDetailScreen({Key key, this.endpoint}) : super(key: key);
@@ -53,7 +54,8 @@ class _MangaDetailScreenState extends State<MangaDetailScreen> {
             appBar: AppBar(
               leading: IconButton(
                 icon: const Icon(Icons.arrow_back, color: Colors.white),
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () =>
+                    Navigator.of(context).pushNamed(RecentScreen.routeName),
               ),
               centerTitle: true,
               backgroundColor: Colors.transparent,
@@ -128,7 +130,9 @@ class _MangaDetailScreenState extends State<MangaDetailScreen> {
                       ],
                     ),
                   ),
-                  DescriptionTextWidget(text: state.data.description,),
+                  DescriptionTextWidget(
+                    text: state.data.description,
+                  ),
                   Container(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -166,19 +170,28 @@ class _MangaDetailScreenState extends State<MangaDetailScreen> {
                   ),
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 15),
-                    child: Divider(color: Colors.amber),
+                    child: Divider(
+                      color: Colors.amber,
+                      height: 4,
+                    ),
                   ),
                   MediaQuery.removePadding(
                     removeTop: true,
                     context: context,
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      child: ListView.builder(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 10),
+                      child: ListView.separated(
+                        separatorBuilder: (BuildContext context, int index) =>
+                            const Divider(
+                          color: Colors.white54,
+                        ),
+                        shrinkWrap: true,
                         itemCount: state.data.chapter.length,
                         physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
                         itemBuilder: (BuildContext context, index) {
                           return ListTile(
+                            dense: true,
                             title: Text(
                               state.data.chapter[index].chapterTitle.toString(),
                               style: const TextStyle(

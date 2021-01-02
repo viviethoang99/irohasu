@@ -22,33 +22,38 @@ class ItemManga extends StatelessWidget {
             arguments: setUrlWithoutDomain);
       },
       child: Card(
+        color: Colors.grey[900],
         elevation: 0,
-        child: Stack(
-          fit: StackFit.expand,
+        child: Column(
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(5),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(5.0),
-                child: Image.network(
-                  thumbnailUrl,
-                  headers: BlogTruyen.headersBuilder,
-                  fit: BoxFit.cover,
+            Expanded(
+              child: AspectRatio(
+                aspectRatio: 0.7,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(5.0),
+                  child: Image.network(
+                    thumbnailUrl,
+                    headers: BlogTruyen.headersBuilder,
+                    fit: BoxFit.cover,
+                    errorBuilder: (BuildContext context, Object exception,
+                        StackTrace stackTrace) {
+                      return Image.asset('assets/images/404.png');
+                    },
+                  ),
                 ),
               ),
             ),
             Container(
-              padding: const EdgeInsets.all(5),
-              alignment: Alignment.bottomLeft,
+              height: 50,
               child: Padding(
                 padding: const EdgeInsets.all(6.0),
                 child: Text(
                   title,
                   style: const TextStyle(
                       color: Colors.white,
-                      backgroundColor: Colors.black54,
                       fontWeight: FontWeight.w500,
-                      fontSize: 13),
+                      fontFamily: 'OpenSans',
+                      fontSize: 15),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),

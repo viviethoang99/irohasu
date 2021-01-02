@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 
 //
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:irohasu/src/blocs/search_bloc/bloc.dart';
+import 'package:irohasu/src/models/search_model.dart';
+import 'package:irohasu/src/ui/search_screens/button_search_widget.dart';
 
 // Widget
 import '../../blocs/list_manga_bloc/bloc.dart';
@@ -22,7 +25,7 @@ class _RecentScreenState extends State<RecentScreen> {
 
   // Scroll Controller
   ScrollController _scrollController;
-  final _scrollThreshold = 400.0;
+  final _scrollThreshold = 300.0;
 
   @override
   void initState() {
@@ -50,43 +53,38 @@ class _RecentScreenState extends State<RecentScreen> {
             appBar: AppBar(
               title: const Text(
                 BlogTruyen.name,
-                style: TextStyle(color: Colors.black87, fontSize: 22),
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
-              backgroundColor: Colors.transparent,
-              elevation: 0.0,
+              backgroundColor: Colors.black87,
+              elevation: 1.0,
               centerTitle: true,
               actions: <Widget>[
-                const IconButton(
-                    icon: Icon(
-                      Icons.search,
-                      color: Colors.black87,
-                    ),
-                    onPressed: null),
-                const IconButton(
-                    icon: Icon(
-                      Icons.dashboard,
-                      color: Colors.black87,
-                    ),
-                    onPressed: null),
-                Stack(children: [
-                  Container(
-                    margin: const EdgeInsets.only(right: 10),
-                    child: CircleAvatar(
-                      child: ClipOval(
-                        child: Image.asset('assets/images/Yuigahama.jpg'),
-                      ),
-                    ),
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black87,
-                          blurRadius: 3,
-                        )
-                      ],
-                    ),
+                IconButton(
+                  icon: const Icon(
+                    Icons.search,
+                    size: 30,
                   ),
-                ]),
+                  onPressed: () async {
+                    SearchModel manga = await showSearch(
+                        context: context,
+                        delegate: SearchScreen(
+                            bloc: BlocProvider.of<SearchBloc>(context)));
+                  },
+                ),
+                IconButton(
+                    icon: const Icon(
+                      Icons.dashboard,
+                      size: 28,
+                    ),
+                    onPressed: () {}),
+                const IconButton(
+                  icon: Icon(
+                    Icons.more_vert,
+                    color: Colors.white,
+                    size: 28,
+                  ),
+                  onPressed: null,
+                ),
               ],
             ),
             body: BlocBuilder<ListMangaBloc, ListMangaState>(
@@ -103,8 +101,9 @@ class _RecentScreenState extends State<RecentScreen> {
               }
               if (state is ListMangaLoadedState) {
                 return Container(
-                  decoration: const BoxDecoration(color: Colors.white),
+                  decoration: const BoxDecoration(color: Colors.black87),
                   child: GridView.builder(
+                    shrinkWrap: true,
                     padding: const EdgeInsets.all(12),
                     itemCount: state.hasReachedEnd
                         ? state.data.length + 20
@@ -112,7 +111,7 @@ class _RecentScreenState extends State<RecentScreen> {
                     controller: _scrollController,
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
-                      childAspectRatio: 0.7,
+                      childAspectRatio: 0.6,
                       crossAxisCount: 3,
                       crossAxisSpacing: 2,
                       mainAxisSpacing: 2,

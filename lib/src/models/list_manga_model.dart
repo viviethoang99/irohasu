@@ -1,6 +1,7 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 
-class ListManga {
+class ListManga extends Equatable{
   ListManga({
     @required this.title,
     @required this.thumbnailUrl,
@@ -10,4 +11,7 @@ class ListManga {
   final String title;
   final String thumbnailUrl;
   final String setUrlWithoutDomain;
+
+  @override
+  List<Object> get props => [title, thumbnailUrl, setUrlWithoutDomain];
 }

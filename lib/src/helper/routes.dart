@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:irohasu/src/ui/search_screens/search_screen.dart';
 
 import '../../src/ui/chapter_screens/chapter_screen.dart';
 import '../../src/ui/detail_screens/manga_detail_screen.dart';
@@ -30,6 +31,10 @@ Route generateRoute(RouteSettings routeSettings) {
             endpoint: data.endpoint,
             chapterList: data.chapterList,
           ));
+    // case SearchScreen.routeName:
+    //   return pageRoute(
+    //       routeSettings: routeSettings,
+    //       builder: SearchScreen());
     default:
       return MaterialPageRoute<dynamic>(
         builder: (_) => const Scaffold(

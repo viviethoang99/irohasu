@@ -7,12 +7,15 @@ class CustomBottomNavBar extends StatelessWidget {
       decoration: const BoxDecoration(
         boxShadow: <BoxShadow>[
           BoxShadow(
-            color: Colors.black26,
-            blurRadius: 4,
+            color: Colors.black45,
+            blurRadius: 5,
           ),
         ],
       ),
       child: BottomNavigationBar(
+        backgroundColor: Colors.black87,
+        unselectedItemColor: Colors.white,
+        selectedItemColor: Colors.green,
         currentIndex: 1,
         items: [
           const BottomNavigationBarItem(
@@ -25,7 +28,7 @@ class CustomBottomNavBar extends StatelessWidget {
           ),
           const BottomNavigationBarItem(
             icon: Icon(Icons.access_time_rounded),
-            label: 'Recent',
+            label: 'Login',
           )
         ],
       ),
