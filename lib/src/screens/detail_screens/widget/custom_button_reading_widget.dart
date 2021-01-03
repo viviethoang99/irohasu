@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:irohasu/src/screens/chapter_screens/chapter_screen.dart';
 
 class CustomButtonReadingWidget extends StatelessWidget {
   CustomButtonReadingWidget({
     @required this.status,
     @required this.color,
-    this.function,
+    @required this.chapterList,
   });
 
   final String status;
   final Object color;
-  final Function function;
+  final List chapterList;
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +24,16 @@ class CustomButtonReadingWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(20.0),
         ),
         child: InkWell(
-          onTap: () => function,
-          child: Text(
+          onTap: () {
+            Navigator.of(context).pushNamed(
+              ChapterScreen.routeName,
+              arguments: ChapterScreen(
+                endpoint:
+                chapterList.last.chapterEndpoint.toString(),
+                chapterList: chapterList,
+              ),
+            );
+          },          child: Text(
             status,
             style: const TextStyle(
                 fontWeight: FontWeight.bold, fontSize: 16, color: Colors.white),

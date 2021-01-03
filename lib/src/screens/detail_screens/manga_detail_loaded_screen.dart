@@ -1,15 +1,15 @@
 // Packages
 import 'package:flutter/material.dart';
-
+//
 import '../../../src/constants/base_content.dart';
 import '../../../src/models/manga_detail_model.dart';
-import '../../../src/screens/chapter_screens/chapter_screen.dart';
+import '../../../src/screens/detail_screens/widget/appbar_chapter_widget.dart';
 import '../../../src/screens/home_screens/home_screen.dart';
-
 // Widget
 import './widget/custom_button_reading_widget.dart';
 import './widget/description_text_widget.dart';
 import './widget/header_manga_detail.dart';
+import './widget/list_chapter_widget.dart';
 
 class MangaDetailLoadedScreen extends StatefulWidget {
   const MangaDetailLoadedScreen({Key key, this.data}) : super(key: key);
@@ -106,9 +106,7 @@ class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
                 ],
               ),
             ),
-            DescriptionTextWidget(
-              text: data.description,
-            ),
+            DescriptionTextWidget(text: data.description),
             Container(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -116,110 +114,26 @@ class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
                   CustomButtonReadingWidget(
                     status: Content.startReading,
                     color: Colors.green,
-                    function: startReading,
+                    chapterList: data.chapter,
                   ),
                   CustomButtonReadingWidget(
-                      status: Content.readComments, color: Colors.amber),
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 27, vertical: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    '${data.chapter.length} Chapters',
-                    style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  const Icon(
-                    Icons.text_rotate_vertical,
-                    color: Colors.green,
-                    size: 26,
+                    status: Content.readComments,
+                    color: Colors.amber,
+                    chapterList: data.chapter,
                   ),
                 ],
               ),
             ),
+            const SizedBox(height: 20),
+            AppbarChapterWidget(data: data),
             const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15),
-              child: Divider(
-                color: Colors.amber,
-                height: 4,
-              ),
-            ),
-            MediaQuery.removePadding(
-              removeTop: true,
-              context: context,
-              child: Padding(
-                padding:
-                const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                child: ListView.separated(
-                  separatorBuilder: (BuildContext context, int index) =>
-                  const Divider(
-                    color: Colors.white54,
-                  ),
-                  shrinkWrap: true,
-                  itemCount: data.chapter.length,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemBuilder: (BuildContext context, index) {
-                    return ListTile(
-                      dense: true,
-                      title: Text(
-                        data.chapter[index].chapterTitle.toString(),
-                        style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      subtitle: Text(
-                        data.chapter[index].chapterUpload.toString(),
-                        style: const TextStyle(
-                          color: Colors.white54,
-                          fontSize: 18,
-                        ),
-                      ),
-                      trailing: const Icon(
-                        Icons.arrow_circle_down,
-                        color: Colors.green,
-                        size: 30,
-                      ),
-                      isThreeLine: true,
-                      onTap: () {
-                        Navigator.of(context).pushNamed(
-                          ChapterScreen.routeName,
-                          arguments: ChapterScreen(
-                            endpoint:
-                            data.chapter[index].chapterEndpoint.toString(),
-                            chapterList: data.chapter,
-                          ),
-                        );
-                      },
-                    );
-                  },
-                ),
-              ),
-            ),
+                padding: EdgeInsets.symmetric(horizontal: 15),
+                child: Divider(color: Colors.amber, height: 4)),
+            ListChapterWidget(data: data),
           ],
         ),
       ),
     );
   }
-
-  void startReading() {
-    print('Test');
-    Navigator.of(context).pushNamed(
-      ChapterScreen.routeName,
-      arguments: ChapterScreen(
-        endpoint:
-        data.chapter[1].chapterEndpoint.toString(),
-        chapterList: data.chapter,
-      ),
-    );
-  }
 }
+

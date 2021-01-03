@@ -76,7 +76,7 @@ class _BottomBarChapterScreenState extends State<BottomBarChapterScreen> {
                 icon: const Icon(Icons.skip_previous),
                 color: Colors.black87,
                 iconSize: 35,
-                onPressed: () {
+                onPressed: _getIndex != 0 ? () {
                   Navigator.of(context).pushNamed(
                     ChapterScreen.routeName,
                     arguments: ChapterScreen(
@@ -86,7 +86,7 @@ class _BottomBarChapterScreenState extends State<BottomBarChapterScreen> {
                       chapterList: _getChapterList,
                     ),
                   );
-                }),
+                } : null ),
             IconButton(
               icon: const Icon(Icons.home),
               color: Colors.black87,
@@ -112,7 +112,7 @@ class _BottomBarChapterScreenState extends State<BottomBarChapterScreen> {
               icon: const Icon(Icons.skip_next),
               color: Colors.black87,
               iconSize: 35,
-              onPressed: () {
+              onPressed: (_getIndex != _getChapterList.length-1) ? () {
                 Navigator.of(context).pushNamed(
                   ChapterScreen.routeName,
                   arguments: ChapterScreen(
@@ -122,7 +122,7 @@ class _BottomBarChapterScreenState extends State<BottomBarChapterScreen> {
                     chapterList: _getChapterList,
                   ),
                 );
-              },
+              } : null,
             ),
           ],
         ),
