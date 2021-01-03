@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:irohasu/src/constants/base_blogtruyen.dart';
-import 'package:irohasu/src/ui/home_screens/item_manga.dart';
 
 import '../../../src/blocs/search_bloc/bloc.dart';
+import '../../../src/constants/base_content.dart';
 import '../../../src/models/search_model.dart';
+import '../../../src/screens/home_screens/item_manga.dart';
 
 class SearchScreen extends SearchDelegate<SearchModel> {
   SearchScreen({this.bloc});
@@ -12,7 +12,7 @@ class SearchScreen extends SearchDelegate<SearchModel> {
   final Bloc<SearchEvent, SearchState> bloc;
 
   @override
-  String get searchFieldLabel => 'Nhập tên truyện';
+  String get searchFieldLabel => Content.search;
 
   @override
   ThemeData appBarTheme(BuildContext context) {
@@ -35,9 +35,7 @@ class SearchScreen extends SearchDelegate<SearchModel> {
   Widget buildLeading(BuildContext context) {
     return IconButton(
       icon: const Icon(Icons.arrow_back),
-      onPressed: () {
-        close(context, null);
-      },
+      onPressed: () => close(context, null),
     );
   }
 
@@ -59,6 +57,7 @@ class SearchScreen extends SearchDelegate<SearchModel> {
       }
       if (state is SearchLoadedState) {
         return Container(
+          height: double.infinity,
           decoration: const BoxDecoration(color: Colors.black87),
           child: GridView.builder(
             shrinkWrap: true,

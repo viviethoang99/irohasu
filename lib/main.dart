@@ -10,7 +10,7 @@ import './src/helper/routes.dart';
 import './src/resources/chapter_repo.dart';
 import './src/resources/list_manga_repo.dart';
 import './src/resources/manga_detail_repo.dart';
-import './src/ui/home_screens/recent_screen.dart';
+import './src/screens/home_screens/home_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -42,8 +42,8 @@ class MyApp extends StatelessWidget {
           visualDensity: VisualDensity.adaptivePlatformDensity,
           fontFamily: 'OpenSans',
         ),
-        home: RecentScreen(),
-        initialRoute: RecentScreen.routeName,
+        home: HomeScreen(),
+        initialRoute: HomeScreen.routeName,
         onGenerateRoute: generateRoute,
       ),
     );

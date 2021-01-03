@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../constants/base_blogtruyen.dart';
+import '../../../constants/base_blogtruyen.dart';
 
 class HeaderMangaDetail extends StatefulWidget {
   HeaderMangaDetail({
@@ -69,7 +69,7 @@ class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
                   height: (MediaQuery.of(context).size.height) / 5,
                   width: (MediaQuery.of(context).size.width) / 3.5,
                 ),
-                ),
+              ),
             ),
             Flexible(
               child: Container(
@@ -92,7 +92,9 @@ class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
                       height: 15,
                     ),
                     Text(
-                      widget.author != null ? widget.author.join(',') : "Chưa xác định",
+                      widget.author != null
+                          ? widget.author.join(',')
+                          : 'Chưa xác định',
                       style: const TextStyle(
                         fontSize: 15,
                         color: Colors.white70,

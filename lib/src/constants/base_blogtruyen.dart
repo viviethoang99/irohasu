@@ -5,7 +5,6 @@ class BlogTruyen {
 
   static const headersBuilder = {'Referer': BlogTruyen.baseUrl};
 
-  static const status = 'Trạng thái';
 
   Map<String, int> theme = {
     '16+': 54,
@@ -65,5 +64,4 @@ class BlogTruyen {
     'Webtoon': 52,
     'Yuri': 59,
   };
-
 }

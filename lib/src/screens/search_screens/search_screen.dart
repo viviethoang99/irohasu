@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:irohasu/src/constants/base_blogtruyen.dart';
-import 'package:irohasu/src/models/search_model.dart';
+
 import '../../../src/blocs/search_bloc/bloc.dart';
+import '../../../src/components/loading_screen.dart';
+import '../../../src/constants/base_blogtruyen.dart';
 
 class SearchScreen extends StatefulWidget {
   static const routeName = '/search';
@@ -30,7 +31,7 @@ class _SearchScreenState extends State<SearchScreen> {
           IconButton(
             onPressed: () {
             },
-            icon: Icon(Icons.search),
+            icon: const Icon(Icons.search),
           )
         ],
       ),
@@ -41,11 +42,7 @@ class _SearchScreenState extends State<SearchScreen> {
           );
         }
         if (state is SearchLoadingState) {
-          return Container(
-            child: const Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
+          return LoadingScreen();
         }
         if (state is SearchLoadedState) {
           return Container(

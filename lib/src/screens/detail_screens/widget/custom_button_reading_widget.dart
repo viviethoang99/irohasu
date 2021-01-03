@@ -4,10 +4,12 @@ class CustomButtonReadingWidget extends StatelessWidget {
   CustomButtonReadingWidget({
     @required this.status,
     @required this.color,
+    this.function,
   });
 
   final String status;
   final Object color;
+  final Function function;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,7 @@ class CustomButtonReadingWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(20.0),
         ),
         child: InkWell(
-          onTap: null,
+          onTap: () => function,
           child: Text(
             status,
             style: const TextStyle(

@@ -2,7 +2,7 @@ import 'package:dio/dio.dart' as dio;
 import 'package:html/parser.dart';
 import 'package:html/dom.dart' as dom;
 
-import '../../src/constants/base_blogtruyen.dart';
+import '../../src/constants/base_content.dart';
 import '../../src/models/manga_detail_model.dart';
 import '../../src/service/base_service.dart';
 
@@ -11,10 +11,8 @@ class MangaDetailRepo extends BaseService {
     dio.Response response = await request(url: endpoint);
     final document = parse(response.data);
     final description = document.querySelectorAll('div.description > p');
-    final getTotalLike = document
-        .getElementsByClassName('total-vote')[0]
-        .attributes['ng-init']
-        .toString();
+    final getTotalLike =
+        document.querySelector('.total-vote').attributes['ng-init'].toString();
     final countLike = countTotalLike(getTotalLike);
     final getAuthor =
         findElement(description, 'Tác giả')?.querySelectorAll('a');
@@ -27,14 +25,13 @@ class MangaDetailRepo extends BaseService {
         .text
         .replaceFirst('| BlogTruyen.Com', '')
         .trim();
-    // get List chapter
     final chapter = getChapter(getListChapters, title);
     final mangaDetail = MangaDetail(
       title: title,
       thumb: urlThumb,
       endpoint: endpoint,
-      author: getElement(getAuthor),
-      status: findElement(description, BlogTruyen.status)
+      author: getAuthor != null ? getElement(getAuthor) : null,
+      status: findElement(description, Content.status)
           .querySelector('span.color-red')
           .text,
       description:
@@ -57,7 +54,7 @@ class MangaDetailRepo extends BaseService {
 
   Map<String, String> countTotalLike(String value) {
     var keyValuePairs = value.split(';');
-    final Map<String, String> map = {};
+    final map = <String, String>{};
     for (var pair in keyValuePairs) {
       final entry = pair.split('=');
       map['${entry[0].trim()}'] = entry[1].trim();
@@ -66,13 +63,9 @@ class MangaDetailRepo extends BaseService {
   }
 
   List<String> getElement(List<dom.Element> element) {
-    if (element == null) {
-      return null;
-    }
-    final List<String> author = [];
-    for (var i = 0; i < element.length; i++) {
-      author.add(element[i].text);
-    }
+    final author = element.map((e) {
+      return e.text;
+    }).toList();
     return author;
   }
 
