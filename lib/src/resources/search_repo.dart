@@ -6,8 +6,8 @@ import 'package:irohasu/src/service/base_service.dart';
 
 class SearchRepo extends BaseService {
   Future<List<SearchModel>> getDataResult({String query}) async {
-    dio.Response response =
-        await request(url: '/timkiem/nangcao/1/0/-1/-1?txt=$query');
+    dio.Response response;
+    response = await request(url: '/timkiem/nangcao/1/0/-1/-1?txt=$query');
     final document = parse(response.data);
     final listItem =
         document.querySelectorAll('div.list span.tiptip.fs-12.ellipsis');

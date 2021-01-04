@@ -22,12 +22,14 @@ class ListMangaBloc extends Bloc<ListMangaEvent, ListMangaState> {
   @override
   Stream<ListMangaState> mapEventToState(ListMangaEvent event) async* {
     final currentState = state;
-    int page = 0;
+    var page = 0;
+    List<ListManga> data;
+
     if (event is FetchListMangaEvent && !_hasReachedMax(currentState)) {
       try {
         if (currentState is InitialListMangaState) {
           yield ListMangaLoadingState();
-          List<ListManga> data = await _listRepo.getListManga(page: page += 1);
+          data = await _listRepo.getListManga(page: page += 1);
           yield ListMangaLoadedState(
               data: data, page: page + 1, hasReachedEnd: false);
         }
@@ -55,7 +57,7 @@ class ListMangaBloc extends Bloc<ListMangaEvent, ListMangaState> {
     if (state is InitialListMangaState) {
       yield ListMangaLoadingState();
       try {
-        List<ListManga> data = await _listRepo.getListManga(page: page);
+        data = await _listRepo.getListManga(page: page);
         yield data.length < 20
             ? ListMangaLoadedState(data: data, page: page, hasReachedEnd: true)
             : ListMangaLoadedState(

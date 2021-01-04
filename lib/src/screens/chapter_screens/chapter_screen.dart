@@ -30,8 +30,6 @@ class _ChapterScreenState extends State<ChapterScreen> {
       ..add(FetchDataChapterEvent(endpoint: getEndpoint));
   }
 
-  void btnNextChapter() {}
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ChapterBloc, ChapterState>(

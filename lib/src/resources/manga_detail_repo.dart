@@ -8,7 +8,8 @@ import '../../src/service/base_service.dart';
 
 class MangaDetailRepo extends BaseService {
   Future<MangaDetail> getMangaDetail(String endpoint) async {
-    dio.Response response = await request(url: endpoint);
+    dio.Response response;
+    response = await request(url: endpoint);
     final document = parse(response.data);
     final description = document.querySelectorAll('div.description > p');
     final getTotalLike =
@@ -16,7 +17,6 @@ class MangaDetailRepo extends BaseService {
     final countLike = countTotalLike(getTotalLike);
     final getAuthor =
         findElement(description, 'Tác giả')?.querySelectorAll('a');
-    // get chapter
     final getListChapters = document.querySelectorAll('#list-chapters > p');
     final urlThumb =
         document.querySelector('.thumbnail img').attributes['src'].toString();

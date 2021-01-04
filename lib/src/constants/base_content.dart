@@ -14,4 +14,6 @@ class Content {
   static const startReading = 'Bắt đầu đọc';
 
   static const readComments = 'Đọc bình luận';
+
+  static const about = 'Giới thiệu';
 }

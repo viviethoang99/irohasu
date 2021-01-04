@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../src/blocs/search_bloc/bloc.dart';
 import '../../../src/constants/base_content.dart';
 import '../../../src/models/search_model.dart';
-import '../../../src/screens/home_screens/item_manga.dart';
+import '../home_screens/widget/item_manga.dart';
 
 class SearchScreen extends SearchDelegate<SearchModel> {
   SearchScreen({this.bloc});

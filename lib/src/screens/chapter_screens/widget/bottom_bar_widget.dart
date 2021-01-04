@@ -30,6 +30,7 @@ class BottomBarChapterScreen extends StatefulWidget {
 class _BottomBarChapterScreenState extends State<BottomBarChapterScreen> {
   double _offset, _delta = 0, _oldOffset = 0;
   final double _containerMaxHeight = 56;
+  bool hasReachedEnd = false;
 
   double get maxWidth => widget.maxWidth;
 
@@ -47,23 +48,33 @@ class _BottomBarChapterScreenState extends State<BottomBarChapterScreen> {
   void initState() {
     super.initState();
     _offset = 0;
-    _scrollController.addListener(() {
-      setState(() {
-        var offset = _scrollController.offset;
-        _delta += (offset - _oldOffset);
-        if (_delta > _containerMaxHeight)
-          _delta = _containerMaxHeight;
-        else if (_delta < 0) _delta = 0;
-        _oldOffset = offset;
-        _offset = -_delta;
+    _scrollController
+      ..addListener(() {
+        setState(() {
+          var offset = _scrollController.offset;
+          _delta += (offset - _oldOffset);
+          if (_delta > _containerMaxHeight)
+            _delta = _containerMaxHeight;
+          else if (_delta < 0) _delta = 0;
+          _oldOffset = offset;
+          _offset = -_delta;
+        });
+      })
+      ..addListener(() {
+        final maxScrollExtent = _scrollController.position.maxScrollExtent;
+        final currentScroll = _scrollController.position.pixels;
+        if (maxScrollExtent - currentScroll == 0) {
+          hasReachedEnd = true;
+        } else {
+          hasReachedEnd = false;
+        }
       });
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      bottom: _offset,
+      bottom: hasReachedEnd ? 0 : _offset,
       width: maxWidth,
       child: Container(
         width: double.infinity,
@@ -76,17 +87,19 @@ class _BottomBarChapterScreenState extends State<BottomBarChapterScreen> {
                 icon: const Icon(Icons.skip_previous),
                 color: Colors.black87,
                 iconSize: 35,
-                onPressed: _getIndex != 0 ? () {
-                  Navigator.of(context).pushNamed(
-                    ChapterScreen.routeName,
-                    arguments: ChapterScreen(
-                      endpoint: _getChapterList[_getIndex - 1]
-                          .chapterEndpoint
-                          .toString(),
-                      chapterList: _getChapterList,
-                    ),
-                  );
-                } : null ),
+                onPressed: _getIndex != 0
+                    ? () {
+                        Navigator.of(context).pushNamed(
+                          ChapterScreen.routeName,
+                          arguments: ChapterScreen(
+                            endpoint: _getChapterList[_getIndex - 1]
+                                .chapterEndpoint
+                                .toString(),
+                            chapterList: _getChapterList,
+                          ),
+                        );
+                      }
+                    : null),
             IconButton(
               icon: const Icon(Icons.home),
               color: Colors.black87,
@@ -112,17 +125,19 @@ class _BottomBarChapterScreenState extends State<BottomBarChapterScreen> {
               icon: const Icon(Icons.skip_next),
               color: Colors.black87,
               iconSize: 35,
-              onPressed: (_getIndex != _getChapterList.length-1) ? () {
-                Navigator.of(context).pushNamed(
-                  ChapterScreen.routeName,
-                  arguments: ChapterScreen(
-                    endpoint: _getChapterList[_getIndex + 1]
-                        .chapterEndpoint
-                        .toString(),
-                    chapterList: _getChapterList,
-                  ),
-                );
-              } : null,
+              onPressed: (_getIndex != _getChapterList.length - 1)
+                  ? () {
+                      Navigator.of(context).pushNamed(
+                        ChapterScreen.routeName,
+                        arguments: ChapterScreen(
+                          endpoint: _getChapterList[_getIndex + 1]
+                              .chapterEndpoint
+                              .toString(),
+                          chapterList: _getChapterList,
+                        ),
+                      );
+                    }
+                  : null,
             ),
           ],
         ),

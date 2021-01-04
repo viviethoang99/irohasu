@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../src/constants/base_content.dart';
 
 class DescriptionTextWidget extends StatefulWidget {
   DescriptionTextWidget({@required this.text});
@@ -10,17 +11,17 @@ class DescriptionTextWidget extends StatefulWidget {
 }
 
 class _DescriptionTextWidgetState extends State<DescriptionTextWidget> {
+  String get text => widget.text;
+
   bool flag = true;
 
   Widget showDescription() {
     return flag
-        ? Text(
-            widget.text,
+        ? Text(text,
             style: const TextStyle(color: Colors.white54, fontSize: 16),
             maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          )
-        : Text(widget.text,
+            overflow: TextOverflow.ellipsis)
+        : Text(text,
             style: const TextStyle(color: Colors.white54, fontSize: 16));
   }
 
@@ -36,7 +37,7 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget> {
               const Padding(
                 padding: EdgeInsets.only(top: 8.0),
                 child: Text(
-                  'Tóm tắt',
+                  Content.about,
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 22,
@@ -57,9 +58,8 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget> {
           AnimatedContainer(
               duration: const Duration(milliseconds: 900),
               padding: const EdgeInsets.symmetric(vertical: 20.0),
-              height: flag ? 60 : (widget.text.length / 50 * 18 + 75),
-              child: showDescription()
-          ),
+              height: flag ? 60 : (widget.text.length / 50 * 18 + 80),
+              child: showDescription()),
         ],
       ),
     );

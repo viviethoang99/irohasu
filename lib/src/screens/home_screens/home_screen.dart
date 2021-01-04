@@ -3,14 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 // Widget
-import '../../../src/blocs/search_bloc/bloc.dart';
 import '../../../src/components/loading_screen.dart';
 import '../../../src/constants/base_content.dart';
-import '../../../src/screens/search_screens/button_search_widget.dart';
 import '../../blocs/list_manga_bloc/bloc.dart';
-import '../../constants/base_blogtruyen.dart';
-import 'appbar_widget.dart';
-import 'list_manga_widget.dart';
+import 'widget/appbar_widget.dart';
+import './list_manga_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routeName = '/recent';

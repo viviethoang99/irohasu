@@ -16,6 +16,7 @@ class LoadImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: ListView.builder(
+        padding: const EdgeInsets.only(bottom: 56),
         physics: const ClampingScrollPhysics(),
         controller: _scrollController,
         itemBuilder: (context, index) {

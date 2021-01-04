@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../src/constants/base_blogtruyen.dart';
-import '../../../src/screens/detail_screens/manga_detail_screen.dart';
+import '../../../constants/base_blogtruyen.dart';
+import '../../detail_screens/manga_detail_screen.dart';
 
 class ItemManga extends StatelessWidget {
   ItemManga({
