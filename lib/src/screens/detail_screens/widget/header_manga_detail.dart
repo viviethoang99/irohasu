@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../../constants/base_blogtruyen.dart';
+import 'btn_social_widget.dart';
+import 'btn_vote_widget.dart';
 
 class HeaderMangaDetail extends StatefulWidget {
   HeaderMangaDetail({
@@ -40,7 +42,7 @@ class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
           blendMode: BlendMode.dstIn,
           child: Container(
             width: double.infinity,
-            height: (MediaQuery.of(context).size.height) / 3,
+            height: (MediaQuery.of(context).size.height) / 2.5,
             decoration: BoxDecoration(
               color: Colors.red,
               image: DecorationImage(
@@ -53,96 +55,74 @@ class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
             ),
           ),
         ),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: <Widget>[
-            Container(
-              padding: const EdgeInsets.all(15),
-              alignment: Alignment.bottomLeft,
-              height: (MediaQuery.of(context).size.height) / 3,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.network(
-                  widget.thumbnailUrl,
-                  headers: BlogTruyen.headersBuilder,
-                  fit: BoxFit.cover,
-                  height: (MediaQuery.of(context).size.height) / 5,
-                  width: (MediaQuery.of(context).size.width) / 3.5,
+        Column(
+          children: [
+            const SizedBox(height: 100),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  padding: const EdgeInsets.all(15),
+                  alignment: Alignment.topCenter,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.network(
+                      widget.thumbnailUrl,
+                      headers: BlogTruyen.headersBuilder,
+                      fit: BoxFit.cover,
+                      height: (MediaQuery.of(context).size.height) / 5,
+                      width: (MediaQuery.of(context).size.width) / 3.5,
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            Flexible(
-              child: Container(
-                alignment: Alignment.bottomLeft,
-                height: (MediaQuery.of(context).size.height) / 5,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Container(
-                      padding: const EdgeInsets.only(right: 10),
-                      child: Text(widget.title,
+                Flexible(
+                  child: Container(
+                    alignment: Alignment.topCenter,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          padding: const EdgeInsets.only(right: 10, top: 10),
+                          child: Text(
+                            widget.title,
+                            style: const TextStyle(
+                              fontSize: 22,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
+                        widget.author != null
+                            ? Text(
+                                widget.author.join(','),
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.white70,
+                                ),
+                              )
+                            : Container(),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        Text(
+                          widget.status,
                           style: const TextStyle(
-                            fontSize: 22,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                            color: Colors.white70,
                           ),
-                          textAlign: TextAlign.left),
+                        ),
+                        BtnVoteWidget(
+                          countLike: widget.like,
+                          countDislike: widget.dislike,
+                        )
+                      ],
                     ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Text(
-                      widget.author != null
-                          ? widget.author.join(',')
-                          : 'Chưa xác định',
-                      style: const TextStyle(
-                        fontSize: 15,
-                        color: Colors.white70,
-                      ),
-                    ),
-                    Text(
-                      widget.status,
-                      style: const TextStyle(
-                        fontSize: 15,
-                        color: Colors.white70,
-                      ),
-                    ),
-                    Container(
-                      child: Row(
-                        children: <Widget>[
-                          const IconButton(
-                              icon: Icon(
-                                Icons.thumb_up,
-                                color: Colors.green,
-                              ),
-                              onPressed: null),
-                          Text(
-                            widget.like,
-                            style: const TextStyle(
-                              fontSize: 15,
-                              color: Colors.white,
-                            ),
-                          ),
-                          const IconButton(
-                              icon: Icon(
-                                Icons.thumb_down,
-                                color: Colors.red,
-                              ),
-                              onPressed: null),
-                          Text(
-                            widget.dislike,
-                            style: const TextStyle(
-                              fontSize: 15,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
+                  ),
                 ),
-              ),
+              ],
             ),
+            const BtnSocialWidget(),
           ],
         ),
       ],
