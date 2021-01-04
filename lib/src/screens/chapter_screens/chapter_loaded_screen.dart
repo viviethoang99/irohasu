@@ -49,12 +49,9 @@ class _ChapterLoadedScreenState extends State<ChapterLoadedScreen> {
               LoadImage(scrollController: _scrollController, data: data),
               AppBarChapterScreen(
                 endpoint: _getEndpoint,
-                chapterList: _getChapterList,
                 maxWidth: constraints.maxWidth,
-                mangaDetail: data.mangaDetail,
                 getIndex: _getIndex,
                 scrollController: _scrollController,
-                scrollListController: _scrollListController,
               ),
               BottomBarChapterScreen(
                 endpoint: _getEndpoint,
