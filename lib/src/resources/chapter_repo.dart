@@ -15,7 +15,7 @@ class ChapterRepo extends BaseService {
     final listImage = getChapter(responseData);
     final chapter = ChapterModel(
       chapterEndpoint: endpoint,
-      title: document.querySelector('header > h1').toString(),
+      title: document.querySelector('header > h1').text,
       listImageChapter: listImage,
       mangaDetail: responseLink.attributes['href'].toString(),
     );

@@ -6,14 +6,15 @@ import '../../detail_screens/manga_detail_screen.dart';
 import '../chapter_screen.dart';
 
 class BottomBarChapterScreen extends StatefulWidget {
-  BottomBarChapterScreen(
-      {this.endpoint,
-      this.chapterList,
-      this.maxWidth,
-      this.mangaDetail,
-      this.scrollController,
-      this.getIndex,
-      this.scrollListController});
+  BottomBarChapterScreen({
+    this.endpoint,
+    this.chapterList,
+    this.maxWidth,
+    this.mangaDetail,
+    this.scrollController,
+    this.getIndex,
+    this.scrollListController,
+  });
 
   final String mangaDetail;
   final String endpoint;

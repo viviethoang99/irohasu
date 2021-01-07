@@ -4,13 +4,15 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 //
 import '../../../src/models/chapter_model.dart';
 import '../../../src/screens/chapter_screens/widget/app_bar_widget.dart';
+
 //
 import 'widget/bottom_bar_widget.dart';
 import 'widget/custom_drawer.dart';
 import 'widget/image_screen.dart';
 
 class ChapterLoadedScreen extends StatefulWidget {
-  const ChapterLoadedScreen({this.data, this.endpoint, this.chapterList});
+  const ChapterLoadedScreen(
+      {this.data, this.endpoint, this.chapterList});
 
   final ChapterModel data;
   final String endpoint;
@@ -68,11 +70,11 @@ class _ChapterLoadedScreenState extends State<ChapterLoadedScreen> {
           );
         }),
         drawer: CustomDrawer(
-            scrollListController: _scrollListController,
-            getIndex: _getIndex,
-            getChapterList: _getChapterList),
+          scrollListController: _scrollListController,
+          getIndex: _getIndex,
+          getChapterList: _getChapterList,
+        ),
       ),
     );
   }
 }
-

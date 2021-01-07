@@ -1,11 +1,9 @@
 class PopupMenuHomeScreen {
-  static const String subscribe = 'Subscribe';
-  static const String settings = 'Settings';
-  static const String signOut = 'Sign out';
+  static const String settings = 'Cài đặt';
+  static const String  openWebView = 'Mở webview';
 
   static const List<String> choices = <String>[
-    subscribe,
     settings,
-    signOut
+    openWebView,
   ];
 }

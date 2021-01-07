@@ -6,8 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../src/components/loading_screen.dart';
 import '../../../src/constants/base_content.dart';
 import '../../blocs/list_manga_bloc/bloc.dart';
-import 'widget/appbar_widget.dart';
 import './list_manga_widget.dart';
+import './widget/appbar_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routeName = '/recent';
@@ -62,7 +62,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 return LoadingScreen();
               }
               if (state is InitialListMangaState) {
-                return const Center(child: Text('Hi hi Dang loading'));
+                return Container(
+                  color: Colors.black87,
+                  child: const Text('Hi hi Dang loading'),
+                );
               }
               if (state is ListMangaLoadedState) {
                 return ListMangaWidget(

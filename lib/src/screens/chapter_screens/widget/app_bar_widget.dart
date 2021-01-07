@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../chapter_screen.dart';
 
 class AppBarChapterScreen extends StatefulWidget {
-  AppBarChapterScreen(
-      {this.endpoint,
-      this.maxWidth,
-      this.scrollController,
-      this.getIndex,});
+  AppBarChapterScreen({
+    this.endpoint,
+    this.maxWidth,
+    this.scrollController,
+    this.getIndex,
+    this.isHorizontal,
+  });
 
   final String endpoint;
   final double maxWidth;
   final ScrollController scrollController;
   final int getIndex;
+  final bool isHorizontal;
 
   @override
   _AppBarChapterScreenState createState() => _AppBarChapterScreenState();
@@ -66,14 +72,16 @@ class _AppBarChapterScreenState extends State<AppBarChapterScreen> {
               onPressed: () {},
             ),
             IconButton(
-              icon: const Icon(Icons.settings),
-              color: Colors.green[500],
-              iconSize: 39,
-              onPressed: () {},
-            ),
+                icon: const Icon(Icons.settings),
+                color: Colors.green[500],
+                iconSize: 39,
+                onPressed: () {
+                }),
           ],
         ),
       ),
     );
   }
+
+  bool isHorizontal = false;
 }

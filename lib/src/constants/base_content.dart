@@ -16,4 +16,5 @@ class Content {
   static const readComments = 'Đọc bình luận';
 
   static const about = 'Giới thiệu';
+
 }

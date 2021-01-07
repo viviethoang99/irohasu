@@ -68,12 +68,10 @@ class _AppBarHomeWidgetState extends State<AppBarHomeWidget> {
   }
 
   void choiceAction(String choice){
-    if(choice == PopupMenuHomeScreen.settings){
-      print('Settings');
-    }else if(choice == PopupMenuHomeScreen.subscribe){
-      print('Subscribe');
-    }else if(choice == PopupMenuHomeScreen.signOut){
-      print('SignOut');
+    if(choice == PopupMenuHomeScreen.openWebView){
+      print('Mở Webview');
+    }else if(choice == PopupMenuHomeScreen.settings){
+      print('Cài đặt');
     }
   }
 }
