@@ -1,16 +1,14 @@
-import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 // Widget
 import '../../../src/components/loading_screen.dart';
-import '../../../src/constants/base_content.dart';
 import '../../blocs/list_manga_bloc/bloc.dart';
 import './list_manga_widget.dart';
 import './widget/appbar_widget.dart';
 
 class HomeScreen extends StatefulWidget {
-  static const routeName = '/recent';
+  static const routeName = '/home';
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -23,12 +21,10 @@ class _HomeScreenState extends State<HomeScreen> {
   ScrollController _scrollController;
   final _scrollThreshold = 300.0;
   int _currentIndex = 0;
-  PageController _pageController;
 
   @override
   void initState() {
     super.initState();
-    _pageController = PageController();
     _listMangaBloc = BlocProvider.of<ListMangaBloc>(context)
       ..add(FetchListMangaEvent());
     _scrollController = ScrollController()
@@ -40,12 +36,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ..add(FetchListMangaEvent());
         }
       });
-  }
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
   }
 
   @override
@@ -64,7 +54,6 @@ class _HomeScreenState extends State<HomeScreen> {
               if (state is InitialListMangaState) {
                 return Container(
                   color: Colors.black87,
-                  child: const Text('Hi hi Dang loading'),
                 );
               }
               if (state is ListMangaLoadedState) {
@@ -77,49 +66,6 @@ class _HomeScreenState extends State<HomeScreen> {
               return const Center(child: Text('Other states..'));
               //never run this line, only fix warning.
             }),
-          ),
-        ],
-      ),
-      bottomNavigationBar: BottomNavyBar(
-        backgroundColor: Colors.black,
-        showElevation: true,
-        selectedIndex: _currentIndex,
-        iconSize: 30,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        onItemSelected: (index) {
-          setState(() => _currentIndex = index);
-          _pageController.jumpToPage(index);
-        },
-        items: <BottomNavyBarItem>[
-          BottomNavyBarItem(
-            title: const Text(
-              Content.home,
-              style: TextStyle(fontSize: 15),
-            ),
-            icon: const Icon(Icons.home),
-          ),
-          BottomNavyBarItem(
-            title: const Text(
-              Content.library,
-              style: TextStyle(fontSize: 15),
-            ),
-            icon: const Icon(Icons.library_books),
-          ),
-          BottomNavyBarItem(
-            title: const Text(
-              Content.comments,
-              style: TextStyle(fontSize: 15),
-            ),
-            icon: const Icon(Icons.chat_bubble),
-          ),
-          BottomNavyBarItem(
-            title: const Text(
-              Content.settings,
-              style: TextStyle(fontSize: 15),
-            ),
-            icon: const Icon(
-              Icons.settings,
-            ),
           ),
         ],
       ),

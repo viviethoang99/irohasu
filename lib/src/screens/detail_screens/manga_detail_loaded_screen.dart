@@ -1,11 +1,11 @@
 // Packages
 import 'package:flutter/material.dart';
-//
+
+// Widget
 import '../../../src/constants/base_content.dart';
 import '../../../src/models/manga_detail_model.dart';
 import '../../../src/screens/detail_screens/widget/appbar_chapter_widget.dart';
-import '../../../src/screens/home_screens/home_screen.dart';
-// Widget
+import '../../../src/screens/index_screen/index_screen.dart';
 import './widget/custom_button_reading_widget.dart';
 import './widget/description_text_widget.dart';
 import './widget/header_manga_detail.dart';
@@ -30,9 +30,10 @@ class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
       backgroundColor: Colors.black87,
       appBar: AppBar(
         leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.white),
-            onPressed: () =>
-                Navigator.of(context).pushNamed(HomeScreen.routeName)),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () =>
+              Navigator.of(context).pushNamed(IndexScreen.routeName),
+        ),
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0.0,
@@ -67,15 +68,9 @@ class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
         child: ListView(
           shrinkWrap: true,
           children: <Widget>[
-            HeaderMangaDetail(
-              title: data.title,
-              author: data.author,
-              status: data.status,
-              thumbnailUrl: data.thumb,
-              like: data.like,
-              dislike: data.dislike,
-            ),
-            DescriptionTextWidget(text: data.description),
+            HeaderMangaDetail(data: data),
+            if (data.description.isNotEmpty)
+              DescriptionTextWidget(text: data.description),
             Container(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -105,4 +100,3 @@ class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
     );
   }
 }
-

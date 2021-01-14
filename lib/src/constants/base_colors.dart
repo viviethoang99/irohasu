@@ -28,4 +28,31 @@ class AppColors {
   static const Color yellow = Color(0xFFF6C747);
   static const Color semiGrey = Color(0xFFbababa);
   static const Color violet = Color(0xD07038F8);
+
+  static const List<Color> listColorsApp = <Color>[
+    AppColors.beige,
+    AppColors.black,
+    AppColors.blue,
+    AppColors.brown,
+    AppColors.darkBrown,
+    AppColors.grey,
+    AppColors.indigo,
+    AppColors.lightBlue,
+    AppColors.lightBrown,
+    AppColors.lightCyan,
+    AppColors.lightGrey,
+    AppColors.lightPink,
+    AppColors.lightPurple,
+    AppColors.lightRed,
+    AppColors.lightTeal,
+    AppColors.lightYellow,
+    AppColors.lilac,
+    AppColors.pink,
+    AppColors.purple,
+    AppColors.red,
+    AppColors.teal,
+    AppColors.yellow,
+    AppColors.semiGrey,
+    AppColors.violet
+  ];
 }

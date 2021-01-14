@@ -3,7 +3,7 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../../src/models/list_manga_model.dart';
 import '../../../src/resources/list_manga_repo.dart';
-import 'bloc.dart';
+import './bloc.dart';
 
 class ListMangaBloc extends Bloc<ListMangaEvent, ListMangaState> {
   ListMangaBloc(this._listRepo) : super(InitialListMangaState());
@@ -42,7 +42,7 @@ class ListMangaBloc extends Bloc<ListMangaEvent, ListMangaState> {
                 : ListMangaLoadedState(
                     data: currentState.data + data,
                     hasReachedEnd: false,
-                    page: currentState.page+=1);
+                    page: currentState.page += 1);
           } catch (e) {
             yield ListMangaLoadedState(
                 data: currentState.data,

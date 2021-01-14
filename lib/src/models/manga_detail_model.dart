@@ -23,8 +23,8 @@ class MangaDetail {
       description,
       dislike,
       like,
-      endpoint;
-  final List author, chapter;
+      endpoint, author;
+  final List chapter;
 }
 
 class ChapterList extends Equatable {

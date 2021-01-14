@@ -52,14 +52,16 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
 
   @override
   Widget build(BuildContext context) {
+    final widthScreen = MediaQuery.of(context).size.width;
+    final prePage = widthScreen * 0.3;
+    final nextPage = widthScreen * 0.7;
     return Scaffold(
       backgroundColor: Colors.black87,
       body: LayoutBuilder(builder: (context, constraints) {
         return GestureDetector(
           onTapDown: (TapDownDetails details) {
-            var widthScreen = MediaQuery.of(context).size.width;
-            var x = details.globalPosition.dx;
-            if (x <= widthScreen * 0.35) {
+            var position = details.globalPosition.dx;
+            if (position <= prePage) {
               currentIndex == 0
                   ? Navigator.of(context).pushNamed(
                       ChapterScreen.routeName,
@@ -75,7 +77,7 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                           duration: const Duration(milliseconds: 300),
                           curve: Curves.easeIn);
                     });
-            } else if (x <= widthScreen * 0.65 && x > widthScreen * 0.35) {
+            } else if (position >= prePage && position <= nextPage) {
               setState(() {
                 _showMenu = !_showMenu;
               });
@@ -115,8 +117,9 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                       double end;
 
                       _animation?.removeListener(_animationListener);
-                      _animationController.stop();
-                      _animationController.reset();
+                      _animationController
+                        ..stop()
+                        ..reset();
 
                       (begin == 1.0) ? end = 2.0 : end = 1.0;
 
@@ -128,8 +131,9 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
 
                       _animation = _animationController
                           .drive(Tween<double>(begin: begin, end: end));
-                      _animationController.addListener(_animationListener);
-                      _animationController.forward();
+                      _animationController
+                        ..addListener(_animationListener)
+                        ..forward();
                     },
                     mode: ExtendedImageMode.gesture,
                     initGestureConfigHandler: (state) => GestureConfig(
@@ -147,7 +151,6 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                 },
                 onPageChanged: (value) {
                   setState(() {
-                    // print('Checkpoint');
                     currentIndex = value;
                   });
                 },
@@ -158,6 +161,7 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                   top: 0,
                   width: MediaQuery.of(context).size.width,
                   child: Container(
+                    margin: const EdgeInsets.symmetric(vertical: 10),
                     child: AppBar(
                       centerTitle: false,
                       backgroundColor: Colors.black.withOpacity(0.8),

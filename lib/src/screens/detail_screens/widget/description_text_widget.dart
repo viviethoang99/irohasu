@@ -10,20 +10,11 @@ class DescriptionTextWidget extends StatefulWidget {
   _DescriptionTextWidgetState createState() => _DescriptionTextWidgetState();
 }
 
-class _DescriptionTextWidgetState extends State<DescriptionTextWidget> {
+class _DescriptionTextWidgetState extends State<DescriptionTextWidget>
+    with TickerProviderStateMixin {
   String get text => widget.text;
 
   bool flag = true;
-
-  Widget showDescription() {
-    return flag
-        ? Text(text,
-            style: const TextStyle(color: Colors.white54, fontSize: 16),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis)
-        : Text(text,
-            style: const TextStyle(color: Colors.white54, fontSize: 16));
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,22 +35,23 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget> {
                       color: Colors.white),
                 ),
               ),
-              flag
-                  ? customButtonDescription(
-                      status: 'More',
-                      icon: Icons.keyboard_arrow_down,
-                    )
-                  : customButtonDescription(
-                      status: 'Less',
-                      icon: Icons.keyboard_arrow_up,
-                    ),
+              if (widget.text.length >= 100)
+                flag
+                    ? customButtonDescription(
+                        status: 'Hiện', icon: Icons.keyboard_arrow_down)
+                    : customButtonDescription(
+                        status: 'Ẩn', icon: Icons.keyboard_arrow_up),
             ],
           ),
-          AnimatedContainer(
-              duration: const Duration(milliseconds: 900),
+          AnimatedSize(
+            curve: Curves.easeInSine,
+            duration: const Duration(milliseconds: 300),
+            vsync: this,
+            child: Container(
               padding: const EdgeInsets.symmetric(vertical: 20.0),
-              height: flag ? 60 : (widget.text.length / 50 * 18 + 80),
-              child: showDescription()),
+              child: showTextDescription(),
+            ),
+          ),
         ],
       ),
     );
@@ -96,5 +88,17 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget> {
             ),
           ),
         ));
+  }
+
+  Widget showTextDescription() {
+    return flag
+        ? Text(text,
+            style: const TextStyle(color: Colors.white54, fontSize: 16),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis)
+        : Text(
+            text,
+            style: const TextStyle(color: Colors.white54, fontSize: 16),
+          );
   }
 }

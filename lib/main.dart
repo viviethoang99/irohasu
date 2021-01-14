@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:irohasu/src/screens/index_screen/index_screen.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 
 import './src/blocs/chapter_bloc/bloc.dart';
@@ -16,7 +17,6 @@ import './src/resources/chapter_repo.dart';
 import './src/resources/list_manga_repo.dart';
 import './src/resources/manga_detail_repo.dart';
 import './src/resources/search_repo.dart';
-import './src/screens/home_screens/home_screen.dart';
 
 const settingChapterBox = 'settingChapter';
 const chapterOpened = 'settingChapter';
@@ -60,8 +60,8 @@ class MyApp extends StatelessWidget {
           visualDensity: VisualDensity.adaptivePlatformDensity,
           fontFamily: 'OpenSans',
         ),
-        home: HomeScreen(),
-        initialRoute: HomeScreen.routeName,
+        home: IndexScreen(),
+        initialRoute: IndexScreen.routeName,
         onGenerateRoute: generateRoute,
       ),
     );

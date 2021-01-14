@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:irohasu/src/screens/chapter_screens/setting_chapter.dart';
+import '../../../../src/screens/chapter_screens/setting_chapter.dart';
 
 class AppBarChapterScreen extends StatefulWidget {
   AppBarChapterScreen({

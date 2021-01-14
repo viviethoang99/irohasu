@@ -30,7 +30,7 @@ class MangaDetailRepo extends BaseService {
       title: title,
       thumb: urlThumb,
       endpoint: endpoint,
-      author: getAuthor != null ? getElement(getAuthor) : null,
+      author: getElement(getAuthor),
       status: findElement(description, Content.status)
           .querySelector('span.color-red')
           .text,
@@ -62,10 +62,10 @@ class MangaDetailRepo extends BaseService {
     return map;
   }
 
-  List<String> getElement(List<dom.Element> element) {
-    final author = element.map((e) {
+  String getElement(List<dom.Element> element) {
+    final author = element?.map((e) {
       return e.text;
-    }).toList();
+    })?.toList()?.join(',');
     return author;
   }
 

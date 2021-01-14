@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:irohasu/src/components/webview_widget.dart';
 
 import '../../../blocs/search_bloc/bloc.dart';
 import '../../../constants/base_blogtruyen.dart';
@@ -69,7 +70,9 @@ class _AppBarHomeWidgetState extends State<AppBarHomeWidget> {
 
   void choiceAction(String choice){
     if(choice == PopupMenuHomeScreen.openWebView){
-      print('Mở Webview');
+      Navigator.of(context).pushNamed(WebViewPage.routeName,
+          arguments: const WebViewPage(
+              title: 'BlogTruyen', url: ''));
     }else if(choice == PopupMenuHomeScreen.settings){
       print('Cài đặt');
     }
