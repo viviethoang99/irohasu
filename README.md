@@ -5,7 +5,7 @@ Building a manga reader app on the process of learning bloc. Project unfinished.
 
 
 # Demo
-![](assets/images/Screen.png)
+![](.github/readme-images/Screen.png)
 
 # Code Dependencies
 If you wish to run this code on your local machine, Flutter needs to be installed.
