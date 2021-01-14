@@ -1,7 +1,9 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 
 import '../../../src/models/list_manga_model.dart';
 
+@immutable
 abstract class ListMangaState extends Equatable {
   const ListMangaState();
 

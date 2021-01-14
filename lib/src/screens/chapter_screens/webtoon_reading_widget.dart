@@ -1,13 +1,13 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-// Widget
-import '../../../src/constants/base_blogtruyen.dart';
-import '../../../src/models/chapter_model.dart';
+import '../../constants/base_blogtruyen.dart';
+import '../../models/chapter_model.dart';
+import '../chapter_screens/setting_chapter.dart';
 import './chapter_screen.dart';
-import './drawer_horizontal_widget.dart';
+import './webtoon_widget/drawer_widget.dart';
 
 typedef AnimationListener = void Function();
 
@@ -80,7 +80,7 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                 _showMenu = !_showMenu;
               });
             } else {
-              currentIndex == data.listImageChapter.length -1
+              currentIndex == data.listImageChapter.length - 1
                   ? Navigator.of(context).pushNamed(
                       ChapterScreen.routeName,
                       arguments: ChapterScreen(
@@ -118,7 +118,7 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                       _animationController.stop();
                       _animationController.reset();
 
-                      (begin == 1.0) ? end = 3.0 : end = 1.0;
+                      (begin == 1.0) ? end = 2.0 : end = 1.0;
 
                       _animationListener = () {
                         state.handleDoubleTap(
@@ -186,6 +186,8 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                             color: Colors.white,
                           ),
                           onPressed: () {
+                            Navigator.of(context)
+                                .pushNamed(SettingChapter.routeName);
                           },
                         )
                       ],
@@ -208,6 +210,7 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
     );
   }
 
+  var settingChapter = Hive.box<String>('settingChapter');
   final ScrollController _scrollController = ScrollController();
   final scrollDirection = Axis.vertical;
   ItemScrollController _scrollListController;

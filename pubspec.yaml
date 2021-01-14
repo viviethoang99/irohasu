@@ -36,15 +36,19 @@ dependencies:
   flutter_bloc: ^6.1.1
   scrollable_positioned_list: ^0.1.8
   bottom_navy_bar: ^5.6.0
-  cached_network_image: ^2.5.0
   extended_image: ^1.5.0
   bottom_drawer: ^0.0.2
   modal_bottom_sheet: ^1.0.0+1
-  shared_preferences: ^0.5.12+4
+  hive: ^1.4.4+1
+  hive_flutter: ^0.3.1
+  path_provider: ^1.6.27
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  hive_generator: ^0.8.2
+  build_runner: ^1.10.12
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

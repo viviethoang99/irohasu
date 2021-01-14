@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../../src/blocs/chapter_bloc/bloc.dart';
 import '../../../src/components/loading_screen.dart';
 import './chapter_loaded_screen.dart';
-import './horizontal_reading_widget.dart';
+import 'webtoon_reading_widget.dart';
 
 class ChapterScreen extends StatefulWidget {
   ChapterScreen({Key key, @required this.endpoint, @required this.chapterList})
@@ -26,65 +27,60 @@ class _ChapterScreenState extends State<ChapterScreen> {
 
   List get getChapterList => widget.chapterList.reversed.toList();
 
-  final Future<SharedPreferences> _pref = SharedPreferences.getInstance();
-
-  void checkReadingMode() async {
-    pref = await _pref;
-    if (pref.getBool('isHorizontal') == true) {
-      setState(() {
-        _isHorizontal = true;
-      });
-    } else {
-      setState(() {
-        _isHorizontal = false;
-      });
-    }
-  }
-
-  void changeReadingMode() {
-    setState(() {
-      _isHorizontal = !_isHorizontal;
-    });
-  }
+  var settingChapter = Hive.box<String>('settingChapter');
+  ReadingMode resultScreen;
 
   @override
   void initState() {
     super.initState();
-    checkReadingMode();
     _chapterBloc = BlocProvider.of<ChapterBloc>(context)
       ..add(FetchDataChapterEvent(endpoint: getEndpoint));
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<ChapterBloc, ChapterState>(
-      builder: (context, state) {
-        if (state is ChapterLoadingState) {
-          return LoadingScreen();
-        }
-        if (state is InitialChapterState) {
-          return const Center(
-            child: Text('Waiting!'),
-          );
-        }
-        if (state is ChapterLoadedState) {
-          return _isHorizontal
-              ? HorizontalReadingWidget(
-                  data: state.data,
-                  chapterList: getChapterList,
-                  endpoint: getEndpoint,
-                )
-              : ChapterLoadedScreen(
-                  data: state.data,
-                  chapterList: getChapterList,
-                  endpoint: getEndpoint,
-                );
-        }
-        return const Center(child: Text('Other states..'));
-      },
-    );
+  ReadingMode readingMode(String mode) {
+    switch (mode) {
+      case 'horizontal':
+        resultScreen = ReadingMode.horizontal;
+        break;
+      case 'vertical':
+        resultScreen = ReadingMode.vertical;
+    }
+    return resultScreen;
   }
 
-  SharedPreferences pref;
-  bool _isHorizontal = false;
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder(
+        valueListenable: settingChapter.listenable(),
+        builder: (context, Box<String> box, _) {
+          resultScreen =
+              readingMode(box.get('screenMode', defaultValue: 'horizontal'));
+          return BlocBuilder<ChapterBloc, ChapterState>(
+            builder: (context, state) {
+              if (state is InitialChapterState) {
+                return const Center(
+                  child: Text('Waiting!'),
+                );
+              }
+              if (state is ChapterLoadingState) {
+                return LoadingScreen();
+              }
+              if (state is ChapterLoadedState) {
+                return resultScreen == ReadingMode.horizontal
+                    ? HorizontalReadingWidget(
+                        data: state.data,
+                        chapterList: getChapterList,
+                        endpoint: getEndpoint,
+                      )
+                    : ChapterLoadedScreen(
+                        data: state.data,
+                        chapterList: getChapterList,
+                        endpoint: getEndpoint,
+                      );
+              }
+              return const Center(child: Text('Other states..'));
+            },
+          );
+        });
+  }
 }

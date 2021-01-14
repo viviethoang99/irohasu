@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../src/models/list_manga_model.dart';
-import 'widget/item_manga.dart';
+import './widget/item_manga.dart';
 
 class ListMangaWidget extends StatefulWidget {
   const ListMangaWidget(

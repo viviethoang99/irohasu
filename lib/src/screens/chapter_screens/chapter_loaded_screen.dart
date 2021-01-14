@@ -3,12 +3,10 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 //
 import '../../../src/models/chapter_model.dart';
-import '../../../src/screens/chapter_screens/widget/app_bar_widget.dart';
-
-//
-import 'widget/bottom_bar_widget.dart';
-import 'widget/custom_drawer.dart';
-import 'widget/image_screen.dart';
+import './default_widget/app_bar_widget.dart';
+import './default_widget/bottom_bar_widget.dart';
+import './default_widget/custom_drawer.dart';
+import './default_widget/image_screen.dart';
 
 class ChapterLoadedScreen extends StatefulWidget {
   const ChapterLoadedScreen(

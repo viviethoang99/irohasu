@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:irohasu/src/screens/chapter_screens/setting_chapter.dart';
 
 import '../../src/screens/chapter_screens/chapter_screen.dart';
 import '../../src/screens/detail_screens/manga_detail_screen.dart';
@@ -30,14 +31,17 @@ Route generateRoute(RouteSettings routeSettings) {
             endpoint: data.endpoint,
             chapterList: data.chapterList,
           ));
-    // case SearchScreen.routeName:
-    //   return pageRoute(
-    //       routeSettings: routeSettings,
-    //       builder: SearchScreen());
+    case SettingChapter.routeName:
+      return pageRoute(
+          routeSettings: routeSettings,
+          builder: SettingChapter());
     default:
       return MaterialPageRoute<dynamic>(
-        builder: (_) => const Scaffold(
-          body: Center(child: Text('No route defined for app')),
+        builder: (_) => Scaffold(
+          appBar: AppBar(
+            title: const Text('Error'),
+          ),
+          body: const Center(child: Text('No route defined for app')),
         ),
       );
   }

@@ -1,7 +1,7 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import '../chapter_screen.dart';
+import 'package:hive/hive.dart';
+import 'package:irohasu/src/screens/chapter_screens/setting_chapter.dart';
 
 class AppBarChapterScreen extends StatefulWidget {
   AppBarChapterScreen({
@@ -69,19 +69,31 @@ class _AppBarChapterScreenState extends State<AppBarChapterScreen> {
               icon: const Icon(Icons.bookmark),
               color: Colors.green[500],
               iconSize: 39,
-              onPressed: () {},
+              onPressed: () {
+              },
             ),
             IconButton(
-                icon: const Icon(Icons.settings),
-                color: Colors.green[500],
-                iconSize: 39,
-                onPressed: () {
-                }),
+              icon: const Icon(Icons.settings),
+              color: Colors.green[500],
+              iconSize: 39,
+              onPressed: () {
+                Navigator.of(context).pushNamed(SettingChapter.routeName);
+              },
+            )
           ],
         ),
       ),
     );
   }
+  var settingChapter = Hive.box<String>('settingChapter');
+}
 
-  bool isHorizontal = false;
+class RadioGroup extends Equatable {
+  RadioGroup({this.name, this.index});
+
+  final String name;
+  final int index;
+
+  @override
+  List<Object> get props => [name, index];
 }

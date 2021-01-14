@@ -2,7 +2,7 @@ import 'package:bottom_drawer/bottom_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-import './chapter_screen.dart';
+import '../chapter_screen.dart';
 
 class DrawerHorizontalWidget extends StatefulWidget {
   DrawerHorizontalWidget({
