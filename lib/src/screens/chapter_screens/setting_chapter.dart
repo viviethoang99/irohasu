@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
 import '../../../src/constants/base_content.dart';
-import './default_widget/popup_menu_button.dart';
+import '../../../src/helper/hive/hive_preferences_model.dart';
 
 class SettingChapter extends StatefulWidget {
   static const routeName = '/chapterSetting';
@@ -12,61 +14,124 @@ class SettingChapter extends StatefulWidget {
 }
 
 class _SettingChapterState extends State<SettingChapter> {
-  var settingChapter = Hive.box<String>('settingChapter');
-  String screenMode;
+  String _screenMode;
+  String _colorTheme;
+  final _preferences = Preferences.getInstance();
+  Preferences preferences;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkReadingMode();
+  }
+
+  void _checkReadingMode() async {
+    preferences = await _preferences;
+    setState(() {
+      _screenMode = preferences.getReadingMode() ?? 'default';
+      _colorTheme = preferences.getBackgroundColorChapter() ?? 'white';
+    });
+  }
+
+  String _setThemeMode(String data) {
+    switch (data) {
+      case 'default':
+        return PopupMenuSetting.defaultMode;
+        break;
+      case 'webtoon':
+        return PopupMenuSetting.webtoon;
+        break;
+      default:
+        return PopupMenuSetting.defaultMode;
+        break;
+    }
+  }
+
+  String _setBackground(String data) {
+    switch (data) {
+      case 'white':
+        return 'Trắng';
+        break;
+      case 'black':
+        return 'Đen';
+        break;
+      default:
+        'Trắng';
+        break;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    screenMode = getNameScreenMode(settingChapter.get('screenMode'));
     return Scaffold(
-      // backgroundColor: Colors.black87,
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
-        title: const Text(Content.settings),
+        backgroundColor: Theme.of(context).accentColor,
+        title: Text(
+          Content.settings,
+          style: Theme.of(context).textTheme.headline5,
+        ),
       ),
       body: Container(
-        padding: const EdgeInsets.all(20),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              const Text(
-                'Cài đặt chung',
-                style: TextStyle(color: Colors.green, fontSize: 23),
-              ),
-              generalSetting(),
-            ],
-          ),
-        ),
+        padding: const EdgeInsets.all(15),
+        child: ValueListenableBuilder(
+            valueListenable:
+                Hive.box<dynamic>(Preferences.preferencesBox).listenable(),
+            builder: (context, Box<dynamic> box, _) {
+              return SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      'Cài đặt chung',
+                      style: TextStyle(
+                          color: Theme.of(context).buttonColor, fontSize: 23),
+                    ),
+                    generalSetting(preferences.getReadingMode(),
+                        preferences.getBackgroundColorChapter()),
+                  ],
+                ),
+              );
+            }),
       ),
     );
   }
 
-  Widget generalSetting() {
+  Widget generalSetting(String reading, String color) {
     return Container(
-      padding: const EdgeInsets.only(top: 15),
+      padding: const EdgeInsets.only(top: 15, left: 10, right: 10),
       child: Column(
         children: <Widget>[
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              const Text(
+              Text(
                 'Reading Mode',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).primaryColor,
+                ),
               ),
               PopupMenuButton<String>(
                 child: Text(
-                  screenMode,
-                  style: const TextStyle(fontSize: 20),
+                  _setThemeMode(reading),
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Theme.of(context).primaryColor,
+                  ),
                 ),
-                onSelected: choiceAction,
+                onSelected: selectModeAction,
                 itemBuilder: (BuildContext context) {
-                  return PopupMenuSetting.choices
-                      .map((String choice) {
+                  return PopupMenuSetting.listScreenMode.map((String choice) {
                     return PopupMenuItem<String>(
                       value: choice,
                       child: Text(
                         choice,
-                        style: const TextStyle(fontSize: 20),
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Theme.of(context).primaryColor,
+                        ),
                       ),
                     );
                   }).toList();
@@ -80,20 +145,35 @@ class _SettingChapterState extends State<SettingChapter> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              const Text(
+              Text(
                 'Màu nền',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).primaryColor,
+                ),
               ),
               PopupMenuButton<String>(
-                child: const Text(
-                  'Đen',
-                  style: TextStyle(fontSize: 20),
+                child: Text(
+                  _setBackground(color),
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Theme.of(context).primaryColor,
+                  ),
                 ),
-                onSelected: choiceAction,
+                onSelected: selectBackgroundAction,
                 itemBuilder: (BuildContext context) {
-                  return PopupMenuSetting.choices
-                      .map((String choice) {
-                    return null;
+                  return PopupMenuSetting.listBackground.map((String choice) {
+                    return PopupMenuItem<String>(
+                      value: choice,
+                      child: Text(
+                        choice,
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      ),
+                    );
                   }).toList();
                 },
               )
@@ -104,32 +184,33 @@ class _SettingChapterState extends State<SettingChapter> {
     );
   }
 
-  String getNameScreenMode(String mode) {
-    switch (mode){
-      case 'vertical':
-        screenMode = PopupMenuSetting.webtoon;
-        break;
-      case 'horizontal':
-        screenMode = PopupMenuSetting.defaultMode;
-        break;
-      default:
-        screenMode = PopupMenuSetting.defaultMode;
-        break;
+  void selectModeAction(String choice) async {
+    preferences = await _preferences;
+    if (choice == PopupMenuSetting.webtoon) {
+      await preferences.setReadingMode('webtoon');
+    } else if (choice == PopupMenuSetting.defaultMode) {
+      await preferences.setReadingMode('default');
     }
-    return screenMode;
   }
 
-  void choiceAction(String choice) {
-    if (choice == PopupMenuSetting.webtoon) {
-      setState(() {
-        screenMode = PopupMenuSetting.defaultMode;
-        settingChapter.put('screenMode', 'vertical');
-      });
-    } else if (choice == PopupMenuSetting.defaultMode) {
-      setState(() {
-        screenMode = PopupMenuSetting.defaultMode;
-        settingChapter.put('screenMode', 'horizontal');
-      });
+  void selectBackgroundAction(String choice) async {
+    preferences = await _preferences;
+    if (choice == PopupMenuSetting.white) {
+      await preferences.setBackgroundColorChapter('white');
+    } else if (choice == PopupMenuSetting.black) {
+      await preferences.setBackgroundColorChapter('black');
     }
   }
+}
+
+class PopupMenuSetting {
+  static const String webtoon = 'Webtoon';
+  static const String defaultMode = 'Mặc định';
+
+  static const String white = 'Trắng';
+  static const String black = 'Đen';
+
+  static const List<String> listScreenMode = <String>[webtoon, defaultMode];
+
+  static const List<String> listBackground = <String>[white, black];
 }

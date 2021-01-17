@@ -85,7 +85,6 @@ class _AppBarChapterScreenState extends State<AppBarChapterScreen> {
       ),
     );
   }
-  var settingChapter = Hive.box<String>('settingChapter');
 }
 
 class RadioGroup extends Equatable {

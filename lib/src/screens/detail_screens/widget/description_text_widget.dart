@@ -25,14 +25,11 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget>
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              const Padding(
-                padding: EdgeInsets.only(top: 8.0),
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
                 child: Text(
                   Content.about,
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 22,
-                      color: Colors.white),
+                  style: Theme.of(context).textTheme.headline5,
                 ),
               ),
               if (widget.text.length >= 100)
@@ -75,14 +72,11 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget>
             },
             child: Row(
               children: <Widget>[
-                Icon(icon, color: Colors.white),
+                Icon(icon, color: Theme.of(context).primaryColor),
                 const SizedBox(width: 10),
                 Text(
                   status,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                      color: Colors.white),
+                  style: Theme.of(context).textTheme.bodyText1,
                 ),
               ],
             ),
@@ -93,12 +87,12 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget>
   Widget showTextDescription() {
     return flag
         ? Text(text,
-            style: const TextStyle(color: Colors.white54, fontSize: 16),
+            style: Theme.of(context).textTheme.bodyText1,
             maxLines: 2,
             overflow: TextOverflow.ellipsis)
         : Text(
             text,
-            style: const TextStyle(color: Colors.white54, fontSize: 16),
+            style: Theme.of(context).textTheme.bodyText1,
           );
   }
 }

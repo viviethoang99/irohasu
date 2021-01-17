@@ -20,7 +20,7 @@ class CustomButtonReadingWidget extends StatelessWidget {
       child: Ink(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.white54, width: 2),
+          border: Border.all(color: Theme.of(context).buttonColor, width: 2),
           borderRadius: BorderRadius.circular(20.0),
         ),
         child: InkWell(
@@ -28,15 +28,18 @@ class CustomButtonReadingWidget extends StatelessWidget {
             Navigator.of(context).pushNamed(
               ChapterScreen.routeName,
               arguments: ChapterScreen(
-                endpoint:
-                chapterList.last.chapterEndpoint.toString(),
+                endpoint: chapterList.last.chapterEndpoint.toString(),
                 chapterList: chapterList,
               ),
             );
-          },          child: Text(
+          },
+          child: Text(
             status,
-            style: const TextStyle(
-                fontWeight: FontWeight.bold, fontSize: 16, color: Colors.white),
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+              color: Theme.of(context).primaryColor,
+            ),
           ),
         ),
       ),

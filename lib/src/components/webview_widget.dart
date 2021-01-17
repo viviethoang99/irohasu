@@ -35,7 +35,7 @@ class _WebViewPageState extends State<WebViewPage> {
         appBar: AppBar(
           title: Text(title),
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
+            icon: const Icon(Icons.close),
             onPressed: () => Navigator.of(context).pop()
           ),
         ),

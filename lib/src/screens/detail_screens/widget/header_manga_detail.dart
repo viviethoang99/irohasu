@@ -32,7 +32,6 @@ class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
   String get dislike => widget.data.dislike;
 
   bool dataAuthor = false;
-
   String urlPage;
   Random random = Random();
   int indexColor;
@@ -41,7 +40,7 @@ class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
   void initState() {
     super.initState();
     dataAuthor = author.isNotEmpty ? true : false;
-    indexColor = random.nextInt(22);
+    indexColor = random.nextInt(AppColors.listColorsApp.length);
   }
 
   @override
@@ -55,7 +54,8 @@ class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
             ).createShader(
-                Rect.fromLTRB(0, 0, rectangle.width, rectangle.height));
+              Rect.fromLTRB(0, 0, rectangle.width, rectangle.height),
+            );
           },
           blendMode: BlendMode.dstIn,
           child: Container(
@@ -103,31 +103,21 @@ class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
                           padding: const EdgeInsets.only(right: 10, top: 10),
                           child: Text(
                             title,
-                            style: const TextStyle(
-                              fontSize: 22,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: Theme.of(context).textTheme.headline5,
                             textAlign: TextAlign.left,
                           ),
                         ),
                         if (dataAuthor)
                           Text(
                             author,
-                            style: const TextStyle(
-                              fontSize: 15,
-                              color: Colors.white70,
-                            ),
+                            style: Theme.of(context).textTheme.subtitle2,
                           ),
                         const SizedBox(
                           height: 15,
                         ),
                         Text(
                           status,
-                          style: const TextStyle(
-                            fontSize: 15,
-                            color: Colors.white70,
-                          ),
+                          style: Theme.of(context).textTheme.subtitle2,
                         ),
                         BtnVoteWidget(
                           countLike: like,
@@ -151,18 +141,18 @@ class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
       padding: const EdgeInsets.only(left: 12, bottom: 10),
       child: Row(
         children: <Widget>[
-          const IconButton(
+          IconButton(
             icon: Icon(
               Icons.cloud,
-              color: Colors.green,
+              color: Theme.of(context).primaryColor,
               size: 38,
             ),
             onPressed: null,
           ),
           IconButton(
-            icon: const Icon(
+            icon: Icon(
               Icons.language,
-              color: Colors.green,
+              color: Theme.of(context).primaryColor,
               size: 38,
             ),
             onPressed: () {
@@ -171,10 +161,10 @@ class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
                       title: widget.data.title, url: widget.data.endpoint));
             },
           ),
-          const IconButton(
+          IconButton(
             icon: Icon(
               Icons.share,
-              color: Colors.green,
+              color: Theme.of(context).primaryColor,
               size: 38,
             ),
             onPressed: null,

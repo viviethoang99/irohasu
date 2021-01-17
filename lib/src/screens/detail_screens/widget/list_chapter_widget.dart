@@ -31,21 +31,18 @@ class ListChapterWidget extends StatelessWidget {
               dense: true,
               title: Text(
                 data.chapter[index].chapterTitle.toString(),
-                style: const TextStyle(
-                    color: Colors.white,
+                style: TextStyle(
+                    color: Theme.of(context).primaryColor,
                     fontSize: 18,
                     fontWeight: FontWeight.bold),
               ),
               subtitle: Text(
                 data.chapter[index].chapterUpload.toString(),
-                style: const TextStyle(
-                  color: Colors.white54,
-                  fontSize: 18,
-                ),
+                style: Theme.of(context).textTheme.subtitle1,
               ),
-              trailing: const Icon(
+              trailing: Icon(
                 Icons.arrow_circle_down,
-                color: Colors.green,
+                color: Theme.of(context).primaryColor,
                 size: 30,
               ),
               isThreeLine: true,

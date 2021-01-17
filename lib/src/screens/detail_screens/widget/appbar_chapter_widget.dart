@@ -18,14 +18,14 @@ class AppbarChapterWidget extends StatelessWidget {
         children: <Widget>[
           Text(
             '${data.chapter.length} Chapters',
-            style: const TextStyle(
-                color: Colors.white,
+            style: TextStyle(
+                color: Theme.of(context).primaryColor,
                 fontSize: 18,
                 fontWeight: FontWeight.bold),
           ),
-          const Icon(
+          Icon(
             Icons.text_rotate_vertical,
-            color: Colors.green,
+            color: Theme.of(context).primaryColor,
             size: 26,
           ),
         ],

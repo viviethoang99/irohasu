@@ -22,7 +22,7 @@ class ItemManga extends StatelessWidget {
             arguments: setUrlWithoutDomain);
       },
       child: Card(
-        color: Colors.grey[900],
+        color: Theme.of(context).backgroundColor,
         elevation: 0,
         child: Column(
           children: <Widget>[
@@ -49,11 +49,7 @@ class ItemManga extends StatelessWidget {
                 padding: const EdgeInsets.all(6.0),
                 child: Text(
                   title,
-                  style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w500,
-                      fontFamily: 'OpenSans',
-                      fontSize: 15),
+                  style: Theme.of(context).textTheme.bodyText1,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),

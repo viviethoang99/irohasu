@@ -53,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
               }
               if (state is InitialListMangaState) {
                 return Container(
-                  color: Colors.black87,
+                  color: Theme.of(context).backgroundColor,
                 );
               }
               if (state is ListMangaLoadedState) {

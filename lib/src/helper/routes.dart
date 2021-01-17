@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:irohasu/src/components/webview_widget.dart';
+import 'package:irohasu/src/screens/setting_screen/widget/chapter_page.dart';
+import 'package:irohasu/src/screens/setting_screen/widget/general_page.dart';
 
 import '../../src/screens/chapter_screens/chapter_screen.dart';
 import '../../src/screens/chapter_screens/setting_chapter.dart';
@@ -20,6 +22,11 @@ Route generateRoute(RouteSettings routeSettings) {
   switch (routeSettings.name) {
     case IndexScreen.routeName:
       return pageRoute(routeSettings: routeSettings, builder: IndexScreen());
+    case GeneralSetting.routeName:
+      return pageRoute(routeSettings: routeSettings, builder: GeneralSetting());
+    case ChapterPageSetting.routeName:
+      return pageRoute(
+          routeSettings: routeSettings, builder: ChapterPageSetting());
     case MangaDetailScreen.routeName:
       return pageRoute(
           routeSettings: routeSettings,
@@ -33,15 +40,12 @@ Route generateRoute(RouteSettings routeSettings) {
             chapterList: data.chapterList,
           ));
     case SettingChapter.routeName:
-      return pageRoute(
-          routeSettings: routeSettings,
-          builder: SettingChapter());
+      return pageRoute(routeSettings: routeSettings, builder: SettingChapter());
     case WebViewPage.routeName:
       var data = args as WebViewPage;
       return pageRoute(
-        routeSettings: routeSettings,
-        builder: WebViewPage(title: data.title, url: data.url)
-      );
+          routeSettings: routeSettings,
+          builder: WebViewPage(title: data.title, url: data.url));
     default:
       return MaterialPageRoute<dynamic>(
         builder: (_) => Scaffold(

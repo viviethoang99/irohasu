@@ -1,23 +1,22 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'hive_chapter_opened_model.dart';
+part of 'hive_chapter_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class HiveChapterOpenedModelAdapter
-    extends TypeAdapter<HiveChapterOpenedModel> {
+class HiveChapterModelAdapter extends TypeAdapter<HiveChapterModel> {
   @override
   final int typeId = 1;
 
   @override
-  HiveChapterOpenedModel read(BinaryReader reader) {
+  HiveChapterModel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return HiveChapterOpenedModel(
+    return HiveChapterModel(
       lastChapter: fields[0] as int,
       mangaEndpoint: fields[1] as String,
       chapterEndpoint: fields[2] as String,
@@ -25,7 +24,7 @@ class HiveChapterOpenedModelAdapter
   }
 
   @override
-  void write(BinaryWriter writer, HiveChapterOpenedModel obj) {
+  void write(BinaryWriter writer, HiveChapterModel obj) {
     writer
       ..writeByte(3)
       ..writeByte(0)
@@ -42,7 +41,7 @@ class HiveChapterOpenedModelAdapter
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is HiveChapterOpenedModelAdapter &&
+      other is HiveChapterModelAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

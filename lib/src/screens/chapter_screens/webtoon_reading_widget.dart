@@ -1,6 +1,8 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:irohasu/src/helper/hive/hive_preferences_model.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../constants/base_blogtruyen.dart';
@@ -31,9 +33,14 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
 
   ChapterModel get data => widget.data;
 
+  final _preferences = Preferences.getInstance();
+  Preferences preferences;
+  String _colorTheme = 'white';
+
   @override
   void initState() {
     super.initState();
+    _checkReadingMode();
     _getIndex = _getChapterList.indexWhere(
         (dynamic element) => element.chapterEndpoint == _getEndpoint);
     _scrollListController = ItemScrollController();
@@ -50,171 +57,195 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
     super.dispose();
   }
 
+  void _checkReadingMode() async {
+    preferences = await _preferences;
+    setState(() {
+      _colorTheme = (preferences.getBackgroundColorChapter() ?? 'white');
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final widthScreen = MediaQuery.of(context).size.width;
     final prePage = widthScreen * 0.3;
     final nextPage = widthScreen * 0.7;
-    return Scaffold(
-      backgroundColor: Colors.black87,
-      body: LayoutBuilder(builder: (context, constraints) {
-        return GestureDetector(
-          onTapDown: (TapDownDetails details) {
-            var position = details.globalPosition.dx;
-            if (position <= prePage) {
-              currentIndex == 0
-                  ? Navigator.of(context).pushNamed(
-                      ChapterScreen.routeName,
-                      arguments: ChapterScreen(
-                        endpoint: _getChapterList[_getIndex - 1]
-                            .chapterEndpoint
-                            .toString(),
-                        chapterList: _getChapterList,
-                      ),
-                    )
-                  : setState(() {
-                      _pageController.previousPage(
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeIn);
+    return ValueListenableBuilder(
+        valueListenable:
+            Hive.box<dynamic>(Preferences.preferencesBox).listenable(),
+        builder: (context, Box<dynamic> box, _) {
+          _colorTheme = (preferences.getBackgroundColorChapter() ?? 'white');
+          return Scaffold(
+            backgroundColor:
+                _colorTheme == 'white' ? Colors.white : Colors.black87,
+            body: LayoutBuilder(builder: (context, constraints) {
+              return GestureDetector(
+                onTapDown: (TapDownDetails details) {
+                  var position = details.globalPosition.dx;
+                  if (position <= prePage) {
+                    currentIndex == 0
+                        ? Navigator.of(context).pushNamed(
+                            ChapterScreen.routeName,
+                            arguments: ChapterScreen(
+                              endpoint: _getChapterList[_getIndex - 1]
+                                  .chapterEndpoint
+                                  .toString(),
+                              chapterList: _getChapterList,
+                            ),
+                          )
+                        : setState(() {
+                            _pageController.previousPage(
+                                duration: const Duration(milliseconds: 300),
+                                curve: Curves.easeIn);
+                          });
+                  } else if (position >= prePage && position <= nextPage) {
+                    setState(() {
+                      _showMenu = !_showMenu;
                     });
-            } else if (position >= prePage && position <= nextPage) {
-              setState(() {
-                _showMenu = !_showMenu;
-              });
-            } else {
-              currentIndex == data.listImageChapter.length - 1
-                  ? Navigator.of(context).pushNamed(
-                      ChapterScreen.routeName,
-                      arguments: ChapterScreen(
-                        endpoint: _getChapterList[_getIndex + 1]
-                            .chapterEndpoint
-                            .toString(),
-                        chapterList: _getChapterList,
-                      ),
-                    )
-                  : setState(() {
-                      _pageController.nextPage(
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeIn);
-                    });
-            }
-          },
-          child: Stack(
-            alignment: Alignment.bottomCenter,
-            children: <Widget>[
-              ExtendedImageGesturePageView.builder(
-                itemCount: data.listImageChapter.length,
-                scrollDirection: Axis.horizontal,
-                controller: _pageController,
-                itemBuilder: (context, i) {
-                  return ExtendedImage.network(
-                    data.listImageChapter[i].chapterImageLink,
-                    headers: BlogTruyen.headersBuilder,
-                    onDoubleTap: (state) {
-                      Offset pointerDownPosition;
-                      pointerDownPosition = state.pointerDownPosition;
-                      final begin = state.gestureDetails.totalScale;
-                      double end;
-
-                      _animation?.removeListener(_animationListener);
-                      _animationController
-                        ..stop()
-                        ..reset();
-
-                      (begin == 1.0) ? end = 2.0 : end = 1.0;
-
-                      _animationListener = () {
-                        state.handleDoubleTap(
-                            scale: _animation.value,
-                            doubleTapPosition: pointerDownPosition);
-                      };
-
-                      _animation = _animationController
-                          .drive(Tween<double>(begin: begin, end: end));
-                      _animationController
-                        ..addListener(_animationListener)
-                        ..forward();
-                    },
-                    mode: ExtendedImageMode.gesture,
-                    initGestureConfigHandler: (state) => GestureConfig(
-                      minScale: 0.9,
-                      animationMinScale: 0.7,
-                      maxScale: 3.0,
-                      animationMaxScale: 3.5,
-                      speed: 1.0,
-                      inertialSpeed: 100.0,
-                      initialScale: 1.0,
-                      inPageView: true,
-                      cacheGesture: false,
-                    ),
-                  );
+                  } else {
+                    currentIndex == data.listImageChapter.length - 1
+                        ? Navigator.of(context).pushNamed(
+                            ChapterScreen.routeName,
+                            arguments: ChapterScreen(
+                              endpoint: _getChapterList[_getIndex + 1]
+                                  .chapterEndpoint
+                                  .toString(),
+                              chapterList: _getChapterList,
+                            ),
+                          )
+                        : setState(() {
+                            _pageController.nextPage(
+                                duration: const Duration(milliseconds: 300),
+                                curve: Curves.easeIn);
+                          });
+                  }
                 },
-                onPageChanged: (value) {
-                  setState(() {
-                    currentIndex = value;
-                  });
-                },
-                physics: const BouncingScrollPhysics(),
-              ),
-              if (_showMenu)
-                Positioned(
-                  top: 0,
-                  width: MediaQuery.of(context).size.width,
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(vertical: 10),
-                    child: AppBar(
-                      centerTitle: false,
-                      backgroundColor: Colors.black.withOpacity(0.8),
-                      elevation: 0,
-                      title: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            data.title.length > 25
-                                ? '${data.title.substring(0, 25)}..'
-                                : data.title,
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            _getChapterList[_getIndex].chapterTitle.toString(),
-                            style: const TextStyle(color: Colors.grey),
-                          ),
-                          const SizedBox(height: 10)
-                        ],
-                      ),
-                      actions: <Widget>[
-                        IconButton(
-                          icon: const Icon(
-                            Icons.settings,
-                            size: 35,
-                            color: Colors.white,
-                          ),
-                          onPressed: () {
-                            Navigator.of(context)
-                                .pushNamed(SettingChapter.routeName);
+                child: Stack(
+                  alignment: Alignment.bottomCenter,
+                  children: <Widget>[
+                    ExtendedImageGesturePageView.builder(
+                      itemCount: data.listImageChapter.length,
+                      scrollDirection: Axis.horizontal,
+                      controller: _pageController,
+                      itemBuilder: (context, i) {
+                        return ExtendedImage.network(
+                          data.listImageChapter[i].chapterImageLink,
+                          headers: BlogTruyen.headersBuilder,
+                          onDoubleTap: (state) {
+                            Offset pointerDownPosition;
+                            pointerDownPosition = state.pointerDownPosition;
+                            final begin = state.gestureDetails.totalScale;
+                            double end;
+
+                            _animation?.removeListener(_animationListener);
+                            _animationController
+                              ..stop()
+                              ..reset();
+
+                            (begin == 1.0) ? end = 2.0 : end = 1.0;
+
+                            _animationListener = () {
+                              state.handleDoubleTap(
+                                  scale: _animation.value,
+                                  doubleTapPosition: pointerDownPosition);
+                            };
+
+                            _animation = _animationController
+                                .drive(Tween<double>(begin: begin, end: end));
+                            _animationController
+                              ..addListener(_animationListener)
+                              ..forward();
                           },
-                        )
-                      ],
+                          mode: ExtendedImageMode.gesture,
+                          initGestureConfigHandler: (state) => GestureConfig(
+                            minScale: 0.9,
+                            animationMinScale: 0.7,
+                            maxScale: 3.0,
+                            animationMaxScale: 3.5,
+                            speed: 1.0,
+                            inertialSpeed: 100.0,
+                            initialScale: 1.0,
+                            inPageView: true,
+                            cacheGesture: false,
+                          ),
+                        );
+                      },
+                      onPageChanged: (value) {
+                        setState(() {
+                          currentIndex = value;
+                        });
+                      },
+                      physics: const BouncingScrollPhysics(),
                     ),
-                  ),
+                    if (_showMenu)
+                      Positioned(
+                        top: 0,
+                        width: MediaQuery.of(context).size.width,
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(vertical: 10),
+                          child: AppBar(
+                            leading: IconButton(
+                              icon: Icon(
+                                Icons.arrow_back,
+                                color: Theme.of(context).primaryColor,
+                              ),
+                              onPressed: () => Navigator.of(context).pop(),
+                            ),
+                            centerTitle: false,
+                            backgroundColor: Colors.black.withOpacity(0.8),
+                            elevation: 0,
+                            title: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  data.title.length > 25
+                                      ? '${data.title.substring(0, 25)}..'
+                                      : data.title,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Theme.of(context).primaryColor),
+                                ),
+                                Text(
+                                  _getChapterList[_getIndex]
+                                      .chapterTitle
+                                      .toString(),
+                                  style: const TextStyle(color: Colors.grey),
+                                ),
+                                const SizedBox(height: 10)
+                              ],
+                            ),
+                            actions: <Widget>[
+                              IconButton(
+                                icon: const Icon(
+                                  Icons.settings,
+                                  size: 35,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () {
+                                  Navigator.of(context)
+                                      .pushNamed(SettingChapter.routeName);
+                                },
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    if (_showMenu)
+                      DrawerHorizontalWidget(
+                        indexChapter: _getIndex,
+                        indexPage: currentIndex,
+                        listChapter: _getChapterList,
+                        height: MediaQuery.of(context).size.height,
+                        totalImage: data.listImageChapter.length,
+                        scrollListController: _scrollListController,
+                      ),
+                  ],
                 ),
-              if (_showMenu)
-                DrawerHorizontalWidget(
-                  indexChapter: _getIndex,
-                  indexPage: currentIndex,
-                  listChapter: _getChapterList,
-                  height: MediaQuery.of(context).size.height,
-                  totalImage: data.listImageChapter.length,
-                  scrollListController: _scrollListController,
-                ),
-            ],
-          ),
-        );
-      }),
-    );
+              );
+            }),
+          );
+        });
   }
 
-  var settingChapter = Hive.box<String>('settingChapter');
   final ScrollController _scrollController = ScrollController();
   final scrollDirection = Axis.vertical;
   ItemScrollController _scrollListController;

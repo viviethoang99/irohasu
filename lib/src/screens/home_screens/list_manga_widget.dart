@@ -24,7 +24,7 @@ class _ListMangaWidgetState extends State<ListMangaWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(color: Colors.black87),
+      color: Theme.of(context).backgroundColor,
       child: GridView.builder(
         shrinkWrap: true,
         padding: const EdgeInsets.all(12),

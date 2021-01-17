@@ -21,17 +21,18 @@ class _AppBarHomeWidgetState extends State<AppBarHomeWidget> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: const Text(
+      title: Text(
         BlogTruyen.name,
-        style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+        style: Theme.of(context).textTheme.headline5,
       ),
-      backgroundColor: Colors.black87,
+      backgroundColor: Theme.of(context).accentColor,
       elevation: 1.0,
       centerTitle: true,
       leading: IconButton(
-        icon: const Icon(
+        icon: Icon(
           Icons.search,
           size: 30,
+          color: Theme.of(context).primaryColor,
         ),
         onPressed: () async {
           var manga = await showSearch(
@@ -43,20 +44,21 @@ class _AppBarHomeWidgetState extends State<AppBarHomeWidget> {
       ),
       actions: <Widget>[
         IconButton(
-            icon: const Icon(
+            icon: Icon(
               Icons.dashboard,
               size: 28,
+              color: Theme.of(context).primaryColor,
             ),
             onPressed: () {}),
         PopupMenuButton<String>(
-          icon: const Icon(
+          icon: Icon(
             Icons.more_vert,
-            color: Colors.white,
             size: 28,
+            color: Theme.of(context).primaryColor,
           ),
           onSelected: choiceAction,
-          itemBuilder: (BuildContext context){
-            return PopupMenuHomeScreen.choices.map((String choice){
+          itemBuilder: (BuildContext context) {
+            return PopupMenuHomeScreen.choices.map((String choice) {
               return PopupMenuItem<String>(
                 value: choice,
                 child: Text(choice),
@@ -68,12 +70,11 @@ class _AppBarHomeWidgetState extends State<AppBarHomeWidget> {
     );
   }
 
-  void choiceAction(String choice){
-    if(choice == PopupMenuHomeScreen.openWebView){
+  void choiceAction(String choice) {
+    if (choice == PopupMenuHomeScreen.openWebView) {
       Navigator.of(context).pushNamed(WebViewPage.routeName,
-          arguments: const WebViewPage(
-              title: 'BlogTruyen', url: ''));
-    }else if(choice == PopupMenuHomeScreen.settings){
+          arguments: const WebViewPage(title: 'BlogTruyen', url: ''));
+    } else if (choice == PopupMenuHomeScreen.settings) {
       print('Cài đặt');
     }
   }

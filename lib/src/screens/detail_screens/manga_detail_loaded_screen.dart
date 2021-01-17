@@ -27,10 +27,10 @@ class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      backgroundColor: Colors.black87,
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: Icon(Icons.arrow_back, color: Theme.of(context).primaryColor),
           onPressed: () =>
               Navigator.of(context).pushNamed(IndexScreen.routeName),
         ),
@@ -38,24 +38,24 @@ class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0.0,
         actions: <Widget>[
-          const IconButton(
+          IconButton(
             icon: Icon(
               Icons.search,
-              color: Colors.white,
+              color: Theme.of(context).primaryColor,
             ),
             onPressed: null,
           ),
-          const IconButton(
+          IconButton(
             icon: Icon(
               Icons.get_app,
-              color: Colors.white,
+              color: Theme.of(context).primaryColor,
             ),
             onPressed: null,
           ),
-          const IconButton(
+          IconButton(
             icon: Icon(
               Icons.more_vert,
-              color: Colors.white,
+              color: Theme.of(context).primaryColor,
             ),
             onPressed: null,
           ),

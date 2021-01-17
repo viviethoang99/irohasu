@@ -21,11 +21,8 @@ class BtnVoteWidget extends StatelessWidget {
               onPressed: null),
           Text(
             countLike,
-            style: const TextStyle(
-              fontSize: 17,
-              color: Colors.white,
+            style: Theme.of(context).textTheme.bodyText1,
             ),
-          ),
           const IconButton(
               icon: Icon(
                 Icons.thumb_down,
@@ -34,10 +31,7 @@ class BtnVoteWidget extends StatelessWidget {
               onPressed: null),
           Text(
             countDislike,
-            style: const TextStyle(
-              fontSize: 17,
-              color: Colors.white,
-            ),
+            style: Theme.of(context).textTheme.bodyText1,
           ),
         ],
       ),
