@@ -33,14 +33,21 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
 
   ChapterModel get data => widget.data;
 
+  String _colorTheme = 'white';
   final _preferences = Preferences.getInstance();
   Preferences preferences;
-  String _colorTheme = 'white';
+
+  void _checkBackgroundMode() async {
+    preferences = await _preferences;
+    setState(() {
+      _colorTheme = preferences.getBackgroundColorChapter() ?? 'white';
+    });
+  }
 
   @override
   void initState() {
+    _checkBackgroundMode();
     super.initState();
-    _checkReadingMode();
     _getIndex = _getChapterList.indexWhere(
         (dynamic element) => element.chapterEndpoint == _getEndpoint);
     _scrollListController = ItemScrollController();
@@ -55,13 +62,6 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
   void dispose() {
     _animationController?.dispose();
     super.dispose();
-  }
-
-  void _checkReadingMode() async {
-    preferences = await _preferences;
-    setState(() {
-      _colorTheme = (preferences.getBackgroundColorChapter() ?? 'white');
-    });
   }
 
   @override
@@ -82,7 +82,7 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                 onTapDown: (TapDownDetails details) {
                   var position = details.globalPosition.dx;
                   if (position <= prePage) {
-                    currentIndex == 0
+                    (currentIndex == 0 && _getIndex != 0)
                         ? Navigator.of(context).pushNamed(
                             ChapterScreen.routeName,
                             arguments: ChapterScreen(
@@ -184,9 +184,9 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                           margin: const EdgeInsets.symmetric(vertical: 10),
                           child: AppBar(
                             leading: IconButton(
-                              icon: Icon(
+                              icon: const Icon(
                                 Icons.arrow_back,
-                                color: Theme.of(context).primaryColor,
+                                color: Colors.white,
                               ),
                               onPressed: () => Navigator.of(context).pop(),
                             ),
@@ -200,9 +200,9 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                                   data.title.length > 25
                                       ? '${data.title.substring(0, 25)}..'
                                       : data.title,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      color: Theme.of(context).primaryColor),
+                                      color: Colors.white),
                                 ),
                                 Text(
                                   _getChapterList[_getIndex]

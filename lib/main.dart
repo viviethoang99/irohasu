@@ -10,6 +10,7 @@ import './src/blocs/list_manga_bloc/bloc.dart';
 import './src/blocs/manga_detail_bloc/bloc.dart';
 import './src/blocs/search_bloc/bloc.dart';
 import './src/constants/base_app_theme.dart';
+import './src/helper/hive/hive_manga_model.dart';
 import './src/helper/hive/hive_preferences_model.dart';
 import './src/helper/routes.dart';
 import './src/resources/chapter_repo.dart';
@@ -18,14 +19,14 @@ import './src/resources/manga_detail_repo.dart';
 import './src/resources/search_repo.dart';
 import './src/screens/index_screen/index_screen.dart';
 
-// const chapterBox = 'chapter';
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final appDocumentDirectory =
       await path_provider.getApplicationDocumentsDirectory();
   await Hive.initFlutter(appDocumentDirectory.path);
   await Hive.openBox<dynamic>(Preferences.preferencesBox);
+  Hive.registerAdapter(HiveMangaModelAdapter());
+  await Hive.openBox<HiveMangaModel>(HiveMangaModel.mangaBox);
   // await Hive.openBox<HiveChapterModel>(chapterBox);
   // Hive.registerAdapter(HiveChapterModelAdapter());
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
@@ -51,6 +52,7 @@ class _MyAppState extends State<MyApp> {
     });
     _setThemeMode();
   }
+
 
   void _setThemeMode() {
     switch (_selectTheme) {

@@ -2,6 +2,7 @@ import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:irohasu/src/constants/base_content.dart';
 import 'package:irohasu/src/screens/home_screens/home_screen.dart';
+import 'package:irohasu/src/screens/library_screen/library_screen.dart';
 import 'package:irohasu/src/screens/setting_screen/setting_screen.dart';
 
 class IndexScreen extends StatefulWidget {
@@ -37,7 +38,7 @@ class _IndexScreenState extends State<IndexScreen> {
           },
           children: <Widget>[
             HomeScreen(),
-            Container(color: Colors.red,),
+            LibraryScreen(),
             Container(color: Colors.green,),
             SettingScreen(),
           ],

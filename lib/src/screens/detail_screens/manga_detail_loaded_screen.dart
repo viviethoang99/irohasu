@@ -1,5 +1,8 @@
 // Packages
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:irohasu/src/helper/hive/hive_manga_model.dart';
 
 // Widget
 import '../../../src/constants/base_content.dart';
@@ -22,6 +25,11 @@ class MangaDetailLoadedScreen extends StatefulWidget {
 
 class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
   MangaDetail get data => widget.data;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -90,13 +98,24 @@ class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
             ),
             const SizedBox(height: 20),
             AppbarChapterWidget(data: data),
-            const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15),
-                child: Divider(color: Colors.amber, height: 4)),
+            const CustomDividerWidget(),
             ListChapterWidget(data: data),
           ],
         ),
       ),
     );
+  }
+}
+
+class CustomDividerWidget extends StatelessWidget {
+  const CustomDividerWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: Divider(color: Theme.of(context).buttonColor, height: 4));
   }
 }

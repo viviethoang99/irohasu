@@ -1,8 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:irohasu/src/components/webview_widget.dart';
 import 'package:irohasu/src/constants/base_colors.dart';
+import 'package:irohasu/src/helper/hive/hive_manga_model.dart';
 
 import '../../../../src/helper/media_query_helper.dart';
 import '../../../../src/models/manga_detail_model.dart';
@@ -35,11 +37,22 @@ class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
   String urlPage;
   Random random = Random();
   int indexColor;
+  bool _checkSaved;
+  String _idManga;
+
+  var mangaBox = Hive.box<HiveMangaModel>(HiveMangaModel.mangaBox);
+
+  void _checkIsSaved() {
+    _checkSaved =
+        mangaBox.values.where((manga) => manga.idManga == _idManga).isNotEmpty;
+  }
 
   @override
   void initState() {
     super.initState();
     dataAuthor = author.isNotEmpty ? true : false;
+    _idManga = widget.data.endpoint.split('/')[1];
+    _checkIsSaved();
     indexColor = random.nextInt(AppColors.listColorsApp.length);
   }
 
@@ -103,21 +116,31 @@ class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
                           padding: const EdgeInsets.only(right: 10, top: 10),
                           child: Text(
                             title,
-                            style: Theme.of(context).textTheme.headline5,
+                            style: TextStyle(
+                              fontSize: 22,
+                              color: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.bold,
+                            ),
                             textAlign: TextAlign.left,
                           ),
                         ),
                         if (dataAuthor)
                           Text(
                             author,
-                            style: Theme.of(context).textTheme.subtitle2,
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Theme.of(context).primaryColor,
+                            ),
                           ),
                         const SizedBox(
                           height: 15,
                         ),
                         Text(
                           status,
-                          style: Theme.of(context).textTheme.subtitle2,
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Theme.of(context).primaryColor,
+                          ),
                         ),
                         BtnVoteWidget(
                           countLike: like,
@@ -141,14 +164,23 @@ class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
       padding: const EdgeInsets.only(left: 12, bottom: 10),
       child: Row(
         children: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.cloud,
-              color: Theme.of(context).primaryColor,
-              size: 38,
-            ),
-            onPressed: null,
-          ),
+          _checkSaved
+              ? IconButton(
+                  icon: Icon(
+                    Icons.favorite,
+                    color: Theme.of(context).buttonColor,
+                    size: 38,
+                  ),
+                  onPressed: _saveManga,
+                )
+              : IconButton(
+                  icon: Icon(
+                    Icons.favorite_border,
+                    color: Theme.of(context).primaryColor,
+                    size: 38,
+                  ),
+                  onPressed: _saveManga,
+                ),
           IconButton(
             icon: Icon(
               Icons.language,
@@ -172,5 +204,30 @@ class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
         ],
       ),
     );
+  }
+
+  Future<void> _saveManga() async {
+    _checkIsSaved();
+    if (_checkSaved) {
+      for (var i = 0; i < mangaBox.length; i++) {
+        var mangaModel = mangaBox.getAt(i);
+        if (mangaModel.idManga == _idManga) {
+          await mangaBox.deleteAt(i);
+          setState(() {
+            _checkSaved = false;
+          });
+          break;
+        }
+      }
+    } else {
+      await mangaBox.add(HiveMangaModel(
+          idManga: _idManga,
+          title: title,
+          mangaEndpoint: widget.data.endpoint,
+          thumb: thumbnailUrl));
+      setState(() {
+        _checkSaved = true;
+      });
+    }
   }
 }

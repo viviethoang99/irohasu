@@ -21,17 +21,19 @@ class Preferences {
     return Preferences._(box);
   }
 
-  String getReadingMode() => _getValue(_readingModeKey);
+  String getReadingMode() =>
+      _getValue(_readingModeKey, defaultValue: 'default');
 
   Future<void> setReadingMode(String readingMode) =>
       _setValue(_readingModeKey, readingMode);
 
-  String getBackgroundColorChapter() => _getValue(_backgroundColorChapterKey);
+  String getBackgroundColorChapter() =>
+      _getValue(_backgroundColorChapterKey, defaultValue: 'white');
 
   Future<void> setBackgroundColorChapter(String counter) =>
       _setValue(_backgroundColorChapterKey, counter);
 
-  int getAppTheme() => _getValue(_appThemeKey);
+  int getAppTheme() => _getValue(_appThemeKey, defaultValue: 0);
 
   Future<void> setAppTheme(int counter) => _setValue(_appThemeKey, counter);
 

@@ -60,7 +60,7 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget>
         child: Ink(
           padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.green, width: 2),
+            border: Border.all(color: Theme.of(context).buttonColor, width: 2),
             borderRadius: BorderRadius.circular(20.0),
           ),
           child: InkWell(
@@ -76,7 +76,9 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget>
                 const SizedBox(width: 10),
                 Text(
                   status,
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.bodyText1.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),

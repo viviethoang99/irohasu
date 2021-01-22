@@ -49,8 +49,10 @@ class ItemManga extends StatelessWidget {
                 padding: const EdgeInsets.all(6.0),
                 child: Text(
                   title,
-                  style: Theme.of(context).textTheme.bodyText1,
-                  maxLines: 2,
+                  style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 15),                  maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),

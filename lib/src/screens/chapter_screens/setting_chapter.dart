@@ -22,10 +22,12 @@ class _SettingChapterState extends State<SettingChapter> {
   @override
   void initState() {
     super.initState();
+    _colorTheme = 'white';
+    _screenMode = 'default';
     _checkReadingMode();
   }
 
-  void _checkReadingMode() async {
+  Future _checkReadingMode() async {
     preferences = await _preferences;
     setState(() {
       _screenMode = preferences.getReadingMode() ?? 'default';
@@ -48,17 +50,19 @@ class _SettingChapterState extends State<SettingChapter> {
   }
 
   String _setBackground(String data) {
+    var backgroundColor = 'White';
     switch (data) {
       case 'white':
-        return 'Trắng';
+        backgroundColor = 'Trắng';
         break;
       case 'black':
-        return 'Đen';
+        backgroundColor = 'Đen';
         break;
       default:
-        'Trắng';
+        backgroundColor = 'Trắng';
         break;
     }
+    return backgroundColor;
   }
 
   @override
@@ -70,6 +74,13 @@ class _SettingChapterState extends State<SettingChapter> {
         title: Text(
           Content.settings,
           style: Theme.of(context).textTheme.headline5,
+        ),
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Theme.of(context).primaryColor,
+          ),
+          onPressed: () => Navigator.of(context).pop(),
         ),
       ),
       body: Container(

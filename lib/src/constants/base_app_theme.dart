@@ -22,7 +22,7 @@ final appThemeData = {
             ),
             bodyText1: const TextStyle(color: Colors.black, fontSize: 16),
             subtitle1: const TextStyle(
-              color: Colors.white54,
+              color: Colors.black54,
             ),
             subtitle2: const TextStyle(
               color: AppColors.semiGrey,
