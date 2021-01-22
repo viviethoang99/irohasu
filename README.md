@@ -3,6 +3,15 @@
 # About
 Building a manga reader app on the process of learning bloc. Project unfinished.
 
+The API is still in development.
+
+# Future
+- Manga list (infinite scroll).
+- Switch theme [white, dark, black] (with system as the default in coming).
+- Bookmarks Manga.
+- Search Manga.
+- Webview.
+- Read chapter vertically or horizontally.
 
 # Demo
 ![](.github/readme-images/Screen.png)
