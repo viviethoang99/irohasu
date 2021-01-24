@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:irohasu/src/components/webview_widget.dart';
 import 'package:irohasu/src/constants/base_colors.dart';
-import 'package:irohasu/src/helper/hive/hive_manga_model.dart';
+import 'package:irohasu/src/models/manga_model.dart';
 
 import '../../../../src/helper/media_query_helper.dart';
 import '../../../../src/models/manga_detail_model.dart';
@@ -40,7 +40,7 @@ class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
   bool _checkSaved;
   String _idManga;
 
-  var mangaBox = Hive.box<HiveMangaModel>(HiveMangaModel.mangaBox);
+  var mangaBox = Hive.box<MangaModel>(MangaModel.mangaBox);
 
   void _checkIsSaved() {
     _checkSaved =
@@ -220,11 +220,11 @@ class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
         }
       }
     } else {
-      await mangaBox.add(HiveMangaModel(
+      await mangaBox.add(MangaModel(
           idManga: _idManga,
           title: title,
-          mangaEndpoint: widget.data.endpoint,
-          thumb: thumbnailUrl));
+          endpoint: widget.data.endpoint,
+          thumbnailUrl: thumbnailUrl));
       setState(() {
         _checkSaved = true;
       });

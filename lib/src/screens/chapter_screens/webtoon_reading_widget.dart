@@ -2,12 +2,15 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:irohasu/src/helper/hive/hive_preferences_model.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
+
 import '../../constants/base_blogtruyen.dart';
+import '../../helper/media_query_helper.dart';
 import '../../models/chapter_model.dart';
-import '../chapter_screens/setting_chapter.dart';
+import '../../models/hive/hive_preferences_model.dart';
+import '../../screens/detail_screens/manga_detail_screen.dart';
+
 import './chapter_screen.dart';
 import './webtoon_widget/drawer_widget.dart';
 
@@ -73,7 +76,7 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
         valueListenable:
             Hive.box<dynamic>(Preferences.preferencesBox).listenable(),
         builder: (context, Box<dynamic> box, _) {
-          _colorTheme = (preferences.getBackgroundColorChapter() ?? 'white');
+          _colorTheme = preferences.getBackgroundColorChapter();
           return Scaffold(
             backgroundColor:
                 _colorTheme == 'white' ? Colors.white : Colors.black87,
@@ -83,40 +86,18 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                   var position = details.globalPosition.dx;
                   if (position <= prePage) {
                     (currentIndex == 0 && _getIndex != 0)
-                        ? Navigator.of(context).pushNamed(
-                            ChapterScreen.routeName,
-                            arguments: ChapterScreen(
-                              endpoint: _getChapterList[_getIndex - 1]
-                                  .chapterEndpoint
-                                  .toString(),
-                              chapterList: _getChapterList,
-                            ),
-                          )
-                        : setState(() {
-                            _pageController.previousPage(
-                                duration: const Duration(milliseconds: 300),
-                                curve: Curves.easeIn);
-                          });
+                        ? nextChapter(context, _getIndex - 1)
+                        : setState(() => _pageController.previousPage(
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.easeIn));
                   } else if (position >= prePage && position <= nextPage) {
-                    setState(() {
-                      _showMenu = !_showMenu;
-                    });
+                    setState(() => _showMenu = !_showMenu);
                   } else {
                     currentIndex == data.listImageChapter.length - 1
-                        ? Navigator.of(context).pushNamed(
-                            ChapterScreen.routeName,
-                            arguments: ChapterScreen(
-                              endpoint: _getChapterList[_getIndex + 1]
-                                  .chapterEndpoint
-                                  .toString(),
-                              chapterList: _getChapterList,
-                            ),
-                          )
-                        : setState(() {
-                            _pageController.nextPage(
-                                duration: const Duration(milliseconds: 300),
-                                curve: Curves.easeIn);
-                          });
+                        ? nextChapter(context, _getIndex + 1)
+                        : setState(() => _pageController.nextPage(
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.easeIn));
                   }
                 },
                 child: Stack(
@@ -170,16 +151,14 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                         );
                       },
                       onPageChanged: (value) {
-                        setState(() {
-                          currentIndex = value;
-                        });
+                        setState(() => currentIndex = value);
                       },
                       physics: const BouncingScrollPhysics(),
                     ),
                     if (_showMenu)
                       Positioned(
                         top: 0,
-                        width: MediaQuery.of(context).size.width,
+                        width: ScreenHelper.getWidth(context),
                         child: Container(
                           margin: const EdgeInsets.symmetric(vertical: 10),
                           child: AppBar(
@@ -220,10 +199,7 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                                   size: 35,
                                   color: Colors.white,
                                 ),
-                                onPressed: () {
-                                  Navigator.of(context)
-                                      .pushNamed(SettingChapter.routeName);
-                                },
+                                onPressed: () => btnMangaDetail,
                               )
                             ],
                           ),
@@ -244,6 +220,21 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
             }),
           );
         });
+  }
+
+  void nextChapter(BuildContext context, int chapter) {
+    Navigator.of(context).pushNamed(
+      ChapterScreen.routeName,
+      arguments: ChapterScreen(
+        endpoint: _getChapterList[chapter].chapterEndpoint.toString(),
+        chapterList: _getChapterList,
+      ),
+    );
+  }
+
+  void btnMangaDetail(BuildContext context) {
+    Navigator.of(context).pushNamed(MangaDetailScreen.routeName,
+        arguments: widget.data.mangaDetail);
   }
 
   final ScrollController _scrollController = ScrollController();

@@ -5,7 +5,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../../src/blocs/chapter_bloc/bloc.dart';
 import '../../../src/components/loading_screen.dart';
-import '../../../src/helper/hive/hive_preferences_model.dart';
+import '../../models/hive/hive_preferences_model.dart';
 
 import './chapter_loaded_screen.dart';
 import './webtoon_reading_widget.dart';

@@ -30,8 +30,8 @@ class Preferences {
   String getBackgroundColorChapter() =>
       _getValue(_backgroundColorChapterKey, defaultValue: 'white');
 
-  Future<void> setBackgroundColorChapter(String counter) =>
-      _setValue(_backgroundColorChapterKey, counter);
+  Future<void> setBackgroundColorChapter(String data) =>
+      _setValue(_backgroundColorChapterKey, data);
 
   int getAppTheme() => _getValue(_appThemeKey, defaultValue: 0);
 

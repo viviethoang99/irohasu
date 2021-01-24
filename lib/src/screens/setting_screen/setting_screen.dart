@@ -31,7 +31,7 @@ class _SettingScreenState extends State<SettingScreen> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0)),
               margin: const EdgeInsets.all(8),
-              color: Colors.green,
+              color: Theme.of(context).buttonColor,
               child: ListTile(
                 onTap: () {
                   // TODO

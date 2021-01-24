@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:irohasu/src/helper/hive/hive_preferences_model.dart';
+import 'package:irohasu/src/models/hive/hive_preferences_model.dart';
 import 'package:irohasu/src/helper/media_query_helper.dart';
 import 'package:irohasu/src/models/setting_model.dart';
 

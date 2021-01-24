@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart' as dio;
 import 'package:html/parser.dart';
 import 'package:html/dom.dart' as dom;
+import 'package:intl/intl.dart';
+import 'package:irohasu/src/models/chapter_list_model.dart';
 
 import '../../src/constants/base_content.dart';
 import '../../src/models/manga_detail_model.dart';
@@ -71,6 +73,8 @@ class MangaDetailRepo extends BaseService {
 
   List<ChapterList> getChapter(List<dom.Element> elementList, String title) {
     final chapterList = elementList.map((element) {
+      var dateTime = element.querySelector('.publishedDate').text;
+      var dateToString = DateFormat('dd/MM/yyyy hh:mm').parse(dateTime);
       return ChapterList(
           chapterTitle: element
               .querySelector('.title > a')
@@ -79,7 +83,7 @@ class MangaDetailRepo extends BaseService {
               .trim(),
           chapterEndpoint:
               element.querySelector('.title > a').attributes['href'].toString(),
-          chapterUpload: element.querySelector('.publishedDate').text);
+          chapterUpload: dateToString);
     }).toList();
     return chapterList;
   }

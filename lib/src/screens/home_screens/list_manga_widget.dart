@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../src/models/list_manga_model.dart';
+import '../../../src/models/manga_model.dart';
 import './widget/item_manga.dart';
 
 class ListMangaWidget extends StatefulWidget {
@@ -9,7 +9,7 @@ class ListMangaWidget extends StatefulWidget {
       : super(key: key);
 
   final ScrollController scrollController;
-  final List<ListManga> data;
+  final List<MangaModel> data;
   final bool hasReachedEnd;
 
   @override
@@ -17,7 +17,7 @@ class ListMangaWidget extends StatefulWidget {
 }
 
 class _ListMangaWidgetState extends State<ListMangaWidget> {
-  List<ListManga> get data => widget.data;
+  List<MangaModel> get data => widget.data;
   ScrollController get _scrollController => widget.scrollController;
   bool get hasReachedEnd => widget.hasReachedEnd;
 
@@ -41,7 +41,7 @@ class _ListMangaWidgetState extends State<ListMangaWidget> {
           return ItemManga(
             title: data[index].title,
             thumbnailUrl: data[index].thumbnailUrl,
-            setUrlWithoutDomain: data[index].setUrlWithoutDomain,
+            setUrlWithoutDomain: data[index].endpoint,
           );
         },
       ),

@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
-import '../../../src/models/list_manga_model.dart';
+import '../../../src/models/manga_model.dart';
 
 @immutable
 abstract class ListMangaState extends Equatable {
@@ -18,7 +18,7 @@ class ListMangaLoadingState extends ListMangaState {}
 class ListMangaLoadedState extends ListMangaState {
   ListMangaLoadedState({this.data, this.hasReachedEnd, this.page});
 
-  final List<ListManga> data;
+  final List<MangaModel> data;
   final bool hasReachedEnd;
   int page = 0;
 
@@ -29,7 +29,7 @@ class ListMangaLoadedState extends ListMangaState {
   @override
   List<Object> get props => [data];
 
-  ListMangaLoadedState cloneWith({List<ListManga> data, bool hasReachedEnd}) {
+  ListMangaLoadedState cloneWith({List<MangaModel> data, bool hasReachedEnd}) {
     return ListMangaLoadedState(
       data: data ?? this.data,
       hasReachedEnd: hasReachedEnd ?? this.hasReachedEnd

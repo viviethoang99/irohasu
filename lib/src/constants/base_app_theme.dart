@@ -11,6 +11,7 @@ final appThemeData = {
       primaryColor: Colors.black,
       accentColor: Colors.white,
       buttonColor: AppColors.blue,
+      canvasColor: Colors.black54,
       fontFamily: 'OpenSans',
       textTheme: ThemeData.light().textTheme.copyWith(
             headline5: const TextStyle(
@@ -35,6 +36,7 @@ final appThemeData = {
       primaryColor: Colors.white,
       accentColor: AppColors.black,
       buttonColor: AppColors.lightGreen,
+      canvasColor: Colors.white54,
       fontFamily: 'OpenSans',
       textTheme: ThemeData.light().textTheme.copyWith(
             headline5: const TextStyle(
@@ -62,6 +64,7 @@ final appThemeData = {
       backgroundColor: Colors.black87,
       accentColor: AppColors.black,
       buttonColor: AppColors.lightBlue,
+      canvasColor: Colors.white54,
       fontFamily: 'OpenSans',
       textTheme: ThemeData.light().textTheme.copyWith(
             headline5: const TextStyle(

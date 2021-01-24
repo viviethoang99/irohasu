@@ -4,7 +4,7 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../../src/constants/base_content.dart';
-import '../../../src/helper/hive/hive_preferences_model.dart';
+import '../../models/hive/hive_preferences_model.dart';
 
 class SettingChapter extends StatefulWidget {
   static const routeName = '/chapterSetting';

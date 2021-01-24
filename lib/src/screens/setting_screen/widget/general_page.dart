@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:irohasu/src/helper/hive/hive_preferences_model.dart';
+import 'package:irohasu/src/models/hive/hive_preferences_model.dart';
 import 'package:irohasu/src/helper/media_query_helper.dart';
 import 'package:irohasu/src/models/setting_model.dart';
 
@@ -44,7 +44,7 @@ class _GeneralSettingState extends State<GeneralSetting> {
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
         valueListenable:
-        Hive.box<dynamic>(Preferences.preferencesBox).listenable(),
+            Hive.box<dynamic>(Preferences.preferencesBox).listenable(),
         builder: (context, Box<dynamic> box, _) {
           return Scaffold(
             appBar: AppBar(
@@ -52,11 +52,10 @@ class _GeneralSettingState extends State<GeneralSetting> {
               brightness: Brightness.light,
               backgroundColor: Colors.grey.shade200,
               iconTheme: const IconThemeData(color: Colors.black),
-              title: Text(
+              title: const Text(
                 'Cài đặt chung',
                 style: TextStyle(
-                    color: Theme.of(context).primaryColor,
-                    fontWeight: FontWeight.bold),
+                    color: Colors.black87, fontWeight: FontWeight.bold),
               ),
             ),
             body: SingleChildScrollView(
@@ -72,20 +71,23 @@ class _GeneralSettingState extends State<GeneralSetting> {
                         color: Theme.of(context).primaryColor,
                       ),
                     ),
-                    subtitle: Text(_listTheme[_selectTheme].name),
+                    subtitle: Text(
+                      _listTheme[_selectTheme].name,
+                      style: Theme.of(context).textTheme.subtitle1,
+                    ),
                   ),
                   ListTile(
-                    onTap: () {
-                      //TODO
-                    },
-                    title: Text(
-                      'Định dạng ngày tháng',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context).primaryColor),
-                    ),
-                    subtitle: const Text('Mặc định hệ thống'),
-                  ),
+                      onTap: () {
+                        //TODO
+                      },
+                      title: Text(
+                        'Định dạng ngày tháng',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).primaryColor),
+                      ),
+                      subtitle: Text('Mặc định hệ thống',
+                          style: Theme.of(context).textTheme.subtitle1)),
                   ListTile(
                     onTap: () {
                       //TODO
@@ -96,11 +98,14 @@ class _GeneralSettingState extends State<GeneralSetting> {
                           fontWeight: FontWeight.bold,
                           color: Theme.of(context).primaryColor),
                     ),
-                    subtitle: const Text('Tự động cập nhật mỗi khi ứng dụng có '
-                        'phiên bản mới'),
+                    subtitle: Text(
+                      'Tự động cập nhật mỗi khi ứng dụng có '
+                      'phiên bản mới',
+                      style: Theme.of(context).textTheme.subtitle1,
+                    ),
                     isThreeLine: true,
                     trailing: Switch(
-                      activeColor: Theme.of(context).primaryColor,
+                      activeColor: Theme.of(context).buttonColor,
                       value: switchValue,
                       onChanged: (state) {
                         setState(() {

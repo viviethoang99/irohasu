@@ -1,5 +1,5 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+
 
 class MangaDetail {
   MangaDetail({
@@ -27,17 +27,3 @@ class MangaDetail {
   final List chapter;
 }
 
-class ChapterList extends Equatable {
-  ChapterList({
-    @required this.chapterTitle,
-    @required this.chapterEndpoint,
-    @required this.chapterUpload,
-  });
-
-  final String chapterTitle;
-  final String chapterEndpoint;
-  final String chapterUpload;
-
-  @override
-  List<Object> get props => [chapterTitle, chapterEndpoint, chapterUpload];
-}

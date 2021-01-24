@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:irohasu/src/helper/hive/hive_manga_model.dart';
-import 'package:irohasu/src/screens/home_screens/widget/appbar_widget.dart';
-import 'package:irohasu/src/screens/home_screens/widget/item_manga.dart';
+import 'package:irohasu/src/models/manga_model.dart';
+
+import '../../../src/screens/home_screens/widget/appbar_widget.dart';
+import '../../../src/screens/home_screens/widget/item_manga.dart';
 
 class LibraryScreen extends StatefulWidget {
   @override
@@ -11,7 +12,7 @@ class LibraryScreen extends StatefulWidget {
 }
 
 class _LibraryScreenState extends State<LibraryScreen> {
-  var mangaBox = Hive.box<HiveMangaModel>(HiveMangaModel.mangaBox);
+  var mangaBox = Hive.box<MangaModel>(MangaModel.mangaBox);
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +21,9 @@ class _LibraryScreenState extends State<LibraryScreen> {
       appBar: AppBarHomeWidget(),
       body: ValueListenableBuilder(
           valueListenable: mangaBox.listenable(),
-          builder: (context, Box<HiveMangaModel> _box, widget) {
+          builder: (context, Box<MangaModel> _box, widget) {
             return Container(
+              height: double.infinity,
               color: Theme.of(context).backgroundColor,
               child: GridView.builder(
                 shrinkWrap: true,
@@ -37,8 +39,8 @@ class _LibraryScreenState extends State<LibraryScreen> {
                   final manga = _box.values.toList()[index];
                   return ItemManga(
                     title: manga.title,
-                    thumbnailUrl: manga.thumb,
-                    setUrlWithoutDomain: manga.mangaEndpoint,
+                    thumbnailUrl: manga.thumbnailUrl,
+                    setUrlWithoutDomain: manga.endpoint,
                   );
                 },
               ),
