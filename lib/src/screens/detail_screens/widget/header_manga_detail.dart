@@ -117,10 +117,9 @@ class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
                           child: Text(
                             title,
                             style: TextStyle(
-                              fontSize: 22,
-                              color: Theme.of(context).primaryColor,
-                              fontWeight: FontWeight.bold,
-                            ),
+                                fontSize: 22,
+                                color: Theme.of(context).primaryColor,
+                                fontWeight: FontWeight.bold),
                             textAlign: TextAlign.left,
                           ),
                         ),
@@ -128,9 +127,8 @@ class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
                           Text(
                             author,
                             style: TextStyle(
-                              fontSize: 18,
-                              color: Theme.of(context).primaryColor,
-                            ),
+                                fontSize: 18,
+                                color: Theme.of(context).primaryColor),
                           ),
                         const SizedBox(
                           height: 15,
@@ -138,9 +136,8 @@ class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
                         Text(
                           status,
                           style: TextStyle(
-                            fontSize: 15,
-                            color: Theme.of(context).primaryColor,
-                          ),
+                              fontSize: 15,
+                              color: Theme.of(context).primaryColor),
                         ),
                         BtnVoteWidget(
                           countLike: like,

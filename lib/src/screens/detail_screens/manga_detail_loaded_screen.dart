@@ -25,7 +25,7 @@ class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // extendBodyBehindAppBar: true,
+      extendBodyBehindAppBar: true,
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         leading: IconButton(

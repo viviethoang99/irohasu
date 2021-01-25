@@ -73,11 +73,12 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget>
             child: Row(
               children: <Widget>[
                 Icon(icon, color: Theme.of(context).primaryColor),
-                const SizedBox(width: 10),
+                const SizedBox(width: 8),
                 Text(
                   status,
                   style: Theme.of(context).textTheme.bodyText1.copyWith(
                     fontWeight: FontWeight.bold,
+                    fontSize: 15
                   ),
                 ),
               ],
@@ -89,12 +90,16 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget>
   Widget showTextDescription() {
     return flag
         ? Text(text,
-            style: Theme.of(context).textTheme.bodyText1,
+            style: Theme.of(context).textTheme.bodyText1.copyWith(
+              fontSize: 16
+            ),
             maxLines: 2,
             overflow: TextOverflow.ellipsis)
         : Text(
             text,
-            style: Theme.of(context).textTheme.bodyText1,
+            style: Theme.of(context).textTheme.bodyText1.copyWith(
+              fontSize: 16
+            ),
           );
   }
 }
