@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import '../../../constants/base_blogtruyen.dart';
 import '../../../models/chapter_model.dart';
@@ -20,9 +21,9 @@ class LoadImage extends StatelessWidget {
         physics: const ClampingScrollPhysics(),
         controller: _scrollController,
         itemBuilder: (context, index) {
-          return Image.network(
-            data.listImageChapter[index].chapterImageLink,
-            headers: BlogTruyen.headersBuilder,
+          return CachedNetworkImage(
+            imageUrl: data.listImageChapter[index].chapterImageLink,
+            httpHeaders: BlogTruyen.headersBuilder,
           );
         },
         itemCount: data.listImageChapter.length,

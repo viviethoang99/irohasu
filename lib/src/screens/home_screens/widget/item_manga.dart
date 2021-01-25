@@ -22,7 +22,7 @@ class ItemManga extends StatelessWidget {
             arguments: setUrlWithoutDomain);
       },
       child: Card(
-        color: Theme.of(context).backgroundColor,
+        color: Colors.transparent,
         elevation: 0,
         child: Column(
           children: <Widget>[
@@ -44,6 +44,7 @@ class ItemManga extends StatelessWidget {
               ),
             ),
             Container(
+              alignment: Alignment.topLeft,
               height: 50,
               child: Padding(
                 padding: const EdgeInsets.all(6.0),
@@ -52,7 +53,8 @@ class ItemManga extends StatelessWidget {
                   style: TextStyle(
                       color: Theme.of(context).primaryColor,
                       fontWeight: FontWeight.w500,
-                      fontSize: 15),                  maxLines: 2,
+                      fontSize: 15),
+                  maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),

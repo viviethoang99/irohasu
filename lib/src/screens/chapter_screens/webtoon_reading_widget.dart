@@ -2,8 +2,8 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:irohasu/src/screens/chapter_screens/setting_chapter.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-
 
 import '../../constants/base_blogtruyen.dart';
 import '../../helper/media_query_helper.dart';
@@ -87,74 +87,24 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                   if (position <= prePage) {
                     (currentIndex == 0 && _getIndex != 0)
                         ? nextChapter(context, _getIndex - 1)
-                        : setState(() => _pageController.previousPage(
+                        : _pageController.previousPage(
                             duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeIn));
+                            curve: Curves.easeIn);
                   } else if (position >= prePage && position <= nextPage) {
                     setState(() => _showMenu = !_showMenu);
                   } else {
                     currentIndex == data.listImageChapter.length - 1
                         ? nextChapter(context, _getIndex + 1)
-                        : setState(() => _pageController.nextPage(
+                        :  _pageController.nextPage(
                             duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeIn));
+                            curve: Curves.easeIn);
                   }
                 },
                 child: Stack(
                   alignment: Alignment.bottomCenter,
                   children: <Widget>[
-                    ExtendedImageGesturePageView.builder(
-                      itemCount: data.listImageChapter.length,
-                      scrollDirection: Axis.horizontal,
-                      controller: _pageController,
-                      itemBuilder: (context, i) {
-                        return ExtendedImage.network(
-                          data.listImageChapter[i].chapterImageLink,
-                          headers: BlogTruyen.headersBuilder,
-                          onDoubleTap: (state) {
-                            Offset pointerDownPosition;
-                            pointerDownPosition = state.pointerDownPosition;
-                            final begin = state.gestureDetails.totalScale;
-                            double end;
-
-                            _animation?.removeListener(_animationListener);
-                            _animationController
-                              ..stop()
-                              ..reset();
-
-                            (begin == 1.0) ? end = 2.0 : end = 1.0;
-
-                            _animationListener = () {
-                              state.handleDoubleTap(
-                                  scale: _animation.value,
-                                  doubleTapPosition: pointerDownPosition);
-                            };
-
-                            _animation = _animationController
-                                .drive(Tween<double>(begin: begin, end: end));
-                            _animationController
-                              ..addListener(_animationListener)
-                              ..forward();
-                          },
-                          mode: ExtendedImageMode.gesture,
-                          initGestureConfigHandler: (state) => GestureConfig(
-                            minScale: 0.9,
-                            animationMinScale: 0.7,
-                            maxScale: 3.0,
-                            animationMaxScale: 3.5,
-                            speed: 1.0,
-                            inertialSpeed: 100.0,
-                            initialScale: 1.0,
-                            inPageView: true,
-                            cacheGesture: false,
-                          ),
-                        );
-                      },
-                      onPageChanged: (value) {
-                        setState(() => currentIndex = value);
-                      },
-                      physics: const BouncingScrollPhysics(),
-                    ),
+                    // Load image
+                    _imageWidget(),
                     if (_showMenu)
                       Positioned(
                         top: 0,
@@ -167,7 +117,7 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                                 Icons.arrow_back,
                                 color: Colors.white,
                               ),
-                              onPressed: () => Navigator.of(context).pop(),
+                              onPressed: () => btnMangaDetail,
                             ),
                             centerTitle: false,
                             backgroundColor: Colors.black.withOpacity(0.8),
@@ -199,7 +149,10 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                                   size: 35,
                                   color: Colors.white,
                                 ),
-                                onPressed: () => btnMangaDetail,
+                                onPressed: () {
+                                  Navigator.of(context)
+                                      .pushNamed(SettingChapter.routeName);
+                                },
                               )
                             ],
                           ),
@@ -222,6 +175,61 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
         });
   }
 
+  Widget _imageWidget() {
+    return ExtendedImageGesturePageView.builder(
+      itemCount: data.listImageChapter.length,
+      scrollDirection: Axis.horizontal,
+      controller: _pageController,
+      itemBuilder: (context, i) {
+        return ExtendedImage.network(
+          data.listImageChapter[i].chapterImageLink,
+          headers: BlogTruyen.headersBuilder,
+          onDoubleTap: (state) {
+            Offset pointerDownPosition;
+            pointerDownPosition = state.pointerDownPosition;
+            final begin = state.gestureDetails.totalScale;
+            double end;
+
+            _animation?.removeListener(_animationListener);
+            _animationController
+              ..stop()
+              ..reset();
+
+            (begin == 1.0) ? end = 2.0 : end = 1.0;
+
+            _animationListener = () {
+              state.handleDoubleTap(
+                  scale: _animation.value,
+                  doubleTapPosition: pointerDownPosition);
+            };
+
+            _animation = _animationController
+                .drive(Tween<double>(begin: begin, end: end));
+            _animationController
+              ..addListener(_animationListener)
+              ..forward();
+          },
+          mode: ExtendedImageMode.gesture,
+          initGestureConfigHandler: (state) => GestureConfig(
+            minScale: 0.9,
+            animationMinScale: 0.7,
+            maxScale: 3.0,
+            animationMaxScale: 3.5,
+            speed: 1.0,
+            inertialSpeed: 100.0,
+            initialScale: 1.0,
+            inPageView: true,
+            cacheGesture: false,
+          ),
+        );
+      },
+      onPageChanged: (value) {
+        setState(() => currentIndex = value);
+      },
+      physics: const BouncingScrollPhysics(),
+    );
+  }
+
   void nextChapter(BuildContext context, int chapter) {
     Navigator.of(context).pushNamed(
       ChapterScreen.routeName,
@@ -237,8 +245,6 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
         arguments: widget.data.mangaDetail);
   }
 
-  final ScrollController _scrollController = ScrollController();
-  final scrollDirection = Axis.vertical;
   ItemScrollController _scrollListController;
   int _getIndex;
   Animation<double> _animation;

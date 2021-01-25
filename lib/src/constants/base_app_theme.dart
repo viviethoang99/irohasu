@@ -60,7 +60,7 @@ final appThemeData = {
           )),
   AppTheme.black: ThemeData(
       brightness: Brightness.dark,
-      primaryColor: Colors.black,
+      primaryColor: Colors.white,
       backgroundColor: Colors.black87,
       accentColor: AppColors.black,
       buttonColor: AppColors.lightBlue,

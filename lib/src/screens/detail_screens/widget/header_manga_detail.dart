@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:irohasu/src/components/webview_widget.dart';
@@ -71,19 +72,39 @@ class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
             );
           },
           blendMode: BlendMode.dstIn,
-          child: Container(
-            width: double.infinity,
-            height: ScreenHelper.getHeight(context) / 2.5,
-            decoration: BoxDecoration(
-              color: AppColors.listColorsApp[indexColor],
-              image: DecorationImage(
-                fit: BoxFit.fitWidth,
-                colorFilter: ColorFilter.mode(
-                    Colors.black.withOpacity(0.35), BlendMode.dstATop),
-                image: NetworkImage(thumbnailUrl,
-                    headers: BlogTruyen.headersBuilder),
+          // child: Container(
+          //   width: double.infinity,
+          //   height: ScreenHelper.getHeight(context) / 2.5,
+          //   decoration: BoxDecoration(
+          //     color: AppColors.listColorsApp[indexColor],
+          //     image: DecorationImage(
+          //       fit: BoxFit.fitWidth,
+          //       colorFilter: ColorFilter.mode(
+          //           Colors.black.withOpacity(0.35), BlendMode.dstATop),
+          //       image: NetworkImage(thumbnailUrl,
+          //           headers: BlogTruyen.headersBuilder),
+          //     ),
+          //   ),
+          // ),
+          child: CachedNetworkImage(
+            imageUrl: thumbnailUrl,
+            imageBuilder: (context, imageProvider) => Container(
+              width: ScreenHelper.getWidth(context),
+              height: ScreenHelper.getHeight(context) / 2.5,
+              decoration: BoxDecoration(
+                color: AppColors.listColorsApp[indexColor],
+                image: DecorationImage(
+                  image: imageProvider,
+                  fit: BoxFit.fitWidth,
+                  colorFilter: ColorFilter.mode(
+                      Colors.black.withOpacity(0.35), BlendMode.dstATop),
+                ),
               ),
             ),
+            httpHeaders: BlogTruyen.headersBuilder,
+            placeholder: (context, url) => const CircularProgressIndicator(),
+            errorWidget: (context, url, dynamic error) =>
+                const Icon(Icons.error),
           ),
         ),
         Column(
@@ -97,9 +118,9 @@ class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
                   alignment: Alignment.topCenter,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
-                    child: Image.network(
-                      thumbnailUrl,
-                      headers: BlogTruyen.headersBuilder,
+                    child: CachedNetworkImage(
+                      imageUrl: thumbnailUrl,
+                      httpHeaders: BlogTruyen.headersBuilder,
                       fit: BoxFit.cover,
                       height: ScreenHelper.getHeight(context) / 5,
                       width: ScreenHelper.getWidth(context) / 3.5,
