@@ -7,17 +7,10 @@ import '../../../constants/base_blogtruyen.dart';
 import '../../search_screens/button_search_widget.dart';
 import './popup_menu_button.dart';
 
-class AppBarHomeWidget extends StatefulWidget implements PreferredSizeWidget {
-  AppBarHomeWidget({Key key}) : super(key: key);
-
+class AppBarHomeWidget extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => const Size.fromHeight(70);
 
-  @override
-  _AppBarHomeWidgetState createState() => _AppBarHomeWidgetState();
-}
-
-class _AppBarHomeWidgetState extends State<AppBarHomeWidget> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -56,7 +49,7 @@ class _AppBarHomeWidgetState extends State<AppBarHomeWidget> {
             size: 28,
             color: Theme.of(context).primaryColor,
           ),
-          onSelected: choiceAction,
+          onSelected: (context) => choiceAction,
           itemBuilder: (BuildContext context) {
             return PopupMenuHomeScreen.choices.map((String choice) {
               return PopupMenuItem<String>(
@@ -70,7 +63,7 @@ class _AppBarHomeWidgetState extends State<AppBarHomeWidget> {
     );
   }
 
-  void choiceAction(String choice) {
+  void choiceAction(String choice, BuildContext context) {
     if (choice == PopupMenuHomeScreen.openWebView) {
       Navigator.of(context).pushNamed(WebViewPage.routeName,
           arguments: const WebViewPage(title: 'BlogTruyen', url: ''));

@@ -14,6 +14,15 @@ class LibraryScreen extends StatefulWidget {
 class _LibraryScreenState extends State<LibraryScreen> {
   var mangaBox = Hive.box<MangaModel>(MangaModel.mangaBox);
 
+  List<MangaModel> listLibrary;
+
+  @override
+  void initState() {
+    super.initState();
+    listLibrary =
+        mangaBox.values.where((manga) => manga.isFavorite == true).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +37,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
               child: GridView.builder(
                 shrinkWrap: true,
                 padding: const EdgeInsets.all(12),
-                itemCount: _box.length,
+                itemCount: listLibrary.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   childAspectRatio: 0.6,
                   crossAxisCount: 3,
@@ -36,7 +45,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                   mainAxisSpacing: 2,
                 ),
                 itemBuilder: (context, index) {
-                  final manga = _box.values.toList()[index];
+                  final manga = listLibrary[index];
                   return ItemManga(
                     title: manga.title,
                     thumbnailUrl: manga.thumbnailUrl,

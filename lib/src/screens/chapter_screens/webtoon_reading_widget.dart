@@ -49,8 +49,8 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
 
   @override
   void initState() {
-    _checkBackgroundMode();
     super.initState();
+    _checkBackgroundMode();
     _getIndex = _getChapterList.indexWhere(
         (dynamic element) => element.chapterEndpoint == _getEndpoint);
     _scrollListController = ItemScrollController();
@@ -76,7 +76,7 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
         valueListenable:
             Hive.box<dynamic>(Preferences.preferencesBox).listenable(),
         builder: (context, Box<dynamic> box, _) {
-          _colorTheme = preferences.getBackgroundColorChapter();
+          // _colorTheme = box.getBackgroundColorChapter();
           return Scaffold(
             backgroundColor:
                 _colorTheme == 'white' ? Colors.white : Colors.black87,
@@ -183,6 +183,7 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
       itemBuilder: (context, i) {
         return ExtendedImage.network(
           data.listImageChapter[i].chapterImageLink,
+          cache: true,
           headers: BlogTruyen.headersBuilder,
           onDoubleTap: (state) {
             Offset pointerDownPosition;

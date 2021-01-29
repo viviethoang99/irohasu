@@ -3,9 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:irohasu/src/models/chapter_list_model.dart';
-import 'package:irohasu/src/models/hive_recent_model.dart';
 import 'package:irohasu/src/models/manga_model.dart';
+import 'package:irohasu/src/models/chapter_item_model.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 
 import './src/blocs/chapter_bloc/bloc.dart';
@@ -27,11 +26,9 @@ void main() async {
       await path_provider.getApplicationDocumentsDirectory();
   await Hive.initFlutter(appDocumentDirectory.path);
   Hive.registerAdapter<MangaModel>(MangaModelAdapter());
-  Hive.registerAdapter<HiveRecentModel>(HiveRecentModelAdapter());
-  Hive.registerAdapter<ChapterList>(ChapterListAdapter());
+  Hive.registerAdapter<ChapterItem>(ChapterItemAdapter());
   await Hive.openBox<dynamic>(Preferences.preferencesBox);
   await Hive.openBox<MangaModel>(MangaModel.mangaBox);
-  await Hive.openBox<HiveRecentModel>(HiveRecentModel.recentBox);
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((value) => runApp(MyApp()));
 }

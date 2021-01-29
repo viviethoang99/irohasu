@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
-
-import '../../../src/models/chapter_model.dart';
-import './bloc.dart';
+import 'package:irohasu/src/models/chapter_model.dart';
+import 'package:irohasu/src/models/manga_model.dart';
 
 abstract class ChapterState extends Equatable {
   const ChapterState();
@@ -15,19 +14,12 @@ class InitialChapterState extends ChapterState {}
 class ChapterLoadingState extends ChapterState {}
 
 class ChapterLoadedState extends ChapterState {
-  const ChapterLoadedState(
-      {this.data, this.readingMode = ReadingMode.vertical});
+  const ChapterLoadedState({this.data});
 
   final ChapterModel data;
-  final ReadingMode readingMode;
-
-  ChapterLoadedState copyWith({ReadingMode readingMode, ChapterModel data}) {
-    return ChapterLoadedState(
-        readingMode: readingMode ?? this.readingMode, data: data ?? this.data);
-  }
 
   @override
-  List<Object> get props => [data, readingMode];
+  List<Object> get props => [data];
 }
 
 class ChapterFailureState extends ChapterState {

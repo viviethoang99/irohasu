@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:irohasu/src/models/manga_model.dart';
 
 class BtnVoteWidget extends StatelessWidget {
   const BtnVoteWidget(
-      {Key key, @required this.countLike, @required this.countDislike})
+      {Key key, @required this.data})
       : super(key: key);
 
-  final String countDislike;
-  final String countLike;
+  final MangaModel data;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class BtnVoteWidget extends StatelessWidget {
               ),
               onPressed: null),
           Text(
-            countLike,
+            data.like,
             style: Theme.of(context).textTheme.bodyText1,
             ),
           const IconButton(
@@ -30,7 +30,7 @@ class BtnVoteWidget extends StatelessWidget {
               ),
               onPressed: null),
           Text(
-            countDislike,
+            data.dislike,
             style: Theme.of(context).textTheme.bodyText1,
           ),
         ],

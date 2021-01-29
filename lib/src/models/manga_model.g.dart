@@ -16,26 +16,52 @@ class MangaModelAdapter extends TypeAdapter<MangaModel> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return MangaModel(
-      title: fields[0] as String,
-      thumbnailUrl: fields[1] as String,
-      endpoint: fields[2] as String,
-      idManga: fields[3] as String,
-    );
+    return MangaModel()
+      ..idManga = fields[0] as String
+      ..title = fields[1] as String
+      ..thumbnailUrl = fields[2] as String
+      ..endpoint = fields[3] as String
+      ..description = fields[4] as String
+      ..dislike = fields[5] as String
+      ..like = fields[6] as String
+      ..status = fields[7] as String
+      ..author = fields[8] as String
+      ..listChapter = (fields[9] as List)?.cast<ChapterItem>()
+      ..isFavorite = fields[10] as bool
+      ..listChapRead = (fields[11] as List)?.cast<ChapterItem>()
+      ..listDownload = (fields[12] as List)?.cast<ChapterItem>();
   }
 
   @override
   void write(BinaryWriter writer, MangaModel obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(13)
       ..writeByte(0)
-      ..write(obj.title)
+      ..write(obj.idManga)
       ..writeByte(1)
-      ..write(obj.thumbnailUrl)
+      ..write(obj.title)
       ..writeByte(2)
-      ..write(obj.endpoint)
+      ..write(obj.thumbnailUrl)
       ..writeByte(3)
-      ..write(obj.idManga);
+      ..write(obj.endpoint)
+      ..writeByte(4)
+      ..write(obj.description)
+      ..writeByte(5)
+      ..write(obj.dislike)
+      ..writeByte(6)
+      ..write(obj.like)
+      ..writeByte(7)
+      ..write(obj.status)
+      ..writeByte(8)
+      ..write(obj.author)
+      ..writeByte(9)
+      ..write(obj.listChapter)
+      ..writeByte(10)
+      ..write(obj.isFavorite)
+      ..writeByte(11)
+      ..write(obj.listChapRead)
+      ..writeByte(12)
+      ..write(obj.listDownload);
   }
 
   @override

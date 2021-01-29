@@ -22,8 +22,6 @@ class _SettingChapterState extends State<SettingChapter> {
   @override
   void initState() {
     super.initState();
-    _colorTheme = 'white';
-    _screenMode = 'default';
     _checkReadingMode();
   }
 

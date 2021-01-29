@@ -2,14 +2,14 @@ import 'package:dio/dio.dart' as dio;
 import 'package:html/parser.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:intl/intl.dart';
-import 'package:irohasu/src/models/chapter_list_model.dart';
+import 'package:irohasu/src/models/chapter_item_model.dart';
 
 import '../../src/constants/base_content.dart';
-import '../../src/models/manga_detail_model.dart';
+import '../../src/models/manga_model.dart';
 import '../../src/service/base_service.dart';
 
 class MangaDetailRepo extends BaseService {
-  Future<MangaDetail> getMangaDetail(String endpoint) async {
+  Future<MangaModel> getMangaDetail(String endpoint) async {
     dio.Response response;
     response = await request(url: endpoint);
     final document = parse(response.data);
@@ -28,9 +28,10 @@ class MangaDetailRepo extends BaseService {
         .replaceFirst('| BlogTruyen.Com', '')
         .trim();
     final chapter = getChapter(getListChapters, title);
-    final mangaDetail = MangaDetail(
+    final mangaDetail = MangaModel.mangaDetail(
+      idManga: endpoint.split('/')[1],
       title: title,
-      thumb: urlThumb,
+      thumbnailUrl: urlThumb,
       endpoint: endpoint,
       author: getElement(getAuthor),
       status: findElement(description, Content.status)
@@ -40,7 +41,7 @@ class MangaDetailRepo extends BaseService {
           document.querySelector('div.detail > div.content').text.trim(),
       like: countLike['TotalLike'],
       dislike: countLike['TotalDisLike'],
-      chapter: chapter,
+      listChapter: chapter,
     );
     return mangaDetail;
   }
@@ -71,11 +72,11 @@ class MangaDetailRepo extends BaseService {
     return author;
   }
 
-  List<ChapterList> getChapter(List<dom.Element> elementList, String title) {
+  List<ChapterItem> getChapter(List<dom.Element> elementList, String title) {
     final chapterList = elementList.map((element) {
       var dateTime = element.querySelector('.publishedDate').text;
       var dateToString = DateFormat('dd/MM/yyyy hh:mm').parse(dateTime);
-      return ChapterList(
+      return ChapterItem(
           chapterTitle: element
               .querySelector('.title > a')
               .text

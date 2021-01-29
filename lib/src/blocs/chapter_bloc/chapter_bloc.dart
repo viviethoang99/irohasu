@@ -8,7 +8,6 @@ enum ReadingMode { horizontal, vertical }
 class ChapterBloc extends Bloc<ChapterEvent, ChapterState> {
   ChapterBloc(this._chapterRepo) : super(InitialChapterState());
   final ChapterRepo _chapterRepo;
-  ReadingMode _readingMode;
 
   @override
   Stream<ChapterState> mapEventToState(ChapterEvent event) async* {

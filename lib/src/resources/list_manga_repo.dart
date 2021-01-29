@@ -12,7 +12,8 @@ class ListMangaRepo extends BaseService {
     final responseData = document.querySelectorAll('.storyitem > div.fl-l');
 
     final mangaDetail = responseData.map((manga) {
-      return MangaModel(
+      return MangaModel.generalSettings(
+        idManga: manga.querySelector('a').attributes['href'].split('/')[1],
         title: manga.querySelector('a').attributes['title'].toString(),
         thumbnailUrl: manga.querySelector('img').attributes['src'].toString(),
         endpoint:
