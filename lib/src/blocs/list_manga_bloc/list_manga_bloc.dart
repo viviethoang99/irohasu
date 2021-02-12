@@ -29,13 +29,13 @@ class ListMangaBloc extends Bloc<ListMangaEvent, ListMangaState> {
       try {
         if (currentState is InitialListMangaState) {
           yield ListMangaLoadingState();
-          data = await _listRepo.getListManga(page: page += 1);
+          data = await _listRepo.fetchListManga(page: page += 1);
           yield ListMangaLoadedState(
               data: data, page: page + 1, hasReachedEnd: false);
         }
         if (currentState is ListMangaLoadedState) {
           try {
-            var data = await _listRepo.getListManga(page: currentState.page);
+            var data = await _listRepo.fetchListManga(page: currentState.page);
             yield data.isEmpty
                 ? currentState.cloneWith(
                     hasReachedEnd: true, data: currentState.data)
@@ -57,7 +57,7 @@ class ListMangaBloc extends Bloc<ListMangaEvent, ListMangaState> {
     if (state is InitialListMangaState) {
       yield ListMangaLoadingState();
       try {
-        data = await _listRepo.getListManga(page: page);
+        data = await _listRepo.fetchListManga(page: page);
         yield data.length < 20
             ? ListMangaLoadedState(data: data, page: page, hasReachedEnd: true)
             : ListMangaLoadedState(

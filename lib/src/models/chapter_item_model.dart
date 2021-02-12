@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:hive/hive.dart';
@@ -10,8 +11,18 @@ class ChapterItem extends Equatable {
     @required this.chapterTitle,
     @required this.chapterEndpoint,
     @required this.chapterUpload,
-    this.progress,
+    this.progress = 0,
   });
+
+  factory ChapterItem.fromJson({Map<String, dynamic> json}) {
+    // print(DateFormat('dd/MMM/yyyy hh:mm').parse(json['chapterUpload'] as String));
+    return ChapterItem(
+      chapterTitle: json['chapterTitle'] as String,
+      chapterEndpoint: json['chapterEndpoint'] as String,
+      chapterUpload: DateFormat('dd/MMM/yyyy hh:mm')
+          .parse(json['chapterUpload'] as String),
+    );
+  }
 
   @HiveField(0)
   final String chapterTitle;
@@ -20,7 +31,7 @@ class ChapterItem extends Equatable {
   @HiveField(2)
   final DateTime chapterUpload;
   @HiveField(3)
-  int progress = 0;
+  final int progress;
 
   @override
   List<Object> get props => [chapterTitle, chapterEndpoint, chapterUpload];

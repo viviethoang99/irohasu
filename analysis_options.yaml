@@ -1,9 +1,11 @@
-analyzer:
-  strong-mode:
-    implicit-casts: false
-    implicit-dynamic: false
-  errors:
-    close_sinks: ignore
+#analyzer:
+#  strong-mode:
+#    implicit-casts: false
+#    implicit-dynamic: false
+#  errors:
+#    close_sinks: ignore
+#    todo: ignore
+
 
 linter:
   rules:

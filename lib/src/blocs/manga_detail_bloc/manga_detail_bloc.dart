@@ -12,7 +12,7 @@ class MangaDetailBloc extends Bloc<MangaDetailEvent, MangaDetailState> {
     if (event is FetchMangaDetailEvent) {
       yield MangaDetailLoadingState();
       try {
-        final data = await _detailRepo.getMangaDetail(event.endpoint);
+        final data = await _detailRepo.fetchMangaDetail(event.endpoint);
         yield MangaDetailLoadedState(data: data);
       } catch (e) {
         yield MangaDetailFailureState(msg: e.toString());

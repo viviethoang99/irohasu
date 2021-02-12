@@ -7,8 +7,8 @@ import '../../../src/blocs/chapter_bloc/bloc.dart';
 import '../../../src/components/loading_screen.dart';
 import '../../models/hive/hive_preferences_model.dart';
 
-import './chapter_loaded_screen.dart';
-import './webtoon_reading_widget.dart';
+import './webtoon_screen.dart';
+import './default_reading_screen.dart';
 
 class ChapterScreen extends StatefulWidget {
   ChapterScreen({Key key, @required this.endpoint, @required this.chapterList})

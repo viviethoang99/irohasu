@@ -16,18 +16,19 @@ class MangaModelAdapter extends TypeAdapter<MangaModel> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return MangaModel()
-      ..idManga = fields[0] as String
-      ..title = fields[1] as String
-      ..thumbnailUrl = fields[2] as String
-      ..endpoint = fields[3] as String
-      ..description = fields[4] as String
-      ..dislike = fields[5] as String
-      ..like = fields[6] as String
-      ..status = fields[7] as String
-      ..author = fields[8] as String
-      ..listChapter = (fields[9] as List)?.cast<ChapterItem>()
-      ..isFavorite = fields[10] as bool
+    return MangaModel(
+      idManga: fields[0] as String,
+      title: fields[1] as String,
+      isFavorite: fields[10] as bool,
+      status: fields[7] as String,
+      listChapter: (fields[9] as List)?.cast<ChapterItem>(),
+      author: fields[8] as String,
+      like: fields[6] as String,
+      dislike: fields[5] as String,
+      description: fields[4] as String,
+      endpoint: fields[3] as String,
+      thumbnailUrl: fields[2] as String,
+    )
       ..listChapRead = (fields[11] as List)?.cast<ChapterItem>()
       ..listDownload = (fields[12] as List)?.cast<ChapterItem>();
   }

@@ -27,10 +27,8 @@ class _SettingChapterState extends State<SettingChapter> {
 
   Future _checkReadingMode() async {
     preferences = await _preferences;
-    setState(() {
-      _screenMode = preferences.getReadingMode() ?? 'default';
-      _colorTheme = preferences.getBackgroundColorChapter() ?? 'white';
-    });
+    _screenMode = preferences.getReadingMode() ?? 'default';
+    _colorTheme = preferences.getBackgroundColorChapter() ?? 'white';
   }
 
   String _setThemeMode(String data) {

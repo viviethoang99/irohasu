@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:irohasu/src/models/manga_model.dart';
 
 import '../../../src/blocs/search_bloc/bloc.dart';
 import '../../../src/constants/base_content.dart';
-import '../../../src/models/search_model.dart';
 import '../home_screens/widget/item_manga.dart';
 
-class SearchScreen extends SearchDelegate<SearchModel> {
+class SearchScreen extends SearchDelegate<MangaModel> {
   SearchScreen({this.bloc});
 
   final Bloc<SearchEvent, SearchState> bloc;
@@ -74,7 +74,7 @@ class SearchScreen extends SearchDelegate<SearchModel> {
               return ItemManga(
               title: state.list[index].title,
               thumbnailUrl: state.list[index].thumbnailUrl,
-              setUrlWithoutDomain: state.list[index].setUrlWithoutDomain,
+              setUrlWithoutDomain: state.list[index].thumbnailUrl,
               );
             },
           ),

@@ -60,7 +60,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     ),
                     title: Text(state.list[index].title),
                     isThreeLine: true,
-                    subtitle: Text(state.list[index].setUrlWithoutDomain),
+                    subtitle: Text(state.list[index].thumbnailUrl),
                   );
                 },
                 separatorBuilder: (BuildContext context, int index) =>

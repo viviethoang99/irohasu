@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:irohasu/src/service/history_data.dart';
 
 import '../../../models/chapter_item_model.dart';
 import '../../../models/manga_model.dart';
@@ -26,27 +27,22 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
 
   List<ChapterItem> get _listChapter => widget.data.listChapter.toList();
 
-  List<ChapterItem> _chapterIsRead = [];
+  List<ChapterItem> _chapterIsRead;
 
-  bool _isReading;
+  int _indexList;
 
-  final mangaBox = Hive.box<MangaModel>(MangaModel.mangaBox);
+  final mangaBox = Hive.box('irohasu');
 
   @override
   void initState() {
     super.initState();
-    _isReading = mangaBox.containsKey(_idManga);
     _getChapterIsRead();
   }
 
-  Future<void> _getChapterIsRead() async {
-    _isReading = mangaBox.containsKey(_idManga);
-    if (_isReading)
-      _chapterIsRead = mangaBox.get(_idManga).listChapRead.toList();
-  }
-
-  Future<void> setChapterRead(ChapterItem item) async {
-    mangaBox.get(_idManga).listChapRead.add(item);
+  void _getChapterIsRead() {
+    List listManga = (mangaBox.get('listManga', defaultValue: []));
+    _indexList = listManga.indexWhere((manga) => manga.idManga == _idManga);
+    _chapterIsRead = _indexList != -1 ? listManga[_indexList].listChapRead : [];
   }
 
   @override
@@ -96,8 +92,8 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       child: ValueListenableBuilder(
-          valueListenable: mangaBox.listenable(keys: <String>[_idManga]),
-          builder: (context, Box<MangaModel> _box, _) {
+          valueListenable: mangaBox.listenable(),
+          builder: (context, Box _box, _) {
             return ListView.separated(
               reverse: _isReversed,
               separatorBuilder: (BuildContext context, int index) =>
@@ -107,13 +103,13 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
               physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (BuildContext context, index) {
                 var status = true;
-                if (_isReading)
-                  status = _box
-                      .get(_idManga)
-                      .listChapRead
-                      .toList()
+                if (_chapterIsRead.isNotEmpty) {
+                  List listManga = mangaBox.get('listManga');
+                  status = listManga[_indexList]
+                      ?.listChapRead
                       ?.where((chapter) => chapter == _listChapter[index])
                       ?.isEmpty;
+                }
                 return ListTile(
                   dense: true,
                   title: Text(
@@ -138,7 +134,9 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
                   ),
                   isThreeLine: true,
                   onTap: () {
-                    setChapterRead(widget.data.listChapter[index]);
+                    if (status)
+                      HistoryData.addChapToHistory(widget.data, _indexList,
+                          widget.data.listChapter[index]);
                     Navigator.of(context).pushNamed(
                       ChapterScreen.routeName,
                       arguments: ChapterScreen(
@@ -155,7 +153,17 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
     );
   }
 
-  String dateTimeToString(dynamic date) {
-    return DateFormat('dd/MM/yyyy hh:mm').format(date as DateTime);
+  String dateConverter(String date) {
+    // Input date Format
+    final format = DateFormat('dd/MM/yyyy hh:mm');
+    var gettingDate = format.parse(date);
+    final formatter = DateFormat('yyyy-MM-dd');
+    // Output Date Format
+    final formatted = formatter.format(gettingDate);
+    return date;
+  }
+
+  String dateTimeToString(DateTime date) {
+    return DateFormat('dd/MM/yyyy hh:mm').format(date);
   }
 }

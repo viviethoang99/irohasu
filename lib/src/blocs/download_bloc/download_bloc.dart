@@ -1,20 +1,16 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
-import 'package:archive/archive_io.dart';
-import 'package:dio/dio.dart';
-import 'package:meta/meta.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:http/http.dart' as http;
-
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
-import 'package:irohasu/src/models/chapter_model.dart';
-import '../../../src/resources/chapter_repo.dart';
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
+
+import '../../models/chapter_model.dart';
+import '../../resources/chapter_repo.dart';
 
 part 'download_event.dart';
-
 part 'download_state.dart';
 
 class DownloadBloc extends Bloc<DownloadEvent, DownloadState> {

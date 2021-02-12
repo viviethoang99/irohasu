@@ -3,6 +3,7 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:irohasu/src/models/hive/hive_preferences_model.dart';
 import 'package:irohasu/src/helper/media_query_helper.dart';
+import 'package:irohasu/src/models/manga_model.dart';
 import 'package:irohasu/src/models/setting_model.dart';
 
 class GeneralSetting extends StatefulWidget {
@@ -27,8 +28,8 @@ class _GeneralSettingState extends State<GeneralSetting> {
 
   @override
   void initState() {
-    _checkThemeMode();
     super.initState();
+    _checkThemeMode();
   }
 
   //
@@ -55,7 +56,9 @@ class _GeneralSettingState extends State<GeneralSetting> {
               title: const Text(
                 'Cài đặt chung',
                 style: TextStyle(
-                    color: Colors.black87, fontWeight: FontWeight.bold),
+                  color: Colors.black87,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
             body: SingleChildScrollView(
@@ -89,6 +92,20 @@ class _GeneralSettingState extends State<GeneralSetting> {
                       subtitle: Text('Mặc định hệ thống',
                           style: Theme.of(context).textTheme.subtitle1)),
                   ListTile(
+                    onTap: _clearCache,
+                    title: Text(
+                      'Xoá bộ nhớ cache',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).primaryColor),
+                    ),
+                    subtitle: Text(
+                      'Xoá tất cả cache hiện tại trong máy',
+                      style: Theme.of(context).textTheme.subtitle1,
+                    ),
+                    isThreeLine: true,
+                  ),
+                  ListTile(
                     onTap: () {
                       //TODO
                     },
@@ -117,6 +134,33 @@ class _GeneralSettingState extends State<GeneralSetting> {
                 ],
               ),
             ),
+          );
+        });
+  }
+
+  void _clearCache() {
+    showDialog<bool>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            content: const Text('Bạn có muốn xoá toàn bộ dữ liệu'),
+            actions: [
+              FlatButton(
+                onPressed: () =>
+                    Navigator.of(context, rootNavigator: true).pop(false),
+                child: const Text('Không'),
+              ),
+              FlatButton(
+                onPressed: () async {
+                  await MangaModel.clearCache();
+                  Navigator.of(context, rootNavigator: true).pop(true);
+                },
+                child: const Text('Có'),
+              )
+            ],
           );
         });
   }

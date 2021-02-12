@@ -2,7 +2,6 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:irohasu/src/screens/chapter_screens/setting_chapter.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../constants/base_blogtruyen.dart';
@@ -10,8 +9,8 @@ import '../../helper/media_query_helper.dart';
 import '../../models/chapter_model.dart';
 import '../../models/hive/hive_preferences_model.dart';
 import '../../screens/detail_screens/manga_detail_screen.dart';
-
 import './chapter_screen.dart';
+import './setting_chapter.dart';
 import './webtoon_widget/drawer_widget.dart';
 
 typedef AnimationListener = void Function();
@@ -63,8 +62,8 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
 
   @override
   void dispose() {
-    _animationController?.dispose();
     super.dispose();
+    _animationController?.dispose();
   }
 
   @override
@@ -95,7 +94,7 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                   } else {
                     currentIndex == data.listImageChapter.length - 1
                         ? nextChapter(context, _getIndex + 1)
-                        :  _pageController.nextPage(
+                        : _pageController.nextPage(
                             duration: const Duration(milliseconds: 300),
                             curve: Curves.easeIn);
                   }
@@ -117,7 +116,7 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                                 Icons.arrow_back,
                                 color: Colors.white,
                               ),
-                              onPressed: () => btnMangaDetail,
+                              onPressed: () => btnMangaDetail(context),
                             ),
                             centerTitle: false,
                             backgroundColor: Colors.black.withOpacity(0.8),
@@ -126,9 +125,9 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                  data.title.length > 25
-                                      ? '${data.title.substring(0, 25)}..'
-                                      : data.title,
+                                  data.titleManga.length > 25
+                                      ? '${data.titleManga.substring(0, 25)}..'
+                                      : data.titleManga,
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: Colors.white),

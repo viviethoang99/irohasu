@@ -28,7 +28,7 @@ void main() async {
   Hive.registerAdapter<MangaModel>(MangaModelAdapter());
   Hive.registerAdapter<ChapterItem>(ChapterItemAdapter());
   await Hive.openBox<dynamic>(Preferences.preferencesBox);
-  await Hive.openBox<MangaModel>(MangaModel.mangaBox);
+  await Hive.openBox<dynamic>('irohasu');
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((value) => runApp(MyApp()));
 }

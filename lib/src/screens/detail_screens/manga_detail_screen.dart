@@ -40,6 +40,9 @@ class _MangaDetailScreenState extends State<MangaDetailScreen> {
         if (state is MangaDetailLoadedState) {
           return MangaDetailLoadedScreen(data: state.data);
         }
+        if (state is MangaDetailFailureState) {
+          Navigator.of(context).pop();
+        }
         return const Center(child: Text('Other states..'));
       },
     );

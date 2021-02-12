@@ -27,8 +27,8 @@ class _ChapterPageSettingState extends State<ChapterPageSetting> {
 
   @override
   void initState() {
-    _checkThemeMode();
     super.initState();
+    _checkThemeMode();
   }
 
   //
@@ -52,10 +52,10 @@ class _ChapterPageSettingState extends State<ChapterPageSetting> {
               brightness: Brightness.light,
               backgroundColor: Colors.grey.shade200,
               iconTheme: const IconThemeData(color: Colors.black),
-              title: Text(
+              title: const Text(
                 'Cài đặt chung',
                 style: TextStyle(
-                    color: Theme.of(context).primaryColor,
+                    color: Colors.black87,
                     fontWeight: FontWeight.bold),
               ),
             ),
@@ -72,7 +72,7 @@ class _ChapterPageSettingState extends State<ChapterPageSetting> {
                         color: Theme.of(context).primaryColor,
                       ),
                     ),
-                    subtitle: Text('Test'),
+                    subtitle: const Text('Test'),
                   ),
                   ListTile(
                     onTap: () {

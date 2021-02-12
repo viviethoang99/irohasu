@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
-
-import '../../../src/models/search_model.dart';
+import 'package:irohasu/src/models/manga_model.dart';
 
 abstract class SearchState extends Equatable{
   @override
@@ -13,7 +12,7 @@ class SearchLoadingState extends SearchState{}
 
 class SearchLoadedState extends SearchState{
   SearchLoadedState({this.list});
-  final List<SearchModel> list;
+  final List<MangaModel> list;
 
   @override
   List<Object> get props => [list];

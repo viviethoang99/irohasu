@@ -7,6 +7,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:irohasu/src/components/webview_widget.dart';
 import 'package:irohasu/src/constants/base_colors.dart';
 import 'package:irohasu/src/models/manga_model.dart';
+import 'package:irohasu/src/service/favorite_data.dart';
 
 import '../../../../src/helper/media_query_helper.dart';
 import '../../../../src/models/manga_model.dart';
@@ -31,23 +32,21 @@ class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
   String urlPage;
   Random random = Random();
   int indexColor;
-  MangaModel mangaDetail;
   bool _isFavorite, status = false;
 
-  final mangaBox = Hive.box<MangaModel>(MangaModel.mangaBox);
+  final mangaBox = Hive.box<dynamic>('irohasu');
 
   @override
   void initState() {
     super.initState();
-    status = mangaBox.containsKey(_idManga);
-    _isFavorite = mangaBox.get(_idManga).isFavorite;
+    // status = mangaBox.containsKey(_idManga);
+    // _isFavorite = mangaBox.get(_idManga).isFavorite;
     dataAuthor = author.isNotEmpty ? true : false;
     indexColor = random.nextInt(AppColors.listColorsApp.length);
   }
 
   @override
   Widget build(BuildContext context) {
-    print(mangaBox.values.length);
     return Stack(
       children: <Widget>[
         ShaderMask(
@@ -153,20 +152,28 @@ class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
     return Padding(
       padding: const EdgeInsets.only(left: 12, bottom: 10),
       child: ValueListenableBuilder(
-          valueListenable: mangaBox.listenable(keys: <String>[_idManga]),
-          builder: (context, Box<MangaModel> box, _) {
+          valueListenable: mangaBox.listenable(keys: ['listManga']),
+          builder: (context, Box _box, _) {
+            List listManga = _box.get('listManga', defaultValue: []);
+            if (listManga.isEmpty) {
+              _isFavorite = false;
+            } else {
+              _isFavorite = listManga
+                      ?.firstWhere((manga) => manga.idManga == _idManga,
+                          orElse: () => null)
+                      ?.isFavorite ??
+                  false;
+            }
             return Row(
               children: <Widget>[
-                box.get(_idManga).isFavorite
+                _isFavorite
                     ? IconButton(
                         icon: Icon(
                           Icons.favorite,
                           color: Theme.of(context).buttonColor,
                           size: 38,
                         ),
-                        onPressed: () =>
-                            widget.data.saveManga(_idManga, _isFavorite),
-                      )
+                        onPressed: () => FavoriteData.unFavorite(_idManga))
                     : IconButton(
                         icon: Icon(
                           Icons.favorite_border,
@@ -174,8 +181,18 @@ class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
                           size: 38,
                         ),
                         onPressed: () =>
-                            widget.data.saveManga(_idManga, _isFavorite),
-                      ),
+                            FavoriteData.saveFavorite(MangaModel.mangaDetail(
+                              idManga: widget.data.idManga,
+                              title: widget.data.title,
+                              endpoint: widget.data.endpoint,
+                              thumbnailUrl: widget.data.thumbnailUrl,
+                              author: widget.data.author,
+                              description: widget.data.description,
+                              dislike: widget.data.dislike,
+                              like: widget.data.like,
+                              listChapter: widget.data.listChapter,
+                              status: widget.data.status,
+                            ))),
                 IconButton(
                   icon: Icon(
                     Icons.language,
@@ -186,7 +203,7 @@ class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
                     Navigator.of(context).pushNamed(WebViewPage.routeName,
                         arguments: WebViewPage(
                             title: widget.data.title,
-                            url: widget.data.endpoint));
+                            url: BlogTruyen.urlWebView(widget.data.endpoint)));
                   },
                 ),
                 IconButton(

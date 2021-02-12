@@ -1,6 +1,5 @@
 import 'package:meta/meta.dart';
 import 'package:hive/hive.dart';
-import 'package:intl/intl.dart';
 
 import 'chapter_item_model.dart';
 
@@ -8,7 +7,18 @@ part 'manga_model.g.dart';
 
 @HiveType(typeId: 0)
 class MangaModel {
-  MangaModel();
+  MangaModel(
+      {this.idManga,
+      this.title,
+      this.isFavorite,
+      this.status,
+      this.listChapter,
+      this.author,
+      this.like,
+      this.dislike,
+      this.description,
+      this.endpoint,
+      this.thumbnailUrl});
 
   MangaModel.mangaDetail({
     @required this.idManga,
@@ -25,12 +35,31 @@ class MangaModel {
     this.isFavorite = false,
   });
 
-  MangaModel.generalSettings({
-    @required this.idManga,
-    @required this.title,
-    @required this.thumbnailUrl,
-    @required this.endpoint,
-  });
+  factory MangaModel.fromJsonDetail(Map<String, dynamic> json) => MangaModel(
+        idManga: json['idManga'] as String,
+        title: json['title'] as String,
+        thumbnailUrl: json['urlThumb'] as String,
+        endpoint: json['endpoint'] as String,
+        status: json['status'] as String,
+        author: (json['author'] as List<dynamic>)
+            .map((dynamic item) => item.toString())
+            .toList()
+            .join(','),
+        description: json['description'] as String,
+        dislike: json['totalLike']['TotalDisLike'] as String,
+        like: json['totalLike']['TotalLike'] as String,
+        listChapter: List<ChapterItem>.from(
+            (json['listChapter'] as List<dynamic>).map<ChapterItem>(
+                (dynamic item) =>
+                    ChapterItem.fromJson(json: item as Map<String, dynamic>))),
+      );
+
+  factory MangaModel.fromJsonGeneral(Map<String, dynamic> json) => MangaModel(
+        idManga: json['idManga'] as String,
+        title: json['title'] as String,
+        thumbnailUrl: json['thumb'] as String,
+        endpoint: json['endpoint'] as String,
+      );
 
   static const mangaBox = 'mangaBox';
 
@@ -61,11 +90,8 @@ class MangaModel {
   @HiveField(12)
   List<ChapterItem> listDownload = [];
 
-  Future<void> saveManga(String idManga, bool isFavorite) async {
-    final mangaBox = Hive.box<MangaModel>(MangaModel.mangaBox);
-
-    var mangaDetail = mangaBox.get(idManga)..isFavorite = !isFavorite;
-
-    await mangaBox.put(idManga, mangaDetail);
+  static Future<void> clearCache() async {
+    final box = await Hive.openBox<MangaModel>(MangaModel.mangaBox);
+    await box.clear();
   }
 }

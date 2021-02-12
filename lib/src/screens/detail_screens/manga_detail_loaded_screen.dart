@@ -25,36 +25,12 @@ class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
 
   MangaModel mangaDetail;
 
-  // void downloadDetail() {
-  //   var idx = 1;
-  //   List arrSaveData;
-  //   for (final c in widget.data.listChapter) {}
-  // }
-  final mangaBox = Hive.box<MangaModel>(MangaModel.mangaBox);
-
-  Future<void> _createBox() async {
-    mangaDetail = MangaModel.mangaDetail(
-      idManga: data.idManga,
-      title: data.title,
-      endpoint: data.endpoint,
-      thumbnailUrl: data.thumbnailUrl,
-      author: data.author,
-      description: data.description,
-      dislike: data.dislike,
-      like: data.like,
-      listChapter: data.listChapter,
-      status: data.status,
-      isFavorite: false,
-    );
-    print(mangaBox.containsKey(data.idManga));
-    if (!mangaBox.containsKey(widget.data.idManga))
-      await mangaBox.put(data.idManga, mangaDetail);
-  }
+  final mangaBox = Hive.box<dynamic>('irohasu');
 
   @override
   void initState() {
     super.initState();
-    _createBox();
+    // _createBox();
   }
 
   @override

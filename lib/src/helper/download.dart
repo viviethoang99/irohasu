@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:archive/archive_io.dart';
 import 'package:dio/dio.dart';
+import 'package:irohasu/src/constants/base_blogtruyen.dart';
 import 'package:meta/meta.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
@@ -37,7 +38,7 @@ class Download {
     print('Function $uri');
     var fileName = uri.substring(uri.lastIndexOf('/') + 1);
     var path = await downloadFile(
-        uri, fileName, folder, (dynamic rec, dynamic total) {});
+        uri, fileName, folder, (rec, total) {});
 
     if (path != null) {
       List<int> bytes = File(path).readAsBytesSync();
@@ -74,7 +75,7 @@ class Download {
   }
 
   static Future<String> downloadImage(
-      {@required String uri,
+        {@required String uri,
       @required String folder,
       @required String chapter}) async {
     var fileName = chapter + uri.substring(uri.lastIndexOf('/') + 1);
