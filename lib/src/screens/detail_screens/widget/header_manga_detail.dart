@@ -6,18 +6,18 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:irohasu/src/components/webview_widget.dart';
 import 'package:irohasu/src/constants/base_colors.dart';
-import 'package:irohasu/src/models/manga_model.dart';
+import 'package:irohasu/src/models/manga_detail_model.dart';
 import 'package:irohasu/src/service/favorite_data.dart';
 
 import '../../../../src/helper/media_query_helper.dart';
-import '../../../../src/models/manga_model.dart';
+import '../../../../src/models/manga_detail_model.dart';
 import '../../../constants/base_blogtruyen.dart';
 import './btn_vote_widget.dart';
 
 class HeaderMangaDetail extends StatefulWidget {
   HeaderMangaDetail({this.data});
 
-  final MangaModel data;
+  final MangaDetailModel data;
 
   @override
   _HeaderMangaDetailState createState() => _HeaderMangaDetailState();
@@ -180,8 +180,8 @@ class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
                           color: Theme.of(context).primaryColor,
                           size: 38,
                         ),
-                        onPressed: () =>
-                            FavoriteData.saveFavorite(MangaModel.mangaDetail(
+                        onPressed: () => FavoriteData.saveFavorite(
+                                MangaDetailModel.mangaDetail(
                               idManga: widget.data.idManga,
                               title: widget.data.title,
                               endpoint: widget.data.endpoint,

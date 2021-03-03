@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:irohasu/src/screens/setting_screen/widget/chapter_page.dart';
-import 'package:irohasu/src/screens/setting_screen/widget/general_page.dart';
+import '../../../src/screens/setting_screen/widget/general_page.dart';
+import '../../../src/screens/setting_screen/widget/setting_chapter.dart';
 
-class SettingScreen extends StatefulWidget {
-  static const routeName = '/setting';
-
-  @override
-  _SettingScreenState createState() => _SettingScreenState();
-}
-
-class _SettingScreenState extends State<SettingScreen> {
+class SettingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
+      backgroundColor: theme.backgroundColor,
       appBar: AppBar(
         elevation: 0,
         brightness: Brightness.light,
@@ -20,7 +15,10 @@ class _SettingScreenState extends State<SettingScreen> {
         iconTheme: const IconThemeData(color: Colors.black),
         title: const Text(
           'Cài đặt',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
       body: SingleChildScrollView(
@@ -29,19 +27,23 @@ class _SettingScreenState extends State<SettingScreen> {
           children: <Widget>[
             Card(
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0)),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
               margin: const EdgeInsets.all(8),
-              color: Theme.of(context).buttonColor,
+              color: theme.buttonColor,
               child: ListTile(
                 onTap: () {
                   // TODO
                   print('Test app');
                 },
-                title: const Text('Khách lạ',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold)),
+                title: const Text(
+                  'Khách lạ',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 leading: const CircleAvatar(
                   backgroundImage:
                       AssetImage('assets/images/default_image.jpeg'),
@@ -55,9 +57,12 @@ class _SettingScreenState extends State<SettingScreen> {
             const SizedBox(height: 10.0),
             Card(
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
-              margin:
-                  const EdgeInsets.symmetric(horizontal: 25.0, vertical: 6.0),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              margin: const EdgeInsets.symmetric(
+                horizontal: 25.0,
+                vertical: 6.0,
+              ),
               child: Column(
                 children: <Widget>[
                   ListTile(
@@ -66,7 +71,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     },
                     title: Text(
                       'Cài đặt chung',
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: theme.textTheme.bodyText1,
                     ),
                     leading: const Icon(Icons.tune),
                     trailing: const Icon(Icons.keyboard_arrow_right),
@@ -79,7 +84,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     },
                     title: Text(
                       'Thư viện',
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: theme.textTheme.bodyText1,
                     ),
                     leading: const Icon(Icons.local_library),
                     trailing: const Icon(Icons.keyboard_arrow_right),
@@ -87,12 +92,13 @@ class _SettingScreenState extends State<SettingScreen> {
                   const _BuildDivider(),
                   ListTile(
                     onTap: () {
-                      // TODO
-                      print('Test app');
+                      Navigator.of(context).pushNamed(
+                        SettingChapter.routeName,
+                      );
                     },
                     title: Text(
-                      'Thông tin truyện',
-                      style: Theme.of(context).textTheme.bodyText1,
+                      'Thiết lập đọc truyện',
+                      style: theme.textTheme.bodyText1,
                     ),
                     leading: const Icon(Icons.description),
                     trailing: const Icon(Icons.keyboard_arrow_right),
@@ -105,22 +111,9 @@ class _SettingScreenState extends State<SettingScreen> {
                     },
                     title: Text(
                       'Tải xuống',
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: theme.textTheme.bodyText1,
                     ),
                     leading: const Icon(Icons.file_download),
-                    trailing: const Icon(Icons.keyboard_arrow_right),
-                  ),
-                  const _BuildDivider(),
-                  ListTile(
-                    onTap: () {
-                      Navigator.of(context)
-                          .pushNamed(ChapterPageSetting.routeName);
-                    },
-                    title: Text(
-                      'Trang truyện',
-                      style: Theme.of(context).textTheme.bodyText1,
-                    ),
-                    leading: const Icon(Icons.import_contacts),
                     trailing: const Icon(Icons.keyboard_arrow_right),
                   ),
                   const _BuildDivider(),
@@ -131,7 +124,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     },
                     title: Text(
                       'Thông tin',
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: theme.textTheme.bodyText1,
                     ),
                     leading: const Icon(Icons.info),
                     trailing: const Icon(Icons.keyboard_arrow_right),
@@ -147,9 +140,7 @@ class _SettingScreenState extends State<SettingScreen> {
 }
 
 class _BuildDivider extends StatelessWidget {
-  const _BuildDivider({
-    Key key,
-  }) : super(key: key);
+  const _BuildDivider({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

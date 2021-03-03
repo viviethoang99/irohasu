@@ -16,14 +16,14 @@ class MangaDetailScreen extends StatefulWidget {
 }
 
 class _MangaDetailScreenState extends State<MangaDetailScreen> {
-  MangaDetailBloc _mangaDetailBloc;
+  // MangaDetailBloc _mangaDetailBloc;
 
   String get endpoint => widget.endpoint;
 
   @override
   void initState() {
     super.initState();
-    _mangaDetailBloc = BlocProvider.of<MangaDetailBloc>(context)
+    BlocProvider.of<MangaDetailBloc>(context)
       ..add(FetchMangaDetailEvent(endpoint));
   }
 
@@ -38,6 +38,9 @@ class _MangaDetailScreenState extends State<MangaDetailScreen> {
           return const Center();
         }
         if (state is MangaDetailLoadedState) {
+          return MangaDetailLoadedScreen(data: state.data);
+        }
+        if (state is MangaDetailSyncState) {
           return MangaDetailLoadedScreen(data: state.data);
         }
         if (state is MangaDetailFailureState) {

@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:irohasu/src/blocs/download_bloc/download_bloc.dart';
+import 'package:irohasu/src/models/chapter_item_model.dart';
 import 'package:irohasu/src/service/history_data.dart';
+import 'package:irohasu/src/service/hive_data_manga.dart';
 
-import '../../../models/chapter_item_model.dart';
-import '../../../models/manga_model.dart';
+import '../../../models/manga_detail_model.dart';
 import '../../chapter_screens/chapter_screen.dart';
 
 class ListChapterWidget extends StatefulWidget {
-  const ListChapterWidget({
-    Key key,
-    @required this.data,
-  }) : super(key: key);
+  const ListChapterWidget({Key key, @required this.data}) : super(key: key);
 
-  final MangaModel data;
+  final MangaDetailModel data;
 
   @override
   _ListChapterWidgetState createState() => _ListChapterWidgetState();
@@ -23,27 +21,11 @@ class ListChapterWidget extends StatefulWidget {
 class _ListChapterWidgetState extends State<ListChapterWidget> {
   bool _isReversed = false;
 
-  String get _idManga => widget.data.idManga;
+  MangaDetailModel get data => widget.data;
 
-  List<ChapterItem> get _listChapter => widget.data.listChapter.toList();
-
-  List<ChapterItem> _chapterIsRead;
-
-  int _indexList;
-
-  final mangaBox = Hive.box('irohasu');
-
-  @override
-  void initState() {
-    super.initState();
-    _getChapterIsRead();
-  }
-
-  void _getChapterIsRead() {
-    List listManga = (mangaBox.get('listManga', defaultValue: []));
-    _indexList = listManga.indexWhere((manga) => manga.idManga == _idManga);
-    _chapterIsRead = _indexList != -1 ? listManga[_indexList].listChapRead : [];
-  }
+  int _indexManga;
+  final Duration transitionDuration = const Duration(milliseconds: 500);
+  final _saveDatabase = HiveDataManga();
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +37,7 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(
-                '${widget.data.listChapter.length} Chapters',
+                '${data.listChapter.length} Chương',
                 style: TextStyle(
                     color: Theme.of(context).primaryColor,
                     fontSize: 18,
@@ -90,78 +72,171 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
 
   Widget loadListChapter() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-      child: ValueListenableBuilder(
-          valueListenable: mangaBox.listenable(),
-          builder: (context, Box _box, _) {
-            return ListView.separated(
-              reverse: _isReversed,
-              separatorBuilder: (BuildContext context, int index) =>
-                  Divider(color: Theme.of(context).canvasColor),
-              shrinkWrap: true,
-              itemCount: widget.data.listChapter.length,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (BuildContext context, index) {
-                var status = true;
-                if (_chapterIsRead.isNotEmpty) {
-                  List listManga = mangaBox.get('listManga');
-                  status = listManga[_indexList]
-                      ?.listChapRead
-                      ?.where((chapter) => chapter == _listChapter[index])
-                      ?.isEmpty;
-                }
-                return ListTile(
-                  dense: true,
-                  title: Text(
-                    widget.data.listChapter[index].chapterTitle.toString(),
-                    style: status
-                        ? TextStyle(
-                            color: Theme.of(context).primaryColor,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold)
-                        : Theme.of(context).textTheme.subtitle1.copyWith(
-                            fontSize: 18, fontWeight: FontWeight.bold),
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        child: ListView.separated(
+          reverse: _isReversed,
+          separatorBuilder: (BuildContext context, int index) =>
+              Divider(color: Theme.of(context).canvasColor),
+          shrinkWrap: true,
+          itemCount: data.listChapter.length,
+          physics: const NeverScrollableScrollPhysics(),
+          itemBuilder: (BuildContext context, index) {
+            return ListTile(
+              dense: true,
+              title: Text(
+                data.listChapter[index].chapterTitle.toString(),
+                style: data.listChapter[index].isReading
+                    ? Theme.of(context).textTheme.subtitle1.copyWith(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        )
+                    : TextStyle(
+                        color: Theme.of(context).primaryColor,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold),
+              ),
+              subtitle: Text(
+                dateTimeToString(data.listChapter[index].chapterUpload),
+                style: Theme.of(context).textTheme.subtitle1,
+              ),
+              trailing: btnDownload(
+                item: data.listChapter[index],
+                index: index,
+              ),
+              // trailing: DownloadButton(
+              //   index: index,
+              //   data: data,
+              //   item: data.listChapter[index],
+              // ),
+              isThreeLine: true,
+              onTap: () {
+                if (!data.listChapter[index].isReading)
+                  HistoryData.addChapToHistory(
+                      data, index, data.listChapter[index].idChapter);
+                Navigator.of(context).pushNamed(
+                  ChapterScreen.routeName,
+                  arguments: ChapterScreen(
+                    endpoint:
+                        data.listChapter[index].chapterEndpoint.toString(),
+                    chapterList: data.listChapter,
                   ),
-                  subtitle: Text(
-                    dateTimeToString(
-                        widget.data.listChapter[index].chapterUpload),
-                    style: Theme.of(context).textTheme.subtitle1,
-                  ),
-                  trailing: Icon(
-                    Icons.arrow_circle_down,
-                    color: Theme.of(context).primaryColor,
-                    size: 30,
-                  ),
-                  isThreeLine: true,
-                  onTap: () {
-                    if (status)
-                      HistoryData.addChapToHistory(widget.data, _indexList,
-                          widget.data.listChapter[index]);
-                    Navigator.of(context).pushNamed(
-                      ChapterScreen.routeName,
-                      arguments: ChapterScreen(
-                        endpoint: widget.data.listChapter[index].chapterEndpoint
-                            .toString(),
-                        chapterList: widget.data.listChapter,
-                      ),
-                    );
-                  },
                 );
               },
             );
-          }),
+          },
+        ));
+  }
+
+  Widget btnDownload({ChapterItem item, int index}) {
+    return BlocProvider(
+      create: (_) => DownloadBloc(),
+      child: BlocBuilder<DownloadBloc, DownloadState>(
+        builder: (BuildContext context, state) {
+          if (state is DownloadedState || item.isDownload != null) {
+            return IconButton(
+                icon: Icon(
+                  Icons.offline_pin_rounded,
+                  size: 37,
+                  color: Theme.of(context).buttonColor,
+                ),
+                onPressed: () {
+                  BlocProvider.of<DownloadBloc>(context).add(RemoveChapterEvent(
+                      chapter: item, indexManga: _indexManga));
+                });
+          }
+          if (state is DownloadingState) {
+            // if (index%0 == 2) {
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                height: 29,
+                width: 29,
+                child: AnimatedOpacity(
+                  duration: transitionDuration,
+                  opacity: 0.0,
+                  curve: Curves.ease,
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                          Theme.of(context).buttonColor),
+                    ),
+                  ),
+                ),
+              ),
+            );
+          }
+          if (state is DownloadInitialState && item.isDownload == null) {
+            return IconButton(
+                icon: Icon(
+                  Icons.arrow_circle_down,
+                  size: 37,
+                  color: Theme.of(context).buttonColor,
+                ),
+                onPressed: () async {
+                  _indexManga = await _saveDatabase.addMangaToDatabase(
+                    data: data,
+                  );
+                  BlocProvider.of<DownloadBloc>(context).add(
+                      DownloadChapterEvent(
+                          chapterModel: item,
+                          titleManga: data.title,
+                          indexManga: _indexManga));
+                });
+          }
+          if (state is DownloadProcessState) {
+            // print('Download is ${state.downloadPercentageCompleted * 100}%');
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                height: 29,
+                width: 29,
+                child: AnimatedOpacity(
+                  duration: transitionDuration,
+                  opacity: 1.0,
+                  curve: Curves.ease,
+                  child: Center(
+                    child: InkWell(
+                      onTap: () {
+                        BlocProvider.of<DownloadBloc>(context).add(
+                            CancelDownloadEvent(idChapter: item.idChapter));
+                      },
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          CircularProgressIndicator(
+                            backgroundColor: Colors.white.withOpacity(0.0),
+                            value: state.downloadPercentageCompleted,
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                                Theme.of(context).buttonColor),
+                          ),
+                          const Icon(
+                            Icons.stop,
+                            size: 18,
+                            color: Colors.red,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            );
+          }
+          return Container();
+        },
+      ),
     );
   }
 
-  String dateConverter(String date) {
-    // Input date Format
-    final format = DateFormat('dd/MM/yyyy hh:mm');
-    var gettingDate = format.parse(date);
-    final formatter = DateFormat('yyyy-MM-dd');
-    // Output Date Format
-    final formatted = formatter.format(gettingDate);
-    return date;
-  }
+  // String dateConverter(String date) {
+  //   // Input date Format
+  //   final format = DateFormat('dd/MM/yyyy hh:mm');
+  //   var gettingDate = format.parse(date);
+  //   final formatter = DateFormat('yyyy-MM-dd');
+  //   // Output Date Format
+  //   final formatted = formatter.format(gettingDate);
+  //   return date;
+  // }
 
   String dateTimeToString(DateTime date) {
     return DateFormat('dd/MM/yyyy hh:mm').format(date);

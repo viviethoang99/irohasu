@@ -5,17 +5,41 @@ abstract class DownloadState extends Equatable {
 
   @override
   List<Object> get props => [];
+
 }
 
 class DownloadInitialState extends DownloadState {}
-class DownloadLoadingState extends DownloadState {}
 
-class DownloadLoadedState extends DownloadState {
-  const DownloadLoadedState({this.data});
+class DownloadingState extends DownloadState {}
 
-  final ChapterModel data;
+class DownloadProcessState extends DownloadState {
+  DownloadProcessState({this.downloadPercentageCompleted = 0});
+
+  final double downloadPercentageCompleted;
+
+  @override
+  List<Object> get props => [downloadPercentageCompleted];
+
+  @override
+  String toString() {
+    return '${downloadPercentageCompleted.toStringAsFixed(2)} %';
+  }
+
+  DownloadProcessState copyWith({double downloadPercentageCompleted}) {
+    return DownloadProcessState(
+      downloadPercentageCompleted:
+          downloadPercentageCompleted ?? this.downloadPercentageCompleted,
+    );
+  }
+}
+
+class DownloadedState extends DownloadState {
+  const DownloadedState({this.data});
+
+  final String data;
 
   @override
   List<Object> get props => [data];
 }
-class DownloadFailureState extends DownloadState {}
+
+class ImageDownloadFailureState extends DownloadState {}

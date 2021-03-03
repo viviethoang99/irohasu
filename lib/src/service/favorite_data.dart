@@ -1,14 +1,13 @@
 import 'package:hive/hive.dart';
-import 'package:irohasu/src/models/manga_model.dart';
+import 'package:irohasu/src/models/manga_detail_model.dart';
 
 class FavoriteData {
-  static void saveFavorite(MangaModel mangaModel) async {
+  static void saveFavorite(MangaDetailModel mangaModel) async {
     // Open DB
-    final mangaBox = Hive.box<dynamic>('irohasu');
-    var _isFavorite = -1;
+    final mangaBox = Hive.box('irohasu');
+    int _isFavorite;
     // Get value
-    List listManga =
-        (mangaBox.get('listManga') != null ? mangaBox.get('listManga') : []);
+    List listManga = mangaBox.get('listManga', defaultValue: []);
     _isFavorite =
         listManga.indexWhere((manga) => manga.idManga == mangaModel.idManga);
     if (_isFavorite < 0) {
@@ -31,7 +30,7 @@ class FavoriteData {
     // Check isFavorite?
     _isFavorite = listManga.indexWhere((manga) => manga.idManga == idManga);
     var mangaModel = listManga[_isFavorite];
-    if (mangaModel.listDownload.isNotEmpty ||
+    if (mangaModel.listChapter.isNotEmpty ||
         mangaModel.listChapRead.isNotEmpty) {
       listManga[_isFavorite].isFavorite = false;
     } else {

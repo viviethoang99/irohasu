@@ -13,12 +13,12 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  SearchBloc _searchBloc;
+  // SearchBloc _searchBloc;
 
   @override
   void initState() {
     super.initState();
-    _searchBloc = BlocProvider.of<SearchBloc>(context)
+    BlocProvider.of<SearchBloc>(context)
       ..add(FetchDataSearchEvent());
   }
 

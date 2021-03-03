@@ -17,7 +17,6 @@ class _LibraryScreenState extends State<LibraryScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     listLibrary = mangaBox.get('listManga', defaultValue: []).toList();
   }
@@ -30,7 +29,8 @@ class _LibraryScreenState extends State<LibraryScreen> {
       body: ValueListenableBuilder(
           valueListenable: mangaBox.listenable(),
           builder: (context, Box _box, widget) {
-            listLibrary.where((element) => element.isFavorite == true);
+            listLibrary.where((element) =>
+                element.isFavorite == true || element.listDownload.length >= 0);
             return Container(
               height: double.infinity,
               color: Theme.of(context).backgroundColor,

@@ -3,11 +3,11 @@ import 'package:hive/hive.dart';
 
 import 'chapter_item_model.dart';
 
-part 'manga_model.g.dart';
+part 'manga_detail_model.g.dart';
 
 @HiveType(typeId: 0)
-class MangaModel {
-  MangaModel(
+class MangaDetailModel {
+  MangaDetailModel(
       {this.idManga,
       this.title,
       this.isFavorite,
@@ -20,7 +20,7 @@ class MangaModel {
       this.endpoint,
       this.thumbnailUrl});
 
-  MangaModel.mangaDetail({
+  MangaDetailModel.mangaDetail({
     @required this.idManga,
     @required this.title,
     @required this.thumbnailUrl,
@@ -35,13 +35,14 @@ class MangaModel {
     this.isFavorite = false,
   });
 
-  factory MangaModel.fromJsonDetail(Map<String, dynamic> json) => MangaModel(
+  factory MangaDetailModel.fromMap(Map<String, dynamic> json) =>
+      MangaDetailModel(
         idManga: json['idManga'] as String,
         title: json['title'] as String,
         thumbnailUrl: json['urlThumb'] as String,
         endpoint: json['endpoint'] as String,
         status: json['status'] as String,
-        author: (json['author'] as List<dynamic>)
+        author: json['author']
             .map((dynamic item) => item.toString())
             .toList()
             .join(','),
@@ -53,15 +54,6 @@ class MangaModel {
                 (dynamic item) =>
                     ChapterItem.fromJson(json: item as Map<String, dynamic>))),
       );
-
-  factory MangaModel.fromJsonGeneral(Map<String, dynamic> json) => MangaModel(
-        idManga: json['idManga'] as String,
-        title: json['title'] as String,
-        thumbnailUrl: json['thumb'] as String,
-        endpoint: json['endpoint'] as String,
-      );
-
-  static const mangaBox = 'mangaBox';
 
   @HiveField(0)
   String idManga;
@@ -86,12 +78,12 @@ class MangaModel {
   @HiveField(10)
   bool isFavorite;
   @HiveField(11)
-  List<ChapterItem> listChapRead = [];
+  List<String> listChapRead = [];
   @HiveField(12)
-  List<ChapterItem> listDownload = [];
+  List<String> listDownload = [];
 
   static Future<void> clearCache() async {
-    final box = await Hive.openBox<MangaModel>(MangaModel.mangaBox);
+    final box = await Hive.openBox('irohasu');
     await box.clear();
   }
 }

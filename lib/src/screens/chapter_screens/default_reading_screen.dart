@@ -1,16 +1,15 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:irohasu/src/blocs/change_background_color_bloc/change_background_bloc.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../constants/base_blogtruyen.dart';
 import '../../helper/media_query_helper.dart';
 import '../../models/chapter_model.dart';
-import '../../models/hive/hive_preferences_model.dart';
 import '../../screens/detail_screens/manga_detail_screen.dart';
 import './chapter_screen.dart';
-import './setting_chapter.dart';
+import '../setting_screen/widget/setting_chapter.dart';
 import './webtoon_widget/drawer_widget.dart';
 
 typedef AnimationListener = void Function();
@@ -35,23 +34,12 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
 
   ChapterModel get data => widget.data;
 
-  String _colorTheme = 'white';
-  final _preferences = Preferences.getInstance();
-  Preferences preferences;
-
-  void _checkBackgroundMode() async {
-    preferences = await _preferences;
-    setState(() {
-      _colorTheme = preferences.getBackgroundColorChapter() ?? 'white';
-    });
-  }
-
   @override
   void initState() {
     super.initState();
-    _checkBackgroundMode();
     _getIndex = _getChapterList.indexWhere(
-        (dynamic element) => element.chapterEndpoint == _getEndpoint);
+      (element) => element.chapterEndpoint == _getEndpoint,
+    );
     _scrollListController = ItemScrollController();
     _animationController = AnimationController(
       vsync: this,
@@ -68,110 +56,110 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
 
   @override
   Widget build(BuildContext context) {
-    final widthScreen = MediaQuery.of(context).size.width;
+    final widthScreen = ScreenHelper.getWidth(context);
     final prePage = widthScreen * 0.3;
     final nextPage = widthScreen * 0.7;
-    return ValueListenableBuilder(
-        valueListenable:
-            Hive.box<dynamic>(Preferences.preferencesBox).listenable(),
-        builder: (context, Box<dynamic> box, _) {
-          // _colorTheme = box.getBackgroundColorChapter();
-          return Scaffold(
-            backgroundColor:
-                _colorTheme == 'white' ? Colors.white : Colors.black87,
-            body: LayoutBuilder(builder: (context, constraints) {
-              return GestureDetector(
-                onTapDown: (TapDownDetails details) {
-                  var position = details.globalPosition.dx;
-                  if (position <= prePage) {
-                    (currentIndex == 0 && _getIndex != 0)
-                        ? nextChapter(context, _getIndex - 1)
-                        : _pageController.previousPage(
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeIn);
-                  } else if (position >= prePage && position <= nextPage) {
-                    setState(() => _showMenu = !_showMenu);
-                  } else {
-                    currentIndex == data.listImageChapter.length - 1
-                        ? nextChapter(context, _getIndex + 1)
-                        : _pageController.nextPage(
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeIn);
-                  }
-                },
-                child: Stack(
-                  alignment: Alignment.bottomCenter,
-                  children: <Widget>[
-                    // Load image
-                    _imageWidget(),
-                    if (_showMenu)
-                      Positioned(
-                        top: 0,
-                        width: ScreenHelper.getWidth(context),
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(vertical: 10),
-                          child: AppBar(
-                            leading: IconButton(
-                              icon: const Icon(
-                                Icons.arrow_back,
-                                color: Colors.white,
-                              ),
-                              onPressed: () => btnMangaDetail(context),
-                            ),
-                            centerTitle: false,
-                            backgroundColor: Colors.black.withOpacity(0.8),
-                            elevation: 0,
-                            title: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  data.titleManga.length > 25
-                                      ? '${data.titleManga.substring(0, 25)}..'
-                                      : data.titleManga,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white),
-                                ),
-                                Text(
-                                  _getChapterList[_getIndex]
-                                      .chapterTitle
-                                      .toString(),
-                                  style: const TextStyle(color: Colors.grey),
-                                ),
-                                const SizedBox(height: 10)
-                              ],
-                            ),
-                            actions: <Widget>[
-                              IconButton(
-                                icon: const Icon(
-                                  Icons.settings,
-                                  size: 35,
-                                  color: Colors.white,
-                                ),
-                                onPressed: () {
-                                  Navigator.of(context)
-                                      .pushNamed(SettingChapter.routeName);
-                                },
-                              )
-                            ],
+    return BlocBuilder<ChangeBackgroundBloc, ChangeBackgroundState>(
+        builder: (context, state) {
+      return Scaffold(
+        backgroundColor: (state is ChangeBackground) ? state.color : Colors.red,
+        body: LayoutBuilder(builder: (context, constraints) {
+          return GestureDetector(
+            onTapDown: (TapDownDetails details) {
+              var position = details.globalPosition.dx;
+              if (position <= prePage) {
+                (currentIndex == 0 && _getIndex != 0)
+                    ? nextChapter(context, _getIndex - 1)
+                    : _pageController.previousPage(
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeIn);
+              } else if (position >= prePage && position <= nextPage) {
+                setState(() => _showMenu = !_showMenu);
+              } else {
+                currentIndex == data.listImageChapter.length - 1
+                    ? nextChapter(context, _getIndex + 1)
+                    : _pageController.nextPage(
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeIn);
+              }
+            },
+            child: Stack(
+              alignment: Alignment.bottomCenter,
+              children: <Widget>[
+                // Load image
+                _imageWidget(),
+
+                // Show Appbar
+                if (_showMenu)
+                  Positioned(
+                    top: 0,
+                    width: ScreenHelper.getWidth(context),
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      child: AppBar(
+                        leading: IconButton(
+                          icon: const Icon(
+                            Icons.arrow_back,
+                            color: Colors.white,
                           ),
+                          onPressed: () => btnMangaDetail(context),
                         ),
+                        centerTitle: false,
+                        backgroundColor: Colors.black.withOpacity(0.8),
+                        elevation: 0,
+                        title: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              data.titleManga.length > 25
+                                  ? '${data.titleManga.substring(0, 25)}..'
+                                  : data.titleManga,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
+                            Text(
+                              _getChapterList[_getIndex]
+                                  .chapterTitle
+                                  .toString(),
+                              style: const TextStyle(color: Colors.grey),
+                            ),
+                            const SizedBox(height: 10)
+                          ],
+                        ),
+                        actions: <Widget>[
+                          IconButton(
+                            icon: const Icon(
+                              Icons.settings,
+                              size: 35,
+                              color: Colors.white,
+                            ),
+                            onPressed: () {
+                              Navigator.of(context)
+                                  .pushNamed(SettingChapter.routeName);
+                            },
+                          )
+                        ],
                       ),
-                    if (_showMenu)
-                      DrawerHorizontalWidget(
-                        indexChapter: _getIndex,
-                        indexPage: currentIndex,
-                        listChapter: _getChapterList,
-                        height: MediaQuery.of(context).size.height,
-                        totalImage: data.listImageChapter.length,
-                        scrollListController: _scrollListController,
-                      ),
-                  ],
-                ),
-              );
-            }),
+                    ),
+                  ),
+
+                // Show Drawer Bottom
+                if (_showMenu)
+                  DrawerHorizontalWidget(
+                    indexChapter: _getIndex,
+                    indexPage: currentIndex,
+                    listChapter: _getChapterList,
+                    height: MediaQuery.of(context).size.height,
+                    totalImage: data.listImageChapter.length,
+                    scrollListController: _scrollListController,
+                  ),
+              ],
+            ),
           );
-        });
+        }),
+      );
+    });
   }
 
   Widget _imageWidget() {
@@ -241,8 +229,10 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
   }
 
   void btnMangaDetail(BuildContext context) {
-    Navigator.of(context).pushNamed(MangaDetailScreen.routeName,
-        arguments: widget.data.mangaDetail);
+    Navigator.of(context).pushNamed(
+      MangaDetailScreen.routeName,
+      arguments: widget.data.mangaDetail,
+    );
   }
 
   ItemScrollController _scrollListController;

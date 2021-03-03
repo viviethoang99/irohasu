@@ -4,7 +4,7 @@ import 'package:hive/hive.dart';
 
 // Widget
 import '../../../src/constants/base_content.dart';
-import '../../../src/models/manga_model.dart';
+import '../../../src/models/manga_detail_model.dart';
 import '../../../src/screens/index_screen/index_screen.dart';
 import './widget/custom_button_reading_widget.dart';
 import './widget/description_text_widget.dart';
@@ -13,7 +13,7 @@ import './widget/list_chapter_widget.dart';
 
 class MangaDetailLoadedScreen extends StatefulWidget {
   const MangaDetailLoadedScreen({Key key, this.data}) : super(key: key);
-  final MangaModel data;
+  final MangaDetailModel data;
 
   @override
   _MangaDetailLoadedScreenState createState() =>
@@ -21,17 +21,11 @@ class MangaDetailLoadedScreen extends StatefulWidget {
 }
 
 class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
-  MangaModel get data => widget.data;
+  MangaDetailModel get data => widget.data;
 
-  MangaModel mangaDetail;
+  MangaDetailModel mangaDetail;
 
   final mangaBox = Hive.box<dynamic>('irohasu');
-
-  @override
-  void initState() {
-    super.initState();
-    // _createBox();
-  }
 
   @override
   Widget build(BuildContext context) {

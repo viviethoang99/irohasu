@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:irohasu/src/models/manga_list_model.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../../src/models/manga_model.dart';
 import '../../../src/resources/list_manga_repo.dart';
 import './bloc.dart';
 
@@ -23,7 +23,7 @@ class ListMangaBloc extends Bloc<ListMangaEvent, ListMangaState> {
   Stream<ListMangaState> mapEventToState(ListMangaEvent event) async* {
     final currentState = state;
     var page = 0;
-    List<MangaModel> data;
+    List<MangaListModel> data;
 
     if (event is FetchListMangaEvent && !_hasReachedMax(currentState)) {
       try {

@@ -1,22 +1,22 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'manga_model.dart';
+part of 'manga_detail_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class MangaModelAdapter extends TypeAdapter<MangaModel> {
+class MangaModelAdapter extends TypeAdapter<MangaDetailModel> {
   @override
   final int typeId = 0;
 
   @override
-  MangaModel read(BinaryReader reader) {
+  MangaDetailModel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return MangaModel(
+    return MangaDetailModel(
       idManga: fields[0] as String,
       title: fields[1] as String,
       isFavorite: fields[10] as bool,
@@ -29,12 +29,12 @@ class MangaModelAdapter extends TypeAdapter<MangaModel> {
       endpoint: fields[3] as String,
       thumbnailUrl: fields[2] as String,
     )
-      ..listChapRead = (fields[11] as List)?.cast<ChapterItem>()
-      ..listDownload = (fields[12] as List)?.cast<ChapterItem>();
+      ..listChapRead = (fields[11] as List)?.cast<String>()
+      ..listDownload = (fields[12] as List)?.cast<String>();
   }
 
   @override
-  void write(BinaryWriter writer, MangaModel obj) {
+  void write(BinaryWriter writer, MangaDetailModel obj) {
     writer
       ..writeByte(13)
       ..writeByte(0)

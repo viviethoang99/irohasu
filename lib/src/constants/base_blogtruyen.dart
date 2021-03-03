@@ -3,13 +3,13 @@ class BlogTruyen {
 
   static const baseUrl = 'http://localhost:1604';
 
-  static const _urlHeader = 'https://blogtruyen.vn';
+  static const urlHeader = 'https://blogtruyen.vn';
 
-  static const headersBuilder = {'Referer': _urlHeader};
+  static const headersBuilder = {'Referer': urlHeader};
 
   static String urlWebView(String url) {
     var _urlBlogTruyen = url.replaceAll('/api/manga/detail', '');
-    return _urlHeader + _urlBlogTruyen;
+    return urlHeader + _urlBlogTruyen;
   }
 
 
