@@ -1,9 +1,16 @@
 class BlogTruyen {
   static const name = 'BlogTruyen';
 
-  static const baseUrl = 'https://blogtruyen.vn';
+  static const baseUrl = 'http://localhost:1604';
 
-  static const headersBuilder = {'Referer': BlogTruyen.baseUrl};
+  static const urlHeader = 'https://blogtruyen.vn';
+
+  static const headersBuilder = {'Referer': urlHeader};
+
+  static String urlWebView(String url) {
+    var _urlBlogTruyen = url.replaceAll('/api/manga/detail', '');
+    return urlHeader + _urlBlogTruyen;
+  }
 
 
   Map<String, int> theme = {

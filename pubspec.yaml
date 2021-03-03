@@ -29,7 +29,6 @@ dependencies:
   cupertino_icons: ^1.0.0
   flutter_webview_plugin: ^0.3.11
   http: ^0.12.2
-  html: ^0.14.0+4
   dio: ^3.0.10
   rxdart: ^0.25.0
   equatable: ^1.2.5

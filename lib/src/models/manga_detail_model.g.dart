@@ -1,39 +1,40 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'manga_model.dart';
+part of 'manga_detail_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class MangaModelAdapter extends TypeAdapter<MangaModel> {
+class MangaModelAdapter extends TypeAdapter<MangaDetailModel> {
   @override
   final int typeId = 0;
 
   @override
-  MangaModel read(BinaryReader reader) {
+  MangaDetailModel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return MangaModel()
-      ..idManga = fields[0] as String
-      ..title = fields[1] as String
-      ..thumbnailUrl = fields[2] as String
-      ..endpoint = fields[3] as String
-      ..description = fields[4] as String
-      ..dislike = fields[5] as String
-      ..like = fields[6] as String
-      ..status = fields[7] as String
-      ..author = fields[8] as String
-      ..listChapter = (fields[9] as List)?.cast<ChapterItem>()
-      ..isFavorite = fields[10] as bool
-      ..listChapRead = (fields[11] as List)?.cast<ChapterItem>()
-      ..listDownload = (fields[12] as List)?.cast<ChapterItem>();
+    return MangaDetailModel(
+      idManga: fields[0] as String,
+      title: fields[1] as String,
+      isFavorite: fields[10] as bool,
+      status: fields[7] as String,
+      listChapter: (fields[9] as List)?.cast<ChapterItem>(),
+      author: fields[8] as String,
+      like: fields[6] as String,
+      dislike: fields[5] as String,
+      description: fields[4] as String,
+      endpoint: fields[3] as String,
+      thumbnailUrl: fields[2] as String,
+    )
+      ..listChapRead = (fields[11] as List)?.cast<String>()
+      ..listDownload = (fields[12] as List)?.cast<String>();
   }
 
   @override
-  void write(BinaryWriter writer, MangaModel obj) {
+  void write(BinaryWriter writer, MangaDetailModel obj) {
     writer
       ..writeByte(13)
       ..writeByte(0)

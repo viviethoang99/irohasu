@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:irohasu/src/models/chapter_model.dart';
-import 'package:irohasu/src/models/manga_model.dart';
+import '../../models/chapter_model.dart';
 
 abstract class ChapterState extends Equatable {
   const ChapterState();

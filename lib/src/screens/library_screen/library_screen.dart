@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:irohasu/src/models/manga_model.dart';
 
 import '../../../src/screens/home_screens/widget/appbar_widget.dart';
 import '../../../src/screens/home_screens/widget/item_manga.dart';
@@ -12,15 +11,14 @@ class LibraryScreen extends StatefulWidget {
 }
 
 class _LibraryScreenState extends State<LibraryScreen> {
-  var mangaBox = Hive.box<MangaModel>(MangaModel.mangaBox);
+  var mangaBox = Hive.box<dynamic>('irohasu');
 
-  List<MangaModel> listLibrary;
+  List listLibrary;
 
   @override
   void initState() {
     super.initState();
-    listLibrary =
-        mangaBox.values.where((manga) => manga.isFavorite == true).toList();
+    listLibrary = mangaBox.get('listManga', defaultValue: []).toList();
   }
 
   @override
@@ -30,7 +28,9 @@ class _LibraryScreenState extends State<LibraryScreen> {
       appBar: AppBarHomeWidget(),
       body: ValueListenableBuilder(
           valueListenable: mangaBox.listenable(),
-          builder: (context, Box<MangaModel> _box, widget) {
+          builder: (context, Box _box, widget) {
+            listLibrary.where((element) =>
+                element.isFavorite == true || element.listDownload.length >= 0);
             return Container(
               height: double.infinity,
               color: Theme.of(context).backgroundColor,

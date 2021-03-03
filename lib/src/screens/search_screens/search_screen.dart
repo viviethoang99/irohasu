@@ -13,12 +13,12 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  SearchBloc _searchBloc;
+  // SearchBloc _searchBloc;
 
   @override
   void initState() {
     super.initState();
-    _searchBloc = BlocProvider.of<SearchBloc>(context)
+    BlocProvider.of<SearchBloc>(context)
       ..add(FetchDataSearchEvent());
   }
 
@@ -60,7 +60,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     ),
                     title: Text(state.list[index].title),
                     isThreeLine: true,
-                    subtitle: Text(state.list[index].setUrlWithoutDomain),
+                    subtitle: Text(state.list[index].thumbnailUrl),
                   );
                 },
                 separatorBuilder: (BuildContext context, int index) =>

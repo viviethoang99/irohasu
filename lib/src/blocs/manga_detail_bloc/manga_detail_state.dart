@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../src/models/manga_model.dart';
+import '../../../src/models/manga_detail_model.dart';
 
 abstract class MangaDetailState extends Equatable {
   const MangaDetailState();
@@ -14,7 +14,14 @@ class MangaDetailLoadingState extends MangaDetailState{}
 
 class MangaDetailLoadedState extends MangaDetailState{
   const MangaDetailLoadedState({this.data});
-  final MangaModel data;
+  final MangaDetailModel data;
+
+  @override
+  List<Object> get props => [data];
+}
+class MangaDetailSyncState extends MangaDetailState{
+  const MangaDetailSyncState({this.data});
+  final MangaDetailModel data;
 
   @override
   List<Object> get props => [data];

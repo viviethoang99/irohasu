@@ -39,7 +39,7 @@ class _IndexScreenState extends State<IndexScreen> {
           children: <Widget>[
             HomeScreen(),
             LibraryScreen(),
-            Container(color: Colors.green,),
+            // Container(color: Colors.green,),
             SettingScreen(),
           ],
         ),
@@ -70,13 +70,13 @@ class _IndexScreenState extends State<IndexScreen> {
             ),
             icon: const Icon(Icons.library_books),
           ),
-          BottomNavyBarItem(
-            title: const Text(
-              Content.comments,
-              style: TextStyle(fontSize: 15),
-            ),
-            icon: const Icon(Icons.chat_bubble),
-          ),
+          // BottomNavyBarItem(
+          //   title: const Text(
+          //     Content.comments,
+          //     style: TextStyle(fontSize: 15),
+          //   ),
+          //   icon: const Icon(Icons.chat_bubble),
+          // ),
           BottomNavyBarItem(
             title: const Text(
               Content.settings,

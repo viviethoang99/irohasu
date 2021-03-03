@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:irohasu/src/models/manga_model.dart';
+import 'package:irohasu/src/models/manga_detail_model.dart';
 
 class BtnVoteWidget extends StatelessWidget {
   const BtnVoteWidget(
       {Key key, @required this.data})
       : super(key: key);
 
-  final MangaModel data;
+  final MangaDetailModel data;
 
   @override
   Widget build(BuildContext context) {

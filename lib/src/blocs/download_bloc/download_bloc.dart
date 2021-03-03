@@ -1,78 +1,123 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
-
-import 'package:archive/archive_io.dart';
-import 'package:dio/dio.dart';
-import 'package:meta/meta.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:http/http.dart' as http;
-
 import 'package:bloc/bloc.dart';
+
 import 'package:equatable/equatable.dart';
-import 'package:irohasu/src/models/chapter_model.dart';
-import '../../../src/resources/chapter_repo.dart';
+import 'package:hive/hive.dart';
+import 'package:irohasu/src/models/chapter_item_model.dart';
+
+import '../../service/download_data.dart';
 
 part 'download_event.dart';
 
 part 'download_state.dart';
 
+typedef DownloadPercentageChanged = void Function(double percentage);
+
 class DownloadBloc extends Bloc<DownloadEvent, DownloadState> {
   DownloadBloc() : super(DownloadInitialState());
-  ChapterRepo _chapterRepo;
+  final _downloadData = DownloadData();
+  Future<String> _path;
+  bool isCancel = false;
 
   @override
   Stream<DownloadState> mapEventToState(DownloadEvent event) async* {
-    if(event is DownloadChapter) {
-      yield DownloadLoadingState();
+    if (event is DownloadChapterEvent) {
+      try {
+        yield DownloadingState();
+        var uri = event.chapterModel.chapterEndpoint;
+        var fileName = _downloadData.nameFolder(uri);
+        _path = _downloadData.downloadChapter(
+          uri: uri,
+          name: fileName,
+          folderName: event.titleManga,
+          onProgress: (double process) =>
+              add(ChapterDownloadPercentageChangedEvent(
+            percentage: process,
+            idChapter: event.chapterModel.idChapter,
+            indexManga: event.indexManga,
+          )),
+        );
+      } catch (e) {
+        print(e);
+      }
     }
-  }
-
-  Future<String> downloadFile(
-      String uri, String name, String folderName, Function onProgress) async {
-    final dio = Dio();
-    var token = CancelToken();
-
-    try {
-      var _appDocDirFolder = await createFolder(folderName);
-
-      if (_appDocDirFolder != null) {
-        _appDocDirFolder = '$_appDocDirFolder/$name';
-        final res = await http.get(uri);
-        if (res.statusCode == 200) {
-          await dio.download(uri, _appDocDirFolder, cancelToken: token);
-          return _appDocDirFolder;
-        } else {
-          return null;
+    if (event is ChapterDownloadPercentageChangedEvent) {
+      yield DownloadProcessState()
+          .copyWith(downloadPercentageCompleted: event.percentage);
+      if (event.percentage == 1) {
+        String uriChapter;
+        await _path.then((String value) {
+          uriChapter = value;
+        });
+        // print(uriChapter);
+        var _isSuccess = await addChapToDownload(
+          url: uriChapter,
+          indexManga: event.indexManga,
+          idChapter: event.idChapter,
+        );
+        yield _isSuccess ? DownloadedState(data: uriChapter) : null;
+      }
+    }
+    if (event is RemoveChapterEvent) {
+      yield DownloadingState();
+      var urlDownload = event?.chapter?.isDownload;
+      if (urlDownload != null) {
+        try {
+          var _isRemove = await _downloadData.removeFolder(url: urlDownload);
+          if (_isRemove)
+            await removeChapToDownload(idChapter: event.chapter.idChapter);
+          yield DownloadInitialState();
+        } catch (e) {
+          print(e);
         }
-      } else {
-        return null;
       }
-    } catch (e) {
-      print(e);
-      return null;
     }
   }
 
-  Future<String> createFolder(String name) async {
+  Future<bool> removeChapToDownload({String idChapter, int indexManga}) async {
+    var mangaBox = Hive.box('irohasu');
+    List listManga = mangaBox.get('listManga', defaultValue: []);
+
     try {
-      //Get this App Document Directory
-      final _appDocDir = await getApplicationDocumentsDirectory();
+      var listDownload = listManga[indexManga]
+          .listDownload
+          .where((id) => id != idChapter)
+          .toList();
+      listManga[indexManga].listDownload = listDownload;
+      listManga[indexManga]
+          .listChapter
+          .firstWhere((manga) => manga.idChapter == idChapter)
+          .isDownload = null;
+      await mangaBox.put('listManga', listManga);
+      return true;
+    } catch (_) {
+      // throw Exception('Error on remove Manga download to database');
+      return false;
+    }
+  }
 
-      //App Document Directory + folder name
-      final _appDocDirFolder = Directory('${_appDocDir.absolute.path}/$name');
+  Future<bool> addChapToDownload({
+    int indexManga,
+    String idChapter,
+    String url,
+  }) async {
+    var mangaBox = Hive.box('irohasu');
+    List listManga = mangaBox.get('listManga', defaultValue: []);
+    print('Before: $url');
+    url = await _downloadData.relativePathChapter(uri: url);
+    // print('Local chapter: $url');
 
-      if (await _appDocDirFolder.exists()) {
-        // if folder already exists return path
-        return _appDocDirFolder.path;
-      } else {
-        // if folder not exists create folder and then return its path
-        final _appDirNewFolder = await _appDocDirFolder.create(recursive: true);
-        return _appDirNewFolder.path;
-      }
-    } catch (e) {
-      print(e);
-      return null;
+    try {
+      listManga[indexManga].listDownload.add(idChapter);
+      listManga[indexManga]
+          .listChapter
+          .firstWhere((manga) => manga.idChapter == idChapter)
+          .isDownload = url;
+      await mangaBox.put('listManga', listManga);
+      return true;
+    } catch (_) {
+      return false;
+      // throw Exception('Error on add Manga download to database');
     }
   }
 }

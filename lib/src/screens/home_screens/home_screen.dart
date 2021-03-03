@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:irohasu/src/helper/media_query_helper.dart';
 
 // Widget
 import '../../../src/components/loading_screen.dart';
@@ -20,7 +21,6 @@ class _HomeScreenState extends State<HomeScreen> {
   // Scroll Controller
   ScrollController _scrollController;
   final _scrollThreshold = 300.0;
-  int _currentIndex = 0;
 
   @override
   void initState() {
@@ -53,6 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
               }
               if (state is InitialListMangaState) {
                 return Container(
+                  height: ScreenHelper.getHeight(context),
                   color: Theme.of(context).backgroundColor,
                 );
               }
