@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
-import 'package:irohasu/src/blocs/change_background_color_bloc/change_background_bloc.dart';
-import 'package:irohasu/src/blocs/change_reading_mode_bloc/change_reading_mode_bloc.dart';
-import 'package:irohasu/src/blocs/change_theme_bloc/change_theme_bloc.dart';
 
+import '../../../blocs/change_background_color_bloc/change_background_bloc.dart';
+import '../../../blocs/change_reading_mode_bloc/change_reading_mode_bloc.dart';
 import '../../../constants/base_content.dart';
 
 class SettingChapter extends StatefulWidget {
@@ -125,34 +123,32 @@ class _SettingChapterState extends State<SettingChapter> {
                 ),
               ),
               BlocBuilder<ChangeBackgroundBloc, ChangeBackgroundState>(
-                builder: (context, state) {
-                  return PopupMenuButton<String>(
-                    child: Text(
-                      (state is ChangeBackground) ? state.string : 'Mặc định',
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: theme.primaryColor,
-                      ),
+                  builder: (context, state) {
+                return PopupMenuButton<String>(
+                  child: Text(
+                    state.string,
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: theme.primaryColor,
                     ),
-                    onSelected: _setBackgroundColor,
-                    itemBuilder: (context) {
-                      return PopupMenuSetting.listBackground
-                          .map((String choice) {
-                        return PopupMenuItem<String>(
-                          value: choice,
-                          child: Text(
-                            choice,
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: theme.primaryColor,
-                            ),
+                  ),
+                  onSelected: _setBackgroundColor,
+                  itemBuilder: (context) {
+                    return PopupMenuSetting.listBackground.map((String choice) {
+                      return PopupMenuItem<String>(
+                        value: choice,
+                        child: Text(
+                          choice,
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: theme.primaryColor,
                           ),
-                        );
-                      }).toList();
-                    },
-                  );
-                },
-              )
+                        ),
+                      );
+                    }).toList();
+                  },
+                );
+              })
             ],
           ),
         ],

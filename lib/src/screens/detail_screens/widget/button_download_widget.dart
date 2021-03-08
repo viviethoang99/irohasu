@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:irohasu/src/blocs/download_bloc/download_bloc.dart';
 import 'package:irohasu/src/models/chapter_item_model.dart';
 import 'package:irohasu/src/models/manga_detail_model.dart';
-import 'package:irohasu/src/service/hive_data_manga.dart';
 
 @immutable
 class DownloadButton extends StatefulWidget {
@@ -11,13 +10,11 @@ class DownloadButton extends StatefulWidget {
     Key key,
     this.transitionDuration = const Duration(milliseconds: 500),
     this.item,
-    this.index,
     this.data,
   }) : super(key: key);
 
   final Duration transitionDuration;
   final ChapterItem item;
-  final int index;
   final MangaDetailModel data;
 
   @override
@@ -25,9 +22,6 @@ class DownloadButton extends StatefulWidget {
 }
 
 class _DownloadButtonState extends State<DownloadButton> {
-  int _indexManga;
-  final _saveManga = HiveDataManga();
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -54,14 +48,11 @@ class _DownloadButtonState extends State<DownloadButton> {
                   color: Theme.of(context).buttonColor,
                 ),
                 onPressed: () async {
-                  _indexManga = await _saveManga.addMangaToDatabase(
-                    data: widget.data,
-                  );
                   BlocProvider.of<DownloadBloc>(context).add(
                       DownloadChapterEvent(
                           chapterModel: widget.item,
                           titleManga: widget.data.title,
-                          indexManga: _indexManga));
+                          idManga: widget.data.idManga));
                 });
           }
           if (state is DownloadProcessState) {
@@ -137,23 +128,3 @@ class _DownloadButtonState extends State<DownloadButton> {
     );
   }
 }
-
-// Widget _buildButtonShape({
-//   @required Widget child,
-// }) {
-//   return AnimatedContainer(
-//     duration: widget.transitionDuration,
-//     curve: Curves.ease,
-//     width: double.infinity,
-//     decoration: _isDownloading || _isFetching
-//         ? ShapeDecoration(
-//             shape: const CircleBorder(),
-//             color: Colors.white.withOpacity(0.0),
-//           )
-//         : ShapeDecoration(
-//             shape: const StadiumBorder(),
-//             color: Theme.of(context).buttonColor,
-//           ),
-//     child: child,
-//   );
-// }

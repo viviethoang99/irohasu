@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:irohasu/src/screens/detail_screens/manga_detail_screen.dart';
 
+import '../../../env.dart';
 import '../../../src/blocs/search_bloc/bloc.dart';
 import '../../../src/components/loading_screen.dart';
-import '../../../src/constants/base_blogtruyen.dart';
 
 class SearchScreen extends StatefulWidget {
   static const routeName = '/search';
@@ -18,8 +19,7 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<SearchBloc>(context)
-      ..add(FetchDataSearchEvent());
+    BlocProvider.of<SearchBloc>(context)..add(FetchDataSearchEvent());
   }
 
   @override
@@ -29,8 +29,7 @@ class _SearchScreenState extends State<SearchScreen> {
       appBar: AppBar(
         actions: <Widget>[
           IconButton(
-            onPressed: () {
-            },
+            onPressed: () {},
             icon: const Icon(Icons.search),
           )
         ],
@@ -52,7 +51,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     dense: true,
                     leading: Image.network(
                       state.list[index].thumbnailUrl,
-                      headers: BlogTruyen.headersBuilder,
+                      headers: ENV.headersBuilder,
                       errorBuilder: (BuildContext context, Object exception,
                           StackTrace stackTrace) {
                         return Image.asset('assets/images/404.png');
@@ -61,6 +60,11 @@ class _SearchScreenState extends State<SearchScreen> {
                     title: Text(state.list[index].title),
                     isThreeLine: true,
                     subtitle: Text(state.list[index].thumbnailUrl),
+                    onTap: () {
+                      Navigator.of(context).pushNamed(
+                          MangaDetailScreen.routeName,
+                          arguments: state.list[index].endpoint);
+                    },
                   );
                 },
                 separatorBuilder: (BuildContext context, int index) =>
@@ -75,4 +79,3 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 }
-

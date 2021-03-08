@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:irohasu/src/models/manga_list_model.dart';
 
 abstract class SearchState extends Equatable {
@@ -11,7 +12,7 @@ class InitialSearchState extends SearchState {}
 class SearchLoadingState extends SearchState {}
 
 class SearchLoadedState extends SearchState {
-  SearchLoadedState({this.list});
+  SearchLoadedState({@required this.list});
 
   final List<MangaListModel> list;
 

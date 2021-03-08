@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
-import 'package:irohasu/src/constants/base_blogtruyen.dart';
+
+import '../../env.dart';
 
 class WebViewPage extends StatefulWidget {
   const WebViewPage({
@@ -39,7 +40,7 @@ class _WebViewPageState extends State<WebViewPage> {
             onPressed: () => Navigator.of(context).pop()
           ),
         ),
-        url: BlogTruyen.baseUrl + widget.url,
+        url: ENV.webPage + widget.url,
         hidden: true,
         withJavascript: true,
       ),

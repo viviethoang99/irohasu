@@ -20,8 +20,8 @@ class CustomButtonReadingWidget extends StatelessWidget {
       child: Ink(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
         decoration: BoxDecoration(
-          border: Border.all(color: Theme.of(context).buttonColor, width: 2),
-          borderRadius: BorderRadius.circular(20.0),
+          border: Border.all(color: Theme.of(context).buttonColor, width: 3),
+          borderRadius: BorderRadius.circular(25.0),
         ),
         child: InkWell(
           onTap: () {
@@ -33,12 +33,16 @@ class CustomButtonReadingWidget extends StatelessWidget {
               ),
             );
           },
-          child: Text(
-            status,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-              color: Theme.of(context).primaryColor,
+          child: Container(
+            margin: const EdgeInsets.symmetric(vertical: 3),
+            alignment: Alignment.center,
+            child: Text(
+              status.toUpperCase(),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+                color: Theme.of(context).buttonColor,
+              ),
             ),
           ),
         ),

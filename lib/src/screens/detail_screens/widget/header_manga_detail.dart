@@ -9,9 +9,9 @@ import 'package:irohasu/src/constants/base_colors.dart';
 import 'package:irohasu/src/models/manga_detail_model.dart';
 import 'package:irohasu/src/service/favorite_data.dart';
 
+import '../../../../env.dart';
 import '../../../../src/helper/media_query_helper.dart';
 import '../../../../src/models/manga_detail_model.dart';
-import '../../../constants/base_blogtruyen.dart';
 import './btn_vote_widget.dart';
 
 class HeaderMangaDetail extends StatefulWidget {
@@ -75,7 +75,7 @@ class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
                 ),
               ),
             ),
-            httpHeaders: BlogTruyen.headersBuilder,
+            httpHeaders: ENV.headersBuilder,
             placeholder: (context, url) => const CircularProgressIndicator(),
             errorWidget: (context, url, dynamic error) =>
                 const Icon(Icons.error),
@@ -94,7 +94,7 @@ class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
                     borderRadius: BorderRadius.circular(10),
                     child: CachedNetworkImage(
                       imageUrl: widget.data.thumbnailUrl,
-                      httpHeaders: BlogTruyen.headersBuilder,
+                      httpHeaders: ENV.headersBuilder,
                       fit: BoxFit.cover,
                       height: ScreenHelper.getHeight(context) / 5,
                       width: ScreenHelper.getWidth(context) / 3.5,
@@ -119,21 +119,15 @@ class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
                           ),
                         ),
                         if (dataAuthor)
-                          Text(
-                            author,
+                          Text(author,
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  color: Theme.of(context).primaryColor)),
+                        const SizedBox(height: 15),
+                        Text(widget.data.status,
                             style: TextStyle(
-                                fontSize: 18,
-                                color: Theme.of(context).primaryColor),
-                          ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          widget.data.status,
-                          style: TextStyle(
-                              fontSize: 15,
-                              color: Theme.of(context).primaryColor),
-                        ),
+                                fontSize: 15,
+                                color: Theme.of(context).primaryColor)),
                         BtnVoteWidget(data: widget.data)
                       ],
                     ),
@@ -154,16 +148,10 @@ class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
       child: ValueListenableBuilder(
           valueListenable: mangaBox.listenable(keys: ['listManga']),
           builder: (context, Box _box, _) {
-            List listManga = _box.get('listManga', defaultValue: []);
-            if (listManga.isEmpty) {
-              _isFavorite = false;
-            } else {
-              _isFavorite = listManga
-                      ?.firstWhere((manga) => manga.idManga == _idManga,
-                          orElse: () => null)
-                      ?.isFavorite ??
-                  false;
-            }
+            var listManga = _box.get('listManga', defaultValue: {});
+
+            _isFavorite = listManga[_idManga]?.data?.isFavorite ?? false;
+            // print(_isFavorite);
             return Row(
               children: <Widget>[
                 _isFavorite
@@ -173,26 +161,14 @@ class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
                           color: Theme.of(context).buttonColor,
                           size: 38,
                         ),
-                        onPressed: () => FavoriteData.unFavorite(_idManga))
+                        onPressed: () => FavoriteData.isFavorite(_idManga))
                     : IconButton(
                         icon: Icon(
                           Icons.favorite_border,
                           color: Theme.of(context).primaryColor,
                           size: 38,
                         ),
-                        onPressed: () => FavoriteData.saveFavorite(
-                                MangaDetailModel.mangaDetail(
-                              idManga: widget.data.idManga,
-                              title: widget.data.title,
-                              endpoint: widget.data.endpoint,
-                              thumbnailUrl: widget.data.thumbnailUrl,
-                              author: widget.data.author,
-                              description: widget.data.description,
-                              dislike: widget.data.dislike,
-                              like: widget.data.like,
-                              listChapter: widget.data.listChapter,
-                              status: widget.data.status,
-                            ))),
+                        onPressed: () => FavoriteData.isFavorite(_idManga)),
                 IconButton(
                   icon: Icon(
                     Icons.language,
@@ -203,7 +179,7 @@ class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
                     Navigator.of(context).pushNamed(WebViewPage.routeName,
                         arguments: WebViewPage(
                             title: widget.data.title,
-                            url: BlogTruyen.urlWebView(widget.data.endpoint)));
+                            url: ENV.urlWebView(widget.data.endpoint)));
                   },
                 ),
                 IconButton(

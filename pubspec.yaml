@@ -41,7 +41,6 @@ dependencies:
   hive: ^1.4.4+1
   hive_flutter: ^0.3.1
   path_provider: ^1.6.27
-  archive: ^2.0.13
   cached_network_image: ^2.5.0
 
 dev_dependencies:

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:irohasu/src/components/loading_screen.dart';
 import 'package:irohasu/src/models/manga_detail_model.dart';
 
 import '../../../src/blocs/search_bloc/bloc.dart';
@@ -24,9 +25,7 @@ class SearchScreen extends SearchDelegate<MangaDetailModel> {
     return <Widget>[
       IconButton(
         icon: const Icon(Icons.close),
-        onPressed: () {
-          query = '';
-        },
+        onPressed: () => query = '',
       )
     ];
   }
@@ -50,37 +49,43 @@ class SearchScreen extends SearchDelegate<MangaDetailModel> {
       }
       if (state is SearchLoadingState) {
         return Container(
-          child: const Center(
-            child: CircularProgressIndicator(),
-          ),
+          child: LoadingScreen(),
         );
       }
       if (state is SearchLoadedState) {
         return Container(
           height: double.infinity,
-          decoration: const BoxDecoration(color: Colors.black87),
+          decoration: BoxDecoration(
+            color: Theme.of(context).backgroundColor,
+          ),
           child: GridView.builder(
             shrinkWrap: true,
             padding: const EdgeInsets.all(12),
             itemCount: state.list.length,
-            gridDelegate:
-            const SliverGridDelegateWithFixedCrossAxisCount(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               childAspectRatio: 0.6,
               crossAxisCount: 2,
               crossAxisSpacing: 2,
               mainAxisSpacing: 2,
             ),
             itemBuilder: (context, index) {
+              final item = state.list[index];
               return ItemManga(
-              title: state.list[index].title,
-              thumbnailUrl: state.list[index].thumbnailUrl,
-              setUrlWithoutDomain: state.list[index].thumbnailUrl,
+                title: item.title,
+                thumbnailUrl: item.thumbnailUrl,
+                setUrlWithoutDomain: item.endpoint,
               );
             },
           ),
         );
       }
-      return const Center(child: Text('Other states..'));
+      return Container(
+        height: double.infinity,
+        decoration: BoxDecoration(
+          color: Theme.of(context).backgroundColor,
+        ),
+        child: const Center(child: Text('Không thể load được dữ liệu...')),
+      );
     });
   }
 

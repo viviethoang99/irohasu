@@ -1,6 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-import '../../../constants/base_blogtruyen.dart';
+import '../../../../env.dart';
 import '../../detail_screens/manga_detail_screen.dart';
 
 class ItemManga extends StatelessWidget {
@@ -8,18 +9,22 @@ class ItemManga extends StatelessWidget {
     @required this.title,
     @required this.thumbnailUrl,
     @required this.setUrlWithoutDomain,
+    this.status,
   });
 
   final String title;
   final String thumbnailUrl;
   final String setUrlWithoutDomain;
+  final String status;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.of(context).pushNamed(MangaDetailScreen.routeName,
-            arguments: setUrlWithoutDomain);
+        Navigator.of(context).pushNamed(
+          MangaDetailScreen.routeName,
+          arguments: setUrlWithoutDomain,
+        );
       },
       child: Card(
         color: Colors.transparent,
@@ -31,15 +36,22 @@ class ItemManga extends StatelessWidget {
                 aspectRatio: 0.7,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(5.0),
-                  child: Image.network(
-                    thumbnailUrl,
-                    headers: BlogTruyen.headersBuilder,
-                    fit: BoxFit.cover,
-                    errorBuilder: (BuildContext context, Object exception,
-                        StackTrace stackTrace) {
-                      return Image.asset('assets/images/404.png');
-                    },
-                  ),
+                  child: (status == 'library')
+                      ? CachedNetworkImage(
+                          placeholder: (context, url) =>
+                              const CircularProgressIndicator(),
+                          fit: BoxFit.cover,
+                          imageUrl: thumbnailUrl,
+                        )
+                      : Image.network(
+                          thumbnailUrl,
+                          headers: ENV.headersBuilder,
+                          fit: BoxFit.cover,
+                          errorBuilder: (BuildContext context, Object exception,
+                              StackTrace stackTrace) {
+                            return Image.asset('assets/images/404.png');
+                          },
+                        ),
                 ),
               ),
             ),

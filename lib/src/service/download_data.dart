@@ -3,18 +3,21 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../../src/constants/base_blogtruyen.dart';
-import '../../src/resources/chapter_repo.dart';
+import '../../env.dart';
+import '../resources/chapter_repo.dart';
 
 class DownloadData {
-  Future<String> createFolder(String name) async {
+  Future<String> createFolder(String name, {String folder = 'download'}) async {
     try {
       //Get this App Document Directory
       final _appDocDir = await getApplicationDocumentsDirectory();
 
-      //App Document Directory + folder name
-      final _appDocDirFolder =
-          Directory('${_appDocDir.absolute.path}/download/$name');
+      //App Document Directory + folder save + folder name
+      final _appDocDirFolder = Directory(
+        (name == null)
+            ? '${_appDocDir.absolute.path}/$folder'
+            : '${_appDocDir.absolute.path}/$folder/$name',
+      );
 
       if (await _appDocDirFolder.exists()) {
         // if folder already exists return path
@@ -60,7 +63,7 @@ class DownloadData {
           var _appDocDirImage = '$appDocDirFolder/$fileName';
           await dio.download(item.chapterImageLink, _appDocDirImage,
               options: Options(headers: {
-                HttpHeaders.refererHeader: BlogTruyen.urlHeader,
+                HttpHeaders.refererHeader: ENV.webPage,
               }));
           onProgress(item.number / data.listImageChapter.length);
         }

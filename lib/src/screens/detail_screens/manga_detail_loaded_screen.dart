@@ -1,11 +1,10 @@
 // Packages
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 
 // Widget
-import '../../../src/constants/base_content.dart';
-import '../../../src/models/manga_detail_model.dart';
-import '../../../src/screens/index_screen/index_screen.dart';
+import '../../constants/base_content.dart';
+import '../../models/manga_detail_model.dart';
+import '../../screens/index_screen/index_screen.dart';
 import './widget/custom_button_reading_widget.dart';
 import './widget/description_text_widget.dart';
 import './widget/header_manga_detail.dart';
@@ -23,21 +22,48 @@ class MangaDetailLoadedScreen extends StatefulWidget {
 class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
   MangaDetailModel get data => widget.data;
 
-  MangaDetailModel mangaDetail;
+  String _continueReading = Content.startReading;
 
-  final mangaBox = Hive.box<dynamic>('irohasu');
+  @override
+  void initState() {
+    super.initState();
+    continueReading();
+  }
+
+  void continueReading() {
+    if (data.listChapRead.isNotEmpty) {
+      final _titleLastChapter = data.listChapter
+          .firstWhere((chapter) => chapter.idChapter == data.listChapRead.last)
+          .chapterTitle
+          .split(' ');
+      final _getIndexNumberLastChapter = _titleLastChapter.indexWhere(
+              (element) =>
+                  element.toLowerCase() == 'chương' ||
+                  element.toLowerCase() == 'chapter') +
+          1;
+      final lastChapterNumber = _titleLastChapter[_getIndexNumberLastChapter]
+          .replaceAll(':', '')
+          .trim();
+      _continueReading = 'TIẾP TỤC ĐỌC TỪ CHƯƠNG $lastChapterNumber';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       extendBodyBehindAppBar: true,
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: theme.backgroundColor,
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Theme.of(context).primaryColor),
-          onPressed: () =>
-              Navigator.of(context).pushNamed(IndexScreen.routeName),
-        ),
+            icon: Icon(
+              Icons.arrow_back,
+              color: theme.primaryColor,
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).pushNamed(IndexScreen.routeName);
+            }),
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0.0,
@@ -45,21 +71,21 @@ class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
           IconButton(
             icon: Icon(
               Icons.search,
-              color: Theme.of(context).primaryColor,
+              color: theme.primaryColor,
             ),
             onPressed: null,
           ),
           IconButton(
             icon: Icon(
               Icons.get_app,
-              color: Theme.of(context).primaryColor,
+              color: theme.primaryColor,
             ),
             onPressed: null,
           ),
           IconButton(
             icon: Icon(
               Icons.more_vert,
-              color: Theme.of(context).primaryColor,
+              color: theme.primaryColor,
             ),
             onPressed: null,
           ),
@@ -73,26 +99,20 @@ class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
           shrinkWrap: true,
           children: <Widget>[
             HeaderMangaDetail(data: data),
-            if (data.description.isNotEmpty)
-              DescriptionTextWidget(text: data.description),
+            DescriptionTextWidget(
+              text: data.description ?? '',
+              listGenres: data.listGenres,
+            ),
+            const SizedBox(height: 10),
             Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  CustomButtonReadingWidget(
-                    status: Content.startReading,
-                    color: Colors.green,
-                    chapterList: data.listChapter,
-                  ),
-                  CustomButtonReadingWidget(
-                    status: Content.readComments,
-                    color: Colors.amber,
-                    chapterList: data.listChapter,
-                  ),
-                ],
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: CustomButtonReadingWidget(
+                status: _continueReading,
+                color: Colors.green,
+                chapterList: data.listChapter,
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             ListChapterWidget(data: data),
           ],
         ),

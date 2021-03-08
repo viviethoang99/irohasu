@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:irohasu/src/models/manga_list_model.dart';
+import '../../helper/media_query_helper.dart';
+import '../../models/manga_list_model.dart';
 
 import './widget/item_manga.dart';
 
@@ -24,6 +25,7 @@ class _ListMangaWidgetState extends State<ListMangaWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: ScreenHelper.getHeight(context),
       color: Theme.of(context).backgroundColor,
       child: GridView.builder(
         shrinkWrap: true,

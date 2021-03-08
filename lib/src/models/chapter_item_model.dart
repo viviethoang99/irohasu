@@ -16,15 +16,13 @@ class ChapterItem extends Equatable {
     this.isReading = false,
   });
 
-  factory ChapterItem.fromJson({Map<String, dynamic> json}) {
-    return ChapterItem(
-      idChapter: json['idChapter'] as String,
-      chapterTitle: json['chapterTitle'] as String,
-      chapterEndpoint: json['chapterEndpoint'] as String,
-      chapterUpload: DateFormat('dd/MMM/yyyy hh:mm')
-          .parse(json['chapterUpload'] as String),
-    );
-  }
+  factory ChapterItem.fromJson({Map<String, dynamic> json}) => ChapterItem(
+        idChapter: json['idChapter'] as String,
+        chapterTitle: json['chapterTitle'] as String,
+        chapterEndpoint: json['chapterEndpoint'] as String,
+        chapterUpload: DateFormat('dd/MMM/yyyy hh:mm')
+            .parse(json['chapterUpload'] as String),
+      );
 
   @HiveField(0)
   final String chapterTitle;
@@ -44,7 +42,8 @@ class ChapterItem extends Equatable {
   int get progressReading => _progressReading;
 
   set progressReading(int progress) {
-    if(progress > 0 && progress > _progressReading) _progressReading = progress;
+    if (progress > 0 && progress > _progressReading)
+      _progressReading = progress;
   }
 
   @override

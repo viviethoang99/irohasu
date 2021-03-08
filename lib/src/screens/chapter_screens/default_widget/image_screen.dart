@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import '../../../constants/base_blogtruyen.dart';
+import 'package:irohasu/env.dart';
 import '../../../models/chapter_model.dart';
 
 class LoadImage extends StatelessWidget {
@@ -23,7 +23,7 @@ class LoadImage extends StatelessWidget {
         itemBuilder: (context, index) {
           return CachedNetworkImage(
             imageUrl: data.listImageChapter[index].chapterImageLink,
-            httpHeaders: BlogTruyen.headersBuilder,
+            httpHeaders: ENV.headersBuilder,
           );
         },
         itemCount: data.listImageChapter.length,

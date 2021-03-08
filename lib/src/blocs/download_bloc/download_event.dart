@@ -5,14 +5,14 @@ abstract class DownloadEvent extends Equatable {
 }
 
 class DownloadChapterEvent extends DownloadEvent {
-  DownloadChapterEvent({this.chapterModel, this.titleManga, this.indexManga})
-      : assert(chapterModel != null, indexManga != null);
+  DownloadChapterEvent({this.chapterModel, this.titleManga, this.idManga})
+      : assert(chapterModel != null, idManga != null);
   final String titleManga;
-  final int indexManga;
+  final String idManga;
   final ChapterItem chapterModel;
 
   @override
-  List<Object> get props => [chapterModel, indexManga];
+  List<Object> get props => [chapterModel, idManga];
 }
 
 class CancelDownloadEvent extends DownloadEvent {
@@ -26,13 +26,13 @@ class CancelDownloadEvent extends DownloadEvent {
 
 class ChapterDownloadPercentageChangedEvent extends DownloadEvent {
   ChapterDownloadPercentageChangedEvent({
-    this.indexManga,
+    this.idManga,
     this.idChapter,
     this.percentage,
   });
 
   final double percentage;
-  final int indexManga;
+  final String idManga;
   final String idChapter;
 
   @override
@@ -40,22 +40,22 @@ class ChapterDownloadPercentageChangedEvent extends DownloadEvent {
 
   ChapterDownloadPercentageChangedEvent copyWith({
     double percentage,
-    int indexManga,
+    String idManga,
     String idChapter,
   }) {
     return ChapterDownloadPercentageChangedEvent(
       percentage: percentage ?? this.percentage,
-      indexManga: indexManga ?? this.indexManga,
+      idManga: idManga ?? this.idManga,
       idChapter: idChapter ?? this.idChapter,
     );
   }
 }
 
 class RemoveChapterEvent extends DownloadEvent {
-  RemoveChapterEvent({this.indexManga, this.chapter});
+  RemoveChapterEvent({this.idManga, this.chapter});
 
   final ChapterItem chapter;
-  final int indexManga;
+  final String idManga;
 
   @override
   List<Object> get props => throw UnimplementedError();

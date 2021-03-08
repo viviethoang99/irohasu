@@ -6,7 +6,7 @@ part of 'manga_detail_model.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class MangaModelAdapter extends TypeAdapter<MangaDetailModel> {
+class MangaDetailModelAdapter extends TypeAdapter<MangaDetailModel> {
   @override
   final int typeId = 0;
 
@@ -28,6 +28,7 @@ class MangaModelAdapter extends TypeAdapter<MangaDetailModel> {
       description: fields[4] as String,
       endpoint: fields[3] as String,
       thumbnailUrl: fields[2] as String,
+      listGenres: (fields[13] as List)?.cast<Genres>(),
     )
       ..listChapRead = (fields[11] as List)?.cast<String>()
       ..listDownload = (fields[12] as List)?.cast<String>();
@@ -36,7 +37,7 @@ class MangaModelAdapter extends TypeAdapter<MangaDetailModel> {
   @override
   void write(BinaryWriter writer, MangaDetailModel obj) {
     writer
-      ..writeByte(13)
+      ..writeByte(14)
       ..writeByte(0)
       ..write(obj.idManga)
       ..writeByte(1)
@@ -62,7 +63,9 @@ class MangaModelAdapter extends TypeAdapter<MangaDetailModel> {
       ..writeByte(11)
       ..write(obj.listChapRead)
       ..writeByte(12)
-      ..write(obj.listDownload);
+      ..write(obj.listDownload)
+      ..writeByte(13)
+      ..write(obj.listGenres);
   }
 
   @override
@@ -71,7 +74,7 @@ class MangaModelAdapter extends TypeAdapter<MangaDetailModel> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is MangaModelAdapter &&
+      other is MangaDetailModelAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

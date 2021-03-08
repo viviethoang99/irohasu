@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../src/screens/home_screens/widget/appbar_widget.dart';
-import '../../../src/screens/home_screens/widget/item_manga.dart';
+import '../../blocs/list_manga_library_bloc/list_manga_library_bloc.dart';
+import '../../components/loading_screen.dart';
+import '../../screens/home_screens/widget/appbar_widget.dart';
+import '../../screens/home_screens/widget/item_manga.dart';
 
 class LibraryScreen extends StatefulWidget {
   @override
@@ -11,14 +12,10 @@ class LibraryScreen extends StatefulWidget {
 }
 
 class _LibraryScreenState extends State<LibraryScreen> {
-  var mangaBox = Hive.box<dynamic>('irohasu');
-
-  List listLibrary;
-
   @override
   void initState() {
     super.initState();
-    listLibrary = mangaBox.get('listManga', defaultValue: []).toList();
+    BlocProvider.of<ListMangaLibraryBloc>(context).add(FetchDataLibrary());
   }
 
   @override
@@ -26,18 +23,21 @@ class _LibraryScreenState extends State<LibraryScreen> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       appBar: AppBarHomeWidget(),
-      body: ValueListenableBuilder(
-          valueListenable: mangaBox.listenable(),
-          builder: (context, Box _box, widget) {
-            listLibrary.where((element) =>
-                element.isFavorite == true || element.listDownload.length >= 0);
+      body: BlocBuilder<ListMangaLibraryBloc, ListMangaLibraryState>(
+        builder: (context, state) {
+          if (state is ListMangaLibraryInitial) return Container();
+          if (state is ListMangaLibraryLoading ||
+              state is ListMangaLibraryFail) {
+            return LoadingScreen();
+          }
+          if (state is ListMangaLibraryLoaded) {
             return Container(
               height: double.infinity,
               color: Theme.of(context).backgroundColor,
               child: GridView.builder(
                 shrinkWrap: true,
                 padding: const EdgeInsets.all(12),
-                itemCount: listLibrary.length,
+                itemCount: state.listCache.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   childAspectRatio: 0.6,
                   crossAxisCount: 3,
@@ -45,16 +45,20 @@ class _LibraryScreenState extends State<LibraryScreen> {
                   mainAxisSpacing: 2,
                 ),
                 itemBuilder: (context, index) {
-                  final manga = listLibrary[index];
+                  final manga = state.listCache[index].data;
                   return ItemManga(
                     title: manga.title,
                     thumbnailUrl: manga.thumbnailUrl,
                     setUrlWithoutDomain: manga.endpoint,
+                    status: 'library',
                   );
                 },
               ),
             );
-          }),
+          }
+          return null;
+        },
+      ),
     );
   }
 }

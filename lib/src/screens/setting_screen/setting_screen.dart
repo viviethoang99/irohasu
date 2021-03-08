@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../src/screens/setting_screen/widget/general_page.dart';
-import '../../../src/screens/setting_screen/widget/setting_chapter.dart';
+import '../../screens/setting_screen/widget/general_page.dart';
+import '../../screens/setting_screen/widget/setting_chapter.dart';
 
 class SettingScreen extends StatelessWidget {
   @override

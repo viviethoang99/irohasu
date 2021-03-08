@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:irohasu/src/components/webview_widget.dart';
+import 'package:irohasu/src/blocs/list_manga_bloc/bloc.dart';
 
+import '../../../../env.dart';
 import '../../../blocs/search_bloc/bloc.dart';
-import '../../../constants/base_blogtruyen.dart';
 import '../../search_screens/button_search_widget.dart';
-import './popup_menu_button.dart';
 
 class AppBarHomeWidget extends StatelessWidget implements PreferredSizeWidget {
   @override
@@ -15,60 +14,76 @@ class AppBarHomeWidget extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       title: Text(
-        BlogTruyen.name,
+        ENV.nameApp,
         style: Theme.of(context).textTheme.headline5,
       ),
       backgroundColor: Theme.of(context).accentColor,
       elevation: 1.0,
       centerTitle: true,
-      leading: IconButton(
-        icon: Icon(
-          Icons.search,
-          size: 30,
-          color: Theme.of(context).primaryColor,
+      leading: Container(
+        margin: const EdgeInsets.only(left: 8),
+        child: IconButton(
+          icon: Icon(
+            Icons.search,
+            size: 34,
+            color: Theme.of(context).primaryColor,
+          ),
+          onPressed: () async {
+            var manga = await showSearch(
+                context: context,
+                delegate: SearchScreen(
+                  bloc: BlocProvider.of<SearchBloc>(context),
+                ));
+          },
         ),
-        onPressed: () async {
-          var manga = await showSearch(
-              context: context,
-              delegate: SearchScreen(
-                bloc: BlocProvider.of<SearchBloc>(context),
-              ));
-        },
       ),
       actions: <Widget>[
         IconButton(
             icon: Icon(
-              Icons.dashboard,
-              size: 28,
+              Icons.autorenew_outlined,
+              size: 32,
               color: Theme.of(context).primaryColor,
             ),
-            onPressed: () {}),
-        PopupMenuButton<String>(
-          icon: Icon(
-            Icons.more_vert,
-            size: 28,
-            color: Theme.of(context).primaryColor,
-          ),
-          onSelected: (context) => choiceAction,
-          itemBuilder: (BuildContext context) {
-            return PopupMenuHomeScreen.choices.map((String choice) {
-              return PopupMenuItem<String>(
-                value: choice,
-                child: Text(choice),
-              );
-            }).toList();
-          },
-        )
+            onPressed: () {
+              BlocProvider.of<ListMangaBloc>(context)
+                  .add(FetchListMangaEvent());
+            }),
+        Container(
+          margin: const EdgeInsets.only(right: 8),
+          child: IconButton(
+              icon: Icon(
+                Icons.dashboard,
+                size: 30,
+                color: Theme.of(context).primaryColor,
+              ),
+              onPressed: () {}),
+        ),
+        // PopupMenuButton<String>(
+        //   icon: Icon(
+        //     Icons.more_vert,
+        //     size: 28,
+        //     color: Theme.of(context).primaryColor,
+        //   ),
+        //   onSelected: (context) => choiceAction,
+        //   itemBuilder: (BuildContext context) {
+        //     return PopupMenuHomeScreen.choices.map((String choice) {
+        //       return PopupMenuItem<String>(
+        //         value: choice,
+        //         child: Text(choice),
+        //       );
+        //     }).toList();
+        //   },
+        // )
       ],
     );
   }
 
-  void choiceAction(String choice, BuildContext context) {
-    if (choice == PopupMenuHomeScreen.openWebView) {
-      Navigator.of(context).pushNamed(WebViewPage.routeName,
-          arguments: const WebViewPage(title: 'BlogTruyen', url: ''));
-    } else if (choice == PopupMenuHomeScreen.settings) {
-      print('Cài đặt');
-    }
-  }
+// void choiceAction(String choice, BuildContext context) {
+//   if (choice == PopupMenuHomeScreen.openWebView) {
+//     Navigator.of(context).pushNamed(WebViewPage.routeName,
+//         arguments: const WebViewPage(title: 'BlogTruyen', url: ''));
+//   } else if (choice == PopupMenuHomeScreen.settings) {
+//     print('Cài đặt');
+//   }
+// }
 }

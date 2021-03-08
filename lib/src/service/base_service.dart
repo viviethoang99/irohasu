@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 
-import '../../src/constants/base_blogtruyen.dart';
+import '../../env.dart';
+
 
 class BaseService {
   final Dio _dio = Dio();
@@ -21,7 +22,7 @@ class BaseService {
 class HeaderInterceptor extends InterceptorsWrapper {
   @override
   Future onRequest(RequestOptions options) {
-    options.baseUrl = BlogTruyen.baseUrl;
+    options.baseUrl = ENV.apiApp;
     return super.onRequest(options);
   }
 }

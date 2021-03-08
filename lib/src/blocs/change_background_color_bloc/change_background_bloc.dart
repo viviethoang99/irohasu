@@ -11,7 +11,7 @@ part 'change_background_state.dart';
 
 class ChangeBackgroundBloc
     extends Bloc<ChangeBackgroundEvent, ChangeBackgroundState> {
-  ChangeBackgroundBloc() : super(ChangeBackground.black());
+  ChangeBackgroundBloc() : super(ChangeBackgroundState.black());
 
   @override
   Stream<ChangeBackgroundState> mapEventToState(
@@ -20,14 +20,14 @@ class ChangeBackgroundBloc
     if (event is GetBackgroundColor) {
       final optionValue = await _getOption();
       if (optionValue == 'black') {
-        yield ChangeBackground.black();
+        yield ChangeBackgroundState.black();
       }
       if (optionValue == 'white') {
-        yield ChangeBackground.white();
+        yield ChangeBackgroundState.white();
       }
     }
     if (event is BackgroundBlack) {
-      yield ChangeBackground.black();
+      yield ChangeBackgroundState.black();
       try {
         await _setOptionValue(0);
       } catch (_) {
@@ -35,7 +35,7 @@ class ChangeBackgroundBloc
       }
     }
     if (event is BackgroundWhite) {
-      yield ChangeBackground.white();
+      yield ChangeBackgroundState.white();
       try {
         await _setOptionValue(1);
       } catch (_) {
@@ -47,7 +47,7 @@ class ChangeBackgroundBloc
   Future<Null> _setOptionValue(int optionValue) async {
     var mangaBox = Hive.box('irohasu');
     var setting = mangaBox
-        .get('sharedPreferences', defaultValue: {}).cast<String, dynamic>();
+        ?.get('sharedPreferences', defaultValue: {})?.cast<String, dynamic>();
     if (setting.containsKey('chapterSetting')) {
       setting['chapterSetting']['backgroundColor'] = optionValue;
     } else {
@@ -60,7 +60,7 @@ class ChangeBackgroundBloc
   Future<String> _getOption() async {
     var mangaBox = Hive.box('irohasu');
     var _option = 'black';
-    var setting = mangaBox.get('sharedPreferences', defaultValue: {});
+    var setting = mangaBox?.get('sharedPreferences', defaultValue: {});
     if (setting['chapterSetting']?.containsKey('backgroundColor') ?? false) {
       _option = setting['chapterSetting']['backgroundColor'];
     }

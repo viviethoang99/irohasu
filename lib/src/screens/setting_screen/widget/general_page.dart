@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
-import 'package:irohasu/src/blocs/change_theme_bloc/change_theme_bloc.dart';
-import 'package:irohasu/src/helper/media_query_helper.dart';
-import 'package:irohasu/src/models/manga_detail_model.dart';
-import 'package:irohasu/src/models/setting_model.dart';
+
+import '../../../blocs/change_theme_bloc/change_theme_bloc.dart';
+import '../../../helper/media_query_helper.dart';
+import '../../../models/setting_model.dart';
+import '../../../service/cache_manager_data.dart';
 
 class GeneralSetting extends StatefulWidget {
   static const routeName = '/setting/generaSetting';
@@ -16,39 +16,23 @@ class GeneralSetting extends StatefulWidget {
 class _GeneralSettingState extends State<GeneralSetting> {
   bool switchValue = false;
   int _selectTheme = 0;
+  final _cacheManagerData = CacheManagerData();
 
-  int _getThemeData() {
-    var mangaBox = Hive.box('irohasu');
-    var _option = 0;
-    var setting = mangaBox.get('sharedPreferences', defaultValue: {});
-    if (setting['generalSetting']?.containsKey('themeData') ?? false) {
-      _option = setting['generalSetting']['themeData'];
-    }
-    return _option;
-  }
-
-  @override
-  void initState() {
-    _selectTheme = _getThemeData();
-    super.initState();
-  }
-
-  //
   void _setThemeMode({int newValue}) {
     switch (newValue) {
       case 0:
         BlocProvider.of<ChangeThemeBloc>(context).add(LightTheme());
         break;
-      case 1:
+      case 2:
         BlocProvider.of<ChangeThemeBloc>(context).add(BlackTheme());
         break;
-      case 2:
+      case 1:
         BlocProvider.of<ChangeThemeBloc>(context).add(DarkTheme());
         break;
-      case 3:
+      case 4:
         BlocProvider.of<ChangeThemeBloc>(context).add(LightBlackTheme());
         break;
-      case 4:
+      case 3:
         BlocProvider.of<ChangeThemeBloc>(context).add(LightDarkTheme());
         break;
     }
@@ -56,19 +40,21 @@ class _GeneralSettingState extends State<GeneralSetting> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: theme.backgroundColor,
       appBar: AppBar(
-        elevation: 0,
-        brightness: Brightness.light,
-        backgroundColor: Colors.grey.shade200,
-        iconTheme: const IconThemeData(color: Colors.black),
-        title: const Text(
+        backgroundColor: theme.accentColor,
+        title: Text(
           'Cài đặt chung',
-          style: TextStyle(
-            color: Colors.black87,
-            fontWeight: FontWeight.bold,
+          style: theme.textTheme.headline5,
+        ),
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: theme.primaryColor,
           ),
+          onPressed: () => Navigator.of(context).pop(),
         ),
       ),
       body: SingleChildScrollView(
@@ -81,12 +67,18 @@ class _GeneralSettingState extends State<GeneralSetting> {
                 'Màu nền',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Theme.of(context).primaryColor,
+                  color: theme.primaryColor,
                 ),
               ),
-              subtitle: Text(
-                _listTheme[0].name,
-                style: Theme.of(context).textTheme.subtitle1,
+              subtitle: BlocBuilder<ChangeThemeBloc, ChangeThemeState>(
+                builder: (context, state) {
+                  _selectTheme = state.optionSelect;
+                  return Text(
+                    _listTheme[state.optionSelect].name ?? _listTheme[0].name,
+                    style: theme.textTheme.subtitle1,
+                  );
+                }
+
               ),
             ),
             ListTile(
@@ -97,21 +89,21 @@ class _GeneralSettingState extends State<GeneralSetting> {
                   'Định dạng ngày tháng',
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: Theme.of(context).primaryColor),
+                      color: theme.primaryColor),
                 ),
                 subtitle: Text('Mặc định hệ thống',
-                    style: Theme.of(context).textTheme.subtitle1)),
+                    style: theme.textTheme.subtitle1)),
             ListTile(
               onTap: _clearCache,
               title: Text(
                 'Xoá bộ nhớ cache',
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: Theme.of(context).primaryColor),
+                    color: theme.primaryColor),
               ),
               subtitle: Text(
                 'Xoá tất cả cache hiện tại trong máy',
-                style: Theme.of(context).textTheme.subtitle1,
+                style: theme.textTheme.subtitle1,
               ),
               isThreeLine: true,
             ),
@@ -123,16 +115,16 @@ class _GeneralSettingState extends State<GeneralSetting> {
                 'Kiểm tra cập nhật',
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: Theme.of(context).primaryColor),
+                    color: theme.primaryColor),
               ),
               subtitle: Text(
                 'Tự động cập nhật mỗi khi ứng dụng có '
                 'phiên bản mới',
-                style: Theme.of(context).textTheme.subtitle1,
+                style: theme.textTheme.subtitle1,
               ),
               isThreeLine: true,
               trailing: Switch(
-                activeColor: Theme.of(context).buttonColor,
+                activeColor: theme.buttonColor,
                 value: switchValue,
                 onChanged: (state) {
                   setState(() {
@@ -164,7 +156,7 @@ class _GeneralSettingState extends State<GeneralSetting> {
               ),
               FlatButton(
                 onPressed: () async {
-                  await MangaDetailModel.clearCache();
+                  await _cacheManagerData.removeMangaRequestCache();
                   Navigator.of(context, rootNavigator: true).pop(true);
                 },
                 child: const Text('Có'),
@@ -197,7 +189,6 @@ class _GeneralSettingState extends State<GeneralSetting> {
                 height: 300,
                 child: Column(
                   children: _listTheme.map((data) {
-                    // _selectTheme = _getThemeData();
                     return RadioListTile(
                       activeColor: Theme.of(context).buttonColor,
                       title: Text(

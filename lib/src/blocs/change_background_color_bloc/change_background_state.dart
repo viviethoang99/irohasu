@@ -1,19 +1,26 @@
 part of 'change_background_bloc.dart';
 
 @immutable
-abstract class ChangeBackgroundState {}
+class ChangeBackgroundState {
+  ChangeBackgroundState({this.color, this.string, this.selectOption});
 
-class ChangeBackground extends ChangeBackgroundState {
-  ChangeBackground(this.color, this.string);
-
-  factory ChangeBackground.white() {
-    return ChangeBackground(Colors.white, 'Trắng');
+  factory ChangeBackgroundState.white() {
+    return ChangeBackgroundState(
+      color: Colors.white,
+      string: 'Trắng',
+      selectOption: 0,
+    );
   }
 
-  factory ChangeBackground.black() {
-    return ChangeBackground(Colors.black87, 'Đen');
+  factory ChangeBackgroundState.black() {
+    return ChangeBackgroundState(
+      color: Colors.black87,
+      string: 'Đen',
+      selectOption: 1,
+    );
   }
 
   final String string;
   final Color color;
+  final int selectOption;
 }

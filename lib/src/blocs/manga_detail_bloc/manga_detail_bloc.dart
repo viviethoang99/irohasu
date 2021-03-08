@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
 import 'package:irohasu/src/models/chapter_item_model.dart';
 import 'package:irohasu/src/models/manga_detail_model.dart';
+import 'package:irohasu/src/service/cache_manager_data.dart';
 
 import '../../../src/resources/manga_detail_repo.dart';
 import 'bloc.dart';
@@ -9,6 +9,7 @@ import 'bloc.dart';
 class MangaDetailBloc extends Bloc<MangaDetailEvent, MangaDetailState> {
   MangaDetailBloc(this._detailRepo) : super(InitialMangaDetailState());
   final MangaDetailRepo _detailRepo;
+  final _cacheManagerData = CacheManagerData();
 
   @override
   Stream<MangaDetailState> mapEventToState(MangaDetailEvent event) async* {
@@ -26,33 +27,22 @@ class MangaDetailBloc extends Bloc<MangaDetailEvent, MangaDetailState> {
 
   Stream<MangaDetailSyncState> loadDataListManga(
       {MangaDetailModel data}) async* {
-    var _manga = await fetchListBoxManga(data.idManga);
+    var _manga = await _cacheManagerData.getMangaRequestData(data.idManga);
     if (_manga != null) {
-      _manga.listChapter = await syncDataListChapter(
-        fetchData: data.listChapter,
-        dataLocal: _manga.listChapter,
-      );
+      _manga.data
+        ..listGenres = data.listGenres
+        ..listChapter = await syncDataListChapter(
+          fetchData: data.listChapter,
+          dataCache: _manga.data.listChapter,
+        );
     }
-    yield MangaDetailSyncState(data: _manga ?? data);
-  }
-
-  /*
-    Find data manga detail in the database Irohasu.
-    If not found, return null.
-   */
-  Future<MangaDetailModel> fetchListBoxManga(String idManga) async {
-    final mangaBox = Hive.box('irohasu');
-    List listManga = await mangaBox.get('listManga', defaultValue: []);
-    MangaDetailModel manga = listManga
-        .firstWhere((manga) => manga.idManga == idManga, orElse: () => null);
-    // print(manga?.title);
-    return manga;
+    yield MangaDetailSyncState(data: _manga?.data ?? data);
   }
 
   /*
   Input:
   -  fetchData is list chapter get from the server
-  -  dataLocal is list chapter get from database Irohasu
+  -  dataCache is list chapter get from database Irohasu
   Output:
   -  Returns the data displayed on the screen.
   Process:
@@ -62,14 +52,19 @@ class MangaDetailBloc extends Bloc<MangaDetailEvent, MangaDetailState> {
    */
   Future<List<ChapterItem>> syncDataListChapter({
     List<ChapterItem> fetchData,
-    List<ChapterItem> dataLocal,
+    List<ChapterItem> dataCache,
   }) async {
-    if (dataLocal.length != dataLocal.length) {
-      for (var i = 0; i < dataLocal.length; i++) {
-        if (dataLocal[i] == fetchData[i]) fetchData[i] = dataLocal[i];
-      }
+    if (dataCache.length != dataCache.length) {
+      fetchData.map((ChapterItem manga) {
+        for (var cache in dataCache) {
+          if (manga == cache) {
+            manga = cache;
+            break;
+          }
+        }
+      });
     } else {
-      return dataLocal;
+      return dataCache;
     }
     return fetchData;
   }

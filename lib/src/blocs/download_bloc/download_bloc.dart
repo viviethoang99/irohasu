@@ -34,7 +34,7 @@ class DownloadBloc extends Bloc<DownloadEvent, DownloadState> {
               add(ChapterDownloadPercentageChangedEvent(
             percentage: process,
             idChapter: event.chapterModel.idChapter,
-            indexManga: event.indexManga,
+            idManga: event.idManga,
           )),
         );
       } catch (e) {
@@ -46,13 +46,14 @@ class DownloadBloc extends Bloc<DownloadEvent, DownloadState> {
           .copyWith(downloadPercentageCompleted: event.percentage);
       if (event.percentage == 1) {
         String uriChapter;
+        // print(uriChapter);
         await _path.then((String value) {
           uriChapter = value;
         });
-        // print(uriChapter);
+        print(uriChapter);
         var _isSuccess = await addChapToDownload(
           url: uriChapter,
-          indexManga: event.indexManga,
+          idManga: event.idManga,
           idChapter: event.idChapter,
         );
         yield _isSuccess ? DownloadedState(data: uriChapter) : null;
@@ -76,7 +77,7 @@ class DownloadBloc extends Bloc<DownloadEvent, DownloadState> {
 
   Future<bool> removeChapToDownload({String idChapter, int indexManga}) async {
     var mangaBox = Hive.box('irohasu');
-    List listManga = mangaBox.get('listManga', defaultValue: []);
+    var listManga = mangaBox.get('listManga', defaultValue: {});
 
     try {
       var listDownload = listManga[indexManga]
@@ -97,19 +98,19 @@ class DownloadBloc extends Bloc<DownloadEvent, DownloadState> {
   }
 
   Future<bool> addChapToDownload({
-    int indexManga,
+    String idManga,
     String idChapter,
     String url,
   }) async {
     var mangaBox = Hive.box('irohasu');
-    List listManga = mangaBox.get('listManga', defaultValue: []);
-    print('Before: $url');
+    var listManga = mangaBox.get('listManga', defaultValue: {});
+    // print('Before: $url');
     url = await _downloadData.relativePathChapter(uri: url);
     // print('Local chapter: $url');
 
     try {
-      listManga[indexManga].listDownload.add(idChapter);
-      listManga[indexManga]
+      listManga[idManga].data.listDownload.add(idChapter);
+      listManga[idManga].data
           .listChapter
           .firstWhere((manga) => manga.idChapter == idChapter)
           .isDownload = url;

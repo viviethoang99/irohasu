@@ -1,7 +1,7 @@
-import 'package:meta/meta.dart';
 import 'package:hive/hive.dart';
 
 import 'chapter_item_model.dart';
+import 'genres_model.dart';
 
 part 'manga_detail_model.g.dart';
 
@@ -18,22 +18,8 @@ class MangaDetailModel {
       this.dislike,
       this.description,
       this.endpoint,
-      this.thumbnailUrl});
-
-  MangaDetailModel.mangaDetail({
-    @required this.idManga,
-    @required this.title,
-    @required this.thumbnailUrl,
-    @required this.status,
-    @required this.author,
-    @required this.description,
-    @required this.dislike,
-    @required this.like,
-    @required this.endpoint,
-    // @required this.theme,
-    @required this.listChapter,
-    this.isFavorite = false,
-  });
+      this.thumbnailUrl,
+      this.listGenres});
 
   factory MangaDetailModel.fromMap(Map<String, dynamic> json) =>
       MangaDetailModel(
@@ -42,17 +28,14 @@ class MangaDetailModel {
         thumbnailUrl: json['urlThumb'] as String,
         endpoint: json['endpoint'] as String,
         status: json['status'] as String,
-        author: json['author']
-            .map((dynamic item) => item.toString())
-            .toList()
-            .join(','),
+        author: json['author'].join(','),
         description: json['description'] as String,
         dislike: json['totalLike']['TotalDisLike'] as String,
         like: json['totalLike']['TotalLike'] as String,
-        listChapter: List<ChapterItem>.from(
-            (json['listChapter'] as List<dynamic>).map<ChapterItem>(
-                (dynamic item) =>
-                    ChapterItem.fromJson(json: item as Map<String, dynamic>))),
+        listChapter: List<ChapterItem>.from(json['listChapter']
+            ?.map<ChapterItem>((item) => ChapterItem.fromJson(json: item))),
+        listGenres: List<Genres>.from(json['listGenres']
+            ?.map<Genres>((item) => Genres.fromJson(json: item))),
       );
 
   @HiveField(0)
@@ -81,9 +64,6 @@ class MangaDetailModel {
   List<String> listChapRead = [];
   @HiveField(12)
   List<String> listDownload = [];
-
-  static Future<void> clearCache() async {
-    final box = await Hive.openBox('irohasu');
-    await box.clear();
-  }
+  @HiveField(13)
+  List<Genres> listGenres;
 }

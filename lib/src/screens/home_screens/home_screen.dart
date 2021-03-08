@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:irohasu/src/helper/media_query_helper.dart';
 
 // Widget
-import '../../../src/components/loading_screen.dart';
 import '../../blocs/list_manga_bloc/bloc.dart';
+import '../../components/loading_screen.dart';
 import './list_manga_widget.dart';
 import './widget/appbar_widget.dart';
 
@@ -51,12 +50,6 @@ class _HomeScreenState extends State<HomeScreen> {
               if (state is ListMangaLoadingState) {
                 return LoadingScreen();
               }
-              if (state is InitialListMangaState) {
-                return Container(
-                  height: ScreenHelper.getHeight(context),
-                  color: Theme.of(context).backgroundColor,
-                );
-              }
               if (state is ListMangaLoadedState) {
                 return ListMangaWidget(
                   scrollController: _scrollController,
@@ -64,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   hasReachedEnd: state.hasReachedEnd,
                 );
               }
-              return const Center(child: Text('Other states..'));
+              return Container();
               //never run this line, only fix warning.
             }),
           ),

@@ -3,12 +3,17 @@ import 'package:flutter/material.dart';
 class LoadingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
-      color: Theme.of(context).backgroundColor,
+      padding: const EdgeInsets.all(20),
+      width: double.infinity,
+      height: double.infinity,
+      color: theme.backgroundColor,
       child: Center(
         child: CircularProgressIndicator(
+          strokeWidth: 5,
           valueColor: AlwaysStoppedAnimation<Color>(
-            Theme.of(context).buttonColor,
+            theme.buttonColor,
           ),
         ),
       ),

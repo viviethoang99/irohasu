@@ -11,21 +11,14 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
   @override
   Stream<SearchState> mapEventToState(SearchEvent event) async* {
-    if (event is FetchDataSearchEvent && !(state is SearchLoadedState)) {
+    if (event is FetchDataSearchEvent) {
+      yield SearchLoadingState();
       try {
-        if (state is InitialSearchState) {
-          final list = await _searchRepo.getDataResult(query: event.query);
-          yield SearchLoadedState(list: list);
-        } else {
-          if (state is SearchLoadedState) {
-            final list = await _searchRepo.getDataResult(query: event.query);
-            yield SearchLoadedState(list: list);
-          }
-        }
-      } catch(exception) {
-    yield SearchFailureState();
+        final list = await _searchRepo.getDataResult(query: event.query);
+        yield SearchLoadedState(list: list);
+      } catch (exception) {
+        yield SearchFailureState();
+      }
     }
   }
-}
-
 }

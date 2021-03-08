@@ -1,15 +1,15 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:irohasu/src/blocs/change_background_color_bloc/change_background_bloc.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-import '../../constants/base_blogtruyen.dart';
+import '../../../env.dart';
+import '../../blocs/change_background_color_bloc/change_background_bloc.dart';
 import '../../helper/media_query_helper.dart';
 import '../../models/chapter_model.dart';
 import '../../screens/detail_screens/manga_detail_screen.dart';
-import './chapter_screen.dart';
 import '../setting_screen/widget/setting_chapter.dart';
+import './chapter_screen.dart';
 import './webtoon_widget/drawer_widget.dart';
 
 typedef AnimationListener = void Function();
@@ -62,7 +62,7 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
     return BlocBuilder<ChangeBackgroundBloc, ChangeBackgroundState>(
         builder: (context, state) {
       return Scaffold(
-        backgroundColor: (state is ChangeBackground) ? state.color : Colors.red,
+        backgroundColor: state.color ?? Colors.red,
         body: LayoutBuilder(builder: (context, constraints) {
           return GestureDetector(
             onTapDown: (TapDownDetails details) {
@@ -171,7 +171,7 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
         return ExtendedImage.network(
           data.listImageChapter[i].chapterImageLink,
           cache: true,
-          headers: BlogTruyen.headersBuilder,
+          headers: ENV.headersBuilder,
           onDoubleTap: (state) {
             Offset pointerDownPosition;
             pointerDownPosition = state.pointerDownPosition;

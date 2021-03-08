@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:irohasu/src/service/cache_manager_data.dart';
+
 //
 import '../../../src/components/loading_screen.dart';
 import '../../blocs/manga_detail_bloc/bloc.dart';
@@ -16,15 +18,32 @@ class MangaDetailScreen extends StatefulWidget {
 }
 
 class _MangaDetailScreenState extends State<MangaDetailScreen> {
-  // MangaDetailBloc _mangaDetailBloc;
+  final _cacheManagerData = CacheManagerData();
 
   String get endpoint => widget.endpoint;
+  String idManga;
 
   @override
   void initState() {
     super.initState();
     BlocProvider.of<MangaDetailBloc>(context)
       ..add(FetchMangaDetailEvent(endpoint));
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    removeCacheData();
+  }
+
+  Future removeCacheData() async {
+    final detailManga = await _cacheManagerData.getMangaRequestData(idManga);
+    if (detailManga.data.isFavorite != true &&
+        detailManga.data.listChapRead.isEmpty &&
+        detailManga.data.listDownload.isEmpty) {
+      await _cacheManagerData.removeMangaRequestSingleCache(idManga);
+      print('Remove success cache ${detailManga.data.title}');
+    }
   }
 
   @override
@@ -41,6 +60,8 @@ class _MangaDetailScreenState extends State<MangaDetailScreen> {
           return MangaDetailLoadedScreen(data: state.data);
         }
         if (state is MangaDetailSyncState) {
+          _cacheManagerData.writeMangaRequestDataWithTime(state.data);
+          idManga = state.data.idManga;
           return MangaDetailLoadedScreen(data: state.data);
         }
         if (state is MangaDetailFailureState) {
