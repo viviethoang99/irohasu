@@ -12,12 +12,13 @@ class AppBarHomeWidget extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return AppBar(
       title: Text(
         ENV.nameApp,
-        style: Theme.of(context).textTheme.headline5,
+        style: theme.textTheme.headline5,
       ),
-      backgroundColor: Theme.of(context).accentColor,
+      backgroundColor: theme.accentColor,
       elevation: 1.0,
       centerTitle: true,
       leading: Container(
@@ -26,7 +27,7 @@ class AppBarHomeWidget extends StatelessWidget implements PreferredSizeWidget {
           icon: Icon(
             Icons.search,
             size: 34,
-            color: Theme.of(context).primaryColor,
+            color: theme.primaryColor,
           ),
           onPressed: () async {
             var manga = await showSearch(
@@ -42,7 +43,7 @@ class AppBarHomeWidget extends StatelessWidget implements PreferredSizeWidget {
             icon: Icon(
               Icons.autorenew_outlined,
               size: 32,
-              color: Theme.of(context).primaryColor,
+              color: theme.primaryColor,
             ),
             onPressed: () {
               BlocProvider.of<ListMangaBloc>(context)
@@ -54,7 +55,7 @@ class AppBarHomeWidget extends StatelessWidget implements PreferredSizeWidget {
               icon: Icon(
                 Icons.dashboard,
                 size: 30,
-                color: Theme.of(context).primaryColor,
+                color: theme.primaryColor,
               ),
               onPressed: () {}),
         ),

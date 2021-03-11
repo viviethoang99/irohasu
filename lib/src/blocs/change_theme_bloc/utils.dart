@@ -67,7 +67,7 @@ final ThemeData iBlackTheme = _buildBlackTheme();
 ThemeData _buildBlackTheme() {
   final base = ThemeData.dark();
   return base.copyWith(
-      backgroundColor: AppColors.grey,
+      backgroundColor: AppColors.black,
       primaryColor: Colors.white,
       accentColor: AppColors.black,
       buttonColor: AppColors.lightGreen,

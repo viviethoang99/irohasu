@@ -59,7 +59,7 @@ class DownloadBloc extends Bloc<DownloadEvent, DownloadState> {
         yield _isSuccess ? DownloadedState(data: uriChapter) : null;
       }
     }
-    if (event is RemoveChapterEvent) {
+    if (event is RemoveDownloadChapterEvent) {
       yield DownloadingState();
       var urlDownload = event?.chapter?.isDownload;
       if (urlDownload != null) {

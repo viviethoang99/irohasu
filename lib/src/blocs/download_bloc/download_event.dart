@@ -51,8 +51,8 @@ class ChapterDownloadPercentageChangedEvent extends DownloadEvent {
   }
 }
 
-class RemoveChapterEvent extends DownloadEvent {
-  RemoveChapterEvent({this.idManga, this.chapter});
+class RemoveDownloadChapterEvent extends DownloadEvent {
+  RemoveDownloadChapterEvent({this.idManga, this.chapter});
 
   final ChapterItem chapter;
   final String idManga;

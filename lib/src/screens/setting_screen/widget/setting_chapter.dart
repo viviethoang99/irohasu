@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
 
 import '../../../blocs/change_background_color_bloc/change_background_bloc.dart';
 import '../../../blocs/change_reading_mode_bloc/change_reading_mode_bloc.dart';
@@ -14,12 +13,6 @@ class SettingChapter extends StatefulWidget {
 }
 
 class _SettingChapterState extends State<SettingChapter> {
-  @override
-  void didChangeDependencies() {
-    _getOption();
-    super.didChangeDependencies();
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -154,27 +147,6 @@ class _SettingChapterState extends State<SettingChapter> {
         ],
       ),
     );
-  }
-
-  var _readingMode = 'Mặc định';
-
-  void _getOption() {
-    var _setting =
-        Hive.box('irohasu').get('sharedPreferences', defaultValue: {});
-    if (_setting['chapterSetting']?.containsKey('readingMode') ?? false) {
-      var _getReadingMode = _setting['chapterSetting']['readingMode'];
-      switch (_getReadingMode) {
-        case 0:
-          _readingMode = 'Mặc định';
-          break;
-        case 1:
-          _readingMode = 'Webtoon';
-          break;
-        default:
-          _readingMode = 'Mặc định';
-          break;
-      }
-    }
   }
 
   void _setReadingMode(String choice) async {

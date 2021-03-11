@@ -35,6 +35,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
               height: double.infinity,
               color: Theme.of(context).backgroundColor,
               child: GridView.builder(
+                // reverse: true,
                 shrinkWrap: true,
                 padding: const EdgeInsets.all(12),
                 itemCount: state.listCache.length,

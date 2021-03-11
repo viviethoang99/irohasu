@@ -17,6 +17,8 @@ class Content {
 
   static const about = 'Giới thiệu';
 
+  static const history = 'Lịch sử';
+
 // Map<String, int> theme = {
 //   '16+': 54,
 //   '18+': 45,
@@ -75,5 +77,4 @@ class Content {
 //   'Webtoon': 52,
 //   'Yuri': 59,
 // };
-
 }

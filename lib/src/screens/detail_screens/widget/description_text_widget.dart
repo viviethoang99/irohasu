@@ -100,6 +100,7 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget>
     return Column(
       children: [
         Container(
+          margin: const EdgeInsets.only(bottom: 5),
           child: flag
               ? Text(text,
                   style: Theme.of(context).textTheme.bodyText1.copyWith(
@@ -143,7 +144,7 @@ class CustomChips extends StatelessWidget {
           itemBuilder: (context, index) {
             return Container(
               margin: const EdgeInsets.symmetric(horizontal: 5),
-              child: ActionChip(
+                child: ActionChip(
                 padding: const EdgeInsets.all(2.0),
                 label: Text(
                   widget.listGenres[index].genreName,

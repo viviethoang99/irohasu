@@ -1,9 +1,11 @@
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:irohasu/src/constants/base_content.dart';
-import 'package:irohasu/src/screens/home_screens/home_screen.dart';
-import 'package:irohasu/src/screens/library_screen/library_screen.dart';
-import 'package:irohasu/src/screens/setting_screen/setting_screen.dart';
+
+import '../../constants/base_content.dart';
+import '../../screens/history_screen/history_screen.dart';
+import '../../screens/home_screens/home_screen.dart';
+import '../../screens/library_screen/library_screen.dart';
+import '../../screens/setting_screen/setting_screen.dart';
 
 class IndexScreen extends StatefulWidget {
   static const routeName = '/';
@@ -39,7 +41,7 @@ class _IndexScreenState extends State<IndexScreen> {
           children: <Widget>[
             HomeScreen(),
             LibraryScreen(),
-            // Container(color: Colors.green,),
+            HistoryScreen(),
             SettingScreen(),
           ],
         ),
@@ -70,13 +72,13 @@ class _IndexScreenState extends State<IndexScreen> {
             ),
             icon: const Icon(Icons.library_books),
           ),
-          // BottomNavyBarItem(
-          //   title: const Text(
-          //     Content.comments,
-          //     style: TextStyle(fontSize: 15),
-          //   ),
-          //   icon: const Icon(Icons.chat_bubble),
-          // ),
+          BottomNavyBarItem(
+            title: const Text(
+              Content.history,
+              style: TextStyle(fontSize: 15),
+            ),
+            icon: const Icon(Icons.history),
+          ),
           BottomNavyBarItem(
             title: const Text(
               Content.settings,

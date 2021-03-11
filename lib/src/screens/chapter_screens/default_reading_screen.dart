@@ -5,12 +5,14 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../../env.dart';
 import '../../blocs/change_background_color_bloc/change_background_bloc.dart';
+import '../../helper/border_text.dart';
+import '../../helper/chap_helper.dart';
 import '../../helper/media_query_helper.dart';
 import '../../models/chapter_model.dart';
+import '../../screens/chapter_screens/webtoon_widget/custom_bottom_drawer.dart';
 import '../../screens/detail_screens/manga_detail_screen.dart';
 import '../setting_screen/widget/setting_chapter.dart';
 import './chapter_screen.dart';
-import './webtoon_widget/drawer_widget.dart';
 
 typedef AnimationListener = void Function();
 
@@ -33,6 +35,10 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
   List get _getChapterList => widget.chapterList.toList();
 
   ChapterModel get data => widget.data;
+
+  final threshold = 90;
+
+  bool _showBottomMenu = false;
 
   @override
   void initState() {
@@ -57,6 +63,7 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
   @override
   Widget build(BuildContext context) {
     final widthScreen = ScreenHelper.getWidth(context);
+    final heightScreen = ScreenHelper.getHeight(context);
     final prePage = widthScreen * 0.3;
     final nextPage = widthScreen * 0.7;
     return BlocBuilder<ChangeBackgroundBloc, ChangeBackgroundState>(
@@ -65,7 +72,20 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
         backgroundColor: state.color ?? Colors.red,
         body: LayoutBuilder(builder: (context, constraints) {
           return GestureDetector(
+            onPanEnd: (details) {
+              debugPrint(details.velocity.pixelsPerSecond.dy.toString());
+              if (details.velocity.pixelsPerSecond.dy > threshold) {
+                setState(() {
+                  _showBottomMenu = false;
+                });
+              } else if (details.velocity.pixelsPerSecond.dy < -threshold) {
+                setState(() {
+                  _showBottomMenu = true;
+                });
+              }
+            },
             onTapDown: (TapDownDetails details) {
+              _showBottomMenu = false;
               var position = details.globalPosition.dx;
               if (position <= prePage) {
                 (currentIndex == 0 && _getIndex != 0)
@@ -85,7 +105,7 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
             },
             child: Stack(
               alignment: Alignment.bottomCenter,
-              children: <Widget>[
+              children: [
                 // Load image
                 _imageWidget(),
 
@@ -93,9 +113,10 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                 if (_showMenu)
                   Positioned(
                     top: 0,
-                    width: ScreenHelper.getWidth(context),
+                    width: widthScreen,
+                    height: 110,
                     child: Container(
-                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      // padding: const EdgeInsets.symmetric(vertical: 10),
                       child: AppBar(
                         leading: IconButton(
                           icon: const Icon(
@@ -119,12 +140,14 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                                   color: Colors.white),
                             ),
                             Text(
-                              _getChapterList[_getIndex]
-                                  .chapterTitle
-                                  .toString(),
+                              ChapHelper.removeNameManga(
+                                titleChapter:
+                                    _getChapterList[_getIndex].chapterTitle,
+                                nameManga: data.titleManga,
+                              ),
                               style: const TextStyle(color: Colors.grey),
                             ),
-                            const SizedBox(height: 10)
+                            // const SizedBox(height: 20)
                           ],
                         ),
                         actions: <Widget>[
@@ -144,15 +167,42 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                     ),
                   ),
 
+                // Show number Page
+                if (!_showMenu)
+                  Positioned(
+                    bottom: 20,
+                    child: Container(
+                      child: BorderText(
+                        child: Text(
+                          '${currentIndex + 1} / ${data.totalImage}',
+                          style: TextStyle(
+                              color: Theme.of(context).accentColor,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        strokeColor: Theme.of(context).primaryColor,
+                        strokeWidth: 4,
+                      ),
+                    ),
+                  ),
+
                 // Show Drawer Bottom
                 if (_showMenu)
-                  DrawerHorizontalWidget(
-                    indexChapter: _getIndex,
-                    indexPage: currentIndex,
-                    listChapter: _getChapterList,
-                    height: MediaQuery.of(context).size.height,
-                    totalImage: data.listImageChapter.length,
-                    scrollListController: _scrollListController,
+                  Positioned(
+                    left: 0,
+                    bottom: _showBottomMenu ? -70 : -(heightScreen * 0.5),
+                    child: CustomBottomDrawer(
+                      chapterList: widget.chapterList,
+                      scrollListController: _scrollListController,
+                      currentIndex: currentIndex,
+                      idChapter: data.idChapter,
+                      totalImage: data.totalImage,
+                      onShowListManga: (bool data) {
+                        setState(() {
+                          _showBottomMenu = data;
+                        });
+                      },
+                    ),
                   ),
               ],
             ),

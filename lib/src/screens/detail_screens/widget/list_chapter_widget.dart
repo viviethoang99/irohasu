@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:irohasu/src/blocs/download_bloc/download_bloc.dart';
+import 'package:irohasu/src/helper/convert_date_time.dart';
 import 'package:irohasu/src/models/chapter_item_model.dart';
 import 'package:irohasu/src/service/history_data.dart';
 
@@ -71,7 +71,7 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         child: ListView.separated(
           reverse: _isReversed,
-          separatorBuilder: (BuildContext context, int index) =>
+          separatorBuilder: (context, index) =>
               Divider(color: theme.canvasColor),
           shrinkWrap: true,
           itemCount: data.listChapter.length,
@@ -100,7 +100,7 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
                 ),
               ),
               subtitle: Text(
-                dateTimeToString(chapter.chapterUpload),
+                ConvertDateTime.dateTimeToString(chapter.chapterUpload),
                 style: theme.textTheme.subtitle1.copyWith(fontSize: 18),
               ),
               trailing: btnDownload(
@@ -113,7 +113,7 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
                   HistoryData.addChapToHistory(data, index, chapter.idChapter);
                 Navigator.of(context).pushNamed(ChapterScreen.routeName,
                     arguments: ChapterScreen(
-                        endpoint: chapter.chapterEndpoint.toString(),
+                        endpoint: chapter.chapterEndpoint,
                         chapterList: data.listChapter));
               },
             );
@@ -135,8 +135,10 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
                 ),
                 onPressed: () {
                   BlocProvider.of<DownloadBloc>(context).add(
-                    RemoveChapterEvent(
-                        chapter: item, idManga: widget.data.idManga),
+                    RemoveDownloadChapterEvent(
+                      chapter: item,
+                      idManga: data.idManga,
+                    ),
                   );
                 });
           }
@@ -173,7 +175,7 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
                       DownloadChapterEvent(
                           chapterModel: item,
                           titleManga: data.title,
-                          idManga: widget.data.idManga));
+                          idManga: data.idManga));
                 });
           }
           if (state is DownloadProcessState) {
@@ -219,19 +221,5 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
         },
       ),
     );
-  }
-
-  // String dateConverter(String date) {
-  //   // Input date Format
-  //   final format = DateFormat('dd/MM/yyyy hh:mm');
-  //   var gettingDate = format.parse(date);
-  //   final formatter = DateFormat('yyyy-MM-dd');
-  //   // Output Date Format
-  //   final formatted = formatter.format(gettingDate);
-  //   return date;
-  // }
-
-  String dateTimeToString(DateTime date) {
-    return DateFormat('dd/MM/yyyy hh:mm').format(date);
   }
 }

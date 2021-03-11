@@ -3,8 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:irohasu/src/blocs/list_manga_library_bloc/list_manga_library_bloc.dart';
-import 'package:irohasu/src/models/cache_manga_model.dart';
+import 'package:irohasu/src/blocs/history_bloc/history_bloc.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 
 import './env.dart';
@@ -13,9 +12,11 @@ import './src/blocs/change_reading_mode_bloc/change_reading_mode_bloc.dart';
 import './src/blocs/change_theme_bloc/change_theme_bloc.dart';
 import './src/blocs/chapter_bloc/bloc.dart';
 import './src/blocs/list_manga_bloc/bloc.dart';
+import './src/blocs/list_manga_library_bloc/list_manga_library_bloc.dart';
 import './src/blocs/manga_detail_bloc/bloc.dart';
 import './src/blocs/search_bloc/bloc.dart';
 import './src/helper/routes.dart';
+import './src/models/cache_manga_model.dart';
 import './src/models/chapter_item_model.dart';
 import './src/models/genres_model.dart';
 import './src/models/manga_detail_model.dart';
@@ -35,7 +36,7 @@ void main() async {
     ..registerAdapter<ChapterItem>(ChapterItemAdapter())
     ..registerAdapter<Genres>(GenresAdapter())
     ..registerAdapter<CacheMangaModel>(CacheMangaModelAdapter());
-  await Hive.openBox('irohasu');
+  await Hive.openBox(ENV.nameDatabase);
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((value) => runApp(MyApp()));
 }
@@ -58,6 +59,9 @@ class _MyAppState extends State<MyApp> {
       providers: [
         BlocProvider<ListMangaLibraryBloc>(
           create: (context) => ListMangaLibraryBloc(),
+        ),
+        BlocProvider<HistoryBloc>(
+          create: (context) => HistoryBloc(),
         ),
         BlocProvider<MangaDetailBloc>(
           create: (context) => MangaDetailBloc(MangaDetailRepo()),

@@ -4,14 +4,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:irohasu/src/components/webview_widget.dart';
-import 'package:irohasu/src/constants/base_colors.dart';
-import 'package:irohasu/src/models/manga_detail_model.dart';
-import 'package:irohasu/src/service/favorite_data.dart';
 
 import '../../../../env.dart';
-import '../../../../src/helper/media_query_helper.dart';
-import '../../../../src/models/manga_detail_model.dart';
+import '../../../components/webview_widget.dart';
+import '../../../constants/base_colors.dart';
+import '../../../helper/media_query_helper.dart';
+import '../../../models/manga_detail_model.dart';
+import '../../../service/favorite_data.dart';
 import './btn_vote_widget.dart';
 
 class HeaderMangaDetail extends StatefulWidget {
@@ -39,8 +38,6 @@ class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
   @override
   void initState() {
     super.initState();
-    // status = mangaBox.containsKey(_idManga);
-    // _isFavorite = mangaBox.get(_idManga).isFavorite;
     dataAuthor = author.isNotEmpty ? true : false;
     indexColor = random.nextInt(AppColors.listColorsApp.length);
   }
@@ -151,7 +148,6 @@ class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
             var listManga = _box.get('listManga', defaultValue: {});
 
             _isFavorite = listManga[_idManga]?.data?.isFavorite ?? false;
-            // print(_isFavorite);
             return Row(
               children: <Widget>[
                 _isFavorite

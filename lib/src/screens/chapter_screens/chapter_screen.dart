@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../src/blocs/change_reading_mode_bloc/change_reading_mode_bloc.dart';
 
-import '../../../src/blocs/chapter_bloc/bloc.dart';
-import '../../../src/components/loading_screen.dart';
+import '../../blocs/change_reading_mode_bloc/change_reading_mode_bloc.dart';
+import '../../blocs/chapter_bloc/bloc.dart';
+import '../../components/loading_screen.dart';
 
 import './default_reading_screen.dart';
 import './webtoon_screen.dart';

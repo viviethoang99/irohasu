@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 
 class ChapterModel {
   ChapterModel({
+    this.idChapter,
     this.titleChapter,
     this.chapterEndpoint,
     this.listImageChapter,
@@ -12,6 +13,7 @@ class ChapterModel {
   });
 
   factory ChapterModel.fromJson(Map<String, dynamic> json) => ChapterModel(
+    idChapter: json['idChapter'] as String,
         titleManga: json['titleManga'] as String,
         titleChapter: json['titleChapter'] as String,
         mangaDetail: json['mangaDetail'] as String,
@@ -24,6 +26,7 @@ class ChapterModel {
         totalImage: json['totalImage'] as int,
       );
 
+  String idChapter;
   String titleChapter;
   String chapterEndpoint;
   String mangaDetail;
