@@ -14,6 +14,14 @@ class ChapHelper {
     return item;
   }
 
+  static ChapterItem getChapterItem({String idManga, String idChapter}) {
+    var mangaBox = Hive.box('irohasu');
+    final cacheManga = mangaBox?.get('listManga', defaultValue: {})[idManga];
+    final item = cacheManga.data.listChapter
+        .firstWhere((element) => element.idChapter == idChapter);
+    return item;
+  }
+
   static String removeNameManga({
     @required String titleChapter,
     @required nameManga,

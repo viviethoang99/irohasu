@@ -5,9 +5,12 @@ import '../../models/manga_list_model.dart';
 import './widget/item_manga.dart';
 
 class ListMangaWidget extends StatefulWidget {
-  const ListMangaWidget(
-      {Key key, this.scrollController, this.data, this.hasReachedEnd})
-      : super(key: key);
+  const ListMangaWidget({
+    Key key,
+    this.scrollController,
+    this.data,
+    this.hasReachedEnd,
+  }) : super(key: key);
 
   final ScrollController scrollController;
   final List<MangaListModel> data;
@@ -19,7 +22,9 @@ class ListMangaWidget extends StatefulWidget {
 
 class _ListMangaWidgetState extends State<ListMangaWidget> {
   List<MangaListModel> get data => widget.data;
+
   ScrollController get _scrollController => widget.scrollController;
+
   bool get hasReachedEnd => widget.hasReachedEnd;
 
   @override
@@ -30,8 +35,7 @@ class _ListMangaWidgetState extends State<ListMangaWidget> {
       child: GridView.builder(
         shrinkWrap: true,
         padding: const EdgeInsets.all(12),
-        itemCount:
-            hasReachedEnd ? data.length + 20 : data.length,
+        itemCount: hasReachedEnd ? data.length + 20 : data.length,
         controller: _scrollController,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           childAspectRatio: 0.6,

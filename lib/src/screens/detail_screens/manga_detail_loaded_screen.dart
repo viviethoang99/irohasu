@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 // Widget
 import '../../constants/base_content.dart';
 import '../../models/manga_detail_model.dart';
-import '../../screens/index_screen/index_screen.dart';
 import './widget/custom_button_reading_widget.dart';
 import './widget/description_text_widget.dart';
 import './widget/header_manga_detail.dart';
@@ -41,10 +40,14 @@ class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
                   element.toLowerCase() == 'chương' ||
                   element.toLowerCase() == 'chapter') +
           1;
-      final lastChapterNumber = _titleLastChapter[_getIndexNumberLastChapter]
-          .replaceAll(':', '')
-          .trim();
-      _continueReading = 'TIẾP TỤC ĐỌC TỪ CHƯƠNG $lastChapterNumber';
+      if (_getIndexNumberLastChapter == 0) {
+        _continueReading = 'TIẾP TỤC ĐỌC';
+      } else {
+        final lastChapterNumber = _titleLastChapter[_getIndexNumberLastChapter]
+            .replaceAll(':', '')
+            .trim();
+        _continueReading = 'TIẾP TỤC ĐỌC TỪ CHƯƠNG $lastChapterNumber';
+      }
     }
   }
 
@@ -62,7 +65,7 @@ class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
             ),
             onPressed: () {
               Navigator.of(context).pop();
-              Navigator.of(context).pushNamed(IndexScreen.routeName);
+              // Navigator.of(context).pushNamed(IndexScreen.routeName);
             }),
         centerTitle: true,
         backgroundColor: Colors.transparent,

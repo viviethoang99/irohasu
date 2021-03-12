@@ -1,5 +1,5 @@
 import 'package:hive/hive.dart';
-import 'package:irohasu/src/models/manga_detail_model.dart';
+import '../models/manga_detail_model.dart';
 
 part 'cache_manga_model.g.dart';
 

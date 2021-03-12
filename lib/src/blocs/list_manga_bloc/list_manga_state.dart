@@ -19,22 +19,19 @@ class ListMangaLoadedState extends ListMangaState {
 
   final List<MangaListModel> data;
   final bool hasReachedEnd;
-  int page = 0;
+  int page;
 
   @override
-  String toString() =>
-      'data : $data, hasReachedEnd : $hasReachedEnd, page : $page';
-
-  @override
-  List<Object> get props => [data];
+  List<Object> get props => [data, hasReachedEnd];
 
   ListMangaLoadedState cloneWith({
     List<MangaListModel> data,
     bool hasReachedEnd,
   }) {
     return ListMangaLoadedState(
-        data: data ?? this.data,
-        hasReachedEnd: hasReachedEnd ?? this.hasReachedEnd);
+      data: data ?? this.data,
+      hasReachedEnd: hasReachedEnd ?? this.hasReachedEnd,
+    );
   }
 }
 

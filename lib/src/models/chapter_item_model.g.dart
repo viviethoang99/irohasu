@@ -23,13 +23,15 @@ class ChapterItemAdapter extends TypeAdapter<ChapterItem> {
       chapterUpload: fields[2] as DateTime,
       isDownload: fields[5] as String,
       isReading: fields[4] as bool,
-    ).._progressReading = fields[3] as int;
+    )
+      .._progressReading = fields[3] as int
+      ..timeReading = fields[7] as DateTime;
   }
 
   @override
   void write(BinaryWriter writer, ChapterItem obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.chapterTitle)
       ..writeByte(1)
@@ -43,7 +45,9 @@ class ChapterItemAdapter extends TypeAdapter<ChapterItem> {
       ..writeByte(5)
       ..write(obj.isDownload)
       ..writeByte(6)
-      ..write(obj.idChapter);
+      ..write(obj.idChapter)
+      ..writeByte(7)
+      ..write(obj.timeReading);
   }
 
   @override

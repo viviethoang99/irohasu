@@ -38,6 +38,8 @@ class ChapterItem extends Equatable {
   String isDownload;
   @HiveField(6)
   final String idChapter;
+  @HiveField(7)
+  DateTime timeReading;
 
   int get progressReading => _progressReading;
 
@@ -47,6 +49,10 @@ class ChapterItem extends Equatable {
   }
 
   @override
-  List<Object> get props =>
-      [chapterTitle, chapterEndpoint, chapterUpload, idChapter];
+  List<Object> get props => [
+        chapterTitle,
+        chapterEndpoint,
+        chapterUpload,
+        idChapter,
+      ];
 }

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:irohasu/src/blocs/download_bloc/download_bloc.dart';
-import 'package:irohasu/src/helper/convert_date_time.dart';
-import 'package:irohasu/src/models/chapter_item_model.dart';
-import 'package:irohasu/src/service/history_data.dart';
+import 'package:irohasu/src/blocs/manga_detail_bloc/bloc.dart';
 
+import '../../../blocs/download_bloc/download_bloc.dart';
+import '../../../helper/convert_date_time.dart';
+import '../../../models/chapter_item_model.dart';
 import '../../../models/manga_detail_model.dart';
+import '../../../service/history_data.dart';
 import '../../chapter_screens/chapter_screen.dart';
 
 class ListChapterWidget extends StatefulWidget {
@@ -108,14 +109,10 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
                 index: index,
               ),
               isThreeLine: true,
-              onTap: () {
-                if (!data.listChapter[index].isReading)
-                  HistoryData.addChapToHistory(data, index, chapter.idChapter);
-                Navigator.of(context).pushNamed(ChapterScreen.routeName,
-                    arguments: ChapterScreen(
-                        endpoint: chapter.chapterEndpoint,
-                        chapterList: data.listChapter));
-              },
+              onTap: () => openChapter(
+                idChapter: chapter.idChapter,
+                chapterEndpoint: chapter.chapterEndpoint,
+              ),
             );
           },
         ));
@@ -220,6 +217,20 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
           return Container();
         },
       ),
+    );
+  }
+
+  void openChapter({String idChapter, String chapterEndpoint}) {
+    HistoryData.addChapToHistory(
+      idManga: data.idManga,
+      idChapter: idChapter,
+    );
+    BlocProvider.of<MangaDetailBloc>(context)
+        .add(AddChapterToListReading(data.idManga));
+    Navigator.of(context).pushNamed(
+      ChapterScreen.routeName,
+      arguments: ChapterScreen(
+          endpoint: chapterEndpoint, chapterList: data.listChapter),
     );
   }
 }

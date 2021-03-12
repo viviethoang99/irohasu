@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:irohasu/src/models/manga_detail_model.dart';
+import '../../../models/manga_detail_model.dart';
 
 class BtnVoteWidget extends StatelessWidget {
   const BtnVoteWidget(

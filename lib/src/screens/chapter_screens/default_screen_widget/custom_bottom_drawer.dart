@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
+import '../../../blocs/chapter_bloc/bloc.dart';
 import '../../../helper/convert_date_time.dart';
 import '../../../helper/media_query_helper.dart';
-import '../chapter_screen.dart';
+import '../../../service/history_data.dart';
 
 class CustomBottomDrawer extends StatefulWidget {
   CustomBottomDrawer({
@@ -13,12 +15,14 @@ class CustomBottomDrawer extends StatefulWidget {
     this.scrollListController,
     this.currentIndex,
     this.onShowListManga,
+    this.idManga,
   });
 
   final List chapterList;
   final int currentIndex;
   final int totalImage;
   final String idChapter;
+  final String idManga;
   final ItemScrollController scrollListController;
   final Function(bool) onShowListManga;
 
@@ -103,27 +107,25 @@ class _CustomBottomDrawerState extends State<CustomBottomDrawer> {
                     title: Text(
                       chapter.chapterTitle.trim(),
                       style: const TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold
-                      ),
+                          fontSize: 20,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
                     ),
                     subtitle: Text(
                       ConvertDateTime.dateTimeToString(chapter.chapterUpload),
                       style: const TextStyle(
-                        fontSize: 18,
-                        color: Colors.white,
-                        fontStyle: FontStyle.italic
-                      ),
+                          fontSize: 18,
+                          color: Colors.white,
+                          fontStyle: FontStyle.italic),
                     ),
                     onTap: () {
-                      Navigator.of(context).pushNamed(
-                        ChapterScreen.routeName,
-                        arguments: ChapterScreen(
-                          endpoint: widget.chapterList[index].chapterEndpoint,
-                          chapterList: widget.chapterList,
-                        ),
+                      HistoryData.addChapToHistory(
+                        idManga: widget.idManga,
+                        idChapter: chapter.idChapter,
                       );
+                      BlocProvider.of<ChapterBloc>(context)
+                        ..add(FetchDataChapterEvent(
+                            endpoint: chapter.chapterEndpoint));
                     },
                   );
                 },

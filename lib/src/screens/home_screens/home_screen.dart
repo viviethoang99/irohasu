@@ -15,8 +15,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  ListMangaBloc _listMangaBloc;
-
   // Scroll Controller
   ScrollController _scrollController;
   final _scrollThreshold = 300.0;
@@ -24,15 +22,13 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _listMangaBloc = BlocProvider.of<ListMangaBloc>(context)
-      ..add(FetchListMangaEvent());
+    BlocProvider.of<ListMangaBloc>(context)..add(InitialFetchMangaEvent());
     _scrollController = ScrollController()
       ..addListener(() {
         final maxScrollExtent = _scrollController.position.maxScrollExtent;
         final currentScroll = _scrollController.position.pixels;
         if (maxScrollExtent - currentScroll <= _scrollThreshold) {
-          _listMangaBloc = BlocProvider.of<ListMangaBloc>(context)
-            ..add(FetchListMangaEvent());
+          BlocProvider.of<ListMangaBloc>(context)..add(FetchListMangaEvent());
         }
       });
   }
@@ -47,6 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
             appBar: AppBarHomeWidget(),
             body: BlocBuilder<ListMangaBloc, ListMangaState>(
                 builder: (context, state) {
+              if (state is InitialListMangaState) return Container();
               if (state is ListMangaLoadingState) {
                 return LoadingScreen();
               }
@@ -57,7 +54,38 @@ class _HomeScreenState extends State<HomeScreen> {
                   hasReachedEnd: state.hasReachedEnd,
                 );
               }
-              return Container();
+              // if (state is ListMangaFailureState) {
+              return Container(
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Icon(
+                        Icons.wifi_off,
+                        size: 120,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Flexible(
+                        child: Text(
+                          'Không thể kết nối mạng. \n'
+                          'Vui lòng thử lại.',
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontSize: 25.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              );
+              // }
+              // return Container();
               //never run this line, only fix warning.
             }),
           ),

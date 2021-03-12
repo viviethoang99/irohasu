@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:irohasu/src/screens/detail_screens/manga_detail_screen.dart';
 
 import '../../helper/chap_helper.dart';
 import '../../helper/convert_date_time.dart';
 import '../../models/chapter_item_model.dart';
+import '../../screens/detail_screens/manga_detail_screen.dart';
+import '../../service/history_data.dart';
 
 class DetailItemWidget extends StatelessWidget {
   const DetailItemWidget({
@@ -12,12 +13,14 @@ class DetailItemWidget extends StatelessWidget {
     @required this.titleManga,
     @required this.timeCreate,
     @required this.urlManga,
+    @required this.idManga,
   }) : super(key: key);
 
   final ChapterItem item;
   final String titleManga;
   final DateTime timeCreate;
   final String urlManga;
+  final String idManga;
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +65,8 @@ class DetailItemWidget extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                ConvertDateTime.checkLastRead(timeCreate),
+                ConvertDateTime.checkLastRead(
+                    item.timeReading ?? DateTime.now()),
                 style: const TextStyle(
                   fontSize: 18,
                   color: Colors.white70,
@@ -74,17 +78,6 @@ class DetailItemWidget extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
-                  TextButton(
-                    child: const Text(
-                      'Xoá',
-                      style: TextStyle(
-                        color: Colors.red,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    onPressed: () {},
-                  ),
                   TextButton(
                     child: const Text(
                       'Xem chi tiết',
@@ -99,6 +92,21 @@ class DetailItemWidget extends StatelessWidget {
                         MangaDetailScreen.routeName,
                         arguments: urlManga,
                       );
+                    },
+                  ),
+                  TextButton(
+                    child: const Text(
+                      'Xoá',
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    onPressed: () async {
+                      var status = HistoryData.removeHistory(
+                          idChapter: item.idChapter, idManga: idManga);
+                      print(status != null ? 'Success' : false);
                     },
                   ),
                 ],

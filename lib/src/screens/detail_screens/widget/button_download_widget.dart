@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:irohasu/src/blocs/download_bloc/download_bloc.dart';
-import 'package:irohasu/src/models/chapter_item_model.dart';
-import 'package:irohasu/src/models/manga_detail_model.dart';
+
+import '../../../blocs/download_bloc/download_bloc.dart';
+import '../../../models/chapter_item_model.dart';
+import '../../../models/manga_detail_model.dart';
 
 @immutable
 class DownloadButton extends StatefulWidget {

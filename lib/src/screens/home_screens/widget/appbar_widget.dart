@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:irohasu/src/blocs/list_manga_bloc/bloc.dart';
 
 import '../../../../env.dart';
+import '../../../blocs/list_manga_bloc/bloc.dart';
 import '../../../blocs/search_bloc/bloc.dart';
 import '../../search_screens/button_search_widget.dart';
 
@@ -47,7 +47,7 @@ class AppBarHomeWidget extends StatelessWidget implements PreferredSizeWidget {
             ),
             onPressed: () {
               BlocProvider.of<ListMangaBloc>(context)
-                  .add(FetchListMangaEvent());
+                ..add(RefreshMangaEvent());
             }),
         Container(
           margin: const EdgeInsets.only(right: 8),
@@ -59,32 +59,7 @@ class AppBarHomeWidget extends StatelessWidget implements PreferredSizeWidget {
               ),
               onPressed: () {}),
         ),
-        // PopupMenuButton<String>(
-        //   icon: Icon(
-        //     Icons.more_vert,
-        //     size: 28,
-        //     color: Theme.of(context).primaryColor,
-        //   ),
-        //   onSelected: (context) => choiceAction,
-        //   itemBuilder: (BuildContext context) {
-        //     return PopupMenuHomeScreen.choices.map((String choice) {
-        //       return PopupMenuItem<String>(
-        //         value: choice,
-        //         child: Text(choice),
-        //       );
-        //     }).toList();
-        //   },
-        // )
       ],
     );
   }
-
-// void choiceAction(String choice, BuildContext context) {
-//   if (choice == PopupMenuHomeScreen.openWebView) {
-//     Navigator.of(context).pushNamed(WebViewPage.routeName,
-//         arguments: const WebViewPage(title: 'BlogTruyen', url: ''));
-//   } else if (choice == PopupMenuHomeScreen.settings) {
-//     print('Cài đặt');
-//   }
-// }
 }

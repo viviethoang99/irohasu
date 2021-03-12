@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../src/models/manga_detail_model.dart';
+import '../../models/manga_detail_model.dart';
 
 abstract class MangaDetailState extends Equatable {
   const MangaDetailState();

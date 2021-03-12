@@ -81,6 +81,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 timeCreate: cacheData.createTime,
                                 titleManga: cacheData.data.title,
                                 urlManga: cacheData.data.endpoint,
+                                idManga: cacheData.data.idManga,
                               ),
                             ],
                           ),

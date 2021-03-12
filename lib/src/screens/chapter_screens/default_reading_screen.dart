@@ -5,14 +5,15 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../../env.dart';
 import '../../blocs/change_background_color_bloc/change_background_bloc.dart';
+import '../../blocs/chapter_bloc/bloc.dart';
 import '../../helper/border_text.dart';
 import '../../helper/chap_helper.dart';
 import '../../helper/media_query_helper.dart';
 import '../../models/chapter_model.dart';
-import '../../screens/chapter_screens/webtoon_widget/custom_bottom_drawer.dart';
 import '../../screens/detail_screens/manga_detail_screen.dart';
 import '../setting_screen/widget/setting_chapter.dart';
-import './chapter_screen.dart';
+import './default_screen_widget/custom_bottom_drawer.dart';
+
 
 typedef AnimationListener = void Function();
 
@@ -37,7 +38,7 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
   ChapterModel get data => widget.data;
 
   final threshold = 90;
-
+  final heightAppBar = 110.0;
   bool _showBottomMenu = false;
 
   @override
@@ -73,7 +74,6 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
         body: LayoutBuilder(builder: (context, constraints) {
           return GestureDetector(
             onPanEnd: (details) {
-              debugPrint(details.velocity.pixelsPerSecond.dy.toString());
               if (details.velocity.pixelsPerSecond.dy > threshold) {
                 setState(() {
                   _showBottomMenu = false;
@@ -86,16 +86,19 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
             },
             onTapDown: (TapDownDetails details) {
               _showBottomMenu = false;
-              var position = details.globalPosition.dx;
-              if (position <= prePage) {
+              var positionX = details.globalPosition.dx;
+              var positionY = details.globalPosition.dy;
+              if (positionX <= prePage && positionY > heightAppBar) {
                 (currentIndex == 0 && _getIndex != 0)
                     ? nextChapter(context, _getIndex - 1)
                     : _pageController.previousPage(
                         duration: const Duration(milliseconds: 300),
                         curve: Curves.easeIn);
-              } else if (position >= prePage && position <= nextPage) {
+              } else if (positionX >= prePage &&
+                  positionX <= nextPage &&
+                  positionY > heightAppBar) {
                 setState(() => _showMenu = !_showMenu);
-              } else {
+              } else if (positionY > heightAppBar) {
                 currentIndex == data.listImageChapter.length - 1
                     ? nextChapter(context, _getIndex + 1)
                     : _pageController.nextPage(
@@ -106,7 +109,14 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
             child: Stack(
               alignment: Alignment.bottomCenter,
               children: [
-                // Load image
+                /*
+                    1, Show Image
+                    2, Show AppBar if _showMenu is true
+                    3, Show the page number if _showMenu is false
+                    4, Show drawer bottom if _showMenu is true
+                 */
+
+                // Show Image
                 _imageWidget(),
 
                 // Show Appbar
@@ -114,7 +124,7 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                   Positioned(
                     top: 0,
                     width: widthScreen,
-                    height: 110,
+                    height: heightAppBar,
                     child: Container(
                       // padding: const EdgeInsets.symmetric(vertical: 10),
                       child: AppBar(
@@ -123,7 +133,7 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                             Icons.arrow_back,
                             color: Colors.white,
                           ),
-                          onPressed: () => btnMangaDetail(context),
+                          onPressed: () => Navigator.of(context).pop(),
                         ),
                         centerTitle: false,
                         backgroundColor: Colors.black.withOpacity(0.8),
@@ -269,13 +279,16 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
   }
 
   void nextChapter(BuildContext context, int chapter) {
-    Navigator.of(context).pushNamed(
-      ChapterScreen.routeName,
-      arguments: ChapterScreen(
-        endpoint: _getChapterList[chapter].chapterEndpoint.toString(),
-        chapterList: _getChapterList,
-      ),
-    );
+    // Navigator.of(context).pushNamed(
+    //   ChapterScreen.routeName,
+    //   arguments: ChapterScreen(
+    //     endpoint: _getChapterList[chapter].chapterEndpoint.toString(),
+    //     chapterList: _getChapterList,
+    //   ),
+    // );
+    BlocProvider.of<ChapterBloc>(context)
+      ..add(FetchDataChapterEvent(
+          endpoint: _getChapterList[chapter].chapterEndpoint));
   }
 
   void btnMangaDetail(BuildContext context) {

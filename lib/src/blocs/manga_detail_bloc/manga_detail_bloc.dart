@@ -1,9 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:irohasu/src/models/chapter_item_model.dart';
-import 'package:irohasu/src/models/manga_detail_model.dart';
-import 'package:irohasu/src/service/cache_manager_data.dart';
 
-import '../../../src/resources/manga_detail_repo.dart';
+import '../../models/chapter_item_model.dart';
+import '../../models/manga_detail_model.dart';
+import '../../resources/manga_detail_repo.dart';
+import '../../service/cache_manager_data.dart';
 import 'bloc.dart';
 
 class MangaDetailBloc extends Bloc<MangaDetailEvent, MangaDetailState> {
@@ -20,6 +20,17 @@ class MangaDetailBloc extends Bloc<MangaDetailEvent, MangaDetailState> {
         yield MangaDetailLoadedState(data: data);
         yield* loadDataListManga(data: data);
       } catch (e) {
+        yield MangaDetailFailureState(msg: e.toString());
+      }
+    }
+    if (event is AddChapterToListReading) {
+      yield MangaDetailLoadingState();
+      try {
+        final item = await CacheManagerData().
+            getMangaRequestData(event.idManga);
+        yield MangaDetailLoadedState(data: item.data);
+      } catch (e) {
+        print(e);
         yield MangaDetailFailureState(msg: e.toString());
       }
     }

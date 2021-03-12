@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:irohasu/src/service/cache_manager_data.dart';
 
-//
-import '../../../src/components/loading_screen.dart';
 import '../../blocs/manga_detail_bloc/bloc.dart';
-import 'manga_detail_loaded_screen.dart';
+//
+import '../../components/loading_screen.dart';
+import '../../service/cache_manager_data.dart';
+import './manga_detail_loaded_screen.dart';
 
 class MangaDetailScreen extends StatefulWidget {
   const MangaDetailScreen({Key key, this.endpoint}) : super(key: key);

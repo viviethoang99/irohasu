@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:irohasu/src/screens/chapter_screens/chapter_screen.dart';
+import '../../../screens/chapter_screens/chapter_screen.dart';
 
 class CustomButtonReadingWidget extends StatelessWidget {
   CustomButtonReadingWidget({

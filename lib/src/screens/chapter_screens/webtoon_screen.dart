@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 //
-import '../../../src/models/chapter_model.dart';
-import './default_widget/app_bar_widget.dart';
-import './default_widget/bottom_bar_widget.dart';
-import './default_widget/custom_drawer.dart';
-import './default_widget/image_screen.dart';
+import '../../models/chapter_model.dart';
+import './webtoon_screen_widget/app_bar_widget.dart';
+import './webtoon_screen_widget/bottom_bar_widget.dart';
+import './webtoon_screen_widget/custom_drawer.dart';
+import './webtoon_screen_widget/image_screen.dart';
 
 class ChapterLoadedScreen extends StatefulWidget {
   const ChapterLoadedScreen(
