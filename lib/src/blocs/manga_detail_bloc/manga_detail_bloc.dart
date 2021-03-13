@@ -17,8 +17,14 @@ class MangaDetailBloc extends Bloc<MangaDetailEvent, MangaDetailState> {
       yield MangaDetailLoadingState();
       try {
         final data = await _detailRepo.fetchMangaDetail(event.endpoint);
-        yield MangaDetailLoadedState(data: data);
-        yield* loadDataListManga(data: data);
+        if (data != null) {
+          yield MangaDetailLoadedState(data: data);
+          yield* _loadDataListManga(data: data);
+        } else {
+          final idManga = event.endpoint.split('/')[4];
+          final cache = await _cacheManagerData.getMangaRequestData(idManga);
+          yield MangaDetailLoadedState(data: cache.data);
+        }
       } catch (e) {
         yield MangaDetailFailureState(msg: e.toString());
       }
@@ -26,8 +32,7 @@ class MangaDetailBloc extends Bloc<MangaDetailEvent, MangaDetailState> {
     if (event is AddChapterToListReading) {
       yield MangaDetailLoadingState();
       try {
-        final item = await CacheManagerData().
-            getMangaRequestData(event.idManga);
+        final item = await _cacheManagerData.getMangaRequestData(event.idManga);
         yield MangaDetailLoadedState(data: item.data);
       } catch (e) {
         print(e);
@@ -36,7 +41,7 @@ class MangaDetailBloc extends Bloc<MangaDetailEvent, MangaDetailState> {
     }
   }
 
-  Stream<MangaDetailSyncState> loadDataListManga(
+  Stream<MangaDetailSyncState> _loadDataListManga(
       {MangaDetailModel data}) async* {
     var _manga = await _cacheManagerData.getMangaRequestData(data.idManga);
     if (_manga != null) {

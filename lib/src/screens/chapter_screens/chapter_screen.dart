@@ -51,18 +51,21 @@ class _ChapterScreenState extends State<ChapterScreen> {
               return HorizontalReadingWidget(
                 data: state.data,
                 chapterList: getChapterList,
-                endpoint: getEndpoint,
+                endpoint: state.data.chapterEndpoint,
               );
             }
             if (stateReading is WebtoonModeState) {
               return ChapterLoadedScreen(
                 data: state.data,
                 chapterList: getChapterList,
-                endpoint: getEndpoint,
+                endpoint: state.data.chapterEndpoint,
               );
             }
             return Container();
           });
+        }
+        if(state is ChapterFailureState) {
+          Navigator.of(context).pop();
         }
         return const Center(child: Text('Other states..'));
       },

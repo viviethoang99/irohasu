@@ -6,6 +6,7 @@ import '../../../blocs/chapter_bloc/bloc.dart';
 import '../../../helper/convert_date_time.dart';
 import '../../../helper/media_query_helper.dart';
 import '../../../service/history_data.dart';
+import './step_progress_bar.dart';
 
 class CustomBottomDrawer extends StatefulWidget {
   CustomBottomDrawer({
@@ -132,58 +133,6 @@ class _CustomBottomDrawerState extends State<CustomBottomDrawer> {
               ),
             )
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class StepProgressBar extends StatelessWidget {
-  const StepProgressBar({Key key, this.currentStep, this.totalSteps})
-      : super(key: key);
-
-  final int currentStep;
-  final int totalSteps;
-
-  @override
-  Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width * 0.7;
-    // if you are wrapping this widget in some padding
-    const leftPadding = 10.0;
-    const rightPadding = 10.0;
-
-    // width of the separate widget
-    const separatedWidth = 0.5;
-
-    return Padding(
-      padding: const EdgeInsets.only(
-          top: 10, left: leftPadding, right: rightPadding, bottom: 10),
-      child: Container(
-        constraints: BoxConstraints(maxHeight: 10, maxWidth: screenWidth),
-        child: ListView.builder(
-          shrinkWrap: true,
-          scrollDirection: Axis.horizontal,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: totalSteps,
-          itemBuilder: (context, position) {
-            return Container(
-              width: (screenWidth -
-                      ((totalSteps - 1) * separatedWidth) -
-                      (leftPadding + rightPadding)) /
-                  totalSteps,
-              decoration: const BoxDecoration(
-                color: Colors.grey,
-              ),
-              child: Container(
-                height: 5,
-                decoration: BoxDecoration(
-                  color: currentStep >= position
-                      ? Colors.white
-                      : Colors.transparent,
-                ),
-              ),
-            );
-          },
         ),
       ),
     );

@@ -9,8 +9,7 @@ import './webtoon_screen_widget/custom_drawer.dart';
 import './webtoon_screen_widget/image_screen.dart';
 
 class ChapterLoadedScreen extends StatefulWidget {
-  const ChapterLoadedScreen(
-      {this.data, this.endpoint, this.chapterList});
+  const ChapterLoadedScreen({this.data, this.endpoint, this.chapterList});
 
   final ChapterModel data;
   final String endpoint;
@@ -21,7 +20,7 @@ class ChapterLoadedScreen extends StatefulWidget {
 }
 
 class _ChapterLoadedScreenState extends State<ChapterLoadedScreen> {
-  String get _getEndpoint => widget.endpoint;
+  String get _getEndpoint => '/api/chapter/${widget.endpoint}';
 
   List get _getChapterList => widget.chapterList.toList();
 
@@ -36,7 +35,7 @@ class _ChapterLoadedScreenState extends State<ChapterLoadedScreen> {
   void initState() {
     super.initState();
     _getIndex = _getChapterList.indexWhere(
-        (dynamic element) => element.chapterEndpoint == _getEndpoint);
+        (element) => element.chapterEndpoint == _getEndpoint);
     _scrollListController = ItemScrollController();
   }
 
@@ -48,7 +47,10 @@ class _ChapterLoadedScreenState extends State<ChapterLoadedScreen> {
           return Stack(
             alignment: Alignment.bottomCenter,
             children: <Widget>[
-              LoadImage(scrollController: _scrollController, data: data),
+              LoadImage(
+                scrollController: _scrollController,
+                data: data,
+              ),
               AppBarChapterScreen(
                 endpoint: _getEndpoint,
                 maxWidth: constraints.maxWidth,
@@ -71,6 +73,7 @@ class _ChapterLoadedScreenState extends State<ChapterLoadedScreen> {
           scrollListController: _scrollListController,
           getIndex: _getIndex,
           getChapterList: _getChapterList,
+          idManga: widget.data.mangaDetail.split('/')[4],
         ),
       ),
     );

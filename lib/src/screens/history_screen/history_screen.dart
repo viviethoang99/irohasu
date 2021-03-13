@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:irohasu/src/models/cache_manga_model.dart';
 import 'package:irohasu/src/screens/chapter_screens/chapter_screen.dart';
+import 'package:irohasu/src/service/history_data.dart';
 
 import '../../../env.dart';
 import '../../blocs/history_bloc/history_bloc.dart';
@@ -38,7 +40,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
               margin: const EdgeInsets.symmetric(vertical: 10),
               child: ListView.builder(
                 itemBuilder: (context, index) {
-                  final cacheData = state.data[index];
+                  final CacheMangaModel cacheData = state.data[index];
                   final lastChapter = ChapHelper.getChapterLastReading(
                     cacheData.data.idManga,
                   );
@@ -46,6 +48,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     padding: const EdgeInsets.all(8.0),
                     child: InkWell(
                       onTap: () {
+                        HistoryData.addChapToHistory(
+                          idManga: cacheData.data.idManga,
+                          idChapter: lastChapter.idChapter,
+                        );
+                        BlocProvider.of<HistoryBloc>(context)
+                            .add(FetchDataHistoryEvent());
                         Navigator.of(context).pushNamed(
                           ChapterScreen.routeName,
                           arguments: ChapterScreen(

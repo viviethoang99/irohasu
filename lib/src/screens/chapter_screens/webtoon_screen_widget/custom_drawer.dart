@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-import '../chapter_screen.dart';
+import '../../../blocs/chapter_bloc/bloc.dart';
+import '../../../service/history_data.dart';
+
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({
@@ -9,14 +12,17 @@ class CustomDrawer extends StatelessWidget {
     @required ItemScrollController scrollListController,
     @required int getIndex,
     @required List getChapterList,
+    @required String idManga,
   })  : _scrollListController = scrollListController,
         _getIndex = getIndex,
         _getChapterList = getChapterList,
+        _idManga = idManga,
         super(key: key);
 
   final ItemScrollController _scrollListController;
   final int _getIndex;
   final List _getChapterList;
+  final String _idManga;
 
   @override
   Widget build(BuildContext context) {
@@ -36,13 +42,13 @@ class CustomDrawer extends StatelessWidget {
               style: const TextStyle(fontSize: 17, color: Colors.white),
             ),
             onTap: () {
-              Navigator.of(context).pushNamed(
-                ChapterScreen.routeName,
-                arguments: ChapterScreen(
-                  endpoint: _getChapterList[index].chapterEndpoint.toString(),
-                  chapterList: _getChapterList,
-                ),
+              HistoryData.addChapToHistory(
+                idManga: _idManga,
+                idChapter: _getChapterList[index].idChapter,
               );
+              BlocProvider.of<ChapterBloc>(context)
+                ..add(FetchDataChapterEvent(
+                    endpoint: _getChapterList[index].chapterEndpoint));
             },
           );
         },

@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'cache_manager_data.dart';
 
 class HistoryData {
   static Future addChapToHistory({
@@ -8,8 +9,10 @@ class HistoryData {
     final mangaBox = Hive.box('irohasu');
     final listManga = mangaBox.get('listManga', defaultValue: {});
 
-    if (!listManga[idManga].data.listChapRead.contains(idChapter)) {
-      listManga[idManga].data.listChapRead.add(idChapter);
+    try {
+      listManga[idManga].data.listChapRead
+        ..removeWhere((id) => id == idChapter)
+        ..add(idChapter);
       listManga[idManga].data.listChapter.map((chapter) {
         if (idChapter == chapter.idChapter)
           chapter
@@ -17,17 +20,25 @@ class HistoryData {
             ..timeReading = DateTime.now();
       }).toList();
       await mangaBox.put('listManga', listManga);
-    } else
-      return null;
+    } catch (e) {
+      print(e ?? 'An error occurred while adding chapter to Database');
+    }
   }
 
   static Future<bool> removeHistory({String idChapter, String idManga}) async {
     final mangaBox = Hive.box('irohasu');
     final listManga = mangaBox.get('listManga', defaultValue: {});
+    final _cacheManagerData = CacheManagerData();
 
     if (idChapter == 'all') {
+      if (listManga[idManga].data.isFavorite != true &&
+          listManga[idManga].data.listDownload.isEmpty) {
+        await _cacheManagerData.removeMangaRequestSingleCache(idManga);
+        print('remove Manga success');
+        return true;
+      }
       listManga[idManga]
-        ..data.listChapRead = []
+        ..data.listChapRead = <String>[]
         ..data
             .listChapter
             .map((chapter) => chapter
@@ -35,6 +46,7 @@ class HistoryData {
               ..timeReading = null)
             .toList();
       await mangaBox.put('listManga', listManga);
+      print('clear all chapter');
       return true;
     } else if (idChapter.isNotEmpty) {
       listManga[idManga].data
@@ -46,6 +58,7 @@ class HistoryData {
               ..timeReading = null;
         }).toList();
       await mangaBox.put('listManga', listManga);
+      print('clear chapter');
       return true;
     }
     return false;

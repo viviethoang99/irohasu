@@ -1,5 +1,6 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
@@ -10,9 +11,9 @@ import '../../helper/border_text.dart';
 import '../../helper/chap_helper.dart';
 import '../../helper/media_query_helper.dart';
 import '../../models/chapter_model.dart';
-import '../../screens/detail_screens/manga_detail_screen.dart';
+import '../../service/history_data.dart';
 import '../setting_screen/widget/setting_chapter.dart';
-import './default_screen_widget/custom_bottom_drawer.dart';
+import 'default_screen_widget/custom_bottom_drawer.dart';
 
 
 typedef AnimationListener = void Function();
@@ -31,7 +32,7 @@ class HorizontalReadingWidget extends StatefulWidget {
 
 class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
     with TickerProviderStateMixin {
-  String get _getEndpoint => widget.endpoint;
+  String get _getEndpoint => '/api/chapter/${widget.endpoint}';
 
   List get _getChapterList => widget.chapterList.toList();
 
@@ -206,8 +207,13 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                       scrollListController: _scrollListController,
                       currentIndex: currentIndex,
                       idChapter: data.idChapter,
+                      idManga: data.mangaDetail.split('/')[4],
                       totalImage: data.totalImage,
                       onShowListManga: (bool data) {
+                        SchedulerBinding.instance.addPostFrameCallback((_) {
+                          _scrollListController.jumpTo(
+                              index: _getIndex, alignment: 0.4);
+                        });
                         setState(() {
                           _showBottomMenu = data;
                         });
@@ -279,23 +285,13 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
   }
 
   void nextChapter(BuildContext context, int chapter) {
-    // Navigator.of(context).pushNamed(
-    //   ChapterScreen.routeName,
-    //   arguments: ChapterScreen(
-    //     endpoint: _getChapterList[chapter].chapterEndpoint.toString(),
-    //     chapterList: _getChapterList,
-    //   ),
-    // );
+    HistoryData.addChapToHistory(
+      idManga: data.mangaDetail.split('/')[4],
+      idChapter: _getChapterList[chapter].idChapter,
+    );
     BlocProvider.of<ChapterBloc>(context)
       ..add(FetchDataChapterEvent(
           endpoint: _getChapterList[chapter].chapterEndpoint));
-  }
-
-  void btnMangaDetail(BuildContext context) {
-    Navigator.of(context).pushNamed(
-      MangaDetailScreen.routeName,
-      arguments: widget.data.mangaDetail,
-    );
   }
 
   ItemScrollController _scrollListController;

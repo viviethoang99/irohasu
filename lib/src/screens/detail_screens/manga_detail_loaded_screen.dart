@@ -23,6 +23,8 @@ class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
 
   String _continueReading = Content.startReading;
 
+  final List<String> _keywordChapter = ['chương', 'chapter', 'chap'];
+
   @override
   void initState() {
     super.initState();
@@ -36,19 +38,23 @@ class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
           .chapterTitle
           .split(' ');
       final _getIndexNumberLastChapter = _titleLastChapter.indexWhere(
-              (element) =>
-                  element.toLowerCase() == 'chương' ||
-                  element.toLowerCase() == 'chapter') +
+              (element) => _keywordChapter.contains(element.toLowerCase())) +
           1;
       if (_getIndexNumberLastChapter == 0) {
         _continueReading = 'TIẾP TỤC ĐỌC';
       } else {
-        final lastChapterNumber = _titleLastChapter[_getIndexNumberLastChapter]
+        final lastChapter = _titleLastChapter[_getIndexNumberLastChapter]
             .replaceAll(':', '')
             .trim();
-        _continueReading = 'TIẾP TỤC ĐỌC TỪ CHƯƠNG $lastChapterNumber';
+        _continueReading = 'TIẾP TỤC ĐỌC TỪ CHƯƠNG $lastChapter';
       }
     }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    continueReading();
   }
 
   @override
@@ -65,7 +71,6 @@ class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
             ),
             onPressed: () {
               Navigator.of(context).pop();
-              // Navigator.of(context).pushNamed(IndexScreen.routeName);
             }),
         centerTitle: true,
         backgroundColor: Colors.transparent,
@@ -113,6 +118,7 @@ class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
                 status: _continueReading,
                 color: Colors.green,
                 chapterList: data.listChapter,
+                idManga: widget.data.idManga,
               ),
             ),
             const SizedBox(height: 10),

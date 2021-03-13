@@ -29,8 +29,8 @@ class CacheManagerData extends IFileManager {
   @override
   Future<CacheMangaModel> getMangaRequestData(String idManga) async {
     var mangaBox = Hive.box(_irohasu);
-    var setting = mangaBox?.get(_listManga, defaultValue: {});
-    if (setting.containsKey(idManga)) return setting[idManga];
+    var manga = mangaBox?.get(_listManga, defaultValue: {});
+    if (manga.containsKey(idManga)) return manga[idManga];
     return null;
   }
 

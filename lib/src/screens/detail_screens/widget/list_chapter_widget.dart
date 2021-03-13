@@ -55,8 +55,8 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
           ),
         ),
         Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: Divider(color: Theme.of(context).buttonColor, height: 4)),
+            padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
+            child: Divider(color: Theme.of(context).buttonColor, height: 5)),
         MediaQuery.removePadding(
           removeTop: true,
           context: context,
@@ -69,11 +69,13 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
   Widget loadListChapter() {
     final theme = Theme.of(context);
     return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 15),
         child: ListView.separated(
           reverse: _isReversed,
-          separatorBuilder: (context, index) =>
-              Divider(color: theme.canvasColor),
+          separatorBuilder: (context, index) => Divider(
+            color: theme.canvasColor,
+            height: 20,
+          ),
           shrinkWrap: true,
           itemCount: data.listChapter.length,
           physics: const NeverScrollableScrollPhysics(),
@@ -87,7 +89,7 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
               dense: true,
               title: Container(
                 child: Text(
-                  chapter.chapterTitle.toString(),
+                  chapter.chapterTitle,
                   style: chapter.isReading
                       ? theme.textTheme.subtitle1.copyWith(
                           fontSize: 20,
@@ -140,7 +142,6 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
                 });
           }
           if (state is DownloadingState) {
-            // if (index%0 == 2) {
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
@@ -168,11 +169,12 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
                   color: Theme.of(context).buttonColor,
                 ),
                 onPressed: () async {
-                  BlocProvider.of<DownloadBloc>(context).add(
-                      DownloadChapterEvent(
-                          chapterModel: item,
-                          titleManga: data.title,
-                          idManga: data.idManga));
+                  BlocProvider.of<DownloadBloc>(context)
+                      .add(DownloadChapterEvent(
+                    chapterModel: item,
+                    titleManga: data.title,
+                    idManga: data.idManga,
+                  ));
                 });
           }
           if (state is DownloadProcessState) {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:irohasu/src/models/genres_model.dart';
-import '../../../../src/constants/base_content.dart';
+
+import '../../../constants/base_content.dart';
+import '../../../models/genres_model.dart';
 
 class DescriptionTextWidget extends StatefulWidget {
   DescriptionTextWidget({@required this.text, this.listGenres});
@@ -54,6 +55,9 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget>
             duration: const Duration(milliseconds: 300),
             vsync: this,
             child: Container(
+              margin: EdgeInsets.only(
+                top: (text != null) ? 8 : 0
+              ),
               padding: _isMoreThan100Characters
                   ? const EdgeInsets.symmetric(vertical: 20.0)
                   : const EdgeInsets.only(bottom: 10.0),
@@ -144,7 +148,7 @@ class CustomChips extends StatelessWidget {
           itemBuilder: (context, index) {
             return Container(
               margin: const EdgeInsets.symmetric(horizontal: 5),
-                child: ActionChip(
+              child: ActionChip(
                 padding: const EdgeInsets.all(2.0),
                 label: Text(
                   widget.listGenres[index].genreName,
@@ -159,7 +163,7 @@ class CustomChips extends StatelessWidget {
                 shape: StadiumBorder(
                     side: BorderSide(
                   width: 2.5,
-                  color: theme.buttonColor,
+                  color: theme.primaryColor,
                 )),
               ),
             );

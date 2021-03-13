@@ -5,6 +5,8 @@ import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 import 'package:meta/meta.dart';
 
+import '../../helper/chap_helper.dart';
+
 part 'history_event.dart';
 
 part 'history_state.dart';
@@ -25,8 +27,14 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
     final listManga = await listCache.values
         .where((element) => element.data.listChapRead.isNotEmpty == true)
         .toList()
-      ..sort(
-          (a, b) => b.createTime.toString().compareTo(a.createTime.toString()));
+      ..sort((a, b) {
+        final chapterA =
+            ChapHelper.getChapterLastReading(a.data.idManga).timeReading;
+        return ChapHelper.getChapterLastReading(b.data.idManga)
+            .timeReading
+            .toString()
+            .compareTo(chapterA.toString());
+      });
     yield HistoryLoaded(data: listManga);
   }
 }

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:irohasu/src/blocs/chapter_bloc/bloc.dart';
+import 'package:irohasu/src/service/history_data.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../detail_screens/manga_detail_screen.dart';
@@ -89,25 +92,14 @@ class _BottomBarChapterScreenState extends State<BottomBarChapterScreen> {
                 color: Colors.black87,
                 iconSize: 35,
                 onPressed: _getIndex != 0
-                    ? () {
-                        Navigator.of(context).pushNamed(
-                          ChapterScreen.routeName,
-                          arguments: ChapterScreen(
-                            endpoint: _getChapterList[_getIndex - 1]
-                                .chapterEndpoint
-                                .toString(),
-                            chapterList: _getChapterList,
-                          ),
-                        );
-                      }
+                    ? () => nextChapter(context, _getIndex -1)
                     : null),
             IconButton(
               icon: const Icon(Icons.home),
               color: Colors.black87,
               iconSize: 35,
               onPressed: () {
-                Navigator.of(context).pushNamed(MangaDetailScreen.routeName,
-                    arguments: _mangaDetail);
+                Navigator.of(context).pop();
               },
             ),
             IconButton(
@@ -127,22 +119,22 @@ class _BottomBarChapterScreenState extends State<BottomBarChapterScreen> {
               color: Colors.black87,
               iconSize: 35,
               onPressed: (_getIndex != _getChapterList.length - 1)
-                  ? () {
-                      Navigator.of(context).pushNamed(
-                        ChapterScreen.routeName,
-                        arguments: ChapterScreen(
-                          endpoint: _getChapterList[_getIndex + 1]
-                              .chapterEndpoint
-                              .toString(),
-                          chapterList: _getChapterList,
-                        ),
-                      );
-                    }
+                  ? () => nextChapter(context, _getIndex + 1)
                   : null,
             ),
           ],
         ),
       ),
     );
+  }
+
+  void nextChapter(BuildContext context, int chapter) {
+    HistoryData.addChapToHistory(
+      idManga: widget.mangaDetail.split('/')[4],
+      idChapter: _getChapterList[chapter].idChapter,
+    );
+    BlocProvider.of<ChapterBloc>(context)
+      ..add(FetchDataChapterEvent(
+          endpoint: _getChapterList[chapter].chapterEndpoint));
   }
 }

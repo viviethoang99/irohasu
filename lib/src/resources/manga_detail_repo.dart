@@ -6,9 +6,13 @@ import '../../src/service/base_service.dart';
 class MangaDetailRepo extends BaseService {
   Future<MangaDetailModel> fetchMangaDetail(String endpoint) async {
     dio.Response response;
-    response = await request(url: endpoint);
+    try {
+      response = await request(url: endpoint);
+    } catch (e) {
+      print(e);
+      return null;
+    }
     final data = MangaDetailModel.fromMap(response.data['obj']);
-    // print(data.listGenres.length);
     return data;
   }
 }
