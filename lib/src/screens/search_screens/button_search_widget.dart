@@ -7,8 +7,8 @@ import '../../../src/blocs/search_bloc/bloc.dart';
 import '../../../src/constants/base_content.dart';
 import '../home_screens/widget/item_manga.dart';
 
-class SearchScreen extends SearchDelegate<MangaDetailModel> {
-  SearchScreen({this.bloc});
+class ButtonSearchWidget extends SearchDelegate<MangaDetailModel> {
+  ButtonSearchWidget({this.bloc});
 
   final Bloc<SearchEvent, SearchState> bloc;
 

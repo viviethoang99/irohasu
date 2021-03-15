@@ -1,9 +1,12 @@
 // Packages
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-// Widget
+import '../../blocs/manga_detail_bloc/bloc.dart';
 import '../../constants/base_content.dart';
 import '../../models/manga_detail_model.dart';
+import '../../screens/chapter_screens/chapter_screen.dart';
+import '../../service/history_data.dart';
 import './widget/custom_button_reading_widget.dart';
 import './widget/description_text_widget.dart';
 import './widget/header_manga_detail.dart';
@@ -49,6 +52,20 @@ class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
         _continueReading = 'TIẾP TỤC ĐỌC TỪ CHƯƠNG $lastChapter';
       }
     }
+  }
+
+  void openChapter({String idChapter, String chapterEndpoint}) {
+    HistoryData.addChapToHistory(
+      idManga: data.idManga,
+      idChapter: idChapter,
+    );
+    BlocProvider.of<MangaDetailBloc>(context)
+        .add(AddChapterToListReading(data.idManga));
+    Navigator.of(context).pushNamed(
+      ChapterScreen.routeName,
+      arguments: ChapterScreen(
+          endpoint: chapterEndpoint, chapterList: data.listChapter),
+    );
   }
 
   @override
@@ -117,12 +134,22 @@ class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
               child: CustomButtonReadingWidget(
                 status: _continueReading,
                 color: Colors.green,
-                chapterList: data.listChapter,
+                lastChapter: data.listChapter.last,
                 idManga: widget.data.idManga,
+                openChap: (String idChapter, String endpoint) => openChapter(
+                  idChapter: idChapter,
+                  chapterEndpoint: endpoint,
+                ),
               ),
             ),
             const SizedBox(height: 10),
-            ListChapterWidget(data: data),
+            ListChapterWidget(
+              data: data,
+              openChap: (String idChapter, String endpoint) => openChapter(
+                idChapter: idChapter,
+                chapterEndpoint: endpoint,
+              ),
+            ),
           ],
         ),
       ),

@@ -1,5 +1,5 @@
-import 'package:irohasu/src/models/manga_list_model.dart';
-import 'package:irohasu/src/service/base_service.dart';
+import '../models/manga_list_model.dart';
+import '../service/base_service.dart';
 
 class SearchRepo extends BaseService {
   Future<List<MangaListModel>> getDataResult({String query}) async {

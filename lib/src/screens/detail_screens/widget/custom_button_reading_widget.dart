@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:irohasu/src/blocs/manga_detail_bloc/bloc.dart';
-import 'package:irohasu/src/service/history_data.dart';
-import '../../../screens/chapter_screens/chapter_screen.dart';
+import 'package:irohasu/src/models/chapter_item_model.dart';
 
 class CustomButtonReadingWidget extends StatelessWidget {
   CustomButtonReadingWidget({
     @required this.status,
     @required this.color,
-    @required this.chapterList,
-    @required this.idManga
+    @required this.lastChapter,
+    @required this.idManga,
+    this.openChap,
   });
 
   final String status;
   final Object color;
-  final List chapterList;
+  final ChapterItem lastChapter;
   final String idManga;
+  final Function openChap;
 
   @override
   Widget build(BuildContext context) {
@@ -29,21 +28,10 @@ class CustomButtonReadingWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(25.0),
         ),
         child: InkWell(
-          onTap: () {
-            HistoryData.addChapToHistory(
-              idManga: idManga,
-              idChapter: chapterList.last.idChapter,
-            );
-            BlocProvider.of<MangaDetailBloc>(context)
-                .add(AddChapterToListReading(idManga));
-            Navigator.of(context).pushNamed(
-              ChapterScreen.routeName,
-              arguments: ChapterScreen(
-                endpoint: chapterList.last.chapterEndpoint.toString(),
-                chapterList: chapterList,
-              ),
-            );
-          },
+          onTap: () => openChap(
+            lastChapter.idChapter,
+            lastChapter.chapterEndpoint.toString(),
+          ),
           child: Container(
             margin: const EdgeInsets.symmetric(vertical: 3),
             alignment: Alignment.center,

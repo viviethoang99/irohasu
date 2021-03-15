@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:irohasu/src/blocs/chapter_bloc/bloc.dart';
-import 'package:irohasu/src/service/history_data.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-import '../../detail_screens/manga_detail_screen.dart';
-import '../chapter_screen.dart';
+import '../../../blocs/chapter_bloc/bloc.dart';
+import '../../../service/history_data.dart';
 
 class BottomBarChapterScreen extends StatefulWidget {
   BottomBarChapterScreen({
@@ -39,8 +37,6 @@ class _BottomBarChapterScreenState extends State<BottomBarChapterScreen> {
   double get maxWidth => widget.maxWidth;
 
   List get _getChapterList => widget.chapterList;
-
-  String get _mangaDetail => widget.mangaDetail;
 
   ScrollController get _scrollController => widget.scrollController;
 

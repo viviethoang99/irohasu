@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart' as dio;
-import 'package:irohasu/src/models/manga_list_model.dart';
 
-import '../../src/service/base_service.dart';
+import '../models/manga_list_model.dart';
+import '../service/base_service.dart';
 
 class ListMangaRepo extends BaseService {
   Future<List<MangaListModel>> fetchListManga({int page}) async {

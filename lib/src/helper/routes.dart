@@ -4,6 +4,7 @@ import '../components/webview_widget.dart';
 import '../screens/chapter_screens/chapter_screen.dart';
 import '../screens/detail_screens/manga_detail_screen.dart';
 import '../screens/index_screen/index_screen.dart';
+import '../screens/search_screens/search_screen.dart';
 import '../screens/setting_screen/widget/general_page.dart';
 import '../screens/setting_screen/widget/setting_chapter.dart';
 
@@ -49,8 +50,14 @@ Route generateRoute(RouteSettings routeSettings) {
     case WebViewPage.routeName:
       var data = args as WebViewPage;
       return pageRoute(
-          routeSettings: routeSettings,
-          builder: WebViewPage(title: data.title, url: data.url));
+        routeSettings: routeSettings,
+        builder: WebViewPage(title: data.title, url: data.url),
+      );
+    case SearchScreen.routeName:
+      return pageRoute(
+        routeSettings: routeSettings,
+        builder: SearchScreen()
+      );
     default:
       return MaterialPageRoute(
         builder: (_) => Scaffold(

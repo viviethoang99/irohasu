@@ -57,6 +57,7 @@ class _MangaDetailScreenState extends State<MangaDetailScreen> {
           return const Center();
         }
         if (state is MangaDetailLoadedState) {
+          idManga = state.data.idManga;
           return MangaDetailLoadedScreen(data: state.data);
         }
         if (state is MangaDetailSyncState) {

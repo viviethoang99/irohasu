@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:irohasu/src/screens/search_screens/search_screen.dart';
 
 import '../../../../env.dart';
 import '../../../blocs/list_manga_bloc/bloc.dart';
@@ -29,12 +30,13 @@ class AppBarHomeWidget extends StatelessWidget implements PreferredSizeWidget {
             size: 34,
             color: theme.primaryColor,
           ),
-          onPressed: () async {
-            var manga = await showSearch(
-                context: context,
-                delegate: SearchScreen(
-                  bloc: BlocProvider.of<SearchBloc>(context),
-                ));
+          onPressed: () {
+            // var manga = await showSearch(
+            //     context: context,
+            //     delegate: ButtonSearchWidget(
+            //       bloc: BlocProvider.of<SearchBloc>(context),
+            //     ));
+            Navigator.of(context).pushNamed(SearchScreen.routeName);
           },
         ),
       ),

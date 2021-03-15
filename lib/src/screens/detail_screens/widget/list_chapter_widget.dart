@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:irohasu/src/blocs/manga_detail_bloc/bloc.dart';
 
 import '../../../blocs/download_bloc/download_bloc.dart';
 import '../../../helper/convert_date_time.dart';
 import '../../../models/chapter_item_model.dart';
 import '../../../models/manga_detail_model.dart';
-import '../../../service/history_data.dart';
-import '../../chapter_screens/chapter_screen.dart';
 
 class ListChapterWidget extends StatefulWidget {
-  const ListChapterWidget({Key key, @required this.data}) : super(key: key);
+  const ListChapterWidget({
+    Key key,
+    @required this.data,
+    this.openChap,
+  }) : super(key: key);
 
   final MangaDetailModel data;
+  final Function openChap;
 
   @override
   _ListChapterWidgetState createState() => _ListChapterWidgetState();
@@ -111,9 +113,9 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
                 index: index,
               ),
               isThreeLine: true,
-              onTap: () => openChapter(
-                idChapter: chapter.idChapter,
-                chapterEndpoint: chapter.chapterEndpoint,
+              onTap: () => widget.openChap(
+                chapter.idChapter,
+                chapter.chapterEndpoint,
               ),
             );
           },
@@ -219,20 +221,6 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
           return Container();
         },
       ),
-    );
-  }
-
-  void openChapter({String idChapter, String chapterEndpoint}) {
-    HistoryData.addChapToHistory(
-      idManga: data.idManga,
-      idChapter: idChapter,
-    );
-    BlocProvider.of<MangaDetailBloc>(context)
-        .add(AddChapterToListReading(data.idManga));
-    Navigator.of(context).pushNamed(
-      ChapterScreen.routeName,
-      arguments: ChapterScreen(
-          endpoint: chapterEndpoint, chapterList: data.listChapter),
     );
   }
 }

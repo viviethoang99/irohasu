@@ -15,7 +15,6 @@ import '../../service/history_data.dart';
 import '../setting_screen/widget/setting_chapter.dart';
 import 'default_screen_widget/custom_bottom_drawer.dart';
 
-
 typedef AnimationListener = void Function();
 
 class HorizontalReadingWidget extends StatefulWidget {
@@ -80,6 +79,10 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                   _showBottomMenu = false;
                 });
               } else if (details.velocity.pixelsPerSecond.dy < -threshold) {
+                SchedulerBinding.instance.addPostFrameCallback((_) {
+                  _scrollListController.jumpTo(
+                      index: _getIndex, alignment: 0.2);
+                });
                 setState(() {
                   _showBottomMenu = true;
                 });
@@ -91,7 +94,7 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
               var positionY = details.globalPosition.dy;
               if (positionX <= prePage && positionY > heightAppBar) {
                 (currentIndex == 0 && _getIndex != 0)
-                    ? nextChapter(context, _getIndex - 1)
+                    ? nextChapter(_getIndex - 1)
                     : _pageController.previousPage(
                         duration: const Duration(milliseconds: 300),
                         curve: Curves.easeIn);
@@ -101,7 +104,7 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                 setState(() => _showMenu = !_showMenu);
               } else if (positionY > heightAppBar) {
                 currentIndex == data.listImageChapter.length - 1
-                    ? nextChapter(context, _getIndex + 1)
+                    ? nextChapter(_getIndex + 1)
                     : _pageController.nextPage(
                         duration: const Duration(milliseconds: 300),
                         curve: Curves.easeIn);
@@ -147,8 +150,9 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                                   ? '${data.titleManga.substring(0, 25)}..'
                                   : data.titleManga,
                               style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
                             ),
                             Text(
                               ChapHelper.removeNameManga(
@@ -284,7 +288,7 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
     );
   }
 
-  void nextChapter(BuildContext context, int chapter) {
+  void nextChapter(int chapter) {
     HistoryData.addChapToHistory(
       idManga: data.mangaDetail.split('/')[4],
       idChapter: _getChapterList[chapter].idChapter,
