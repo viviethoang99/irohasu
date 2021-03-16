@@ -1,5 +1,6 @@
-class FilterSearch{
-    static Map<String, int> listGenresApp = {
+import 'package:flutter/material.dart';
+class FilterSearch {
+  static Map<String, int> listGenresApp = {
     '16+': 54,
     '18+': 45,
     'Action': 1,
@@ -57,4 +58,10 @@ class FilterSearch{
     'Webtoon': 52,
     'Yuri': 59,
   };
+}
+
+class StatusCheckBox {
+  StatusCheckBox({this.color, this.icon});
+  final Color color;
+  final IconData icon;
 }

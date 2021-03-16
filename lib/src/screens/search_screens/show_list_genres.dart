@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../constants/base_content.dart';
+import '../../components/custom_checkbox.dart';
+import '../../constants/filter_search.dart';
 
 class DrawerSearchScreen extends StatefulWidget {
   const DrawerSearchScreen({
@@ -19,7 +20,7 @@ class DrawerSearchScreen extends StatefulWidget {
 
 class _DrawerSearchScreenState extends State<DrawerSearchScreen> {
   final _controllerAuthor = TextEditingController();
-  final listGenres = Content.listGenresApp;
+  final listGenres = FilterSearch.listGenresApp;
   final _listAddGenres = <int>[];
   final _listRemoveGenres = <int>[];
 
@@ -102,23 +103,21 @@ class _DrawerSearchScreenState extends State<DrawerSearchScreen> {
               spacing: 10,
               children: List.generate(listGenres.length, (index) {
                 final item = listGenres.keys.elementAt(index);
-                final checkSelected = _checkSortedList(listGenres[item]);
-                return ChoiceChip(
-                  label: Text(
+                final status = _getStatusCheckBox(listGenres[item]);
+                return ListTile(
+                  leading: CustomCheckbox(
+                    selectedColor: status.color,
+                    onClick: () => eventClickCheckBox(listGenres[item]),
+                    iconStatus: status.icon,
+                  ),
+                  title: Text(
                     item,
                     style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                        color: checkSelected
-                            ? theme.backgroundColor
-                            : theme.buttonColor),
+                      color: theme.primaryColor,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  selected: checkSelected,
-                  selectedColor: _getColorChips(listGenres[item], context),
-                  onSelected: (value) => eventClickChips(listGenres[item]),
-                  disabledColor: Theme.of(context).primaryColor,
-                  backgroundColor: Theme.of(context).backgroundColor,
-                  shape: const StadiumBorder(side: BorderSide()),
                 );
               }).toList(),
             ),
@@ -188,18 +187,21 @@ class _DrawerSearchScreenState extends State<DrawerSearchScreen> {
     );
   }
 
-  bool _checkSortedList(int valueGenres) =>
-      _listAddGenres.contains(valueGenres) ||
-              _listRemoveGenres.contains(valueGenres)
-          ? true
-          : false;
+  StatusCheckBox _getStatusCheckBox(int valueGenres) {
+    if (_listAddGenres.contains(valueGenres))
+      return StatusCheckBox(
+        icon: Icons.check,
+        color: Theme.of(context).buttonColor,
+      );
+    if (_listRemoveGenres.contains(valueGenres))
+      return StatusCheckBox(
+        icon: Icons.clear,
+        color: Colors.redAccent,
+      );
+    return StatusCheckBox(icon: null, color: null);
+  }
 
-  Color _getColorChips(int valueGenres, BuildContext context) =>
-      _listAddGenres.contains(valueGenres)
-          ? Theme.of(context).buttonColor
-          : Colors.red;
-
-  void eventClickChips(int valueGenres) {
+  void eventClickCheckBox(int valueGenres) {
     if (_listAddGenres.contains(valueGenres)) {
       setState(() {
         _listAddGenres.removeWhere((element) => element == valueGenres);
