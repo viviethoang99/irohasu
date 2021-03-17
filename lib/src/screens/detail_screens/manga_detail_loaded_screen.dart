@@ -1,6 +1,7 @@
 // Packages
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:irohasu/src/models/chapter_item_model.dart';
 
 import '../../blocs/manga_detail_bloc/bloc.dart';
 import '../../constants/base_content.dart';
@@ -54,17 +55,22 @@ class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
     }
   }
 
-  void openChapter({String idChapter, String chapterEndpoint}) {
+  void openChapter({ChapterItem item}) {
     HistoryData.addChapToHistory(
       idManga: data.idManga,
-      idChapter: idChapter,
+      idChapter: item.idChapter,
     );
     BlocProvider.of<MangaDetailBloc>(context)
         .add(AddChapterToListReading(data.idManga));
     Navigator.of(context).pushNamed(
       ChapterScreen.routeName,
       arguments: ChapterScreen(
-          endpoint: chapterEndpoint, chapterList: data.listChapter),
+        endpoint: item.chapterEndpoint,
+        chapterList: data.listChapter,
+        titleChapter: item.chapterTitle,
+        titleManga: data.title,
+        mangaDetail: data.endpoint,
+      ),
     );
   }
 
@@ -86,9 +92,7 @@ class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
               Icons.arrow_back,
               color: theme.primaryColor,
             ),
-            onPressed: () {
-              Navigator.of(context).pop();
-            }),
+            onPressed: () => Navigator.of(context).pop()),
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0.0,
@@ -136,19 +140,13 @@ class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
                 color: Colors.green,
                 lastChapter: data.listChapter.last,
                 idManga: widget.data.idManga,
-                openChap: (String idChapter, String endpoint) => openChapter(
-                  idChapter: idChapter,
-                  chapterEndpoint: endpoint,
-                ),
+                openChap: (ChapterItem item) => openChapter(item: item),
               ),
             ),
             const SizedBox(height: 10),
             ListChapterWidget(
               data: data,
-              openChap: (String idChapter, String endpoint) => openChapter(
-                idChapter: idChapter,
-                chapterEndpoint: endpoint,
-              ),
+              openChap: (ChapterItem item) => openChapter(item: item),
             ),
           ],
         ),

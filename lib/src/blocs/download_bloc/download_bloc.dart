@@ -3,15 +3,13 @@ import 'package:bloc/bloc.dart';
 
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
-import 'package:irohasu/src/models/chapter_item_model.dart';
 
+import '../../models/chapter_item_model.dart';
 import '../../service/download_data.dart';
 
 part 'download_event.dart';
 
 part 'download_state.dart';
-
-typedef DownloadPercentageChanged = void Function(double percentage);
 
 class DownloadBloc extends Bloc<DownloadEvent, DownloadState> {
   DownloadBloc() : super(DownloadInitialState());

@@ -40,8 +40,6 @@ class _BottomBarChapterScreenState extends State<BottomBarChapterScreen> {
 
   ScrollController get _scrollController => widget.scrollController;
 
-  int get _getIndex => widget.getIndex;
-
   ItemScrollController get _scrollListController => widget.scrollListController;
 
   @override
@@ -63,11 +61,9 @@ class _BottomBarChapterScreenState extends State<BottomBarChapterScreen> {
       ..addListener(() {
         final maxScrollExtent = _scrollController.position.maxScrollExtent;
         final currentScroll = _scrollController.position.pixels;
-        if (maxScrollExtent - currentScroll == 0) {
-          hasReachedEnd = true;
-        } else {
-          hasReachedEnd = false;
-        }
+        maxScrollExtent - currentScroll == 0
+            ? hasReachedEnd = true
+            : hasReachedEnd = false;
       });
   }
 
@@ -87,8 +83,8 @@ class _BottomBarChapterScreenState extends State<BottomBarChapterScreen> {
                 icon: const Icon(Icons.skip_previous),
                 color: Colors.black87,
                 iconSize: 35,
-                onPressed: _getIndex != 0
-                    ? () => nextChapter(context, _getIndex -1)
+                onPressed: widget.getIndex != 0
+                    ? () => nextChapter(widget.getIndex - 1)
                     : null),
             IconButton(
               icon: const Icon(Icons.home),
@@ -106,7 +102,7 @@ class _BottomBarChapterScreenState extends State<BottomBarChapterScreen> {
                 Scaffold.of(context).openDrawer();
                 SchedulerBinding.instance.addPostFrameCallback((_) {
                   _scrollListController.jumpTo(
-                      index: _getIndex, alignment: 0.5);
+                      index: widget.getIndex, alignment: 0.5);
                 });
               },
             ),
@@ -114,8 +110,8 @@ class _BottomBarChapterScreenState extends State<BottomBarChapterScreen> {
               icon: const Icon(Icons.skip_next),
               color: Colors.black87,
               iconSize: 35,
-              onPressed: (_getIndex != _getChapterList.length - 1)
-                  ? () => nextChapter(context, _getIndex + 1)
+              onPressed: (widget.getIndex != _getChapterList.length - 1)
+                  ? () => nextChapter(widget.getIndex + 1)
                   : null,
             ),
           ],
@@ -124,13 +120,15 @@ class _BottomBarChapterScreenState extends State<BottomBarChapterScreen> {
     );
   }
 
-  void nextChapter(BuildContext context, int chapter) {
+  void nextChapter(int chapter) {
+    final item = _getChapterList[chapter];
     HistoryData.addChapToHistory(
       idManga: widget.mangaDetail.split('/')[4],
-      idChapter: _getChapterList[chapter].idChapter,
+      idChapter: item.idChapter,
     );
     BlocProvider.of<ChapterBloc>(context)
-      ..add(FetchDataChapterEvent(
-          endpoint: _getChapterList[chapter].chapterEndpoint));
+      ..add(
+        FetchDataChapterEvent(endpoint: item.chapterEndpoint),
+      );
   }
 }

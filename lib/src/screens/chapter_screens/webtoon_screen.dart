@@ -9,33 +9,33 @@ import './webtoon_screen_widget/custom_drawer.dart';
 import './webtoon_screen_widget/image_screen.dart';
 
 class ChapterLoadedScreen extends StatefulWidget {
-  const ChapterLoadedScreen({this.data, this.endpoint, this.chapterList});
+  const ChapterLoadedScreen({
+    this.data,
+    this.chapterList,
+    this.getIndexChapter,
+  });
 
   final ChapterModel data;
-  final String endpoint;
   final List chapterList;
+  final int getIndexChapter;
 
   @override
   _ChapterLoadedScreenState createState() => _ChapterLoadedScreenState();
 }
 
 class _ChapterLoadedScreenState extends State<ChapterLoadedScreen> {
-  String get _getEndpoint => '/api/chapter/${widget.endpoint}';
-
   List get _getChapterList => widget.chapterList.toList();
 
   ChapterModel get data => widget.data;
+  int get getIndex => widget.getIndexChapter;
 
   final ScrollController _scrollController = ScrollController();
   final scrollDirection = Axis.vertical;
   ItemScrollController _scrollListController;
-  int _getIndex;
 
   @override
   void initState() {
     super.initState();
-    _getIndex = _getChapterList.indexWhere(
-        (element) => element.chapterEndpoint == _getEndpoint);
     _scrollListController = ItemScrollController();
   }
 
@@ -52,17 +52,17 @@ class _ChapterLoadedScreenState extends State<ChapterLoadedScreen> {
                 data: data,
               ),
               AppBarChapterScreen(
-                endpoint: _getEndpoint,
+                endpoint: data.chapterEndpoint,
                 maxWidth: constraints.maxWidth,
-                getIndex: _getIndex,
+                getIndex: getIndex,
                 scrollController: _scrollController,
               ),
               BottomBarChapterScreen(
-                endpoint: _getEndpoint,
+                endpoint: data.chapterEndpoint,
                 chapterList: _getChapterList,
                 maxWidth: constraints.maxWidth,
                 mangaDetail: data.mangaDetail,
-                getIndex: _getIndex,
+                getIndex: getIndex,
                 scrollController: _scrollController,
                 scrollListController: _scrollListController,
               ),
@@ -71,9 +71,9 @@ class _ChapterLoadedScreenState extends State<ChapterLoadedScreen> {
         }),
         drawer: CustomDrawer(
           scrollListController: _scrollListController,
-          getIndex: _getIndex,
+          getIndex: getIndex,
           getChapterList: _getChapterList,
-          idManga: widget.data.mangaDetail.split('/')[4],
+          idManga: data.mangaDetail.split('/')[4],
         ),
       ),
     );

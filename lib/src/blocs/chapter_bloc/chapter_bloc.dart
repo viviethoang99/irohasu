@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:irohasu/src/models/chapter_model.dart';
 
 import '../../../src/resources/chapter_repo.dart';
 import './bloc.dart';
@@ -18,6 +19,21 @@ class ChapterBloc extends Bloc<ChapterEvent, ChapterState> {
         yield ChapterLoadedState(data: data);
       } catch (e) {
         yield ChapterFailureState(msg: e.toString());
+      }
+    }
+    if (event is FetchDataDownloadEvent) {
+      yield ChapterLoadingState();
+      try {
+        final data = ChapterModel(
+          titleChapter: event.item.chapterTitle,
+          chapterEndpoint: event.item.chapterEndpoint,
+          idChapter: event.item.idChapter,
+          titleManga: event.titleManga,
+          mangaDetail: event.mangaDetail,
+        );
+        yield ChapterLoadedState(data: data);
+      } catch (e) {
+        rethrow;
       }
     }
   }

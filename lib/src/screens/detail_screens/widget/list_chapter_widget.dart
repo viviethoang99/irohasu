@@ -98,7 +98,7 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
                           fontWeight: FontWeight.bold,
                         )
                       : TextStyle(
-                          color: Theme.of(context).primaryColor,
+                          color: theme.primaryColor,
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
@@ -108,15 +108,9 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
                 ConvertDateTime.dateTimeToString(chapter.chapterUpload),
                 style: theme.textTheme.subtitle1.copyWith(fontSize: 18),
               ),
-              trailing: btnDownload(
-                item: chapter,
-                index: index,
-              ),
+              trailing: btnDownload(item: chapter, index: index),
               isThreeLine: true,
-              onTap: () => widget.openChap(
-                chapter.idChapter,
-                chapter.chapterEndpoint,
-              ),
+              onTap: () => widget.openChap(chapter),
             );
           },
         ));
@@ -180,7 +174,6 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
                 });
           }
           if (state is DownloadProcessState) {
-            // print('Download is ${state.downloadPercentageCompleted * 100}%');
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(

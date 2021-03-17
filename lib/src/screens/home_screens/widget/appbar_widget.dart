@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:irohasu/src/screens/search_screens/search_screen.dart';
 
 import '../../../../env.dart';
 import '../../../blocs/list_manga_bloc/bloc.dart';
-import '../../../blocs/search_bloc/bloc.dart';
-import '../../search_screens/button_search_widget.dart';
+import '../../../screens/search_screens/search_screen.dart';
 
 class AppBarHomeWidget extends StatelessWidget implements PreferredSizeWidget {
   @override
@@ -30,14 +28,8 @@ class AppBarHomeWidget extends StatelessWidget implements PreferredSizeWidget {
             size: 34,
             color: theme.primaryColor,
           ),
-          onPressed: () {
-            // var manga = await showSearch(
-            //     context: context,
-            //     delegate: ButtonSearchWidget(
-            //       bloc: BlocProvider.of<SearchBloc>(context),
-            //     ));
-            Navigator.of(context).pushNamed(SearchScreen.routeName);
-          },
+          onPressed: () =>
+              Navigator.of(context).pushNamed(SearchScreen.routeName),
         ),
       ),
       actions: <Widget>[
@@ -48,8 +40,7 @@ class AppBarHomeWidget extends StatelessWidget implements PreferredSizeWidget {
               color: theme.primaryColor,
             ),
             onPressed: () {
-              BlocProvider.of<ListMangaBloc>(context)
-                ..add(RefreshMangaEvent());
+              BlocProvider.of<ListMangaBloc>(context)..add(RefreshMangaEvent());
             }),
         Container(
           margin: const EdgeInsets.only(right: 8),

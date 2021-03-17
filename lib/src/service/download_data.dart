@@ -58,7 +58,7 @@ class DownloadData {
       if (appDocDirFolder != null) {
         final data = await ChapterRepo().getDataChapter(uri);
         for (var item in data.listImageChapter) {
-          var fileName = nameFolder(item.chapterImageLink);
+          var fileName = nameFile(item.chapterImageLink, item.number);
           // Name file
           var _appDocDirImage = '$appDocDirFolder/$fileName';
           await dio.download(item.chapterImageLink, _appDocDirImage,
@@ -85,4 +85,6 @@ class DownloadData {
 
   // Return endpoint URl
   String nameFolder(String name) => name.substring(name.lastIndexOf('/') + 1);
+
+  String nameFile(String name, int index)  => "$index.${name.split('.').last}";
 }

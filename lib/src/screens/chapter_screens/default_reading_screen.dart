@@ -1,28 +1,36 @@
+import 'dart:io' as io;
+
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../../env.dart';
 import '../../blocs/change_background_color_bloc/change_background_bloc.dart';
-import '../../blocs/chapter_bloc/bloc.dart';
+import '../../helper/alphanum_comparator.dart';
 import '../../helper/border_text.dart';
 import '../../helper/chap_helper.dart';
 import '../../helper/media_query_helper.dart';
 import '../../models/chapter_model.dart';
-import '../../service/history_data.dart';
 import '../setting_screen/widget/setting_chapter.dart';
-import 'default_screen_widget/custom_bottom_drawer.dart';
+import './default_screen_widget/custom_bottom_drawer.dart';
 
 typedef AnimationListener = void Function();
 
 class HorizontalReadingWidget extends StatefulWidget {
-  const HorizontalReadingWidget({this.data, this.endpoint, this.chapterList});
+  HorizontalReadingWidget({
+    this.data,
+    this.chapterList,
+    this.indexChapter,
+    this.openChapter,
+  });
 
   final ChapterModel data;
-  final String endpoint;
   final List chapterList;
+  final int indexChapter;
+  final Function openChapter;
 
   @override
   _HorizontalReadingWidgetState createState() =>
@@ -31,33 +39,49 @@ class HorizontalReadingWidget extends StatefulWidget {
 
 class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
     with TickerProviderStateMixin {
-  String get _getEndpoint => '/api/chapter/${widget.endpoint}';
-
   List get _getChapterList => widget.chapterList.toList();
 
   ChapterModel get data => widget.data;
 
+  int get getIndex => widget.indexChapter;
+
   final threshold = 90;
   final heightAppBar = 110.0;
   bool _showBottomMenu = false;
+  int countImage = 0;
+
+  //Declare Globaly
+  String directory;
+  List file = [];
 
   @override
   void initState() {
     super.initState();
-    _getIndex = _getChapterList.indexWhere(
-      (element) => element.chapterEndpoint == _getEndpoint,
-    );
     _scrollListController = ItemScrollController();
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 500),
     );
     _pageController = PageController(initialPage: currentIndex);
+    _getChapterList[getIndex]?.isDownload != null
+        ? _listofFiles()
+        : setState(() => countImage = data.totalImage);
+  }
+
+  void _listofFiles() async {
+    final directory = (await getApplicationDocumentsDirectory()).absolute.path;
+    setState(() {
+      file = io.Directory(directory + _getChapterList[getIndex].isDownload)
+          .listSync()
+            ..sort((a, b) => AlphanumComparator.compare(a.path, b.path));
+      countImage = file.length;
+    });
   }
 
   @override
   void dispose() {
     super.dispose();
+    print('Dispose reading screen');
     _animationController?.dispose();
   }
 
@@ -70,7 +94,7 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
     return BlocBuilder<ChangeBackgroundBloc, ChangeBackgroundState>(
         builder: (context, state) {
       return Scaffold(
-        backgroundColor: state.color ?? Colors.red,
+        backgroundColor: state.color ?? Colors.black87,
         body: LayoutBuilder(builder: (context, constraints) {
           return GestureDetector(
             onPanEnd: (details) {
@@ -80,8 +104,7 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                 });
               } else if (details.velocity.pixelsPerSecond.dy < -threshold) {
                 SchedulerBinding.instance.addPostFrameCallback((_) {
-                  _scrollListController.jumpTo(
-                      index: _getIndex, alignment: 0.2);
+                  _scrollListController.jumpTo(index: getIndex, alignment: 0.2);
                 });
                 setState(() {
                   _showBottomMenu = true;
@@ -93,8 +116,8 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
               var positionX = details.globalPosition.dx;
               var positionY = details.globalPosition.dy;
               if (positionX <= prePage && positionY > heightAppBar) {
-                (currentIndex == 0 && _getIndex != 0)
-                    ? nextChapter(_getIndex - 1)
+                (currentIndex == 0 && getIndex != 0)
+                    ? widget.openChapter(getIndex - 1)
                     : _pageController.previousPage(
                         duration: const Duration(milliseconds: 300),
                         curve: Curves.easeIn);
@@ -103,8 +126,8 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                   positionY > heightAppBar) {
                 setState(() => _showMenu = !_showMenu);
               } else if (positionY > heightAppBar) {
-                currentIndex == data.listImageChapter.length - 1
-                    ? nextChapter(_getIndex + 1)
+                currentIndex == countImage - 1
+                    ? widget.openChapter(getIndex + 1)
                     : _pageController.nextPage(
                         duration: const Duration(milliseconds: 300),
                         curve: Curves.easeIn);
@@ -121,7 +144,7 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                  */
 
                 // Show Image
-                _imageWidget(),
+                (file.isNotEmpty) ? _imageLocalWidget() : _imageWidget(),
 
                 // Show Appbar
                 if (_showMenu)
@@ -130,7 +153,6 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                     width: widthScreen,
                     height: heightAppBar,
                     child: Container(
-                      // padding: const EdgeInsets.symmetric(vertical: 10),
                       child: AppBar(
                         leading: IconButton(
                           icon: const Icon(
@@ -157,7 +179,7 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                             Text(
                               ChapHelper.removeNameManga(
                                 titleChapter:
-                                    _getChapterList[_getIndex].chapterTitle,
+                                    _getChapterList[getIndex].chapterTitle,
                                 nameManga: data.titleManga,
                               ),
                               style: const TextStyle(color: Colors.grey),
@@ -189,7 +211,7 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                     child: Container(
                       child: BorderText(
                         child: Text(
-                          '${currentIndex + 1} / ${data.totalImage}',
+                          '${currentIndex + 1}/$countImage',
                           style: TextStyle(
                               color: Theme.of(context).accentColor,
                               fontSize: 20,
@@ -212,11 +234,11 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                       currentIndex: currentIndex,
                       idChapter: data.idChapter,
                       idManga: data.mangaDetail.split('/')[4],
-                      totalImage: data.totalImage,
+                      totalImage: countImage,
                       onShowListManga: (bool data) {
                         SchedulerBinding.instance.addPostFrameCallback((_) {
                           _scrollListController.jumpTo(
-                              index: _getIndex, alignment: 0.4);
+                              index: getIndex, alignment: 0.4);
                         });
                         setState(() {
                           _showBottomMenu = data;
@@ -232,9 +254,63 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
     });
   }
 
+  Widget _imageLocalWidget() {
+    return ExtendedImageGesturePageView.builder(
+      itemCount: countImage,
+      scrollDirection: Axis.horizontal,
+      controller: _pageController,
+      itemBuilder: (context, index) {
+        return ExtendedImage.file(
+          file[index],
+          onDoubleTap: (state) {
+            Offset pointerDownPosition;
+            pointerDownPosition = state.pointerDownPosition;
+            final begin = state.gestureDetails.totalScale;
+            double end;
+
+            _animation?.removeListener(_animationListener);
+            _animationController
+              ..stop()
+              ..reset();
+
+            (begin == 1.0) ? end = 2.0 : end = 1.0;
+
+            _animationListener = () {
+              state.handleDoubleTap(
+                  scale: _animation.value,
+                  doubleTapPosition: pointerDownPosition);
+            };
+
+            _animation = _animationController
+                .drive(Tween<double>(begin: begin, end: end));
+            _animationController
+              ..addListener(_animationListener)
+              ..forward();
+          },
+          mode: ExtendedImageMode.gesture,
+          initGestureConfigHandler: (state) => GestureConfig(
+            minScale: 0.9,
+            animationMinScale: 0.7,
+            maxScale: 3.0,
+            animationMaxScale: 3.5,
+            speed: 1.0,
+            inertialSpeed: 100.0,
+            initialScale: 1.0,
+            inPageView: true,
+            cacheGesture: false,
+          ),
+        );
+      },
+      onPageChanged: (value) {
+        setState(() => currentIndex = value);
+      },
+      physics: const BouncingScrollPhysics(),
+    );
+  }
+
   Widget _imageWidget() {
     return ExtendedImageGesturePageView.builder(
-      itemCount: data.listImageChapter.length,
+      itemCount: countImage,
       scrollDirection: Axis.horizontal,
       controller: _pageController,
       itemBuilder: (context, i) {
@@ -288,18 +364,7 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
     );
   }
 
-  void nextChapter(int chapter) {
-    HistoryData.addChapToHistory(
-      idManga: data.mangaDetail.split('/')[4],
-      idChapter: _getChapterList[chapter].idChapter,
-    );
-    BlocProvider.of<ChapterBloc>(context)
-      ..add(FetchDataChapterEvent(
-          endpoint: _getChapterList[chapter].chapterEndpoint));
-  }
-
   ItemScrollController _scrollListController;
-  int _getIndex;
   Animation<double> _animation;
   AnimationController _animationController;
   AnimationListener _animationListener;

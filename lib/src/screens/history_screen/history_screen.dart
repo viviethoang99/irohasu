@@ -1,15 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:irohasu/src/models/cache_manga_model.dart';
-import 'package:irohasu/src/screens/chapter_screens/chapter_screen.dart';
-import 'package:irohasu/src/service/history_data.dart';
 
 import '../../../env.dart';
 import '../../blocs/history_bloc/history_bloc.dart';
 import '../../components/loading_screen.dart';
 import '../../helper/chap_helper.dart';
+import '../../models/cache_manga_model.dart';
+import '../../screens/chapter_screens/chapter_screen.dart';
 import '../../screens/home_screens/widget/appbar_widget.dart';
+import '../../service/history_data.dart';
 import './detail_item_widget.dart';
 
 class HistoryScreen extends StatefulWidget {
@@ -59,6 +59,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           arguments: ChapterScreen(
                             endpoint: lastChapter.chapterEndpoint,
                             chapterList: cacheData.data.listChapter,
+                            titleManga: cacheData.data.title,
+                            titleChapter: lastChapter.chapterTitle,
+                            mangaDetail: cacheData.data.endpoint,
                           ),
                         );
                       },

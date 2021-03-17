@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:irohasu/src/models/chapter_item_model.dart';
+import '../../../models/chapter_item_model.dart';
 
 class CustomButtonReadingWidget extends StatelessWidget {
   CustomButtonReadingWidget({
@@ -28,10 +28,7 @@ class CustomButtonReadingWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(25.0),
         ),
         child: InkWell(
-          onTap: () => openChap(
-            lastChapter.idChapter,
-            lastChapter.chapterEndpoint.toString(),
-          ),
+          onTap: () => openChap(lastChapter),
           child: Container(
             margin: const EdgeInsets.symmetric(vertical: 3),
             alignment: Alignment.center,
