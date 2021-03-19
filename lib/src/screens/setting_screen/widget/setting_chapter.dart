@@ -127,18 +127,18 @@ class _SettingChapterState extends State<SettingChapter> {
                   ),
                   onSelected: _setBackgroundColor,
                   itemBuilder: (context) {
-                    return PopupMenuSetting.listBackground.map((String choice) {
-                      return PopupMenuItem<String>(
-                        value: choice,
-                        child: Text(
-                          choice,
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: theme.primaryColor,
-                          ),
-                        ),
-                      );
-                    }).toList();
+                    return PopupMenuSetting.listBackground
+                        .map((String choice) => PopupMenuItem<String>(
+                              value: choice,
+                              child: Text(
+                                choice,
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: theme.primaryColor,
+                                ),
+                              ),
+                            ))
+                        .toList();
                   },
                 );
               })
@@ -173,7 +173,7 @@ class PopupMenuSetting {
   static const String white = 'Trắng';
   static const String black = 'Đen';
 
-  static const List<String> listScreenMode = <String>[webtoon, defaultMode];
+  static const List<String> listScreenMode = <String>[defaultMode, webtoon];
 
   static const List<String> listBackground = <String>[white, black];
 }

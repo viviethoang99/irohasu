@@ -79,9 +79,16 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
   }
 
   @override
+  void didUpdateWidget(covariant HorizontalReadingWidget oldWidget) {
+    _getChapterList[getIndex]?.isDownload != null
+        ? _listofFiles()
+        : setState(() => countImage = data.totalImage);
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   void dispose() {
     super.dispose();
-    print('Dispose reading screen');
     _animationController?.dispose();
   }
 
@@ -104,7 +111,7 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                 });
               } else if (details.velocity.pixelsPerSecond.dy < -threshold) {
                 SchedulerBinding.instance.addPostFrameCallback((_) {
-                  _scrollListController.jumpTo(index: getIndex, alignment: 0.2);
+                  _scrollListController.jumpTo(index: getIndex, alignment: 0.4);
                 });
                 setState(() {
                   _showBottomMenu = true;
@@ -195,8 +202,9 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                               color: Colors.white,
                             ),
                             onPressed: () {
-                              Navigator.of(context)
-                                  .pushNamed(SettingChapter.routeName);
+                              Navigator.of(context).pushNamed(
+                                SettingChapter.routeName,
+                              );
                             },
                           )
                         ],
@@ -227,7 +235,7 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                 if (_showMenu)
                   Positioned(
                     left: 0,
-                    bottom: _showBottomMenu ? -70 : -(heightScreen * 0.5),
+                    bottom: _showBottomMenu ? -70 : -(heightScreen * 0.5 + 5),
                     child: CustomBottomDrawer(
                       chapterList: widget.chapterList,
                       scrollListController: _scrollListController,
@@ -244,6 +252,7 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                           _showBottomMenu = data;
                         });
                       },
+                      openChapter: widget.openChapter,
                     ),
                   ),
               ],
@@ -281,8 +290,10 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                   doubleTapPosition: pointerDownPosition);
             };
 
-            _animation = _animationController
-                .drive(Tween<double>(begin: begin, end: end));
+            _animation = _animationController.drive(Tween<double>(
+              begin: begin,
+              end: end,
+            ));
             _animationController
               ..addListener(_animationListener)
               ..forward();

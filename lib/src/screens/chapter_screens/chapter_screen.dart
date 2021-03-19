@@ -35,7 +35,7 @@ class _ChapterScreenState extends State<ChapterScreen> {
   int getIndexChapter;
 
   List get getChapterList => widget.chapterList.reversed.toList();
-
+  
   @override
   void initState() {
     super.initState();
@@ -98,6 +98,7 @@ class _ChapterScreenState extends State<ChapterScreen> {
                 data: state.data,
                 chapterList: getChapterList,
                 getIndexChapter: getIndex(state.data.chapterEndpoint),
+                openChapter: nextChapter,
               );
             }
             return Container();

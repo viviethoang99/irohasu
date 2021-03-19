@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-import '../../../blocs/chapter_bloc/bloc.dart';
 import '../../../helper/convert_date_time.dart';
 import '../../../helper/media_query_helper.dart';
-import '../../../service/history_data.dart';
 import './step_progress_bar.dart';
 
 class CustomBottomDrawer extends StatefulWidget {
@@ -17,6 +14,7 @@ class CustomBottomDrawer extends StatefulWidget {
     this.currentIndex,
     this.onShowListManga,
     this.idManga,
+    this.openChapter,
   });
 
   final List chapterList;
@@ -26,6 +24,7 @@ class CustomBottomDrawer extends StatefulWidget {
   final String idManga;
   final ItemScrollController scrollListController;
   final Function(bool) onShowListManga;
+  final Function openChapter;
 
   @override
   _CustomBottomDrawerState createState() => _CustomBottomDrawerState();
@@ -40,6 +39,14 @@ class _CustomBottomDrawerState extends State<CustomBottomDrawer> {
     getIndex = widget.chapterList.indexWhere(
       (chapter) => chapter.idChapter == widget.idChapter,
     );
+  }
+
+  @override
+  void didUpdateWidget(covariant CustomBottomDrawer oldWidget) {
+    getIndex = widget.chapterList.indexWhere(
+      (chapter) => chapter.idChapter == widget.idChapter,
+    );
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -69,6 +76,7 @@ class _CustomBottomDrawerState extends State<CustomBottomDrawer> {
                         size: 33,
                       ),
                       onPressed: () => widget.onShowListManga(true)),
+                  // onPressed: () {}),
                 ),
                 Expanded(
                   child: StepProgressBar(
@@ -94,7 +102,12 @@ class _CustomBottomDrawerState extends State<CustomBottomDrawer> {
               color: Colors.green,
             ),
             Container(
-              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+              padding: const EdgeInsets.only(
+                left: 10,
+                right: 10,
+                top: 5,
+                bottom: 90,
+              ),
               width: double.infinity,
               height: heightScreen * 0.5,
               child: ScrollablePositionedList.builder(
@@ -108,30 +121,27 @@ class _CustomBottomDrawerState extends State<CustomBottomDrawer> {
                     title: Text(
                       chapter.chapterTitle.trim(),
                       style: const TextStyle(
-                          fontSize: 20,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
+                        fontSize: 20,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     subtitle: Text(
                       ConvertDateTime.dateTimeToString(chapter.chapterUpload),
                       style: const TextStyle(
-                          fontSize: 18,
-                          color: Colors.white,
-                          fontStyle: FontStyle.italic),
+                        fontSize: 18,
+                        color: Colors.white,
+                        fontStyle: FontStyle.italic,
+                      ),
                     ),
-                    onTap: () {
-                      HistoryData.addChapToHistory(
-                        idManga: widget.idManga,
-                        idChapter: chapter.idChapter,
-                      );
-                      BlocProvider.of<ChapterBloc>(context)
-                        ..add(FetchDataChapterEvent(
-                            endpoint: chapter.chapterEndpoint));
-                    },
+                    onTap: () => widget.openChapter(index),
                   );
                 },
               ),
-            )
+            ),
+            // SizedBox(
+            //   height: 20,
+            // ),
           ],
         ),
       ),

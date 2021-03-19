@@ -75,9 +75,9 @@ class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  void didUpdateWidget(covariant MangaDetailLoadedScreen oldWidget) {
     continueReading();
+    super.didUpdateWidget(oldWidget);
   }
 
   @override

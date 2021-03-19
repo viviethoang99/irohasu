@@ -15,19 +15,6 @@ class LoadImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: ListView.builder(
-        padding: const EdgeInsets.only(bottom: 56),
-        physics: const ClampingScrollPhysics(),
-        controller: _scrollController,
-        itemBuilder: (context, index) {
-          return CachedNetworkImage(
-            imageUrl: data.listImageChapter[index].chapterImageLink,
-            httpHeaders: ENV.headersBuilder,
-          );
-        },
-        itemCount: data.listImageChapter.length,
-      ),
-    );
+
   }
 }

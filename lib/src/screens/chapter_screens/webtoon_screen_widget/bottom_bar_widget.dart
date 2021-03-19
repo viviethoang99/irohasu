@@ -1,29 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-
-import '../../../blocs/chapter_bloc/bloc.dart';
-import '../../../service/history_data.dart';
 
 class BottomBarChapterScreen extends StatefulWidget {
   BottomBarChapterScreen({
     this.endpoint,
-    this.chapterList,
+    this.countChapter,
     this.maxWidth,
-    this.mangaDetail,
     this.scrollController,
     this.getIndex,
     this.scrollListController,
+    this.openChapter,
   });
 
-  final String mangaDetail;
   final String endpoint;
-  final List chapterList;
+  final int countChapter;
   final double maxWidth;
   final int getIndex;
   final ScrollController scrollController;
   final ItemScrollController scrollListController;
+  final Function openChapter;
 
   @override
   _BottomBarChapterScreenState createState() => _BottomBarChapterScreenState();
@@ -32,15 +28,12 @@ class BottomBarChapterScreen extends StatefulWidget {
 class _BottomBarChapterScreenState extends State<BottomBarChapterScreen> {
   double _offset, _delta = 0, _oldOffset = 0;
   final double _containerMaxHeight = 56;
+
   bool hasReachedEnd = false;
 
   double get maxWidth => widget.maxWidth;
 
-  List get _getChapterList => widget.chapterList;
-
   ScrollController get _scrollController => widget.scrollController;
-
-  ItemScrollController get _scrollListController => widget.scrollListController;
 
   @override
   void initState() {
@@ -84,7 +77,7 @@ class _BottomBarChapterScreenState extends State<BottomBarChapterScreen> {
                 color: Colors.black87,
                 iconSize: 35,
                 onPressed: widget.getIndex != 0
-                    ? () => nextChapter(widget.getIndex - 1)
+                    ? () => widget.openChapter(widget.getIndex - 1)
                     : null),
             IconButton(
               icon: const Icon(Icons.home),
@@ -101,8 +94,8 @@ class _BottomBarChapterScreenState extends State<BottomBarChapterScreen> {
               onPressed: () {
                 Scaffold.of(context).openDrawer();
                 SchedulerBinding.instance.addPostFrameCallback((_) {
-                  _scrollListController.jumpTo(
-                      index: widget.getIndex, alignment: 0.5);
+                  widget.scrollListController
+                      .jumpTo(index: widget.getIndex, alignment: 0.5);
                 });
               },
             ),
@@ -110,25 +103,13 @@ class _BottomBarChapterScreenState extends State<BottomBarChapterScreen> {
               icon: const Icon(Icons.skip_next),
               color: Colors.black87,
               iconSize: 35,
-              onPressed: (widget.getIndex != _getChapterList.length - 1)
-                  ? () => nextChapter(widget.getIndex + 1)
+              onPressed: (widget.getIndex != widget.countChapter - 1)
+                  ? () => widget.openChapter(widget.getIndex + 1)
                   : null,
             ),
           ],
         ),
       ),
     );
-  }
-
-  void nextChapter(int chapter) {
-    final item = _getChapterList[chapter];
-    HistoryData.addChapToHistory(
-      idManga: widget.mangaDetail.split('/')[4],
-      idChapter: item.idChapter,
-    );
-    BlocProvider.of<ChapterBloc>(context)
-      ..add(
-        FetchDataChapterEvent(endpoint: item.chapterEndpoint),
-      );
   }
 }

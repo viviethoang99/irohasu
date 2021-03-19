@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:irohasu/src/helper/media_query_helper.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../../blocs/chapter_bloc/bloc.dart';
 import '../../../service/history_data.dart';
-
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({
@@ -12,44 +12,36 @@ class CustomDrawer extends StatelessWidget {
     @required ItemScrollController scrollListController,
     @required int getIndex,
     @required List getChapterList,
-    @required String idManga,
+    @required this.openChapter,
   })  : _scrollListController = scrollListController,
         _getIndex = getIndex,
         _getChapterList = getChapterList,
-        _idManga = idManga,
         super(key: key);
 
   final ItemScrollController _scrollListController;
   final int _getIndex;
   final List _getChapterList;
-  final String _idManga;
+  final Function openChapter;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(left: 8),
-      width: MediaQuery.of(context).size.width * 0.65,
-      height: MediaQuery.of(context).size.height,
+      width: ScreenHelper.getWidth(context) * 0.65,
+      height: ScreenHelper.getHeight(context),
       color: Colors.black87,
       child: ScrollablePositionedList.builder(
         itemScrollController: _scrollListController,
         itemBuilder: (context, index) {
+          final item = _getChapterList[index];
           return ListTile(
             selected: (index == _getIndex),
             selectedTileColor: Colors.green,
             title: Text(
-              _getChapterList[index].chapterTitle.toString(),
+              item.chapterTitle.toString(),
               style: const TextStyle(fontSize: 17, color: Colors.white),
             ),
-            onTap: () {
-              HistoryData.addChapToHistory(
-                idManga: _idManga,
-                idChapter: _getChapterList[index].idChapter,
-              );
-              BlocProvider.of<ChapterBloc>(context)
-                ..add(FetchDataChapterEvent(
-                    endpoint: _getChapterList[index].chapterEndpoint));
-            },
+            onTap: () => openChapter(index),
           );
         },
         itemCount: _getChapterList.length,

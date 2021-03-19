@@ -2,7 +2,10 @@ class ENV {
   static const webPage = 'https://blogtruyen.vn';
   static const nameApp = 'Irohasu';
   static const headersBuilder = {'Referer': webPage};
+
   static const apiApp = 'http://localhost:1604';
+  // Change to "http://irohasu-bezt-girl.herokuapp.com" if using app
+
   static const nameDatabase = 'irohasu';
 
   static String urlWebView(String url) {
