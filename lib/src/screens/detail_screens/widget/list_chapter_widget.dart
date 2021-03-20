@@ -122,20 +122,37 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
       child: BlocBuilder<DownloadBloc, DownloadState>(
         builder: (BuildContext context, state) {
           if (state is DownloadedState || item.isDownload != null) {
-            return IconButton(
-                icon: Icon(
-                  Icons.offline_pin_rounded,
-                  size: 37,
-                  color: Theme.of(context).buttonColor,
-                ),
-                onPressed: () {
-                  BlocProvider.of<DownloadBloc>(context).add(
-                    RemoveDownloadChapterEvent(
-                      chapter: item,
-                      idManga: data.idManga,
+            // return IconButton(
+            //     icon: Icon(
+            //       Icons.arrow_circle_down,
+            //       size: 37,
+            //       color: Theme.of(context).buttonColor,
+            //     ),
+            //     onPressed: () {
+            //       BlocProvider.of<DownloadBloc>(context).add(
+            //         RemoveDownloadChapterEvent(
+            //           chapter: item,
+            //           idManga: data.idManga,
+            //         ),
+            //       );
+            //     });
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                  height: 31,
+                  width: 31,
+                  child: RawMaterialButton(
+                    onPressed: () {},
+                    elevation: 2.0,
+                    fillColor: Theme.of(context).buttonColor,
+                    child: Icon(
+                      Icons.arrow_downward,
+                      size: 25.0,
+                      color: Theme.of(context).backgroundColor,
                     ),
-                  );
-                });
+                    shape: const CircleBorder(),
+                  )),
+            );
           }
           if (state is DownloadingState) {
             return Padding(
@@ -159,19 +176,19 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
           }
           if (state is DownloadInitialState && item.isDownload == null) {
             return IconButton(
-                icon: Icon(
-                  Icons.arrow_circle_down,
-                  size: 37,
-                  color: Theme.of(context).buttonColor,
+              icon: Icon(
+                Icons.arrow_circle_down,
+                size: 37,
+                color: Theme.of(context).buttonColor,
+              ),
+              onPressed: () => BlocProvider.of<DownloadBloc>(context).add(
+                DownloadChapterEvent(
+                  chapterModel: item,
+                  titleManga: data.title,
+                  idManga: data.idManga,
                 ),
-                onPressed: () async {
-                  BlocProvider.of<DownloadBloc>(context)
-                      .add(DownloadChapterEvent(
-                    chapterModel: item,
-                    titleManga: data.title,
-                    idManga: data.idManga,
-                  ));
-                });
+              ),
+            );
           }
           if (state is DownloadProcessState) {
             return Padding(

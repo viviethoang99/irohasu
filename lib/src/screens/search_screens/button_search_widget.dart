@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:irohasu/src/components/loading_screen.dart';
-import 'package:irohasu/src/models/manga_detail_model.dart';
 
-import '../../../src/blocs/search_bloc/bloc.dart';
-import '../../../src/constants/base_content.dart';
+import '../../blocs/search_bloc/bloc.dart';
+import '../../components/loading_screen.dart';
+import '../../constants/base_content.dart';
+import '../../models/manga_detail_model.dart';
 import '../home_screens/widget/item_manga.dart';
 
 class ButtonSearchWidget extends SearchDelegate<MangaDetailModel> {

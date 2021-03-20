@@ -27,9 +27,8 @@ class _HomeScreenState extends State<HomeScreen> {
       ..addListener(() {
         final maxScrollExtent = _scrollController.position.maxScrollExtent;
         final currentScroll = _scrollController.position.pixels;
-        if (maxScrollExtent - currentScroll <= _scrollThreshold) {
-          BlocProvider.of<ListMangaBloc>(context)..add(FetchListMangaEvent());
-        }
+        if (maxScrollExtent - currentScroll <= _scrollThreshold)
+          BlocProvider.of<ListMangaBloc>(context)..add(FetchListMangaEvent(),);
       });
   }
 

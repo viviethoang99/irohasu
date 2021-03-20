@@ -35,10 +35,11 @@ class _ChapterScreenState extends State<ChapterScreen> {
   int getIndexChapter;
 
   List get getChapterList => widget.chapterList.reversed.toList();
-  
+
   @override
   void initState() {
     super.initState();
+    BlocProvider.of<ChangeReadingModeBloc>(context).add(GetReadingMode());
     getIndexChapter = getIndex(getEndpoint);
     _checkFetchData(getIndexChapter);
   }

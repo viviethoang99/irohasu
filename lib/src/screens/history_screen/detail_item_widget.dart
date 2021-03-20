@@ -13,14 +13,12 @@ class DetailItemWidget extends StatelessWidget {
     Key key,
     @required this.item,
     @required this.titleManga,
-    @required this.timeCreate,
     @required this.urlManga,
     @required this.idManga,
   }) : super(key: key);
 
   final ChapterItem item;
   final String titleManga;
-  final DateTime timeCreate;
   final String urlManga;
   final String idManga;
 
@@ -68,7 +66,8 @@ class DetailItemWidget extends StatelessWidget {
               const SizedBox(height: 4),
               Text(
                 ConvertDateTime.checkLastRead(
-                    item.timeReading ?? DateTime.now()),
+                  item.timeReading ?? DateTime.now(),
+                ),
                 style: const TextStyle(
                   fontSize: 18,
                   color: Colors.white70,

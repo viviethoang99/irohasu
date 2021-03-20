@@ -4,7 +4,6 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class BottomBarChapterScreen extends StatefulWidget {
   BottomBarChapterScreen({
-    this.endpoint,
     this.countChapter,
     this.maxWidth,
     this.scrollController,
@@ -13,7 +12,6 @@ class BottomBarChapterScreen extends StatefulWidget {
     this.openChapter,
   });
 
-  final String endpoint;
   final int countChapter;
   final double maxWidth;
   final int getIndex;

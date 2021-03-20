@@ -4,16 +4,12 @@ import '../../../models/chapter_item_model.dart';
 class CustomButtonReadingWidget extends StatelessWidget {
   CustomButtonReadingWidget({
     @required this.status,
-    @required this.color,
     @required this.lastChapter,
-    @required this.idManga,
     this.openChap,
   });
 
   final String status;
-  final Object color;
   final ChapterItem lastChapter;
-  final String idManga;
   final Function openChap;
 
   @override

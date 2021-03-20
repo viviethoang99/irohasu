@@ -241,7 +241,6 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                       scrollListController: _scrollListController,
                       currentIndex: currentIndex,
                       idChapter: data.idChapter,
-                      idManga: data.mangaDetail.split('/')[4],
                       totalImage: countImage,
                       onShowListManga: (bool data) {
                         SchedulerBinding.instance.addPostFrameCallback((_) {

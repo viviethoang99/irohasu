@@ -81,13 +81,10 @@ class _ChapterLoadedScreenState extends State<ChapterLoadedScreen> {
             children: <Widget>[
               (file.isNotEmpty) ? loadImageDownload() : loadImageNetwork(),
               AppBarChapterScreen(
-                endpoint: data.chapterEndpoint,
                 maxWidth: constraints.maxWidth,
-                getIndex: getIndex,
                 scrollController: _scrollController,
               ),
               BottomBarChapterScreen(
-                endpoint: data.chapterEndpoint,
                 countChapter: _getChapterList.length,
                 maxWidth: constraints.maxWidth,
                 getIndex: getIndex,

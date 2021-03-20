@@ -42,7 +42,6 @@ class _MangaDetailScreenState extends State<MangaDetailScreen> {
         detailManga.data.listChapRead.isEmpty &&
         detailManga.data.listDownload.isEmpty) {
       await _cacheManagerData.removeMangaRequestSingleCache(idManga);
-      print('Remove success cache ${detailManga.data.title}');
     }
   }
 

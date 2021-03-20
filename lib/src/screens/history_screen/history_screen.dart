@@ -89,7 +89,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
                               ),
                               DetailItemWidget(
                                 item: lastChapter,
-                                timeCreate: cacheData.createTime,
                                 titleManga: cacheData.data.title,
                                 urlManga: cacheData.data.endpoint,
                                 idManga: cacheData.data.idManga,

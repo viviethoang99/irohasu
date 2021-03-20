@@ -137,9 +137,7 @@ class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: CustomButtonReadingWidget(
                 status: _continueReading,
-                color: Colors.green,
                 lastChapter: data.listChapter.last,
-                idManga: widget.data.idManga,
                 openChap: (ChapterItem item) => openChapter(item: item),
               ),
             ),

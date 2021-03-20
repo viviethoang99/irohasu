@@ -13,7 +13,6 @@ class CustomBottomDrawer extends StatefulWidget {
     this.scrollListController,
     this.currentIndex,
     this.onShowListManga,
-    this.idManga,
     this.openChapter,
   });
 
@@ -21,7 +20,6 @@ class CustomBottomDrawer extends StatefulWidget {
   final int currentIndex;
   final int totalImage;
   final String idChapter;
-  final String idManga;
   final ItemScrollController scrollListController;
   final Function(bool) onShowListManga;
   final Function openChapter;

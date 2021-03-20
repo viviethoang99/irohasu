@@ -44,7 +44,7 @@ class DownloadBloc extends Bloc<DownloadEvent, DownloadState> {
           .copyWith(downloadPercentageCompleted: event.percentage);
       if (event.percentage == 1) {
         String uriChapter;
-        // print(uriChapter);
+        print(uriChapter);
         await _path.then((String value) {
           uriChapter = value;
         });
@@ -108,7 +108,8 @@ class DownloadBloc extends Bloc<DownloadEvent, DownloadState> {
 
     try {
       listManga[idManga].data.listDownload.add(idChapter);
-      listManga[idManga].data
+      listManga[idManga]
+          .data
           .listChapter
           .firstWhere((manga) => manga.idChapter == idChapter)
           .isDownload = url;
