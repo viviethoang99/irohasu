@@ -233,7 +233,9 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
 
                 // Show Drawer Bottom
                 if (_showMenu)
-                  Positioned(
+                  AnimatedPositioned(
+                    curve: Curves.easeInOut,
+                    duration: const Duration(milliseconds: 300),
                     left: 0,
                     bottom: _showBottomMenu ? -70 : -(heightScreen * 0.5 + 5),
                     child: CustomBottomDrawer(

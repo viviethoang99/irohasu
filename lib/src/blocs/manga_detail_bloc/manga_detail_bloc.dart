@@ -70,18 +70,17 @@ class MangaDetailBloc extends Bloc<MangaDetailEvent, MangaDetailState> {
     List<ChapterItem> fetchData,
     List<ChapterItem> dataCache,
   }) async {
-    if (dataCache.length != dataCache.length) {
-      fetchData.map((ChapterItem manga) {
+    var resultList = [];
+    if (fetchData.length != dataCache.length) {
+      resultList = fetchData.map((ChapterItem manga) {
         for (var cache in dataCache) {
-          if (manga == cache) {
-            manga = cache;
-            break;
-          }
+          if (manga == cache) return cache;
         }
-      });
+        return manga;
+      }).toList();
     } else {
-      return dataCache;
+      resultList = dataCache;
     }
-    return fetchData;
+    return resultList;
   }
 }

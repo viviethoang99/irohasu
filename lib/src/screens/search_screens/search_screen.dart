@@ -51,10 +51,9 @@ class _SearchScreenState extends State<SearchScreen> {
             fontSize: 20,
           ),
           onSubmitted: (value) {
-            BlocProvider.of<SearchBloc>(context)
-              ..add(FetchDataSearchEvent(
-                query: value,
-              ));
+            BlocProvider.of<SearchBloc>(context).add(FetchDataSearchEvent(
+              query: value,
+            ));
           },
         ),
         leading: IconButton(
@@ -108,18 +107,19 @@ class _SearchScreenState extends State<SearchScreen> {
                 return const Center(child: Text('Other states..'));
               },
             ),
-            AnimatedOpacity(
-              opacity: _showDrawer ? 1.0 : 0.0,
-              duration: const Duration(
-                milliseconds: 500,
-              ),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaY: 5.0, sigmaX: 5.0),
-                child: Container(
-                  color: Colors.black.withOpacity(0.5),
+            if (_showDrawer)
+              AnimatedOpacity(
+                opacity: 1.0,
+                duration: const Duration(
+                  milliseconds: 500,
+                ),
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaY: 5.0, sigmaX: 5.0),
+                  child: Container(
+                    color: Colors.black.withOpacity(0.5),
+                  ),
                 ),
               ),
-            ),
             AnimatedPositioned(
               curve: Curves.easeInOut,
               duration: const Duration(milliseconds: 300),

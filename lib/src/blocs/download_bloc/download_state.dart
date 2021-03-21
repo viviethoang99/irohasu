@@ -5,7 +5,6 @@ abstract class DownloadState extends Equatable {
 
   @override
   List<Object> get props => [];
-
 }
 
 class DownloadInitialState extends DownloadState {}
@@ -42,4 +41,10 @@ class DownloadedState extends DownloadState {
   List<Object> get props => [data];
 }
 
-class ImageDownloadFailureState extends DownloadState {}
+class DownloadFailureState extends DownloadState {
+  DownloadFailureState({this.msg});
+  final String msg;
+
+  @override
+  List<Object> get props => [msg];
+}

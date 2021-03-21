@@ -3,7 +3,7 @@ class ENV {
   static const nameApp = 'Irohasu';
   static const headersBuilder = {'Referer': webPage};
 
-  static const apiApp = 'http://localhost:1604';
+  static const apiApp = 'http://irohasu-bezt-girl.herokuapp.com';
   // Change to "http://irohasu-bezt-girl.herokuapp.com" if using app
 
   static const nameDatabase = 'irohasu';

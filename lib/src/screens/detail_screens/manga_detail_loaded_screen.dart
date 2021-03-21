@@ -60,8 +60,6 @@ class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
       idManga: data.idManga,
       idChapter: item.idChapter,
     );
-    BlocProvider.of<MangaDetailBloc>(context)
-        .add(AddChapterToListReading(data.idManga));
     Navigator.of(context).pushNamed(
       ChapterScreen.routeName,
       arguments: ChapterScreen(
@@ -72,6 +70,8 @@ class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
         mangaDetail: data.endpoint,
       ),
     );
+    BlocProvider.of<MangaDetailBloc>(context)
+        .add(AddChapterToListReading(data.idManga));
   }
 
   @override

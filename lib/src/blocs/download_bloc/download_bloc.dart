@@ -20,41 +20,36 @@ class DownloadBloc extends Bloc<DownloadEvent, DownloadState> {
   @override
   Stream<DownloadState> mapEventToState(DownloadEvent event) async* {
     if (event is DownloadChapterEvent) {
+      yield DownloadingState();
       try {
-        yield DownloadingState();
         var uri = event.chapterModel.chapterEndpoint;
         var fileName = _downloadData.nameFolder(uri);
         _path = _downloadData.downloadChapter(
           uri: uri,
           name: fileName,
           folderName: event.titleManga,
-          onProgress: (double process) =>
-              add(ChapterDownloadPercentageChangedEvent(
+          onProgress: (process) => add(ChapterDownloadPercentageChangedEvent(
             percentage: process,
             idChapter: event.chapterModel.idChapter,
             idManga: event.idManga,
           )),
         );
       } catch (e) {
-        print(e);
+        yield DownloadFailureState(msg: e);
       }
     }
     if (event is ChapterDownloadPercentageChangedEvent) {
-      yield DownloadProcessState()
-          .copyWith(downloadPercentageCompleted: event.percentage);
+      yield DownloadProcessState().copyWith(
+        downloadPercentageCompleted: event.percentage,
+      );
       if (event.percentage == 1) {
-        String uriChapter;
-        print(uriChapter);
-        await _path.then((String value) {
-          uriChapter = value;
-        });
-        print(uriChapter);
+        print(await _path);
         var _isSuccess = await addChapToDownload(
-          url: uriChapter,
+          url: await _path,
           idManga: event.idManga,
           idChapter: event.idChapter,
         );
-        yield _isSuccess ? DownloadedState(data: uriChapter) : null;
+        yield _isSuccess ? DownloadedState(data: await _path) : null;
       }
     }
     if (event is RemoveDownloadChapterEvent) {
@@ -102,9 +97,7 @@ class DownloadBloc extends Bloc<DownloadEvent, DownloadState> {
   }) async {
     var mangaBox = Hive.box('irohasu');
     var listManga = mangaBox.get('listManga', defaultValue: {});
-    // print('Before: $url');
     url = await _downloadData.relativePathChapter(uri: url);
-    // print('Local chapter: $url');
 
     try {
       listManga[idManga].data.listDownload.add(idChapter);

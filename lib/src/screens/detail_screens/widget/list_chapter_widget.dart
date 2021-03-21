@@ -122,20 +122,6 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
       child: BlocBuilder<DownloadBloc, DownloadState>(
         builder: (BuildContext context, state) {
           if (state is DownloadedState || item.isDownload != null) {
-            // return IconButton(
-            //     icon: Icon(
-            //       Icons.arrow_circle_down,
-            //       size: 37,
-            //       color: Theme.of(context).buttonColor,
-            //     ),
-            //     onPressed: () {
-            //       BlocProvider.of<DownloadBloc>(context).add(
-            //         RemoveDownloadChapterEvent(
-            //           chapter: item,
-            //           idManga: data.idManga,
-            //         ),
-            //       );
-            //     });
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
@@ -174,7 +160,8 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
               ),
             );
           }
-          if (state is DownloadInitialState && item.isDownload == null) {
+          if (state is DownloadInitialState && item.isDownload == null ||
+              state is DownloadFailureState) {
             return IconButton(
               icon: Icon(
                 Icons.arrow_circle_down,
@@ -228,7 +215,20 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
               ),
             );
           }
-          return Container();
+          return IconButton(
+            icon: Icon(
+              Icons.arrow_circle_down,
+              size: 37,
+              color: Theme.of(context).buttonColor,
+            ),
+            onPressed: () => BlocProvider.of<DownloadBloc>(context).add(
+              DownloadChapterEvent(
+                chapterModel: item,
+                titleManga: data.title,
+                idManga: data.idManga,
+              ),
+            ),
+          );
         },
       ),
     );

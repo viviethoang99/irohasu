@@ -15,8 +15,8 @@ abstract class IFileManager {
 class CacheManagerData extends IFileManager {
   // CacheManagerData._(this._box);
 
-  static const _irohasu = 'irohasu';
-  static const _listManga = 'listManga';
+  final _irohasu = 'irohasu';
+  final _listManga = 'listManga';
 
   // final Box<dynamic> _box;
   //
