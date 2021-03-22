@@ -45,6 +45,7 @@ class _GeneralSettingState extends State<GeneralSetting> {
       backgroundColor: theme.backgroundColor,
       appBar: AppBar(
         backgroundColor: theme.accentColor,
+        elevation: 20,
         title: Text(
           'Cài đặt chung',
           style: theme.textTheme.headline5,
@@ -71,35 +72,32 @@ class _GeneralSettingState extends State<GeneralSetting> {
                 ),
               ),
               subtitle: BlocBuilder<ChangeThemeBloc, ChangeThemeState>(
-                builder: (context, state) {
-                  _selectTheme = state.optionSelect;
-                  return Text(
-                    _listTheme[state.optionSelect].name ?? _listTheme[0].name,
-                    style: theme.textTheme.subtitle1,
-                  );
-                }
-
-              ),
+                  builder: (context, state) {
+                _selectTheme = state.optionSelect;
+                return Text(
+                  _listTheme[state.optionSelect].name ?? _listTheme[0].name,
+                  style: theme.textTheme.subtitle1,
+                );
+              }),
             ),
-            ListTile(
-                onTap: () {
-                  //TODO
-                },
-                title: Text(
-                  'Định dạng ngày tháng',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: theme.primaryColor),
-                ),
-                subtitle: Text('Mặc định hệ thống',
-                    style: theme.textTheme.subtitle1)),
+            // ListTile(
+            //   onTap: () {
+            //     //TODO
+            //   },
+            //   title: Text(
+            //     'Định dạng ngày tháng',
+            //     style: TextStyle(
+            //         fontWeight: FontWeight.bold, color: theme.primaryColor),
+            //   ),
+            //   subtitle:
+            //       Text('Mặc định hệ thống', style: theme.textTheme.subtitle1),
+            // ),
             ListTile(
               onTap: _clearCache,
               title: Text(
                 'Xoá bộ nhớ cache',
                 style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: theme.primaryColor),
+                    fontWeight: FontWeight.bold, color: theme.primaryColor),
               ),
               subtitle: Text(
                 'Xoá tất cả cache hiện tại trong máy',
@@ -107,32 +105,31 @@ class _GeneralSettingState extends State<GeneralSetting> {
               ),
               isThreeLine: true,
             ),
-            ListTile(
-              onTap: () {
-                //TODO
-              },
-              title: Text(
-                'Kiểm tra cập nhật',
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: theme.primaryColor),
-              ),
-              subtitle: Text(
-                'Tự động cập nhật mỗi khi ứng dụng có '
-                'phiên bản mới',
-                style: theme.textTheme.subtitle1,
-              ),
-              isThreeLine: true,
-              trailing: Switch(
-                activeColor: theme.buttonColor,
-                value: switchValue,
-                onChanged: (state) {
-                  setState(() {
-                    switchValue = !switchValue;
-                  });
-                },
-              ),
-            ),
+            // ListTile(
+            //   onTap: () {
+            //     //TODO
+            //   },
+            //   title: Text(
+            //     'Kiểm tra cập nhật',
+            //     style: TextStyle(
+            //         fontWeight: FontWeight.bold, color: theme.primaryColor),
+            //   ),
+            //   subtitle: Text(
+            //     'Tự động cập nhật mỗi khi ứng dụng có '
+            //     'phiên bản mới',
+            //     style: theme.textTheme.subtitle1,
+            //   ),
+            //   isThreeLine: true,
+            //   trailing: Switch(
+            //     activeColor: theme.buttonColor,
+            //     value: switchValue,
+            //     onChanged: (state) {
+            //       setState(() {
+            //         switchValue = !switchValue;
+            //       });
+            //     },
+            //   ),
+            // ),
           ],
         ),
       ),

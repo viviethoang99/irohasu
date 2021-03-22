@@ -19,6 +19,7 @@ class _SettingChapterState extends State<SettingChapter> {
     return Scaffold(
       backgroundColor: theme.backgroundColor,
       appBar: AppBar(
+        elevation: 20,
         backgroundColor: theme.accentColor,
         title: Text(
           Content.settings,

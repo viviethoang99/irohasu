@@ -2,10 +2,10 @@ import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants/base_content.dart';
-import '../../screens/history_screen/history_screen.dart';
-import '../../screens/home_screens/home_screen.dart';
-import '../../screens/library_screen/library_screen.dart';
-import '../../screens/setting_screen/setting_screen.dart';
+import '../history_screen/history_screen.dart';
+import '../home_screens/home_screen.dart';
+import '../library_screen/library_screen.dart';
+import '../setting_screen/setting_screen.dart';
 
 class IndexScreen extends StatefulWidget {
   static const routeName = '/';

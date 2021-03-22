@@ -79,7 +79,7 @@ class MangaDetailBloc extends Bloc<MangaDetailEvent, MangaDetailState> {
         return manga;
       }).toList();
     } else {
-      resultList = dataCache;
+      return dataCache;
     }
     return resultList;
   }

@@ -40,27 +40,23 @@ class ListMangaBloc extends Bloc<ListMangaEvent, ListMangaState> {
     ListMangaState currentState,
     int page,
   ) async* {
-    try {
-      if (currentState is InitialListMangaState) {
-        yield ListMangaLoadingState();
-        final data = await _listRepo.fetchListManga(page: page);
-        yield ListMangaLoadedState(
-          data: data,
-          page: page += 1,
-          hasReachedEnd: false,
-        );
-      }
-      if (currentState is ListMangaLoadedState) {
-        var data = await _listRepo.fetchListManga(page: currentState.page);
-        yield data.isEmpty
-            ? currentState.cloneWith(hasReachedEnd: true)
-            : ListMangaLoadedState(
-                data: currentState.data + data,
-                hasReachedEnd: false,
-                page: currentState.page += 1);
-      }
-    } catch (exception) {
-      yield ListMangaFailureState(msg: exception.toString());
+    if (currentState is InitialListMangaState) {
+      yield ListMangaLoadingState();
+      final data = await _listRepo.fetchListManga(page: page);
+      yield ListMangaLoadedState(
+        data: data,
+        page: page += 1,
+        hasReachedEnd: false,
+      );
+    }
+    if (currentState is ListMangaLoadedState) {
+      var data = await _listRepo.fetchListManga(page: currentState.page);
+      yield data.isEmpty
+          ? currentState.cloneWith(hasReachedEnd: true)
+          : ListMangaLoadedState(
+              data: currentState.data + data,
+              hasReachedEnd: false,
+              page: currentState.page += 1);
     }
   }
 
@@ -74,7 +70,7 @@ class ListMangaBloc extends Bloc<ListMangaEvent, ListMangaState> {
         final data = await _listRepo.fetchListManga(page: page);
         yield ListMangaLoadedState(
           data: data,
-          hasReachedEnd: data.length < 20 ? true :false,
+          hasReachedEnd: data.length < 20 ? true : false,
           page: data.length < 20 ? page : page + 1,
         );
       }
@@ -84,18 +80,18 @@ class ListMangaBloc extends Bloc<ListMangaEvent, ListMangaState> {
   }
 
   Stream<ListMangaState> _refreshEventToState(
-      ListMangaState currentState,
-      int page,
-      ) async* {
+    ListMangaState currentState,
+    int page,
+  ) async* {
     yield ListMangaLoadingState();
     try {
       final data = await _listRepo.fetchListManga(page: page);
       yield ListMangaLoadedState(
         data: data,
-        hasReachedEnd: data.length < 20 ? true :false,
+        hasReachedEnd: data.length < 20 ? true : false,
         page: data.length < 20 ? page : page + 1,
       );
-    } catch(e) {
+    } catch (e) {
       yield ListMangaFailureState(msg: e.toString());
     }
   }
