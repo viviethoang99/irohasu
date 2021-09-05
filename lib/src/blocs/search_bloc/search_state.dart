@@ -13,7 +13,7 @@ class SearchLoadingState extends SearchState {}
 class SearchLoadedState extends SearchState {
   SearchLoadedState({required this.list});
 
-  final List<MangaListModel> list;
+  final List<MangaModel> list;
 
   @override
   List<Object> get props => [list];

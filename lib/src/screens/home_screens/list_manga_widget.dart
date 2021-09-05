@@ -13,7 +13,7 @@ class ListMangaWidget extends StatefulWidget {
   }) : super(key: key);
 
   final ScrollController? scrollController;
-  final List<MangaListModel>? data;
+  final List<MangaModel>? data;
   final bool? hasReachedEnd;
 
   @override
@@ -21,7 +21,7 @@ class ListMangaWidget extends StatefulWidget {
 }
 
 class _ListMangaWidgetState extends State<ListMangaWidget> {
-  List<MangaListModel>? get data => widget.data;
+  List<MangaModel>? get data => widget.data;
 
   ScrollController? get _scrollController => widget.scrollController;
 

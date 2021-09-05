@@ -7,8 +7,7 @@ class BaseService {
 
   Future<Response<dynamic>?> request({required String url}) async {
     Response? response;
-    // _dio.interceptors.add(HeaderInterceptor());
-    _dio.options.baseUrl = ENV.apiApp;
+    _dio.options.baseUrl = ENV.webPage;
     try {
       response = await _dio.get<dynamic>(url);
     } on DioError catch (e) {

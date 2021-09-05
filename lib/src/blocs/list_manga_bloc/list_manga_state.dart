@@ -17,22 +17,21 @@ class ListMangaLoadingState extends ListMangaState {}
 class ListMangaLoadedState extends ListMangaState {
   ListMangaLoadedState({this.data, this.hasReachedEnd, this.page = 0});
 
-  final List<MangaListModel>? data;
+  final List<MangaModel>? data;
   final bool? hasReachedEnd;
-  int page;
+  final int page;
 
-  @override
-  List<Object?> get props => [data, hasReachedEnd];
-
-  ListMangaLoadedState cloneWith({
-    List<MangaListModel>? data,
-    bool? hasReachedEnd,
-  }) {
+  ListMangaLoadedState cloneWith(
+      {List<MangaModel>? data, bool? hasReachedEnd, int? page}) {
     return ListMangaLoadedState(
       data: data ?? this.data,
       hasReachedEnd: hasReachedEnd ?? this.hasReachedEnd,
+      page: page ?? this.page,
     );
   }
+
+  @override
+  List<Object?> get props => [data, hasReachedEnd, page];
 }
 
 class ListMangaFailureState extends ListMangaState {

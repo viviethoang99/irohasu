@@ -53,10 +53,10 @@ class ListMangaBloc extends Bloc<ListMangaEvent, ListMangaState> {
       var data = await _listRepo.fetchListManga(page: currentState.page);
       yield data.isEmpty
           ? currentState.cloneWith(hasReachedEnd: true)
-          : ListMangaLoadedState(
-              data: currentState.data! + data,
+          : currentState.cloneWith(
+              data: [...?currentState.data, ...data],
               hasReachedEnd: false,
-              page: currentState.page += 1,
+              page: currentState.page + 1,
             );
     }
   }
