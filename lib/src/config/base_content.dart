@@ -1,4 +1,4 @@
-class Content {
+class ConstantStrings {
   static const status = 'Trạng thái';
 
   static const home = 'Trang chủ';

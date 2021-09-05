@@ -1,7 +1,7 @@
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 
-import '../../constants/base_content.dart';
+import '../../config/base_content.dart';
 import '../history_screen/history_screen.dart';
 import '../home_screens/home_screen.dart';
 import '../library_screen/library_screen.dart';
@@ -60,28 +60,28 @@ class _IndexScreenState extends State<IndexScreen> {
         items: <BottomNavyBarItem>[
           BottomNavyBarItem(
             title: const Text(
-              Content.home,
+              ConstantStrings.home,
               style: TextStyle(fontSize: 15),
             ),
             icon: const Icon(Icons.home),
           ),
           BottomNavyBarItem(
             title: const Text(
-              Content.library,
+              ConstantStrings.library,
               style: TextStyle(fontSize: 15),
             ),
             icon: const Icon(Icons.library_books),
           ),
           BottomNavyBarItem(
             title: const Text(
-              Content.history,
+              ConstantStrings.history,
               style: TextStyle(fontSize: 15),
             ),
             icon: const Icon(Icons.history),
           ),
           BottomNavyBarItem(
             title: const Text(
-              Content.settings,
+              ConstantStrings.settings,
               style: TextStyle(fontSize: 15),
             ),
             icon: const Icon(

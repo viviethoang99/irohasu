@@ -8,7 +8,7 @@ class AlertDialogFuture extends StatelessWidget {
       content: const Text('Chức năng này vẫn đang trong quá trình phát triền. '
           'Bạn hãy thử lại sau.'),
       actions: <Widget>[
-        FlatButton(
+        TextButton(
           onPressed: () {
             Navigator.of(context).pop();
           },

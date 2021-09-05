@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:irohasu/src/models/chapter_item_model.dart';
 
 import '../../blocs/manga_detail_bloc/bloc.dart';
-import '../../constants/base_content.dart';
+import '../../config/base_content.dart';
 import '../../models/manga_detail_model.dart';
 import '../../screens/chapter_screens/chapter_screen.dart';
 import '../../service/history_data.dart';
@@ -25,7 +25,7 @@ class MangaDetailLoadedScreen extends StatefulWidget {
 class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
   MangaDetailModel get data => widget.data;
 
-  String _continueReading = Content.startReading;
+  String _continueReading = ConstantStrings.startReading;
 
   final List<String> _keywordChapter = ['chương', 'chapter', 'chap'];
 

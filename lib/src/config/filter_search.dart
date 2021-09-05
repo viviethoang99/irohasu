@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 class FilterSearch {
   static Map<String, int> listGenresApp = {
     '16+': 54,

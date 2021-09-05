@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../blocs/search_bloc/bloc.dart';
 import '../../components/loading_screen.dart';
-import '../../constants/base_content.dart';
+import '../../config/base_content.dart';
 import '../../models/manga_detail_model.dart';
 import '../home_screens/widget/item_manga.dart';
 
@@ -13,7 +13,7 @@ class ButtonSearchWidget extends SearchDelegate<MangaDetailModel> {
   final Bloc<SearchEvent, SearchState> bloc;
 
   @override
-  String get searchFieldLabel => Content.search;
+  String get searchFieldLabel => ConstantStrings.search;
 
   @override
   ThemeData appBarTheme(BuildContext context) {

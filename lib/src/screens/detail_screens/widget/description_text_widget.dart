@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../constants/base_content.dart';
+import '../../../config/base_content.dart';
 import '../../../models/genres_model.dart';
 
 class DescriptionTextWidget extends StatefulWidget {
@@ -38,7 +38,7 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget>
               Padding(
                 padding: const EdgeInsets.only(top: 8.0),
                 child: Text(
-                  Content.about,
+                  ConstantStrings.about,
                   style: Theme.of(context).textTheme.headline5,
                 ),
               ),

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:irohasu/src/config/config.dart';
 
 import '../../../blocs/change_theme_bloc/change_theme_bloc.dart';
 import '../../../helper/media_query_helper.dart';
-import '../../../models/setting_model.dart';
 import '../../../service/cache_manager_data.dart';
 
 class GeneralSetting extends StatefulWidget {
@@ -75,7 +75,8 @@ class _GeneralSettingState extends State<GeneralSetting> {
                   builder: (context, state) {
                 _selectTheme = state.optionSelect;
                 return Text(
-                  _listTheme[state.optionSelect].name ?? _listTheme[0].name,
+                  Constants.listTheme[state.optionSelect].name ??
+                      Constants.listTheme[0].name,
                   style: theme.textTheme.subtitle1,
                 );
               }),
@@ -146,12 +147,12 @@ class _GeneralSettingState extends State<GeneralSetting> {
             ),
             content: const Text('Bạn có muốn xoá toàn bộ dữ liệu'),
             actions: [
-              FlatButton(
+              TextButton(
                 onPressed: () =>
                     Navigator.of(context, rootNavigator: true).pop(false),
                 child: const Text('Không'),
               ),
-              FlatButton(
+              TextButton(
                 onPressed: () async {
                   await _cacheManagerData.removeMangaRequestCache();
                   Navigator.of(context, rootNavigator: true).pop(true);
@@ -185,7 +186,7 @@ class _GeneralSettingState extends State<GeneralSetting> {
                 width: ScreenHelper.getWidth(context),
                 height: 300,
                 child: Column(
-                  children: _listTheme.map((data) {
+                  children: Constants.listTheme.map((data) {
                     return RadioListTile(
                       activeColor: Theme.of(context).buttonColor,
                       title: Text(
@@ -206,12 +207,4 @@ class _GeneralSettingState extends State<GeneralSetting> {
           });
         });
   }
-
-  final List<ThemeModel> _listTheme = [
-    ThemeModel(index: 0, name: 'Mặc định'),
-    ThemeModel(index: 1, name: 'Màu đen'),
-    ThemeModel(index: 2, name: 'Màu tối'),
-    ThemeModel(index: 3, name: 'Theo hệ thống (Màu trắng và tối)'),
-    ThemeModel(index: 4, name: 'Theo hệ thống (Màu trắng và đen)'),
-  ];
 }

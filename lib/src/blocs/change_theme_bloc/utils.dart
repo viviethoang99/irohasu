@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:irohasu/src/constants/base_colors.dart';
+import 'package:irohasu/src/config/base_colors.dart';
 
 final ThemeData iLightTheme = _buildLightTheme();
 

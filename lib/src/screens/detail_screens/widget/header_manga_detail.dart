@@ -7,7 +7,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../../../env.dart';
 import '../../../components/webview_widget.dart';
-import '../../../constants/base_colors.dart';
+import '../../../config/base_colors.dart';
 import '../../../helper/media_query_helper.dart';
 import '../../../models/manga_detail_model.dart';
 import '../../../service/favorite_data.dart';

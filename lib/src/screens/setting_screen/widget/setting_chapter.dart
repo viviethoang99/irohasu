@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../blocs/change_background_color_bloc/change_background_bloc.dart';
 import '../../../blocs/change_reading_mode_bloc/change_reading_mode_bloc.dart';
-import '../../../constants/base_content.dart';
+import '../../../config/base_content.dart';
 
 class SettingChapter extends StatefulWidget {
   static const routeName = '/chapterSetting';
@@ -22,7 +22,7 @@ class _SettingChapterState extends State<SettingChapter> {
         elevation: 20,
         backgroundColor: theme.accentColor,
         title: Text(
-          Content.settings,
+          ConstantStrings.settings,
           style: theme.textTheme.headline5,
         ),
         leading: IconButton(
