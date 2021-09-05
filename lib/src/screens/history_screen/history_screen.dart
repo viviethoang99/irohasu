@@ -4,13 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../env.dart';
 import '../../blocs/history_bloc/history_bloc.dart';
-import '../../components/loading_screen.dart';
 import '../../helper/chap_helper.dart';
 import '../../models/cache_manga_model.dart';
 import '../../screens/chapter_screens/chapter_screen.dart';
 import '../../screens/home_screens/widget/appbar_widget.dart';
 import '../../service/history_data.dart';
-import './detail_item_widget.dart';
+import '../../widgets/loading_screen.dart';
+import 'detail_item_widget.dart';
 
 class HistoryScreen extends StatefulWidget {
   @override

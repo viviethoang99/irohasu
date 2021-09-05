@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../blocs/search_bloc/bloc.dart';
-import '../../components/loading_screen.dart';
 import '../../config/base_content.dart';
 import '../../models/manga_detail_model.dart';
+import '../../widgets/loading_screen.dart';
 import '../home_screens/widget/item_manga.dart';
 
 class ButtonSearchWidget extends SearchDelegate<MangaDetailModel?> {

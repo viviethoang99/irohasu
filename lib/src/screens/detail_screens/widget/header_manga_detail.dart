@@ -6,12 +6,12 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../../../env.dart';
-import '../../../components/webview_widget.dart';
 import '../../../config/base_colors.dart';
 import '../../../helper/media_query_helper.dart';
 import '../../../models/manga_detail_model.dart';
 import '../../../service/favorite_data.dart';
-import './btn_vote_widget.dart';
+import '../../../widgets/webview_widget.dart';
+import 'btn_vote_widget.dart';
 
 class HeaderMangaDetail extends StatefulWidget {
   HeaderMangaDetail({this.data});

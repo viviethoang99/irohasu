@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 // Widget
 import '../../blocs/list_manga_bloc/bloc.dart';
-import '../../components/loading_screen.dart';
+import '../../widgets/loading_screen.dart';
 import './list_manga_widget.dart';
 import './widget/appbar_widget.dart';
 

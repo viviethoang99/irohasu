@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../blocs/search_bloc/bloc.dart';
-import '../../components/loading_screen.dart';
 import '../../helper/media_query_helper.dart';
 import '../../screens/home_screens/widget/item_manga.dart';
 import '../../screens/search_screens/show_list_genres.dart';
+import '../../widgets/loading_screen.dart';
 
 class SearchScreen extends StatefulWidget {
   static const routeName = '/search';

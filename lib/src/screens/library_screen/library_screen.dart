@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../blocs/list_manga_library_bloc/list_manga_library_bloc.dart';
-import '../../components/loading_screen.dart';
+import '../../widgets/loading_screen.dart';
 import '../home_screens/widget/appbar_widget.dart';
 import '../home_screens/widget/item_manga.dart';
 

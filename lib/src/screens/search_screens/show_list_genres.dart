@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../components/custom_checkbox.dart';
+
 import '../../config/filter_search.dart';
+import '../../widgets/custom_checkbox.dart';
 
 class DrawerSearchScreen extends StatefulWidget {
   const DrawerSearchScreen({
