@@ -40,7 +40,7 @@ class ChangeThemeState {
     );
   }
 
-  final ThemeData themeLight;
-  final ThemeData themeDark;
-  final int optionSelect;
+  final ThemeData? themeLight;
+  final ThemeData? themeDark;
+  final int? optionSelect;
 }

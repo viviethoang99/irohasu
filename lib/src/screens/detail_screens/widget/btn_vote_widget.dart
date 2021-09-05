@@ -3,10 +3,10 @@ import '../../../models/manga_detail_model.dart';
 
 class BtnVoteWidget extends StatelessWidget {
   const BtnVoteWidget(
-      {Key key, @required this.data})
+      {Key? key, required this.data})
       : super(key: key);
 
-  final MangaDetailModel data;
+  final MangaDetailModel? data;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class BtnVoteWidget extends StatelessWidget {
               ),
               onPressed: null),
           Text(
-            data.like,
+            data!.like!,
             style: Theme.of(context).textTheme.bodyText1,
             ),
           const IconButton(
@@ -30,7 +30,7 @@ class BtnVoteWidget extends StatelessWidget {
               ),
               onPressed: null),
           Text(
-            data.dislike,
+            data!.dislike!,
             style: Theme.of(context).textTheme.bodyText1,
           ),
         ],

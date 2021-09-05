@@ -8,10 +8,13 @@ import '../screens/search_screens/search_screen.dart';
 import '../screens/setting_screen/widget/general_page.dart';
 import '../screens/setting_screen/widget/setting_chapter.dart';
 
-MaterialPageRoute pageRoute(
-    {RouteSettings routeSettings, Widget builder, bool isFullscreen = false}) {
+MaterialPageRoute pageRoute({
+  RouteSettings? routeSettings,
+  Widget? builder,
+  bool isFullscreen = false,
+}) {
   return MaterialPageRoute<dynamic>(
-    builder: (BuildContext context) => builder,
+    builder: (BuildContext context) => builder!,
     settings: routeSettings,
     fullscreenDialog: isFullscreen,
   );
@@ -57,10 +60,7 @@ Route generateRoute(RouteSettings routeSettings) {
         builder: WebViewPage(title: data.title, url: data.url),
       );
     case SearchScreen.routeName:
-      return pageRoute(
-        routeSettings: routeSettings,
-        builder: SearchScreen()
-      );
+      return pageRoute(routeSettings: routeSettings, builder: SearchScreen());
     default:
       return MaterialPageRoute(
         builder: (_) => Scaffold(

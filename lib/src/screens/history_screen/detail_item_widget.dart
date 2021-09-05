@@ -10,17 +10,17 @@ import '../../service/history_data.dart';
 
 class DetailItemWidget extends StatelessWidget {
   const DetailItemWidget({
-    Key key,
-    @required this.item,
-    @required this.titleManga,
-    @required this.urlManga,
-    @required this.idManga,
+    Key? key,
+    required this.item,
+    required this.titleManga,
+    required this.urlManga,
+    required this.idManga,
   }) : super(key: key);
 
-  final ChapterItem item;
-  final String titleManga;
-  final String urlManga;
-  final String idManga;
+  final ChapterItem? item;
+  final String? titleManga;
+  final String? urlManga;
+  final String? idManga;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +42,7 @@ class DetailItemWidget extends StatelessWidget {
                */
               Text(
                 ChapHelper.removeNameManga(
-                  titleChapter: item.chapterTitle,
+                  titleChapter: item!.chapterTitle!,
                   nameManga: titleManga,
                 ),
                 style: TextStyle(
@@ -55,7 +55,7 @@ class DetailItemWidget extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                titleManga,
+                titleManga!,
                 style: TextStyle(
                   fontSize: 20,
                   color: Theme.of(context).primaryColor,
@@ -66,7 +66,7 @@ class DetailItemWidget extends StatelessWidget {
               const SizedBox(height: 4),
               Text(
                 ConvertDateTime.checkLastRead(
-                  item.timeReading ?? DateTime.now(),
+                  item!.timeReading ?? DateTime.now(),
                 ),
                 style: const TextStyle(
                   fontSize: 18,
@@ -80,6 +80,12 @@ class DetailItemWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
                   TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed(
+                        MangaDetailScreen.routeName,
+                        arguments: urlManga,
+                      );
+                    },
                     child: const Text(
                       'Xem chi tiết',
                       style: TextStyle(
@@ -88,14 +94,13 @@ class DetailItemWidget extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    onPressed: () {
-                      Navigator.of(context).pushNamed(
-                        MangaDetailScreen.routeName,
-                        arguments: urlManga,
-                      );
-                    },
                   ),
                   TextButton(
+                      onPressed: () => _removeHistory(
+                            context,
+                            idManga: idManga,
+                            idChapter: item!.idChapter,
+                          ),
                       child: const Text(
                         'Xoá',
                         style: TextStyle(
@@ -103,12 +108,7 @@ class DetailItemWidget extends StatelessWidget {
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
-                      ),
-                      onPressed: () => _removeHistory(
-                            context,
-                            idManga: idManga,
-                            idChapter: item.idChapter,
-                          )),
+                      )),
                 ],
               )
             ],
@@ -120,8 +120,8 @@ class DetailItemWidget extends StatelessWidget {
 
   void _removeHistory(
     BuildContext context, {
-    @required String idChapter,
-    @required String idManga,
+    required String? idChapter,
+    required String? idManga,
   }) {
     showDialog(
         context: context,
@@ -181,23 +181,26 @@ class DetailItemWidget extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    FlatButton(
-                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                    TextButton(
                       onPressed: () =>
                           Navigator.of(context, rootNavigator: true).pop(false),
-                      child: const Text(
-                        'KHÔNG',
-                        style: TextStyle(color: Colors.red, fontSize: 18),
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 30),
+                        child: Text(
+                          'KHÔNG',
+                          style: TextStyle(color: Colors.red, fontSize: 18),
+                        ),
                       ),
                     ),
-                    FlatButton(
+                    TextButton(
                       onPressed: () async {
                         var statusRemove = await HistoryData.removeHistory(
                             idChapter: _value ? 'all' : idChapter,
                             idManga: idManga);
-                        if (statusRemove)
+                        if (statusRemove) {
                           BlocProvider.of<HistoryBloc>(context)
                               .add(FetchDataHistoryEvent());
+                        }
                         Navigator.of(context, rootNavigator: true).pop(true);
                       },
                       child: Text(

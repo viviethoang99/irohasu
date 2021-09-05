@@ -8,13 +8,13 @@ import '../../../models/manga_detail_model.dart';
 
 class ListChapterWidget extends StatefulWidget {
   const ListChapterWidget({
-    Key key,
-    @required this.data,
+    Key? key,
+    required this.data,
     this.openChap,
   }) : super(key: key);
 
-  final MangaDetailModel data;
-  final Function openChap;
+  final MangaDetailModel? data;
+  final Function? openChap;
 
   @override
   _ListChapterWidgetState createState() => _ListChapterWidgetState();
@@ -23,7 +23,7 @@ class ListChapterWidget extends StatefulWidget {
 class _ListChapterWidgetState extends State<ListChapterWidget> {
   bool _isReversed = false;
 
-  MangaDetailModel get data => widget.data;
+  MangaDetailModel? get data => widget.data;
 
   final Duration transitionDuration = const Duration(milliseconds: 500);
 
@@ -37,7 +37,7 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(
-                '${data.listChapter.length} Chương',
+                '${data!.listChapter!.length} Chương',
                 style: TextStyle(
                     color: Theme.of(context).primaryColor,
                     fontSize: 21,
@@ -79,10 +79,10 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
             height: 20,
           ),
           shrinkWrap: true,
-          itemCount: data.listChapter.length,
+          itemCount: data!.listChapter!.length,
           physics: const NeverScrollableScrollPhysics(),
           itemBuilder: (BuildContext context, index) {
-            final chapter = data.listChapter[index];
+            final chapter = data!.listChapter![index];
             return ListTile(
               contentPadding: const EdgeInsets.symmetric(
                 vertical: 3,
@@ -91,9 +91,9 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
               dense: true,
               title: Container(
                 child: Text(
-                  chapter.chapterTitle,
-                  style: chapter.isReading
-                      ? theme.textTheme.subtitle1.copyWith(
+                  chapter.chapterTitle!,
+                  style: chapter.isReading!
+                      ? theme.textTheme.subtitle1!.copyWith(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         )
@@ -105,23 +105,23 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
                 ),
               ),
               subtitle: Text(
-                ConvertDateTime.dateTimeToString(chapter.chapterUpload),
-                style: theme.textTheme.subtitle1.copyWith(fontSize: 18),
+                ConvertDateTime.dateTimeToString(chapter.chapterUpload!),
+                style: theme.textTheme.subtitle1!.copyWith(fontSize: 18),
               ),
               trailing: btnDownload(item: chapter, index: index),
               isThreeLine: true,
-              onTap: () => widget.openChap(chapter),
+              onTap: () => widget.openChap!(chapter),
             );
           },
         ));
   }
 
-  Widget btnDownload({ChapterItem item, int index}) {
+  Widget btnDownload({ChapterItem? item, int? index}) {
     return BlocProvider(
       create: (_) => DownloadBloc(),
       child: BlocBuilder<DownloadBloc, DownloadState>(
         builder: (BuildContext context, state) {
-          if (state is DownloadedState || item.isDownload != null) {
+          if (state is DownloadedState || item!.isDownload != null) {
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
@@ -131,12 +131,12 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
                     onPressed: () {},
                     elevation: 2.0,
                     fillColor: Theme.of(context).buttonColor,
+                    shape: const CircleBorder(),
                     child: Icon(
                       Icons.arrow_downward,
                       size: 25.0,
                       color: Theme.of(context).backgroundColor,
                     ),
-                    shape: const CircleBorder(),
                   )),
             );
           }
@@ -171,8 +171,8 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
               onPressed: () => BlocProvider.of<DownloadBloc>(context).add(
                 DownloadChapterEvent(
                   chapterModel: item,
-                  titleManga: data.title,
-                  idManga: data.idManga,
+                  titleManga: data!.title,
+                  idManga: data!.idManga,
                 ),
               ),
             );
@@ -191,7 +191,7 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
                     child: InkWell(
                       onTap: () {
                         BlocProvider.of<DownloadBloc>(context).add(
-                            CancelDownloadEvent(idChapter: item.idChapter));
+                            CancelDownloadEvent(idChapter: item.idChapter!));
                       },
                       child: Stack(
                         alignment: Alignment.center,
@@ -224,8 +224,8 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
             onPressed: () => BlocProvider.of<DownloadBloc>(context).add(
               DownloadChapterEvent(
                 chapterModel: item,
-                titleManga: data.title,
-                idManga: data.idManga,
+                titleManga: data!.title,
+                idManga: data!.idManga,
               ),
             ),
           );

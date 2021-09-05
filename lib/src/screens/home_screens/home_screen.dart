@@ -16,19 +16,20 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   // Scroll Controller
-  ScrollController _scrollController;
+  ScrollController? _scrollController;
   final _scrollThreshold = 300.0;
 
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<ListMangaBloc>(context)..add(InitialFetchMangaEvent());
+    BlocProvider.of<ListMangaBloc>(context).add(InitialFetchMangaEvent());
     _scrollController = ScrollController()
       ..addListener(() {
-        final maxScrollExtent = _scrollController.position.maxScrollExtent;
-        final currentScroll = _scrollController.position.pixels;
-        if (maxScrollExtent - currentScroll <= _scrollThreshold)
-          BlocProvider.of<ListMangaBloc>(context)..add(FetchListMangaEvent(),);
+        final maxScrollExtent = _scrollController!.position.maxScrollExtent;
+        final currentScroll = _scrollController!.position.pixels;
+        if (maxScrollExtent - currentScroll <= _scrollThreshold) {
+          BlocProvider.of<ListMangaBloc>(context).add(FetchListMangaEvent());
+        }
       });
   }
 

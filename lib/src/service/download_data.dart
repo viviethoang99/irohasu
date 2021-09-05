@@ -7,7 +7,8 @@ import '../../env.dart';
 import '../resources/chapter_repo.dart';
 
 class DownloadData {
-  Future<String> createFolder(String name, {String folder = 'download'}) async {
+  Future<String?> createFolder(String? name,
+      {String folder = 'download'}) async {
     try {
       //Get this App Document Directory
       final _appDocDir = await getApplicationDocumentsDirectory();
@@ -33,7 +34,7 @@ class DownloadData {
     }
   }
 
-  Future<bool> removeFolder({String url}) async {
+  Future<bool> removeFolder({required String url}) async {
     //Get this App Document Directory
     final _appDocDir = await getApplicationDocumentsDirectory();
     //App Document Directory + folder name
@@ -45,27 +46,27 @@ class DownloadData {
     return false;
   }
 
-  Future<String> downloadChapter({
-    String uri,
-    String name,
-    String folderName,
-    Function onProgress,
+  Future<String?> downloadChapter({
+    String? uri,
+    String? name,
+    String? folderName,
+    Function? onProgress,
   }) async {
     final dio = Dio();
 
     try {
       var appDocDirFolder = await createFolder('$folderName/$name');
       if (appDocDirFolder != null) {
-        final data = await ChapterRepo().getDataChapter(uri);
-        for (var item in data.listImageChapter) {
-          var fileName = nameFile(item.chapterImageLink, item.number);
+        final data = await ChapterRepo().getDataChapter(uri!);
+        for (var item in data.listImageChapter!) {
+          var fileName = nameFile(item.chapterImageLink!, item.number);
           // Name file
           var _appDocDirImage = '$appDocDirFolder/$fileName';
-          await dio.download(item.chapterImageLink, _appDocDirImage,
+          await dio.download(item.chapterImageLink!, _appDocDirImage,
               options: Options(headers: {
                 HttpHeaders.refererHeader: ENV.webPage,
               }));
-          onProgress(item.number / data.listImageChapter.length);
+          onProgress!(item.number! / data.listImageChapter!.length);
         }
         return appDocDirFolder;
       } else {
@@ -77,7 +78,7 @@ class DownloadData {
     }
   }
 
-  Future<String> relativePathChapter({String uri}) async {
+  Future<String> relativePathChapter({required String uri}) async {
     final _appDocDir = await getApplicationDocumentsDirectory();
     uri = uri.replaceAll(_appDocDir.absolute.path, '').trim();
     return uri;
@@ -86,5 +87,5 @@ class DownloadData {
   // Return endpoint URl
   String nameFolder(String name) => name.substring(name.lastIndexOf('/') + 1);
 
-  String nameFile(String name, int index)  => "$index.${name.split('.').last}";
+  String nameFile(String name, int? index) => "$index.${name.split('.').last}";
 }

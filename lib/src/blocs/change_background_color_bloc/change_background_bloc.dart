@@ -47,7 +47,7 @@ class ChangeBackgroundBloc
   Future<Null> _setOptionValue(int optionValue) async {
     var mangaBox = Hive.box('irohasu');
     var setting = mangaBox
-        ?.get('sharedPreferences', defaultValue: {})?.cast<String, dynamic>();
+        .get('sharedPreferences', defaultValue: {})?.cast<String, dynamic>();
     if (setting.containsKey('chapterSetting')) {
       setting['chapterSetting']['backgroundColor'] = optionValue;
     } else {
@@ -57,10 +57,10 @@ class ChangeBackgroundBloc
     await mangaBox.put('sharedPreferences', setting);
   }
 
-  Future<String> _getOption() async {
+  Future<String?> _getOption() async {
     var mangaBox = Hive.box('irohasu');
-    var _option = 'black';
-    var setting = mangaBox?.get('sharedPreferences', defaultValue: {});
+    String? _option = 'black';
+    var setting = mangaBox.get('sharedPreferences', defaultValue: {});
     if (setting['chapterSetting']?.containsKey('backgroundColor') ?? false) {
       _option = setting['chapterSetting']['backgroundColor'];
     }

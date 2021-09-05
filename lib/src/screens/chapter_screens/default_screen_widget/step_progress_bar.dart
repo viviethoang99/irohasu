@@ -3,11 +3,11 @@ import '../../../helper/media_query_helper.dart';
 
 
 class StepProgressBar extends StatelessWidget {
-  const StepProgressBar({Key key, this.currentStep, this.totalSteps})
+  const StepProgressBar({Key? key, this.currentStep, this.totalSteps})
       : super(key: key);
 
-  final int currentStep;
-  final int totalSteps;
+  final int? currentStep;
+  final int? totalSteps;
 
   @override
   Widget build(BuildContext context) {
@@ -32,16 +32,16 @@ class StepProgressBar extends StatelessWidget {
           itemBuilder: (context, position) {
             return Container(
               width: (screenWidth -
-                  ((totalSteps - 1) * separatedWidth) -
+                  ((totalSteps! - 1) * separatedWidth) -
                   (leftPadding + rightPadding)) /
-                  totalSteps,
+                  totalSteps!,
               decoration: const BoxDecoration(
                 color: Colors.grey,
               ),
               child: Container(
                 height: 5,
                 decoration: BoxDecoration(
-                  color: currentStep >= position
+                  color: currentStep! >= position
                       ? Colors.white
                       : Colors.transparent,
                 ),

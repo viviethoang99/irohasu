@@ -8,11 +8,11 @@ abstract class MangaDetailEvent extends Equatable {
 
 class FetchMangaDetailEvent extends MangaDetailEvent{
   FetchMangaDetailEvent(this.endpoint);
-  final String endpoint;
+  final String? endpoint;
 }
 
 class AddChapterToListReading extends MangaDetailEvent {
   AddChapterToListReading(this.idManga);
 
-  final String idManga;
+  final String? idManga;
 }

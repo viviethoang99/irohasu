@@ -4,15 +4,15 @@ import '../../config/filter_search.dart';
 
 class DrawerSearchScreen extends StatefulWidget {
   const DrawerSearchScreen({
-    Key key,
+    Key? key,
     this.searchAdvanced,
     this.showDrawer,
     this.isShowDrawer,
   }) : super(key: key);
 
-  final Function searchAdvanced;
-  final Function showDrawer;
-  final bool isShowDrawer;
+  final Function? searchAdvanced;
+  final Function? showDrawer;
+  final bool? isShowDrawer;
 
   @override
   _DrawerSearchScreenState createState() => _DrawerSearchScreenState();
@@ -21,8 +21,8 @@ class DrawerSearchScreen extends StatefulWidget {
 class _DrawerSearchScreenState extends State<DrawerSearchScreen> {
   final _controllerAuthor = TextEditingController();
   final listGenres = FilterSearch.listGenresApp;
-  final _listAddGenres = <int>[];
-  final _listRemoveGenres = <int>[];
+  final _listAddGenres = <int?>[];
+  final _listRemoveGenres = <int?>[];
 
   @override
   Widget build(BuildContext context) {
@@ -32,13 +32,13 @@ class _DrawerSearchScreenState extends State<DrawerSearchScreen> {
       children: <Widget>[
         InkWell(
           onTap: () {
-            widget.showDrawer();
+            widget.showDrawer!();
           },
           child: Container(
             height: 70,
             child: Center(
               child: Text(
-                widget.isShowDrawer
+                widget.isShowDrawer!
                     ? 'Ẩn tìm kiếm nâng cao'
                     : 'Tìm kiếm nâng cao',
                 style: TextStyle(
@@ -138,13 +138,6 @@ class _DrawerSearchScreenState extends State<DrawerSearchScreen> {
                     _controllerAuthor.clear();
                   });
                 },
-                child: const Text(
-                  'Xoá tất cả',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
                 textColor: Colors.redAccent,
                 highlightedBorderColor: theme.buttonColor,
                 shape: RoundedRectangleBorder(
@@ -154,23 +147,23 @@ class _DrawerSearchScreenState extends State<DrawerSearchScreen> {
                       style: BorderStyle.solid),
                   borderRadius: BorderRadius.circular(30.0),
                 ),
-              ),
-              OutlineButton(
-                onPressed: () {
-                  widget.searchAdvanced(
-                    _controllerAuthor.text,
-                    _listRemoveGenres.join(','),
-                    _listAddGenres.join(','),
-                  );
-                  widget.showDrawer();
-                },
                 child: const Text(
-                  'Tìm kiếm',
+                  'Xoá tất cả',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+              ),
+              OutlineButton(
+                onPressed: () {
+                  widget.searchAdvanced!(
+                    _controllerAuthor.text,
+                    _listRemoveGenres.join(','),
+                    _listAddGenres.join(','),
+                  );
+                  widget.showDrawer!();
+                },
                 textColor: theme.buttonColor,
                 highlightedBorderColor: theme.buttonColor,
                 shape: RoundedRectangleBorder(
@@ -179,6 +172,13 @@ class _DrawerSearchScreenState extends State<DrawerSearchScreen> {
                         width: 4,
                         style: BorderStyle.solid),
                     borderRadius: BorderRadius.circular(30.0)),
+                child: const Text(
+                  'Tìm kiếm',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ],
           ),
@@ -187,21 +187,23 @@ class _DrawerSearchScreenState extends State<DrawerSearchScreen> {
     );
   }
 
-  StatusCheckBox _getStatusCheckBox(int valueGenres) {
-    if (_listAddGenres.contains(valueGenres))
+  StatusCheckBox _getStatusCheckBox(int? valueGenres) {
+    if (_listAddGenres.contains(valueGenres)) {
       return StatusCheckBox(
         icon: Icons.check,
         color: Theme.of(context).buttonColor,
       );
-    if (_listRemoveGenres.contains(valueGenres))
+    }
+    if (_listRemoveGenres.contains(valueGenres)) {
       return StatusCheckBox(
         icon: Icons.clear,
         color: Colors.redAccent,
       );
+    }
     return StatusCheckBox(icon: null, color: null);
   }
 
-  void eventClickCheckBox(int valueGenres) {
+  void eventClickCheckBox(int? valueGenres) {
     if (_listAddGenres.contains(valueGenres)) {
       setState(() {
         _listAddGenres.removeWhere((element) => element == valueGenres);

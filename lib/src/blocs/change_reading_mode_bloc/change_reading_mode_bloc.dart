@@ -56,9 +56,9 @@ class ChangeReadingModeBloc
     await mangaBox.put('sharedPreferences', setting);
   }
 
-  Future<int> _getOption() async {
+  Future<int?> _getOption() async {
     var mangaBox = Hive.box('irohasu');
-    var _option = 0;
+    int? _option = 0;
     var setting = mangaBox.get('sharedPreferences', defaultValue: {});
     if (setting['chapterSetting']?.containsKey('readingMode') ?? false) {
       _option = setting['chapterSetting']['readingMode'];

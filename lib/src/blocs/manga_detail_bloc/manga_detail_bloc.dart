@@ -16,14 +16,14 @@ class MangaDetailBloc extends Bloc<MangaDetailEvent, MangaDetailState> {
     if (event is FetchMangaDetailEvent) {
       yield MangaDetailLoadingState();
       try {
-        final data = await _detailRepo.fetchMangaDetail(event.endpoint);
+        final data = await _detailRepo.fetchMangaDetail(event.endpoint!);
         if (data != null) {
           yield MangaDetailLoadedState(data: data);
           yield* _loadDataListManga(data: data);
         } else {
-          final idManga = event.endpoint.split('/')[4];
-          final cache = await _cacheManagerData.getMangaRequestData(idManga);
-          yield MangaDetailLoadedState(data: cache.data);
+          final idManga = event.endpoint!.split('/')[4];
+          final cache = await (_cacheManagerData.getMangaRequestData(idManga));
+          yield MangaDetailLoadedState(data: cache!.data);
         }
       } catch (e) {
         yield MangaDetailFailureState(msg: e.toString());
@@ -32,8 +32,9 @@ class MangaDetailBloc extends Bloc<MangaDetailEvent, MangaDetailState> {
     if (event is AddChapterToListReading) {
       yield MangaDetailLoadingState();
       try {
-        final item = await _cacheManagerData.getMangaRequestData(event.idManga);
-        yield MangaDetailLoadedState(data: item.data);
+        final item =
+            await (_cacheManagerData.getMangaRequestData(event.idManga));
+        yield MangaDetailLoadedState(data: item!.data);
       } catch (e) {
         print(e);
         yield MangaDetailFailureState(msg: e.toString());
@@ -42,14 +43,14 @@ class MangaDetailBloc extends Bloc<MangaDetailEvent, MangaDetailState> {
   }
 
   Stream<MangaDetailSyncState> _loadDataListManga(
-      {MangaDetailModel data}) async* {
+      {required MangaDetailModel data}) async* {
     var _manga = await _cacheManagerData.getMangaRequestData(data.idManga);
     if (_manga != null) {
       _manga.data
         ..listGenres = data.listGenres
         ..listChapter = await syncDataListChapter(
-          fetchData: data.listChapter,
-          dataCache: _manga.data.listChapter,
+          fetchData: data.listChapter!,
+          dataCache: _manga.data.listChapter!,
         );
     }
     yield MangaDetailSyncState(data: _manga?.data ?? data);
@@ -66,11 +67,11 @@ class MangaDetailBloc extends Bloc<MangaDetailEvent, MangaDetailState> {
   -  If equatable length chapter database => return data database.
   -  Else assign a value to the chapter fetch data if they are equatable.
    */
-  Future<List<ChapterItem>> syncDataListChapter({
-    List<ChapterItem> fetchData,
-    List<ChapterItem> dataCache,
+  Future<List<ChapterItem>?> syncDataListChapter({
+    required List<ChapterItem> fetchData,
+    required List<ChapterItem> dataCache,
   }) async {
-    var resultList = [];
+    var resultList = <ChapterItem>[];
     if (fetchData.length != dataCache.length) {
       resultList = fetchData.map((ChapterItem manga) {
         for (var cache in dataCache) {

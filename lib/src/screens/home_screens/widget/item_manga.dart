@@ -6,16 +6,16 @@ import '../../detail_screens/manga_detail_screen.dart';
 
 class ItemManga extends StatelessWidget {
   ItemManga({
-    @required this.title,
-    @required this.thumbnailUrl,
-    @required this.setUrlWithoutDomain,
+    required this.title,
+    required this.thumbnailUrl,
+    required this.setUrlWithoutDomain,
     this.status,
   });
 
-  final String title;
-  final String thumbnailUrl;
-  final String setUrlWithoutDomain;
-  final String status;
+  final String? title;
+  final String? thumbnailUrl;
+  final String? setUrlWithoutDomain;
+  final String? status;
 
   @override
   Widget build(BuildContext context) {
@@ -41,14 +41,14 @@ class ItemManga extends StatelessWidget {
                           placeholder: (context, url) =>
                               const CircularProgressIndicator(),
                           fit: BoxFit.cover,
-                          imageUrl: thumbnailUrl,
+                          imageUrl: thumbnailUrl!,
                         )
                       : Image.network(
-                          thumbnailUrl,
+                          thumbnailUrl!,
                           headers: ENV.headersBuilder,
                           fit: BoxFit.cover,
                           errorBuilder: (BuildContext context, Object exception,
-                              StackTrace stackTrace) {
+                              StackTrace? stackTrace) {
                             return Image.asset('assets/images/404.png');
                           },
                         ),
@@ -61,7 +61,7 @@ class ItemManga extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(6.0),
                 child: Text(
-                  title,
+                  title!,
                   style: TextStyle(
                       color: Theme.of(context).primaryColor,
                       fontWeight: FontWeight.w500,

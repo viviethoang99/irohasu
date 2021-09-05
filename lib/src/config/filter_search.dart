@@ -62,7 +62,7 @@ class FilterSearch {
 }
 
 class StatusCheckBox {
-  StatusCheckBox({this.color, this.icon});
-  final Color color;
-  final IconData icon;
+  StatusCheckBox({ required this.color,  required this.icon});
+  final Color? color;
+  final IconData? icon;
 }

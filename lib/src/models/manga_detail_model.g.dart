@@ -17,21 +17,21 @@ class MangaDetailModelAdapter extends TypeAdapter<MangaDetailModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return MangaDetailModel(
-      idManga: fields[0] as String,
-      title: fields[1] as String,
-      isFavorite: fields[10] as bool,
-      status: fields[7] as String,
-      listChapter: (fields[9] as List)?.cast<ChapterItem>(),
-      author: fields[8] as String,
-      like: fields[6] as String,
-      dislike: fields[5] as String,
-      description: fields[4] as String,
-      endpoint: fields[3] as String,
-      thumbnailUrl: fields[2] as String,
-      listGenres: (fields[13] as List)?.cast<Genres>(),
+      idManga: fields[0] as String?,
+      title: fields[1] as String?,
+      isFavorite: fields[10] as bool?,
+      status: fields[7] as String?,
+      listChapter: (fields[9] as List?)?.cast<ChapterItem>(),
+      author: fields[8] as String?,
+      like: fields[6] as String?,
+      dislike: fields[5] as String?,
+      description: fields[4] as String?,
+      endpoint: fields[3] as String?,
+      thumbnailUrl: fields[2] as String?,
+      listGenres: (fields[13] as List?)?.cast<Genres>(),
     )
-      ..listChapRead = (fields[11] as List)?.cast<String>()
-      ..listDownload = (fields[12] as List)?.cast<String>();
+      ..listChapRead = (fields[11] as List?)?.cast<String>()
+      ..listDownload = (fields[12] as List?)?.cast<String>();
   }
 
   @override

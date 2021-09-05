@@ -4,7 +4,7 @@ abstract class DownloadState extends Equatable {
   const DownloadState();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class DownloadInitialState extends DownloadState {}
@@ -24,7 +24,7 @@ class DownloadProcessState extends DownloadState {
     return '${downloadPercentageCompleted.toStringAsFixed(2)} %';
   }
 
-  DownloadProcessState copyWith({double downloadPercentageCompleted}) {
+  DownloadProcessState copyWith({double? downloadPercentageCompleted}) {
     return DownloadProcessState(
       downloadPercentageCompleted:
           downloadPercentageCompleted ?? this.downloadPercentageCompleted,
@@ -35,16 +35,16 @@ class DownloadProcessState extends DownloadState {
 class DownloadedState extends DownloadState {
   const DownloadedState({this.data});
 
-  final String data;
+  final String? data;
 
   @override
-  List<Object> get props => [data];
+  List<Object?> get props => [data];
 }
 
 class DownloadFailureState extends DownloadState {
   DownloadFailureState({this.msg});
-  final String msg;
+  final String? msg;
 
   @override
-  List<Object> get props => [msg];
+  List<Object?> get props => [msg];
 }

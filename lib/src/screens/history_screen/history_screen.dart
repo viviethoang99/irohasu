@@ -40,7 +40,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
               margin: const EdgeInsets.symmetric(vertical: 10),
               child: ListView.builder(
                 itemBuilder: (context, index) {
-                  final CacheMangaModel cacheData = state.data[index];
+                  final CacheMangaModel cacheData = state.data![index];
                   final lastChapter = ChapHelper.getChapterLastReading(
                     cacheData.data.idManga,
                   );
@@ -50,7 +50,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       onTap: () {
                         HistoryData.addChapToHistory(
                           idManga: cacheData.data.idManga,
-                          idChapter: lastChapter.idChapter,
+                          idChapter: lastChapter!.idChapter,
                         );
                         BlocProvider.of<HistoryBloc>(context)
                             .add(FetchDataHistoryEvent());
@@ -80,7 +80,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                   bottomLeft: Radius.circular(15.0),
                                 ),
                                 child: CachedNetworkImage(
-                                  imageUrl: cacheData.data.thumbnailUrl,
+                                  imageUrl: cacheData.data.thumbnailUrl!,
                                   httpHeaders: ENV.headersBuilder,
                                   fit: BoxFit.cover,
                                   height: 150,
@@ -100,11 +100,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     ),
                   );
                 },
-                itemCount: state.data.length,
+                itemCount: state.data!.length,
               ),
             );
           }
-          return null;
+          return const SizedBox.shrink();
         },
       ),
     );

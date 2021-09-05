@@ -29,8 +29,8 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
         .toList()
       ..sort((a, b) {
         final chapterA =
-            ChapHelper.getChapterLastReading(a.data.idManga).timeReading;
-        return ChapHelper.getChapterLastReading(b.data.idManga)
+            ChapHelper.getChapterLastReading(a.data.idManga)!.timeReading;
+        return ChapHelper.getChapterLastReading(b.data.idManga)!
             .timeReading
             .toString()
             .compareTo(chapterA.toString());

@@ -1,4 +1,4 @@
-import 'package:irohasu/src/models/setting_model.dart';
+import '../models/setting_model.dart';
 
 class Constants {
   static final List<ThemeModel> listTheme = [

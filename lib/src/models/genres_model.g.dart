@@ -17,8 +17,8 @@ class GenresAdapter extends TypeAdapter<Genres> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Genres(
-      genreName: fields[0] as String,
-      urlGenre: fields[1] as String,
+      genreName: fields[0] as String?,
+      urlGenre: fields[1] as String?,
     );
   }
 

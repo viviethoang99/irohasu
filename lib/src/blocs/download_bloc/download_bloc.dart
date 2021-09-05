@@ -14,7 +14,7 @@ part 'download_state.dart';
 class DownloadBloc extends Bloc<DownloadEvent, DownloadState> {
   DownloadBloc() : super(DownloadInitialState());
   final _downloadData = DownloadData();
-  Future<String> _path;
+  Future<String?>? _path;
   bool isCancel = false;
 
   @override
@@ -22,7 +22,7 @@ class DownloadBloc extends Bloc<DownloadEvent, DownloadState> {
     if (event is DownloadChapterEvent) {
       yield DownloadingState();
       try {
-        var uri = event.chapterModel.chapterEndpoint;
+        var uri = event.chapterModel.chapterEndpoint!;
         var fileName = _downloadData.nameFolder(uri);
         _path = _downloadData.downloadChapter(
           uri: uri,
@@ -35,7 +35,7 @@ class DownloadBloc extends Bloc<DownloadEvent, DownloadState> {
           )),
         );
       } catch (e) {
-        yield DownloadFailureState(msg: e);
+        yield DownloadFailureState(msg: e.toString());
       }
     }
     if (event is ChapterDownloadPercentageChangedEvent) {
@@ -43,23 +43,25 @@ class DownloadBloc extends Bloc<DownloadEvent, DownloadState> {
         downloadPercentageCompleted: event.percentage,
       );
       if (event.percentage == 1) {
-        print(await _path);
         var _isSuccess = await addChapToDownload(
-          url: await _path,
+          url: await (_path as FutureOr<String>),
           idManga: event.idManga,
           idChapter: event.idChapter,
         );
-        yield _isSuccess ? DownloadedState(data: await _path) : null;
+        if (_isSuccess) {
+          yield DownloadedState(data: await _path);
+        }
       }
     }
     if (event is RemoveDownloadChapterEvent) {
       yield DownloadingState();
-      var urlDownload = event?.chapter?.isDownload;
+      var urlDownload = event.chapter?.isDownload;
       if (urlDownload != null) {
         try {
           var _isRemove = await _downloadData.removeFolder(url: urlDownload);
-          if (_isRemove)
-            await removeChapToDownload(idChapter: event.chapter.idChapter);
+          if (_isRemove) {
+            await removeChapToDownload(idChapter: event.chapter!.idChapter);
+          }
           yield DownloadInitialState();
         } catch (e) {
           print(e);
@@ -68,7 +70,10 @@ class DownloadBloc extends Bloc<DownloadEvent, DownloadState> {
     }
   }
 
-  Future<bool> removeChapToDownload({String idChapter, int indexManga}) async {
+  Future<bool> removeChapToDownload({
+    String? idChapter,
+    int? indexManga,
+  }) async {
     var mangaBox = Hive.box('irohasu');
     var listManga = mangaBox.get('listManga', defaultValue: {});
 
@@ -91,9 +96,9 @@ class DownloadBloc extends Bloc<DownloadEvent, DownloadState> {
   }
 
   Future<bool> addChapToDownload({
-    String idManga,
-    String idChapter,
-    String url,
+    String? idManga,
+    String? idChapter,
+    required String url,
   }) async {
     var mangaBox = Hive.box('irohasu');
     var listManga = mangaBox.get('listManga', defaultValue: {});

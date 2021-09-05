@@ -1,8 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:irohasu/src/models/chapter_model.dart';
 
 import '../../../src/resources/chapter_repo.dart';
-import './bloc.dart';
+import '../../models/chapter_model.dart';
+import 'bloc.dart';
 
 enum ReadingMode { horizontal, vertical }
 
@@ -15,7 +15,7 @@ class ChapterBloc extends Bloc<ChapterEvent, ChapterState> {
     if (event is FetchDataChapterEvent) {
       yield ChapterLoadingState();
       try {
-        final data = await _chapterRepo.getDataChapter(event.endpoint);
+        final data = await _chapterRepo.getDataChapter(event.endpoint!);
         yield ChapterLoadedState(data: data);
       } catch (e) {
         yield ChapterFailureState(msg: e.toString());
@@ -25,9 +25,9 @@ class ChapterBloc extends Bloc<ChapterEvent, ChapterState> {
       yield ChapterLoadingState();
       try {
         final data = ChapterModel(
-          titleChapter: event.item.chapterTitle,
-          chapterEndpoint: event.item.chapterEndpoint,
-          idChapter: event.item.idChapter,
+          titleChapter: event.item!.chapterTitle,
+          chapterEndpoint: event.item!.chapterEndpoint,
+          idChapter: event.item!.idChapter,
           titleManga: event.titleManga,
           mangaDetail: event.mangaDetail,
         );

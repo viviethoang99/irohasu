@@ -5,14 +5,14 @@ import '../../env.dart';
 
 class WebViewPage extends StatefulWidget {
   const WebViewPage({
-    Key key,
-    @required this.title,
-    @required this.url,
+    Key? key,
+    required this.title,
+    required this.url,
   }) : super(key: key);
 
   static const routeName = '/webview';
 
-  final String title;
+  final String? title;
   final String url;
 
   @override
@@ -20,7 +20,7 @@ class WebViewPage extends StatefulWidget {
 }
 
 class _WebViewPageState extends State<WebViewPage> {
-  String title;
+  String? title;
   final flutterWebViewPlugin = FlutterWebviewPlugin();
 
   @override
@@ -34,7 +34,7 @@ class _WebViewPageState extends State<WebViewPage> {
     return MaterialApp(
       home: WebviewScaffold(
         appBar: AppBar(
-          title: Text(title),
+          title: Text(title!),
           leading: IconButton(
             icon: const Icon(Icons.close),
             onPressed: () => Navigator.of(context).pop()

@@ -9,7 +9,7 @@ class ListMangaBloc extends Bloc<ListMangaEvent, ListMangaState> {
   final ListMangaRepo _listRepo;
 
   bool _hasReachedMax(ListMangaState state) =>
-      state is ListMangaLoadedState && state.hasReachedEnd;
+      state is ListMangaLoadedState && state.hasReachedEnd!;
 
   @override
   Stream<Transition<ListMangaEvent, ListMangaState>> transformEvents(
@@ -54,9 +54,10 @@ class ListMangaBloc extends Bloc<ListMangaEvent, ListMangaState> {
       yield data.isEmpty
           ? currentState.cloneWith(hasReachedEnd: true)
           : ListMangaLoadedState(
-              data: currentState.data + data,
+              data: currentState.data! + data,
               hasReachedEnd: false,
-              page: currentState.page += 1);
+              page: currentState.page += 1,
+            );
     }
   }
 

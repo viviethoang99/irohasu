@@ -5,17 +5,17 @@ import '../../../helper/media_query_helper.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({
-    Key key,
-    @required ItemScrollController scrollListController,
-    @required int getIndex,
-    @required List getChapterList,
-    @required this.openChapter,
+    Key? key,
+    required ItemScrollController? scrollListController,
+    required int getIndex,
+    required List getChapterList,
+    required this.openChapter,
   })  : _scrollListController = scrollListController,
         _getIndex = getIndex,
         _getChapterList = getChapterList,
         super(key: key);
 
-  final ItemScrollController _scrollListController;
+  final ItemScrollController? _scrollListController;
   final int _getIndex;
   final List _getChapterList;
   final Function openChapter;

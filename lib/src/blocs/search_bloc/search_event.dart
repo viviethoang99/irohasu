@@ -4,11 +4,11 @@ import 'package:meta/meta.dart';
 @immutable
 abstract class SearchEvent extends Equatable {
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class FetchDataSearchEvent extends SearchEvent {
-  FetchDataSearchEvent({@required this.query});
+  FetchDataSearchEvent({required this.query});
 
   final String query;
 
@@ -24,10 +24,10 @@ class AdvancedSearchEvent extends SearchEvent {
     this.query,
   });
   @override
-  List<Object> get props => [author, addGenres, removeGenres, query];
+  List<Object?> get props => [author, addGenres, removeGenres, query];
 
-  final String author;
-  final String addGenres;
-  final String removeGenres;
-  final String query;
+  final String? author;
+  final String? addGenres;
+  final String? removeGenres;
+  final String? query;
 }

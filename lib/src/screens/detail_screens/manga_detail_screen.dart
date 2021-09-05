@@ -8,26 +8,27 @@ import '../../service/cache_manager_data.dart';
 import './manga_detail_loaded_screen.dart';
 
 class MangaDetailScreen extends StatefulWidget {
-  const MangaDetailScreen({Key key, this.endpoint}) : super(key: key);
+  const MangaDetailScreen({Key? key, this.endpoint}) : super(key: key);
 
   static const routeName = '/mangaDetail';
-  final String endpoint;
+  final String? endpoint;
 
   @override
   _MangaDetailScreenState createState() => _MangaDetailScreenState();
 }
 
 class _MangaDetailScreenState extends State<MangaDetailScreen> {
-  final _cacheManagerData = CacheManagerData();
+  late final CacheManagerData _cacheManagerData;
 
-  String get endpoint => widget.endpoint;
-  String idManga;
+  String? get endpoint => widget.endpoint;
+  String? idManga;
 
   @override
   void initState() {
     super.initState();
+    _cacheManagerData = CacheManagerData();
     BlocProvider.of<MangaDetailBloc>(context)
-      ..add(FetchMangaDetailEvent(endpoint));
+        .add(FetchMangaDetailEvent(endpoint));
   }
 
   @override
@@ -37,10 +38,10 @@ class _MangaDetailScreenState extends State<MangaDetailScreen> {
   }
 
   Future removeCacheData() async {
-    final detailManga = await _cacheManagerData.getMangaRequestData(idManga);
-    if (detailManga.data.isFavorite != true &&
-        detailManga.data.listChapRead.isEmpty &&
-        detailManga.data.listDownload.isEmpty) {
+    final detailManga = await (_cacheManagerData.getMangaRequestData(idManga));
+    if (detailManga?.data.isFavorite != true &&
+        detailManga!.data.listChapRead!.isEmpty &&
+        detailManga.data.listDownload!.isEmpty) {
       await _cacheManagerData.removeMangaRequestSingleCache(idManga);
     }
   }
@@ -56,12 +57,12 @@ class _MangaDetailScreenState extends State<MangaDetailScreen> {
           return const Center();
         }
         if (state is MangaDetailLoadedState) {
-          idManga = state.data.idManga;
+          idManga = state.data!.idManga;
           return MangaDetailLoadedScreen(data: state.data);
         }
         if (state is MangaDetailSyncState) {
-          _cacheManagerData.writeMangaRequestDataWithTime(state.data);
-          idManga = state.data.idManga;
+          _cacheManagerData.writeMangaRequestDataWithTime(state.data!);
+          idManga = state.data!.idManga;
           return MangaDetailLoadedScreen(data: state.data);
         }
         if (state is MangaDetailFailureState) {

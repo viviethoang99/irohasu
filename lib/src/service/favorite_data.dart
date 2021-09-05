@@ -1,7 +1,7 @@
 import 'package:hive/hive.dart';
 
 class FavoriteData {
-  static void isFavorite(String idManga) async {
+  static void isFavorite(String? idManga) async {
     // Open DB
     final mangaBox = Hive.box('irohasu');
     final listManga = mangaBox.get('listManga', defaultValue: {});

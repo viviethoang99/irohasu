@@ -27,10 +27,10 @@ class HorizontalReadingWidget extends StatefulWidget {
     this.openChapter,
   });
 
-  final ChapterModel data;
-  final List chapterList;
-  final int indexChapter;
-  final Function openChapter;
+  final ChapterModel? data;
+  final List? chapterList;
+  final int? indexChapter;
+  final Function? openChapter;
 
   @override
   _HorizontalReadingWidgetState createState() =>
@@ -39,19 +39,19 @@ class HorizontalReadingWidget extends StatefulWidget {
 
 class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
     with TickerProviderStateMixin {
-  List get _getChapterList => widget.chapterList.toList();
+  List get _getChapterList => widget.chapterList!.toList();
 
-  ChapterModel get data => widget.data;
+  ChapterModel? get data => widget.data;
 
-  int get getIndex => widget.indexChapter;
+  int? get getIndex => widget.indexChapter;
 
   final threshold = 90;
   final heightAppBar = 110.0;
   bool _showBottomMenu = false;
-  int countImage = 0;
+  int? countImage = 0;
 
   //Declare Globaly
-  String directory;
+  String? directory;
   List file = [];
 
   @override
@@ -63,15 +63,15 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
       duration: const Duration(milliseconds: 500),
     );
     _pageController = PageController(initialPage: currentIndex);
-    _getChapterList[getIndex]?.isDownload != null
+    _getChapterList[getIndex!]?.isDownload != null
         ? _listofFiles()
-        : setState(() => countImage = data.totalImage);
+        : setState(() => countImage = data!.totalImage);
   }
 
   void _listofFiles() async {
     final directory = (await getApplicationDocumentsDirectory()).absolute.path;
     setState(() {
-      file = io.Directory(directory + _getChapterList[getIndex].isDownload)
+      file = io.Directory(directory + _getChapterList[getIndex!].isDownload)
           .listSync()
             ..sort((a, b) => AlphanumComparator.compare(a.path, b.path));
       countImage = file.length;
@@ -80,9 +80,9 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
 
   @override
   void didUpdateWidget(covariant HorizontalReadingWidget oldWidget) {
-    _getChapterList[getIndex]?.isDownload != null
+    _getChapterList[getIndex!]?.isDownload != null
         ? _listofFiles()
-        : setState(() => countImage = data.totalImage);
+        : setState(() => countImage = data!.totalImage);
     super.didUpdateWidget(oldWidget);
   }
 
@@ -110,8 +110,9 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                   _showBottomMenu = false;
                 });
               } else if (details.velocity.pixelsPerSecond.dy < -threshold) {
-                SchedulerBinding.instance.addPostFrameCallback((_) {
-                  _scrollListController.jumpTo(index: getIndex, alignment: 0.4);
+                SchedulerBinding.instance!.addPostFrameCallback((_) {
+                  _scrollListController!
+                      .jumpTo(index: getIndex!, alignment: 0.4);
                 });
                 setState(() {
                   _showBottomMenu = true;
@@ -124,8 +125,8 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
               var positionY = details.globalPosition.dy;
               if (positionX <= prePage && positionY > heightAppBar) {
                 (currentIndex == 0 && getIndex != 0)
-                    ? widget.openChapter(getIndex - 1)
-                    : _pageController.previousPage(
+                    ? widget.openChapter!(getIndex! - 1)
+                    : _pageController!.previousPage(
                         duration: const Duration(milliseconds: 300),
                         curve: Curves.easeIn);
               } else if (positionX >= prePage &&
@@ -133,9 +134,9 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                   positionY > heightAppBar) {
                 setState(() => _showMenu = !_showMenu);
               } else if (positionY > heightAppBar) {
-                currentIndex == countImage - 1
-                    ? widget.openChapter(getIndex + 1)
-                    : _pageController.nextPage(
+                currentIndex == countImage! - 1
+                    ? widget.openChapter!(getIndex! + 1)
+                    : _pageController!.nextPage(
                         duration: const Duration(milliseconds: 300),
                         curve: Curves.easeIn);
               }
@@ -175,9 +176,9 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              data.titleManga.length > 25
-                                  ? '${data.titleManga.substring(0, 25)}..'
-                                  : data.titleManga,
+                              data!.titleManga!.length > 25
+                                  ? '${data!.titleManga!.substring(0, 25)}..'
+                                  : data!.titleManga!,
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
@@ -186,8 +187,8 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                             Text(
                               ChapHelper.removeNameManga(
                                 titleChapter:
-                                    _getChapterList[getIndex].chapterTitle,
-                                nameManga: data.titleManga,
+                                    _getChapterList[getIndex!].chapterTitle,
+                                nameManga: data!.titleManga,
                               ),
                               style: const TextStyle(color: Colors.grey),
                             ),
@@ -218,15 +219,16 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                     bottom: 20,
                     child: Container(
                       child: BorderText(
+                        strokeColor: Theme.of(context).primaryColor,
+                        strokeWidth: 4,
                         child: Text(
                           '${currentIndex + 1}/$countImage',
                           style: TextStyle(
-                              color: Theme.of(context).accentColor,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold),
+                            color: Theme.of(context).accentColor,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                        strokeColor: Theme.of(context).primaryColor,
-                        strokeWidth: 4,
                       ),
                     ),
                   ),
@@ -242,12 +244,12 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                       chapterList: widget.chapterList,
                       scrollListController: _scrollListController,
                       currentIndex: currentIndex,
-                      idChapter: data.idChapter,
+                      idChapter: data!.idChapter,
                       totalImage: countImage,
                       onShowListManga: (bool data) {
-                        SchedulerBinding.instance.addPostFrameCallback((_) {
-                          _scrollListController.jumpTo(
-                              index: getIndex, alignment: 0.4);
+                        SchedulerBinding.instance!.addPostFrameCallback((_) {
+                          _scrollListController!
+                              .jumpTo(index: getIndex!, alignment: 0.4);
                         });
                         setState(() {
                           _showBottomMenu = data;
@@ -273,13 +275,13 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
         return ExtendedImage.file(
           file[index],
           onDoubleTap: (state) {
-            Offset pointerDownPosition;
+            Offset? pointerDownPosition;
             pointerDownPosition = state.pointerDownPosition;
-            final begin = state.gestureDetails.totalScale;
+            final begin = state.gestureDetails!.totalScale;
             double end;
 
             _animation?.removeListener(_animationListener);
-            _animationController
+            _animationController!
               ..stop()
               ..reset();
 
@@ -287,15 +289,15 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
 
             _animationListener = () {
               state.handleDoubleTap(
-                  scale: _animation.value,
+                  scale: _animation!.value,
                   doubleTapPosition: pointerDownPosition);
             };
 
-            _animation = _animationController.drive(Tween<double>(
+            _animation = _animationController!.drive(Tween<double>(
               begin: begin,
               end: end,
             ));
-            _animationController
+            _animationController!
               ..addListener(_animationListener)
               ..forward();
           },
@@ -327,17 +329,17 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
       controller: _pageController,
       itemBuilder: (context, i) {
         return ExtendedImage.network(
-          data.listImageChapter[i].chapterImageLink,
+          data!.listImageChapter![i].chapterImageLink!,
           cache: true,
           headers: ENV.headersBuilder,
           onDoubleTap: (state) {
-            Offset pointerDownPosition;
+            Offset? pointerDownPosition;
             pointerDownPosition = state.pointerDownPosition;
-            final begin = state.gestureDetails.totalScale;
+            final begin = state.gestureDetails!.totalScale;
             double end;
 
             _animation?.removeListener(_animationListener);
-            _animationController
+            _animationController!
               ..stop()
               ..reset();
 
@@ -345,13 +347,13 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
 
             _animationListener = () {
               state.handleDoubleTap(
-                  scale: _animation.value,
+                  scale: _animation!.value,
                   doubleTapPosition: pointerDownPosition);
             };
 
-            _animation = _animationController
+            _animation = _animationController!
                 .drive(Tween<double>(begin: begin, end: end));
-            _animationController
+            _animationController!
               ..addListener(_animationListener)
               ..forward();
           },
@@ -376,11 +378,11 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
     );
   }
 
-  ItemScrollController _scrollListController;
-  Animation<double> _animation;
-  AnimationController _animationController;
-  AnimationListener _animationListener;
+  ItemScrollController? _scrollListController;
+  Animation<double>? _animation;
+  AnimationController? _animationController;
+  late AnimationListener _animationListener;
   int currentIndex = 0;
   bool _showMenu = false;
-  PageController _pageController;
+  PageController? _pageController;
 }

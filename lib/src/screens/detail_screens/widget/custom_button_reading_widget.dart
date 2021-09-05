@@ -3,14 +3,14 @@ import '../../../models/chapter_item_model.dart';
 
 class CustomButtonReadingWidget extends StatelessWidget {
   CustomButtonReadingWidget({
-    @required this.status,
-    @required this.lastChapter,
+    required this.status,
+    required this.lastChapter,
     this.openChap,
   });
 
   final String status;
   final ChapterItem lastChapter;
-  final Function openChap;
+  final Function? openChap;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class CustomButtonReadingWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(25.0),
         ),
         child: InkWell(
-          onTap: () => openChap(lastChapter),
+          onTap: () => openChap!(lastChapter),
           child: Container(
             margin: const EdgeInsets.symmetric(vertical: 3),
             alignment: Alignment.center,

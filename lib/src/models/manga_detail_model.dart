@@ -23,15 +23,15 @@ class MangaDetailModel {
 
   factory MangaDetailModel.fromMap(Map<String, dynamic> json) =>
       MangaDetailModel(
-        idManga: json['idManga'] as String,
-        title: json['title'] as String,
-        thumbnailUrl: json['urlThumb'] as String,
-        endpoint: json['endpoint'] as String,
-        status: json['status'] as String,
+        idManga: json['idManga'] as String?,
+        title: json['title'] as String?,
+        thumbnailUrl: json['urlThumb'] as String?,
+        endpoint: json['endpoint'] as String?,
+        status: json['status'] as String?,
         author: json['author'].join(','),
-        description: json['description'] as String,
-        dislike: json['totalLike']['TotalDisLike'] as String,
-        like: json['totalLike']['TotalLike'] as String,
+        description: json['description'] as String?,
+        dislike: json['totalLike']['TotalDisLike'] as String?,
+        like: json['totalLike']['TotalLike'] as String?,
         listChapter: List<ChapterItem>.from(json['listChapter']
             ?.map<ChapterItem>((item) => ChapterItem.fromJson(json: item))),
         listGenres: List<Genres>.from(json['listGenres']
@@ -39,31 +39,31 @@ class MangaDetailModel {
       );
 
   @HiveField(0)
-  String idManga;
+  String? idManga;
   @HiveField(1)
-  String title;
+  String? title;
   @HiveField(2)
-  String thumbnailUrl;
+  String? thumbnailUrl;
   @HiveField(3)
-  String endpoint;
+  String? endpoint;
   @HiveField(4)
-  String description;
+  String? description;
   @HiveField(5)
-  String dislike;
+  String? dislike;
   @HiveField(6)
-  String like;
+  String? like;
   @HiveField(7)
-  String status;
+  String? status;
   @HiveField(8)
-  String author;
+  String? author;
   @HiveField(9)
-  List<ChapterItem> listChapter;
+  List<ChapterItem>? listChapter;
   @HiveField(10)
-  bool isFavorite;
+  bool? isFavorite;
   @HiveField(11)
-  List<String> listChapRead = [];
+  List<String>? listChapRead = [];
   @HiveField(12)
-  List<String> listDownload = [];
+  List<String>? listDownload = [];
   @HiveField(13)
-  List<Genres> listGenres;
+  List<Genres>? listGenres;
 }

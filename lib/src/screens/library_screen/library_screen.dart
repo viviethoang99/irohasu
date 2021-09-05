@@ -57,7 +57,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
               ),
             );
           }
-          return null;
+          return const SizedBox.shrink();
         },
       ),
     );

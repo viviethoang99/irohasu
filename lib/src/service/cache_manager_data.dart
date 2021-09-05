@@ -5,7 +5,7 @@ import '../models/manga_detail_model.dart';
 abstract class IFileManager {
   Future<bool> writeMangaRequestDataWithTime(MangaDetailModel body);
 
-  Future<CacheMangaModel> getMangaRequestData(String idManga);
+  Future<CacheMangaModel?> getMangaRequestData(String idManga);
 
   Future<bool> removeMangaRequestSingleCache(String idManga);
 
@@ -27,9 +27,9 @@ class CacheManagerData extends IFileManager {
   // }
 
   @override
-  Future<CacheMangaModel> getMangaRequestData(String idManga) async {
+  Future<CacheMangaModel?> getMangaRequestData(String? idManga) async {
     var mangaBox = Hive.box(_irohasu);
-    var manga = mangaBox?.get(_listManga, defaultValue: {});
+    var manga = mangaBox.get(_listManga, defaultValue: {});
     if (manga.containsKey(idManga)) return manga[idManga];
     return null;
   }
@@ -38,7 +38,7 @@ class CacheManagerData extends IFileManager {
   Future<bool> removeMangaRequestCache() async {
     try {
       var mangaBox = Hive.box(_irohasu);
-      await mangaBox?.put(_listManga, {});
+      await mangaBox.put(_listManga, {});
       print('Remove all Manga: Success');
       return true;
     } catch (e) {
@@ -48,9 +48,9 @@ class CacheManagerData extends IFileManager {
   }
 
   @override
-  Future<bool> removeMangaRequestSingleCache(String idManga) async {
+  Future<bool> removeMangaRequestSingleCache(String? idManga) async {
     var mangaBox = Hive.box(_irohasu);
-    var listManga = mangaBox?.get(_listManga, defaultValue: {});
+    var listManga = mangaBox.get(_listManga, defaultValue: {});
     try {
       listManga.remove(idManga);
       await mangaBox.put(_listManga, listManga);
@@ -65,7 +65,7 @@ class CacheManagerData extends IFileManager {
   Future<bool> writeMangaRequestDataWithTime(MangaDetailModel body) async {
     try {
       var mangaBox = Hive.box(_irohasu);
-      var listManga = mangaBox?.get(_listManga, defaultValue: {});
+      var listManga = mangaBox.get(_listManga, defaultValue: {});
       listManga[body.idManga] = CacheMangaModel(
         createTime: DateTime.now(),
         data: body,

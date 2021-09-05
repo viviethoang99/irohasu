@@ -5,10 +5,10 @@ part 'cache_manga_model.g.dart';
 
 @HiveType(typeId: 3)
 class CacheMangaModel {
-  CacheMangaModel({this.data, this.createTime}) : assert(data != null);
+  CacheMangaModel({required this.data, this.createTime});
 
   @HiveField(0)
-  final DateTime createTime;
+  final DateTime? createTime;
   @HiveField(1)
   final MangaDetailModel data;
 }

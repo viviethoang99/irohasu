@@ -17,15 +17,15 @@ class ChapterItemAdapter extends TypeAdapter<ChapterItem> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return ChapterItem(
-      idChapter: fields[6] as String,
-      chapterTitle: fields[0] as String,
-      chapterEndpoint: fields[1] as String,
-      chapterUpload: fields[2] as DateTime,
-      isDownload: fields[5] as String,
-      isReading: fields[4] as bool,
+      idChapter: fields[6] as String?,
+      chapterTitle: fields[0] as String?,
+      chapterEndpoint: fields[1] as String?,
+      chapterUpload: fields[2] as DateTime?,
+      isDownload: fields[5] as String?,
+      isReading: fields[4] as bool?,
     )
-      .._progressReading = fields[3] as int
-      ..timeReading = fields[7] as DateTime;
+      .._progressReading = fields[3] as int?
+      ..timeReading = fields[7] as DateTime?;
   }
 
   @override

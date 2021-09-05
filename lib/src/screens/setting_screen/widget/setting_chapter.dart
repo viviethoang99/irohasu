@@ -74,13 +74,6 @@ class _SettingChapterState extends State<SettingChapter> {
               BlocBuilder<ChangeReadingModeBloc, ChangeReadingModeState>(
                 builder: (context, state) {
                   return PopupMenuButton<String>(
-                    child: Text(
-                      state.toString(),
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: theme.primaryColor,
-                      ),
-                    ),
                     onSelected: _setReadingMode,
                     itemBuilder: (BuildContext context) {
                       return PopupMenuSetting.listScreenMode
@@ -97,6 +90,13 @@ class _SettingChapterState extends State<SettingChapter> {
                         );
                       }).toList();
                     },
+                    child: Text(
+                      state.toString(),
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: theme.primaryColor,
+                      ),
+                    ),
                   );
                 },
               )
@@ -119,13 +119,6 @@ class _SettingChapterState extends State<SettingChapter> {
               BlocBuilder<ChangeBackgroundBloc, ChangeBackgroundState>(
                   builder: (context, state) {
                 return PopupMenuButton<String>(
-                  child: Text(
-                    state.string,
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: theme.primaryColor,
-                    ),
-                  ),
                   onSelected: _setBackgroundColor,
                   itemBuilder: (context) {
                     return PopupMenuSetting.listBackground
@@ -141,6 +134,13 @@ class _SettingChapterState extends State<SettingChapter> {
                             ))
                         .toList();
                   },
+                  child: Text(
+                    state.string!,
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: theme.primaryColor,
+                    ),
+                  ),
                 );
               })
             ],

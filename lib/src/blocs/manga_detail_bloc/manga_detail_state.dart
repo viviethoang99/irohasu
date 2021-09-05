@@ -5,7 +5,7 @@ import '../../models/manga_detail_model.dart';
 abstract class MangaDetailState extends Equatable {
   const MangaDetailState();
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class InitialMangaDetailState extends MangaDetailState{}
@@ -14,23 +14,23 @@ class MangaDetailLoadingState extends MangaDetailState{}
 
 class MangaDetailLoadedState extends MangaDetailState{
   const MangaDetailLoadedState({this.data});
-  final MangaDetailModel data;
+  final MangaDetailModel? data;
 
   @override
-  List<Object> get props => [data];
+  List<Object?> get props => [data];
 }
 class MangaDetailSyncState extends MangaDetailState{
   const MangaDetailSyncState({this.data});
-  final MangaDetailModel data;
+  final MangaDetailModel? data;
 
   @override
-  List<Object> get props => [data];
+  List<Object?> get props => [data];
 }
 
 class MangaDetailFailureState extends MangaDetailState{
   MangaDetailFailureState({this.msg});
-  final String msg;
+  final String? msg;
 
   @override
-  List<Object> get props => [msg];
+  List<Object?> get props => [msg];
 }

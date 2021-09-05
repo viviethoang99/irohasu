@@ -16,22 +16,22 @@ import './btn_vote_widget.dart';
 class HeaderMangaDetail extends StatefulWidget {
   HeaderMangaDetail({this.data});
 
-  final MangaDetailModel data;
+  final MangaDetailModel? data;
 
   @override
   _HeaderMangaDetailState createState() => _HeaderMangaDetailState();
 }
 
 class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
-  String get author => widget.data.author ?? '';
+  String get author => widget.data!.author ?? '';
 
-  String get _idManga => widget.data.idManga;
+  String? get _idManga => widget.data!.idManga;
 
   bool dataAuthor = false;
-  String urlPage;
+  String? urlPage;
   Random random = Random();
-  int indexColor;
-  bool _isFavorite, status = false;
+  late int indexColor;
+  bool _isFavorite = false, status = false;
 
   final mangaBox = Hive.box<dynamic>('irohasu');
 
@@ -58,7 +58,7 @@ class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
           },
           blendMode: BlendMode.dstIn,
           child: CachedNetworkImage(
-            imageUrl: widget.data.thumbnailUrl,
+            imageUrl: widget.data!.thumbnailUrl!,
             imageBuilder: (context, imageProvider) => Container(
               width: ScreenHelper.getWidth(context),
               height: ScreenHelper.getHeight(context) / 2.5,
@@ -90,7 +90,7 @@ class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: CachedNetworkImage(
-                      imageUrl: widget.data.thumbnailUrl,
+                      imageUrl: widget.data!.thumbnailUrl!,
                       httpHeaders: ENV.headersBuilder,
                       fit: BoxFit.cover,
                       height: ScreenHelper.getHeight(context) / 5,
@@ -107,7 +107,7 @@ class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
                         Container(
                           padding: const EdgeInsets.only(right: 10, top: 10),
                           child: Text(
-                            widget.data.title,
+                            widget.data!.title!,
                             style: TextStyle(
                                 fontSize: 22,
                                 color: Theme.of(context).primaryColor,
@@ -121,7 +121,7 @@ class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
                                   fontSize: 18,
                                   color: Theme.of(context).primaryColor)),
                         const SizedBox(height: 15),
-                        Text(widget.data.status,
+                        Text(widget.data!.status!,
                             style: TextStyle(
                                 fontSize: 15,
                                 color: Theme.of(context).primaryColor)),
@@ -174,8 +174,8 @@ class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
                   onPressed: () {
                     Navigator.of(context).pushNamed(WebViewPage.routeName,
                         arguments: WebViewPage(
-                            title: widget.data.title,
-                            url: ENV.urlWebView(widget.data.endpoint)));
+                            title: widget.data!.title,
+                            url: ENV.urlWebView(widget.data!.endpoint!)));
                   },
                 ),
                 IconButton(

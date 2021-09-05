@@ -13,7 +13,8 @@ class ListMangaLibraryInitial extends ListMangaLibraryState {}
 class ListMangaLibraryLoading extends ListMangaLibraryState {}
 
 class ListMangaLibraryLoaded extends ListMangaLibraryState {
-  ListMangaLibraryLoaded({this.listCache}) : assert(listCache != null);
+  ListMangaLibraryLoaded({required this.listCache});
+  
   final List listCache;
 
   @override

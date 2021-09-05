@@ -7,10 +7,10 @@ import '../../config/base_content.dart';
 import '../../models/manga_detail_model.dart';
 import '../home_screens/widget/item_manga.dart';
 
-class ButtonSearchWidget extends SearchDelegate<MangaDetailModel> {
+class ButtonSearchWidget extends SearchDelegate<MangaDetailModel?> {
   ButtonSearchWidget({this.bloc});
 
-  final Bloc<SearchEvent, SearchState> bloc;
+  final Bloc<SearchEvent, SearchState>? bloc;
 
   @override
   String get searchFieldLabel => ConstantStrings.search;
@@ -40,7 +40,7 @@ class ButtonSearchWidget extends SearchDelegate<MangaDetailModel> {
 
   @override
   Widget buildResults(BuildContext context) {
-    bloc.add(FetchDataSearchEvent(query: query));
+    bloc!.add(FetchDataSearchEvent(query: query));
     return BlocBuilder<SearchBloc, SearchState>(builder: (context, state) {
       if (state is InitialSearchState) {
         return Container(

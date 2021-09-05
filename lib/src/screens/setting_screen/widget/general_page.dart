@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:irohasu/src/config/config.dart';
 
 import '../../../blocs/change_theme_bloc/change_theme_bloc.dart';
+import '../../../config/config.dart';
 import '../../../helper/media_query_helper.dart';
 import '../../../service/cache_manager_data.dart';
 
@@ -15,10 +15,10 @@ class GeneralSetting extends StatefulWidget {
 
 class _GeneralSettingState extends State<GeneralSetting> {
   bool switchValue = false;
-  int _selectTheme = 0;
+  int? _selectTheme = 0;
   final _cacheManagerData = CacheManagerData();
 
-  void _setThemeMode({int newValue}) {
+  void _setThemeMode({int? newValue}) {
     switch (newValue) {
       case 0:
         BlocProvider.of<ChangeThemeBloc>(context).add(LightTheme());
@@ -75,8 +75,8 @@ class _GeneralSettingState extends State<GeneralSetting> {
                   builder: (context, state) {
                 _selectTheme = state.optionSelect;
                 return Text(
-                  Constants.listTheme[state.optionSelect].name ??
-                      Constants.listTheme[0].name,
+                  Constants.listTheme[state.optionSelect!].name ??
+                      Constants.listTheme[0].name!,
                   style: theme.textTheme.subtitle1,
                 );
               }),
@@ -190,14 +190,14 @@ class _GeneralSettingState extends State<GeneralSetting> {
                     return RadioListTile(
                       activeColor: Theme.of(context).buttonColor,
                       title: Text(
-                        data.name,
+                        data.name!,
                         style: TextStyle(
                           color: Theme.of(context).primaryColor,
                         ),
                       ),
                       value: data.index,
                       groupValue: _selectTheme,
-                      onChanged: (context) =>
+                      onChanged: (dynamic context) =>
                           _setThemeMode(newValue: data.index),
                     );
                   }).toList(),

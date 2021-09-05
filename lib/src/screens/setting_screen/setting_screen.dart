@@ -136,7 +136,7 @@ class SettingScreen extends StatelessWidget {
 }
 
 class _BuildDivider extends StatelessWidget {
-  const _BuildDivider({Key key}) : super(key: key);
+  const _BuildDivider({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

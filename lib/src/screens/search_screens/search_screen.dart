@@ -142,13 +142,14 @@ class _SearchScreenState extends State<SearchScreen> {
                       String removeGenres,
                       String addGenres,
                     ) {
-                      BlocProvider.of<SearchBloc>(context)
-                        ..add(AdvancedSearchEvent(
+                      BlocProvider.of<SearchBloc>(context).add(
+                        AdvancedSearchEvent(
                           query: _controllerSearch.text,
                           author: author,
                           removeGenres: removeGenres,
                           addGenres: addGenres,
-                        ));
+                        ),
+                      );
                     },
                     showDrawer: () {
                       setState(() {

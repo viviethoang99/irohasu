@@ -1,10 +1,9 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:irohasu/src/models/manga_list_model.dart';
+import '../../models/manga_list_model.dart';
 
 abstract class SearchState extends Equatable {
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class InitialSearchState extends SearchState {}
@@ -12,7 +11,7 @@ class InitialSearchState extends SearchState {}
 class SearchLoadingState extends SearchState {}
 
 class SearchLoadedState extends SearchState {
-  SearchLoadedState({@required this.list});
+  SearchLoadedState({required this.list});
 
   final List<MangaListModel> list;
 
@@ -23,8 +22,8 @@ class SearchLoadedState extends SearchState {
 class SearchFailureState extends SearchState {
   SearchFailureState({this.msg});
 
-  final String msg;
+  final String? msg;
 
   @override
-  List<Object> get props => [msg];
+  List<Object?> get props => [msg];
 }

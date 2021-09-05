@@ -18,7 +18,7 @@ class CacheMangaModelAdapter extends TypeAdapter<CacheMangaModel> {
     };
     return CacheMangaModel(
       data: fields[1] as MangaDetailModel,
-      createTime: fields[0] as DateTime,
+      createTime: fields[0] as DateTime?,
     );
   }
 

@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:irohasu/src/models/chapter_item_model.dart';
+
+import '../../models/chapter_item_model.dart';
 
 abstract class ChapterEvent extends Equatable {
   const ChapterEvent();
@@ -11,7 +12,7 @@ abstract class ChapterEvent extends Equatable {
 class FetchDataChapterEvent extends ChapterEvent {
   FetchDataChapterEvent({this.endpoint});
 
-  final String endpoint;
+  final String? endpoint;
 }
 
 class FetchDataDownloadEvent extends ChapterEvent {
@@ -21,7 +22,7 @@ class FetchDataDownloadEvent extends ChapterEvent {
     this.mangaDetail,
   });
 
-  final ChapterItem item;
-  final String mangaDetail;
-  final String titleManga;
+  final ChapterItem? item;
+  final String? mangaDetail;
+  final String? titleManga;
 }

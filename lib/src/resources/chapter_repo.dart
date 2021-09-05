@@ -5,9 +5,9 @@ import '../../src/service/base_service.dart';
 
 class ChapterRepo extends BaseService {
   Future<ChapterModel> getDataChapter(String endpoint) async {
-    dio.Response response;
+    dio.Response? response;
     response = await request(url: endpoint);
-    var data = ChapterModel.fromJson(response.data as Map<String, dynamic>);
+    var data = ChapterModel.fromJson(response!.data as Map<String, dynamic>);
     return data;
   }
 }

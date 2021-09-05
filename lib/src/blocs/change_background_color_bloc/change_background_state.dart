@@ -20,7 +20,7 @@ class ChangeBackgroundState {
     );
   }
 
-  final String string;
-  final Color color;
-  final int selectOption;
+  final String? string;
+  final Color? color;
+  final int? selectOption;
 }

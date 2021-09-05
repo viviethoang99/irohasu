@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:irohasu/src/blocs/change_theme_bloc/utils.dart';
+import 'utils.dart';
 
 part 'change_theme_event.dart';
 
@@ -92,9 +92,9 @@ class ChangeThemeBloc extends Bloc<ChangeThemeEvent, ChangeThemeState> {
     await mangaBox.put('sharedPreferences', setting);
   }
 
-  Future<int> _getOption() async {
+  Future<int?> _getOption() async {
     var mangaBox = Hive.box('irohasu');
-    var _option = 0;
+    int? _option = 0;
     var setting = mangaBox.get('sharedPreferences', defaultValue: {});
     if (setting['generalSetting']?.containsKey('themeData') ?? false) {
       _option = setting['generalSetting']['themeData'];

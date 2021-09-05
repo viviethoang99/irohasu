@@ -16,32 +16,32 @@ class CustomBottomDrawer extends StatefulWidget {
     this.openChapter,
   });
 
-  final List chapterList;
-  final int currentIndex;
-  final int totalImage;
-  final String idChapter;
-  final ItemScrollController scrollListController;
-  final Function(bool) onShowListManga;
-  final Function openChapter;
+  final List? chapterList;
+  final int? currentIndex;
+  final int? totalImage;
+  final String? idChapter;
+  final ItemScrollController? scrollListController;
+  final Function(bool)? onShowListManga;
+  final Function? openChapter;
 
   @override
   _CustomBottomDrawerState createState() => _CustomBottomDrawerState();
 }
 
 class _CustomBottomDrawerState extends State<CustomBottomDrawer> {
-  int getIndex;
+  int? getIndex;
 
   @override
   void initState() {
     super.initState();
-    getIndex = widget.chapterList.indexWhere(
+    getIndex = widget.chapterList!.indexWhere(
       (chapter) => chapter.idChapter == widget.idChapter,
     );
   }
 
   @override
   void didUpdateWidget(covariant CustomBottomDrawer oldWidget) {
-    getIndex = widget.chapterList.indexWhere(
+    getIndex = widget.chapterList!.indexWhere(
       (chapter) => chapter.idChapter == widget.idChapter,
     );
     super.didUpdateWidget(oldWidget);
@@ -73,7 +73,7 @@ class _CustomBottomDrawerState extends State<CustomBottomDrawer> {
                         color: Colors.white70,
                         size: 33,
                       ),
-                      onPressed: () => widget.onShowListManga(true)),
+                      onPressed: () => widget.onShowListManga!(true)),
                   // onPressed: () {}),
                 ),
                 Expanded(
@@ -85,7 +85,7 @@ class _CustomBottomDrawerState extends State<CustomBottomDrawer> {
                 Padding(
                   padding: const EdgeInsets.only(right: 12.0),
                   child: Text(
-                    '${widget.currentIndex + 1} / ${widget.totalImage}',
+                    '${widget.currentIndex! + 1} / ${widget.totalImage}',
                     style: const TextStyle(
                         color: Colors.white,
                         fontSize: 20,
@@ -109,10 +109,10 @@ class _CustomBottomDrawerState extends State<CustomBottomDrawer> {
               width: double.infinity,
               height: heightScreen * 0.5,
               child: ScrollablePositionedList.builder(
-                itemCount: widget.chapterList.length,
+                itemCount: widget.chapterList!.length,
                 itemScrollController: widget.scrollListController,
                 itemBuilder: (context, index) {
-                  final chapter = widget.chapterList[index];
+                  final chapter = widget.chapterList![index];
                   return ListTile(
                     selected: (index == getIndex),
                     selectedTileColor: Colors.green,
@@ -132,7 +132,7 @@ class _CustomBottomDrawerState extends State<CustomBottomDrawer> {
                         fontStyle: FontStyle.italic,
                       ),
                     ),
-                    onTap: () => widget.openChapter(index),
+                    onTap: () => widget.openChapter!(index),
                   );
                 },
               ),

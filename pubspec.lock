@@ -495,7 +495,7 @@ packages:
     source: hosted
     version: "2.0.3"
   pedantic:
-    dependency: transitive
+    dependency: "direct dev"
     description:
       name: pedantic
       url: "https://pub.dartlang.org"
@@ -563,7 +563,7 @@ packages:
       name: scrollable_positioned_list
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.10"
+    version: "0.2.0-nullsafety.0"
   shelf:
     dependency: transitive
     description:

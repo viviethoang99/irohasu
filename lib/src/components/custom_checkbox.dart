@@ -10,12 +10,12 @@ class CustomCheckbox extends StatefulWidget {
     this.onClick,
   });
 
-  final bool isChecked;
-  final double size;
-  final double iconSize;
-  final Color selectedColor;
-  final IconData iconStatus;
-  final Function onClick;
+  final bool? isChecked;
+  final double? size;
+  final double? iconSize;
+  final Color? selectedColor;
+  final IconData? iconStatus;
+  final Function? onClick;
 
   @override
   _CustomCheckboxState createState() => _CustomCheckboxState();
@@ -25,7 +25,7 @@ class _CustomCheckboxState extends State<CustomCheckbox> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: widget.onClick,
+      onTap: widget.onClick as void Function()?,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 100),
         curve: Curves.fastLinearToSlowEaseIn,

@@ -15,7 +15,7 @@ class IndexScreen extends StatefulWidget {
 
 class _IndexScreenState extends State<IndexScreen> {
   int _currentIndex = 0;
-  PageController _pageController;
+  PageController? _pageController;
 
   @override
   void initState() {
@@ -25,7 +25,7 @@ class _IndexScreenState extends State<IndexScreen> {
 
   @override
   void dispose() {
-    _pageController.dispose();
+    _pageController!.dispose();
     super.dispose();
   }
 
@@ -55,7 +55,7 @@ class _IndexScreenState extends State<IndexScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         onItemSelected: (index) {
           setState(() => _currentIndex = index);
-          _pageController.jumpToPage(index);
+          _pageController!.jumpToPage(index);
         },
         items: <BottomNavyBarItem>[
           BottomNavyBarItem(

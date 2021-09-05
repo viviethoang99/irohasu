@@ -3,8 +3,8 @@ import 'cache_manager_data.dart';
 
 class HistoryData {
   static Future addChapToHistory({
-    String idManga,
-    String idChapter,
+    String? idManga,
+    String? idChapter,
   }) async {
     final mangaBox = Hive.box('irohasu');
     final listManga = mangaBox.get('listManga', defaultValue: {});
@@ -14,18 +14,20 @@ class HistoryData {
         ..removeWhere((id) => id == idChapter)
         ..add(idChapter);
       listManga[idManga].data.listChapter.map((chapter) {
-        if (idChapter == chapter.idChapter)
+        if (idChapter == chapter.idChapter) {
           chapter
             ..isReading = true
             ..timeReading = DateTime.now();
+        }
       }).toList();
       await mangaBox.put('listManga', listManga);
     } catch (e) {
-      print(e ?? 'An error occurred while adding chapter to Database');
+      print(e);
     }
   }
 
-  static Future<bool> removeHistory({String idChapter, String idManga}) async {
+  static Future<bool> removeHistory(
+      {String? idChapter, String? idManga}) async {
     final mangaBox = Hive.box('irohasu');
     final listManga = mangaBox.get('listManga', defaultValue: {});
     final _cacheManagerData = CacheManagerData();
@@ -48,14 +50,15 @@ class HistoryData {
       await mangaBox.put('listManga', listManga);
       print('clear all chapter');
       return true;
-    } else if (idChapter.isNotEmpty) {
+    } else if (idChapter!.isNotEmpty) {
       listManga[idManga].data
         ..listChapRead.removeLast()
         ..listChapter.map((chapter) {
-          if (idChapter == chapter.idChapter)
+          if (idChapter == chapter.idChapter) {
             chapter
               ..isReading = false
               ..timeReading = null;
+          }
         }).toList();
       await mangaBox.put('listManga', listManga);
       print('clear chapter');

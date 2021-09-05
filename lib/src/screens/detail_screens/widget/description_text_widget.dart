@@ -4,10 +4,10 @@ import '../../../config/base_content.dart';
 import '../../../models/genres_model.dart';
 
 class DescriptionTextWidget extends StatefulWidget {
-  DescriptionTextWidget({@required this.text, this.listGenres});
+  DescriptionTextWidget({required this.text, this.listGenres});
 
   final String text;
-  final List<Genres> listGenres;
+  final List<Genres>? listGenres;
 
   @override
   _DescriptionTextWidgetState createState() => _DescriptionTextWidgetState();
@@ -55,9 +55,7 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget>
             duration: const Duration(milliseconds: 300),
             vsync: this,
             child: Container(
-              margin: EdgeInsets.only(
-                top: (text != null) ? 8 : 0
-              ),
+              margin: const EdgeInsets.only(top: 8),
               padding: _isMoreThan100Characters
                   ? const EdgeInsets.symmetric(vertical: 20.0)
                   : const EdgeInsets.only(bottom: 10.0),
@@ -69,7 +67,7 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget>
     );
   }
 
-  Widget customButtonDescription({String status, IconData icon}) {
+  Widget customButtonDescription({required String status, IconData? icon}) {
     return Material(
         type: MaterialType.transparency,
         child: Ink(
@@ -91,7 +89,7 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget>
                   status,
                   style: Theme.of(context)
                       .textTheme
-                      .bodyText1
+                      .bodyText1!
                       .copyWith(fontWeight: FontWeight.bold, fontSize: 15),
                 ),
               ],
@@ -107,14 +105,14 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget>
           margin: const EdgeInsets.only(bottom: 5),
           child: flag
               ? Text(text,
-                  style: Theme.of(context).textTheme.bodyText1.copyWith(
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
                         fontSize: 16,
                       ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis)
               : Text(
                   text,
-                  style: Theme.of(context).textTheme.bodyText1.copyWith(
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
                         fontSize: 16,
                       ),
                 ),
@@ -128,9 +126,9 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget>
 
 class CustomChips extends StatelessWidget {
   const CustomChips({
-    Key key,
-    @required this.flag,
-    @required this.widget,
+    Key? key,
+    required this.flag,
+    required this.widget,
   }) : super(key: key);
 
   final bool flag;
@@ -144,14 +142,14 @@ class CustomChips extends StatelessWidget {
       height: 50,
       child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: widget.listGenres.length,
+          itemCount: widget.listGenres!.length,
           itemBuilder: (context, index) {
             return Container(
               margin: const EdgeInsets.symmetric(horizontal: 5),
               child: ActionChip(
                 padding: const EdgeInsets.all(2.0),
                 label: Text(
-                  widget.listGenres[index].genreName,
+                  widget.listGenres![index].genreName!,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,

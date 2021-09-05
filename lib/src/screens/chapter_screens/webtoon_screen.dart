@@ -14,13 +14,13 @@ import './webtoon_screen_widget/custom_drawer.dart';
 
 class ChapterLoadedScreen extends StatefulWidget {
   const ChapterLoadedScreen({
-    @required this.data,
-    @required this.chapterList,
-    @required this.getIndexChapter,
-    @required this.openChapter,
+    required this.data,
+    required this.chapterList,
+    required this.getIndexChapter,
+    required this.openChapter,
   });
 
-  final ChapterModel data;
+  final ChapterModel? data;
   final List chapterList;
   final int getIndexChapter;
   final Function openChapter;
@@ -32,16 +32,16 @@ class ChapterLoadedScreen extends StatefulWidget {
 class _ChapterLoadedScreenState extends State<ChapterLoadedScreen> {
   List get _getChapterList => widget.chapterList.toList();
 
-  ChapterModel get data => widget.data;
+  ChapterModel? get data => widget.data;
   int get getIndex => widget.getIndexChapter;
 
   final ScrollController _scrollController = ScrollController();
   final scrollDirection = Axis.vertical;
-  ItemScrollController _scrollListController;
-  int countImage = 0;
+  ItemScrollController? _scrollListController;
+  int? countImage = 0;
 
   //Declare Globaly
-  String directory;
+  String? directory;
   List file = [];
 
   @override
@@ -50,14 +50,14 @@ class _ChapterLoadedScreenState extends State<ChapterLoadedScreen> {
     _scrollListController = ItemScrollController();
     _getChapterList[getIndex]?.isDownload != null
         ? _listofFiles()
-        : setState(() => countImage = data.totalImage);
+        : setState(() => countImage = data!.totalImage);
   }
 
   @override
   void didUpdateWidget(covariant ChapterLoadedScreen oldWidget) {
     _getChapterList[getIndex]?.isDownload != null
         ? _listofFiles()
-        : setState(() => countImage = data.totalImage,);
+        : setState(() => countImage = data!.totalImage,);
     super.didUpdateWidget(oldWidget);
   }
 
@@ -113,7 +113,7 @@ class _ChapterLoadedScreenState extends State<ChapterLoadedScreen> {
           controller: _scrollController,
           itemBuilder: (context, index) {
             return CachedNetworkImage(
-              imageUrl: data.listImageChapter[index].chapterImageLink,
+              imageUrl: data!.listImageChapter![index].chapterImageLink!,
               httpHeaders: ENV.headersBuilder,
             );
           },

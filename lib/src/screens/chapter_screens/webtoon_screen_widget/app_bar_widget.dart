@@ -5,32 +5,31 @@ import '../../setting_screen/widget/setting_chapter.dart';
 class AppBarChapterScreen extends StatefulWidget {
   AppBarChapterScreen({this.maxWidth, this.scrollController});
 
-  final double maxWidth;
-  final ScrollController scrollController;
+  final double? maxWidth;
+  final ScrollController? scrollController;
 
   @override
   _AppBarChapterScreenState createState() => _AppBarChapterScreenState();
 }
 
 class _AppBarChapterScreenState extends State<AppBarChapterScreen> {
-  double _offset, _delta = 0, _oldOffset = 0;
+  double _offset = 0, _delta = 0, _oldOffset = 0;
   final double _containerMaxHeight = 70;
 
-  double get maxWidth => widget.maxWidth;
+  double? get maxWidth => widget.maxWidth;
 
-  ScrollController get _scrollController => widget.scrollController;
+  ScrollController? get _scrollController => widget.scrollController;
 
   @override
   void initState() {
     super.initState();
-    _offset = 0;
-    _scrollController.addListener(() {
+    _scrollController!.addListener(() {
       setState(() {
-        var offset = _scrollController.offset;
+        var offset = _scrollController!.offset;
         _delta += (offset - _oldOffset);
-        if (_delta > _containerMaxHeight)
+        if (_delta > _containerMaxHeight) {
           _delta = _containerMaxHeight;
-        else if (_delta < 0) _delta = 0;
+        } else if (_delta < 0) _delta = 0;
         _oldOffset = offset;
         _offset = -_delta;
       });
@@ -79,9 +78,9 @@ class _AppBarChapterScreenState extends State<AppBarChapterScreen> {
 class RadioGroup extends Equatable {
   RadioGroup({this.name, this.index});
 
-  final String name;
-  final int index;
+  final String? name;
+  final int? index;
 
   @override
-  List<Object> get props => [name, index];
+  List<Object?> get props => [name, index];
 }
