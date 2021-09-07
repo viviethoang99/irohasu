@@ -56,7 +56,7 @@ class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
     }
   }
 
-  void openChapter({required ChapterItem item}) {
+  void openChapter({required ChapterItem item, required BuildContext context}) {
     HistoryData.addChapToHistory(
       idManga: data!.idManga,
       idChapter: item.idChapter,
@@ -125,29 +125,39 @@ class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
         removeTop: true,
         removeBottom: true,
         context: context,
-        child: ListView(
-          shrinkWrap: true,
-          children: <Widget>[
-            HeaderMangaDetail(data: data),
-            DescriptionTextWidget(
-              text: data!.description ?? '',
-              listGenres: data!.listGenres,
-            ),
-            const SizedBox(height: 10),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: CustomButtonReadingWidget(
-                status: _continueReading,
-                lastChapter: data!.listChapter!.last,
-                openChap: (ChapterItem item) => openChapter(item: item),
-              ),
-            ),
-            const SizedBox(height: 10),
-            ListChapterWidget(
-              data: data,
-              openChap: (ChapterItem item) => openChapter(item: item),
-            ),
-          ],
+        child: BlocBuilder<MangaDetailBloc, MangaDetailState>(
+          builder: (context, state) {
+            return ListView(
+              shrinkWrap: true,
+              children: <Widget>[
+                HeaderMangaDetail(data: data),
+                DescriptionTextWidget(
+                  text: data!.description ?? '',
+                  listGenres: data!.listGenres,
+                ),
+                const SizedBox(height: 10),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: CustomButtonReadingWidget(
+                    status: _continueReading,
+                    lastChapter: data!.listChapter!.last,
+                    openChap: (ChapterItem item) => openChapter(
+                      item: item,
+                      context: context,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                ListChapterWidget(
+                  data: data,
+                  openChap: (ChapterItem item) => openChapter(
+                    item: item,
+                    context: context,
+                  ),
+                ),
+              ],
+            );
+          },
         ),
       ),
     );

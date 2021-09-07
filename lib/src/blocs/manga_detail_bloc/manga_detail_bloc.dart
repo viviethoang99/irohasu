@@ -21,7 +21,7 @@ class MangaDetailBloc extends Bloc<MangaDetailEvent, MangaDetailState> {
         final data = await repository.fetchDataMangaDetail(event.endpoint!);
         if (data != null) {
           yield MangaDetailLoadedState(data: data);
-          yield* _loadDataListManga(data: data);
+          // yield* _loadDataListManga(data: data);
         } else {
           final idManga = event.endpoint!.split('/')[4];
           final cache = await (cacheManagerData.getMangaRequestData(idManga));

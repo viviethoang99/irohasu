@@ -46,7 +46,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                   mainAxisSpacing: 2,
                 ),
                 itemBuilder: (context, index) {
-                  final manga = state.listCache[index].data;
+                  final manga = state.listCache[index].chapter;
                   return ItemManga(
                     title: manga.title,
                     thumbnailUrl: manga.thumbnailUrl,

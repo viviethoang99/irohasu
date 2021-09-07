@@ -27,8 +27,7 @@ class _MangaDetailScreenState extends State<MangaDetailScreen> {
   void initState() {
     super.initState();
     _cacheManagerData = CacheManagerData();
-    BlocProvider.of<MangaDetailBloc>(context)
-        .add(FetchMangaDetailEvent(endpoint));
+    context.read<MangaDetailBloc>().add(FetchMangaDetailEvent(endpoint));
   }
 
   @override
@@ -49,7 +48,7 @@ class _MangaDetailScreenState extends State<MangaDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MangaDetailBloc, MangaDetailState>(
-      builder: (context, state) {
+      builder: (_, state) {
         if (state is MangaDetailLoadingState) {
           return LoadingScreen();
         }

@@ -6,10 +6,10 @@ class FavoriteData {
     final mangaBox = Hive.box('irohasu');
     final listManga = mangaBox.get('listManga', defaultValue: {});
     // Change favorite
-    if (listManga[idManga].data.isFavorite == null) {
-      listManga[idManga].data.isFavorite = true;
+    if (listManga[idManga].chapter.isFavorite == null) {
+      listManga[idManga].chapter.isFavorite = true;
     } else {
-      listManga[idManga].data.isFavorite = !listManga[idManga].data.isFavorite;
+      listManga[idManga].chapter.isFavorite = !listManga[idManga].chapter.isFavorite;
     }
     // Save Database
     await mangaBox.put('listManga', listManga);

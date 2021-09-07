@@ -6,8 +6,6 @@ class LoadingScreen extends StatelessWidget {
     final theme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.all(20),
-      width: double.infinity,
-      height: double.infinity,
       color: theme.backgroundColor,
       child: Center(
         child: CircularProgressIndicator(

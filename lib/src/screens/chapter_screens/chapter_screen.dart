@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../blocs/change_reading_mode_bloc/change_reading_mode_bloc.dart';
-import '../../blocs/chapter_bloc/bloc.dart';
+import '../../blocs/chapter_screen/chapter_screen_cubit.dart';
+import '../../blocs/manga_detail_bloc/bloc.dart';
 import '../../local/history_data.dart';
+import '../../repositories/imp/chapter_repository_imp.dart';
+import '../../services/chapter_services.dart';
 import '../../widgets/loading_screen.dart';
 import 'default_reading_screen.dart';
 import 'webtoon_screen.dart';
@@ -30,38 +33,19 @@ class ChapterScreen extends StatefulWidget {
 }
 
 class _ChapterScreenState extends State<ChapterScreen> {
-  String? get getEndpoint => widget.endpoint;
-  late int getIndexChapter;
-
   List get getChapterList => widget.chapterList!.reversed.toList();
+
+  late final ChapterScreenCubit _cubit;
 
   @override
   void initState() {
-    super.initState();
+    _cubit = ChapterScreenCubit(
+      ChapterRepositoryImp(ChapterServices()),
+      context.read<MangaDetailBloc>(),
+    );
     BlocProvider.of<ChangeReadingModeBloc>(context).add(GetReadingMode());
-    getIndexChapter = getIndex(getEndpoint);
-    _checkFetchData(getIndexChapter);
-  }
 
-  int getIndex(String? endpoint) {
-    final test = getChapterList.indexWhere((element) {
-      return element.endpoint == endpoint;
-    });
-    return test;
-  }
-
-  void _checkFetchData(int index) {
-    if (getChapterList[index].isDownload == null) {
-      BlocProvider.of<ChapterBloc>(context).add(FetchDataChapterEvent(
-        endpoint: getChapterList[index].endpoint,
-      ));
-    } else {
-      BlocProvider.of<ChapterBloc>(context).add(FetchDataDownloadEvent(
-        item: getChapterList[index],
-        titleManga: widget.titleManga,
-        mangaDetail: widget.mangaDetail,
-      ));
-    }
+    super.initState();
   }
 
   void nextChapter(int chapter) {
@@ -69,48 +53,44 @@ class _ChapterScreenState extends State<ChapterScreen> {
       idManga: widget.mangaDetail!.split('/')[4],
       idChapter: getChapterList[chapter].id,
     );
-    _checkFetchData(chapter);
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ChapterBloc, ChapterState>(
-      builder: (context, state) {
-        if (state is InitialChapterState) {
-          return const Center(
-            child: Text('Waiting!'),
+    return BlocProvider<ChapterScreenCubit>(
+      create: (context) => _cubit..initLoad(widget.endpoint!),
+      child: BlocBuilder<ChapterScreenCubit, ChapterScreenState>(
+        builder: (context, state) {
+          if (state.isLoading) {
+            return LoadingScreen();
+          } else if (state.chapter != null) {
+            return BlocBuilder<ChangeReadingModeBloc, ChangeReadingModeState>(
+                builder: (context, stateReading) {
+              if (stateReading is AdvancedReadingModeState) {
+                return HorizontalReadingWidget(
+                  data: state.chapter,
+                  chapterList: getChapterList,
+                  indexChapter: 23,
+                  openChapter: nextChapter,
+                );
+              }
+              if (stateReading is WebtoonModeState) {
+                return ChapterLoadedScreen(
+                  data: state.chapter,
+                  chapterList: getChapterList,
+                  getIndexChapter: 23,
+                  openChapter: nextChapter,
+                );
+              }
+              return const SizedBox.shrink();
+            });
+          }
+          return Scaffold(
+            appBar: AppBar(),
+            body: Container(),
           );
-        }
-        if (state is ChapterLoadingState) {
-          return LoadingScreen();
-        }
-        if (state is ChapterLoadedState) {
-          return BlocBuilder<ChangeReadingModeBloc, ChangeReadingModeState>(
-              builder: (context, stateReading) {
-            if (stateReading is AdvancedReadingModeState) {
-              return HorizontalReadingWidget(
-                data: state.data,
-                chapterList: getChapterList,
-                indexChapter: getIndex(state.data!.endpoint),
-                openChapter: nextChapter,
-              );
-            }
-            if (stateReading is WebtoonModeState) {
-              return ChapterLoadedScreen(
-                data: state.data,
-                chapterList: getChapterList,
-                getIndexChapter: getIndex(state.data!.endpoint),
-                openChapter: nextChapter,
-              );
-            }
-            return Container();
-          });
-        }
-        if (state is ChapterFailureState) {
-          Navigator.of(context).pop();
-        }
-        return const Center(child: Text('Other states..'));
-      },
+        },
+      ),
     );
     // });
   }

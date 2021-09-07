@@ -6,7 +6,6 @@ import '../../env.dart';
 import '../blocs/change_background_color_bloc/change_background_bloc.dart';
 import '../blocs/change_reading_mode_bloc/change_reading_mode_bloc.dart';
 import '../blocs/change_theme_bloc/change_theme_bloc.dart';
-import '../blocs/chapter_bloc/bloc.dart';
 import '../blocs/history_bloc/history_bloc.dart';
 import '../blocs/list_manga_bloc/bloc.dart';
 import '../blocs/list_manga_library_bloc/list_manga_library_bloc.dart';
@@ -64,9 +63,6 @@ class _AppWidgetState extends State<AppWidget> {
         ),
         BlocProvider<ListMangaBloc>(
           create: (context) => ListMangaBloc(mangaRepository),
-        ),
-        BlocProvider<ChapterBloc>(
-          create: (context) => ChapterBloc(chapterRepository),
         ),
         BlocProvider<SearchBloc>(
           create: (context) => SearchBloc(mangaRepository),

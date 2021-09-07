@@ -74,14 +74,14 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: ListView.separated(
           reverse: _isReversed,
-          separatorBuilder: (context, index) => Divider(
+          separatorBuilder: (_, index) => Divider(
             color: theme.canvasColor,
             height: 20,
           ),
           shrinkWrap: true,
           itemCount: data!.listChapter!.length,
           physics: const NeverScrollableScrollPhysics(),
-          itemBuilder: (BuildContext context, index) {
+          itemBuilder: (_, index) {
             final chapter = data!.listChapter![index];
             return ListTile(
               contentPadding: const EdgeInsets.symmetric(

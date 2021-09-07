@@ -7,8 +7,8 @@ class ChapHelper {
   static ChapterItem? getChapterLastReading(String? idManga) {
     var mangaBox = Hive.box('irohasu');
     final cacheManga = mangaBox.get('listManga', defaultValue: {})[idManga];
-    final listChapterReading = cacheManga.data.listChapRead.last;
-    final item = cacheManga.data.listChapter
+    final listChapterReading = cacheManga.chapter.listChapRead.last;
+    final item = cacheManga.chapter.listChapter
         .firstWhere((element) => element.id == listChapterReading);
     return item;
   }
@@ -16,7 +16,7 @@ class ChapHelper {
   static ChapterItem? getChapterItem({String? idManga, String? idChapter}) {
     var mangaBox = Hive.box('irohasu');
     final cacheManga = mangaBox.get('listManga', defaultValue: {})[idManga];
-    final item = cacheManga.data.listChapter
+    final item = cacheManga.chapter.listChapter
         .firstWhere((element) => element.id == idChapter);
     return item;
   }

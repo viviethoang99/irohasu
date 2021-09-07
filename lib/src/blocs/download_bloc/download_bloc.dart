@@ -104,9 +104,9 @@ class DownloadBloc extends Bloc<DownloadEvent, DownloadState> {
     url = await _downloadData.relativePathChapter(uri: url);
 
     try {
-      listManga[idManga].data.listDownload.add(idChapter);
+      listManga[idManga].chapter.listDownload.add(idChapter);
       listManga[idManga]
-          .data
+          .chapter
           .listChapter
           .firstWhere((manga) => manga.id == idChapter)
           .isDownload = url;

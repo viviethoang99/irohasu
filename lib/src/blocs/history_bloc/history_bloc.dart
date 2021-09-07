@@ -25,12 +25,12 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
   Stream<HistoryLoaded> _getListMangaHistory() async* {
     final listCache = Hive.box('irohasu').get('listManga', defaultValue: {});
     final listManga = await listCache.values
-        .where((element) => element.data.listChapRead.isNotEmpty == true)
+        .where((element) => element.chapter.listChapRead.isNotEmpty == true)
         .toList()
       ..sort((a, b) {
         final chapterA =
-            ChapHelper.getChapterLastReading(a.data.idManga)!.timeReading;
-        return ChapHelper.getChapterLastReading(b.data.idManga)!
+            ChapHelper.getChapterLastReading(a.chapter.idManga)!.timeReading;
+        return ChapHelper.getChapterLastReading(b.chapter.idManga)!
             .timeReading
             .toString()
             .compareTo(chapterA.toString());

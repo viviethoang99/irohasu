@@ -42,8 +42,8 @@ class MangaDetailModel extends Equatable {
         .text
         .replaceFirst('| BlogTruyen.Com', '')
         .trim();
-
     return MangaDetailModel(
+      idManga: endpoint.split('/')[1],
       title: title,
       thumbnailUrl: urlThumb,
       endpoint: endpoint,

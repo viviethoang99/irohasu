@@ -10,10 +10,10 @@ class HistoryData {
     final listManga = mangaBox.get('listManga', defaultValue: {});
 
     try {
-      listManga[idManga].data.listChapRead
+      listManga[idManga].chapter.listChapRead
         ..removeWhere((id) => id == idChapter)
         ..add(idChapter);
-      listManga[idManga].data.listChapter.map((chapter) {
+      listManga[idManga].chapter.listChapter.map((chapter) {
         if (idChapter == chapter.id) {
           chapter
             ..isReading = true
@@ -33,15 +33,15 @@ class HistoryData {
     final _cacheManagerData = CacheManagerData();
 
     if (idChapter == 'all') {
-      if (listManga[idManga].data.isFavorite != true &&
-          listManga[idManga].data.listDownload.isEmpty) {
+      if (listManga[idManga].chapter.isFavorite != true &&
+          listManga[idManga].chapter.listDownload.isEmpty) {
         await _cacheManagerData.removeMangaRequestSingleCache(idManga);
         print('remove Manga success');
         return true;
       }
       listManga[idManga]
-        ..data.listChapRead = <String>[]
-        ..data
+        ..chapter.listChapRead = <String>[]
+        ..chapter
             .listChapter
             .map((chapter) => chapter
               ..isReading = false
@@ -51,7 +51,7 @@ class HistoryData {
       print('clear all chapter');
       return true;
     } else if (idChapter!.isNotEmpty) {
-      listManga[idManga].data
+      listManga[idManga].chapter
         ..listChapRead.removeLast()
         ..listChapter.map((chapter) {
           if (idChapter == chapter.id) {

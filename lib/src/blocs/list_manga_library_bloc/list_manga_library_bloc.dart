@@ -28,8 +28,8 @@ class ListMangaLibraryBloc
     final listManga = await listCache.values
         .where(
           (element) =>
-              element.data.isFavorite == true ||
-              element.data.listDownload.isNotEmpty,
+              element.chapter.isFavorite == true ||
+              element.chapter.listDownload.isNotEmpty,
         )
         .toList();
     yield ListMangaLibraryLoaded(listCache: listManga);

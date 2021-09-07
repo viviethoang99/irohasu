@@ -147,7 +147,7 @@ class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
           builder: (context, Box _box, _) {
             var listManga = _box.get('listManga', defaultValue: {});
 
-            _isFavorite = listManga[_idManga]?.data?.isFavorite ?? false;
+            _isFavorite = listManga[_idManga]?.chapter?.isFavorite ?? false;
             return Row(
               children: <Widget>[
                 _isFavorite
