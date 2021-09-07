@@ -35,14 +35,14 @@ class _CustomBottomDrawerState extends State<CustomBottomDrawer> {
   void initState() {
     super.initState();
     getIndex = widget.chapterList!.indexWhere(
-      (chapter) => chapter.idChapter == widget.idChapter,
+      (chapter) => chapter.id == widget.idChapter,
     );
   }
 
   @override
   void didUpdateWidget(covariant CustomBottomDrawer oldWidget) {
     getIndex = widget.chapterList!.indexWhere(
-      (chapter) => chapter.idChapter == widget.idChapter,
+      (chapter) => chapter.id == widget.idChapter,
     );
     super.didUpdateWidget(oldWidget);
   }
@@ -117,7 +117,7 @@ class _CustomBottomDrawerState extends State<CustomBottomDrawer> {
                     selected: (index == getIndex),
                     selectedTileColor: Colors.green,
                     title: Text(
-                      chapter.chapterTitle.trim(),
+                      chapter.title.trim(),
                       style: const TextStyle(
                         fontSize: 20,
                         color: Colors.white,
@@ -125,7 +125,7 @@ class _CustomBottomDrawerState extends State<CustomBottomDrawer> {
                       ),
                     ),
                     subtitle: Text(
-                      ConvertDateTime.dateTimeToString(chapter.chapterUpload),
+                      ConvertDateTime.dateTimeToString(chapter.createAt),
                       style: const TextStyle(
                         fontSize: 18,
                         color: Colors.white,

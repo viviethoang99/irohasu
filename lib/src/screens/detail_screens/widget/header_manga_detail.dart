@@ -8,8 +8,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 import '../../../../env.dart';
 import '../../../config/base_colors.dart';
 import '../../../helper/media_query_helper.dart';
+import '../../../local/favorite_data.dart';
 import '../../../models/manga_detail_model.dart';
-import '../../../service/favorite_data.dart';
 import '../../../widgets/webview_widget.dart';
 import 'btn_vote_widget.dart';
 

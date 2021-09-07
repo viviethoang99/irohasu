@@ -14,7 +14,7 @@ class HistoryData {
         ..removeWhere((id) => id == idChapter)
         ..add(idChapter);
       listManga[idManga].data.listChapter.map((chapter) {
-        if (idChapter == chapter.idChapter) {
+        if (idChapter == chapter.id) {
           chapter
             ..isReading = true
             ..timeReading = DateTime.now();
@@ -54,7 +54,7 @@ class HistoryData {
       listManga[idManga].data
         ..listChapRead.removeLast()
         ..listChapter.map((chapter) {
-          if (idChapter == chapter.idChapter) {
+          if (idChapter == chapter.id) {
             chapter
               ..isReading = false
               ..timeReading = null;

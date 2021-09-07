@@ -176,9 +176,9 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              data!.titleManga!.length > 25
-                                  ? '${data!.titleManga!.substring(0, 25)}..'
-                                  : data!.titleManga!,
+                              data!.nameManga!.length > 25
+                                  ? '${data!.nameManga!.substring(0, 25)}..'
+                                  : data!.nameManga!,
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
@@ -187,8 +187,8 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                             Text(
                               ChapHelper.removeNameManga(
                                 titleChapter:
-                                    _getChapterList[getIndex!].chapterTitle,
-                                nameManga: data!.titleManga,
+                                    _getChapterList[getIndex!].title,
+                                nameManga: data!.nameManga,
                               ),
                               style: const TextStyle(color: Colors.grey),
                             ),
@@ -244,7 +244,7 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                       chapterList: widget.chapterList,
                       scrollListController: _scrollListController,
                       currentIndex: currentIndex,
-                      idChapter: data!.idChapter,
+                      idChapter: data!.id,
                       totalImage: countImage,
                       onShowListManga: (bool data) {
                         SchedulerBinding.instance!.addPostFrameCallback((_) {
@@ -329,7 +329,7 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
       controller: _pageController,
       itemBuilder: (context, i) {
         return ExtendedImage.network(
-          data!.listImageChapter![i].chapterImageLink!,
+          data!.listImage![i].chapterImageLink!,
           cache: true,
           headers: ENV.headersBuilder,
           onDoubleTap: (state) {

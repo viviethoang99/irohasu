@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
+import 'package:html/dom.dart';
 
 
 part 'genres_model.g.dart';
@@ -8,9 +9,9 @@ part 'genres_model.g.dart';
 class Genres extends Equatable {
   Genres({ this.genreName,  this.urlGenre});
 
-  factory Genres.fromJson({required Map<String, dynamic> json}) => Genres(
-    genreName: json['titleGenre'] as String?,
-    urlGenre: json['urlGenre'] as String?,
+  factory Genres.fromData({required Element data}) => Genres(
+    genreName: data.text,
+    urlGenre: data.attributes['href'],
   );
 
   @HiveField(0)

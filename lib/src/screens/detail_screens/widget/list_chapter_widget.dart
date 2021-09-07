@@ -91,7 +91,7 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
               dense: true,
               title: Container(
                 child: Text(
-                  chapter.chapterTitle!,
+                  chapter.title!,
                   style: chapter.isReading!
                       ? theme.textTheme.subtitle1!.copyWith(
                           fontSize: 20,
@@ -105,7 +105,7 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
                 ),
               ),
               subtitle: Text(
-                ConvertDateTime.dateTimeToString(chapter.chapterUpload!),
+                ConvertDateTime.dateTimeToString(chapter.createAt!),
                 style: theme.textTheme.subtitle1!.copyWith(fontSize: 18),
               ),
               trailing: btnDownload(item: chapter, index: index),

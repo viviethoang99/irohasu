@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../blocs/change_reading_mode_bloc/change_reading_mode_bloc.dart';
 import '../../blocs/chapter_bloc/bloc.dart';
-import '../../service/history_data.dart';
+import '../../local/history_data.dart';
 import '../../widgets/loading_screen.dart';
 import 'default_reading_screen.dart';
 import 'webtoon_screen.dart';
@@ -43,13 +43,17 @@ class _ChapterScreenState extends State<ChapterScreen> {
     _checkFetchData(getIndexChapter);
   }
 
-  int getIndex(String? endpoint) => getChapterList
-      .indexWhere((element) => element.chapterEndpoint == endpoint);
+  int getIndex(String? endpoint) {
+    final test = getChapterList.indexWhere((element) {
+      return element.endpoint == endpoint;
+    });
+    return test;
+  }
 
   void _checkFetchData(int index) {
     if (getChapterList[index].isDownload == null) {
       BlocProvider.of<ChapterBloc>(context).add(FetchDataChapterEvent(
-        endpoint: getChapterList[index].chapterEndpoint,
+        endpoint: getChapterList[index].endpoint,
       ));
     } else {
       BlocProvider.of<ChapterBloc>(context).add(FetchDataDownloadEvent(
@@ -63,7 +67,7 @@ class _ChapterScreenState extends State<ChapterScreen> {
   void nextChapter(int chapter) {
     HistoryData.addChapToHistory(
       idManga: widget.mangaDetail!.split('/')[4],
-      idChapter: getChapterList[chapter].idChapter,
+      idChapter: getChapterList[chapter].id,
     );
     _checkFetchData(chapter);
   }
@@ -87,7 +91,7 @@ class _ChapterScreenState extends State<ChapterScreen> {
               return HorizontalReadingWidget(
                 data: state.data,
                 chapterList: getChapterList,
-                indexChapter: getIndex(state.data!.chapterEndpoint),
+                indexChapter: getIndex(state.data!.endpoint),
                 openChapter: nextChapter,
               );
             }
@@ -95,7 +99,7 @@ class _ChapterScreenState extends State<ChapterScreen> {
               return ChapterLoadedScreen(
                 data: state.data,
                 chapterList: getChapterList,
-                getIndexChapter: getIndex(state.data!.chapterEndpoint),
+                getIndexChapter: getIndex(state.data!.endpoint),
                 openChapter: nextChapter,
               );
             }

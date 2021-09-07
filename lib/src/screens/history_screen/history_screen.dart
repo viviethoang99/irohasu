@@ -5,10 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../env.dart';
 import '../../blocs/history_bloc/history_bloc.dart';
 import '../../helper/chap_helper.dart';
+import '../../local/history_data.dart';
 import '../../models/cache_manga_model.dart';
 import '../../screens/chapter_screens/chapter_screen.dart';
 import '../../screens/home_screens/widget/appbar_widget.dart';
-import '../../service/history_data.dart';
 import '../../widgets/loading_screen.dart';
 import 'detail_item_widget.dart';
 
@@ -57,10 +57,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
                         Navigator.of(context).pushNamed(
                           ChapterScreen.routeName,
                           arguments: ChapterScreen(
-                            endpoint: lastChapter.chapterEndpoint,
+                            endpoint: lastChapter.endpoint,
                             chapterList: cacheData.data.listChapter,
                             titleManga: cacheData.data.title,
-                            titleChapter: lastChapter.chapterTitle,
+                            titleChapter: lastChapter.title,
                             mangaDetail: cacheData.data.endpoint,
                           ),
                         );

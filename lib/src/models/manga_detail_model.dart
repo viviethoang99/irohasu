@@ -1,4 +1,8 @@
+import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
+import 'package:html/dom.dart';
+import '../config/base_content.dart';
+import '../helper/manga_detail_helper.dart';
 
 import 'chapter_item_model.dart';
 import 'genres_model.dart';
@@ -6,64 +10,133 @@ import 'genres_model.dart';
 part 'manga_detail_model.g.dart';
 
 @HiveType(typeId: 0)
-class MangaDetailModel {
-  MangaDetailModel(
-      {this.idManga,
-      this.title,
-      this.isFavorite,
-      this.status,
-      this.listChapter,
-      this.author,
-      this.like,
-      this.dislike,
-      this.description,
-      this.endpoint,
-      this.thumbnailUrl,
-      this.listGenres});
+class MangaDetailModel extends Equatable {
+  MangaDetailModel({
+    this.idManga,
+    this.title,
+    this.isFavorite,
+    this.status,
+    this.listChapter,
+    this.author,
+    this.like,
+    this.dislike,
+    this.description,
+    this.endpoint,
+    this.thumbnailUrl,
+    this.listGenres,
+  });
 
-  factory MangaDetailModel.fromMap(Map<String, dynamic> json) =>
-      MangaDetailModel(
-        idManga: json['idManga'] as String?,
-        title: json['title'] as String?,
-        thumbnailUrl: json['urlThumb'] as String?,
-        endpoint: json['endpoint'] as String?,
-        status: json['status'] as String?,
-        author: json['author'].join(','),
-        description: json['description'] as String?,
-        dislike: json['totalLike']['TotalDisLike'] as String?,
-        like: json['totalLike']['TotalLike'] as String?,
-        listChapter: List<ChapterItem>.from(json['listChapter']
-            ?.map<ChapterItem>((item) => ChapterItem.fromJson(json: item))),
-        listGenres: List<Genres>.from(json['listGenres']
-            ?.map<Genres>((item) => Genres.fromJson(json: item))),
-      );
+  factory MangaDetailModel.fromMap(Document data, String endpoint) {
+    final description = data.querySelectorAll('div.description > p');
+    final getTotalLike =
+        data.querySelector('.total-vote')?.attributes['ng-init'];
+    final countLike = MangaDetailHelper.countTotalLike(getTotalLike);
+    final getAuthor = MangaDetailHelper.findElement(description, 'Tác giả')
+        ?.querySelectorAll('a');
+    final getListChapters = data.querySelectorAll('#list-chapters > p');
+    final getListGenres = MangaDetailHelper.findElement(description, 'Thể loại')
+        ?.querySelectorAll('span a');
+    final urlThumb = data.querySelector('.thumbnail img')?.attributes['src'];
+    final title = data
+        .querySelector('Title')!
+        .text
+        .replaceFirst('| BlogTruyen.Com', '')
+        .trim();
+
+    return MangaDetailModel(
+      title: title,
+      thumbnailUrl: urlThumb,
+      endpoint: endpoint,
+      author: MangaDetailHelper.getElement(getAuthor),
+      description: data.querySelector('div.detail > div.content')?.text.trim(),
+      like: countLike['TotalLike'],
+      dislike: countLike['TotalDisLike'],
+      status: MangaDetailHelper.findElement(description, ConstantStrings.status)
+          ?.querySelector('span.color-red')
+          ?.text,
+      listChapter: List<ChapterItem>.from(getListChapters.map<ChapterItem>(
+        (manga) => ChapterItem.fromMap(data: manga),
+      )),
+      listGenres: List<Genres>.from(
+        getListGenres!.map<Genres>((manga) => Genres.fromData(data: manga)),
+      ),
+    );
+  }
+
+  MangaDetailModel copyWith({
+    String? idManga,
+    String? title,
+    String? thumbnailUrl,
+    String? endpoint,
+    String? description,
+    String? dislike,
+    String? like,
+    String? status,
+    String? author,
+    List<ChapterItem>? listChapter,
+    bool? isFavorite,
+    List<String>? listChapRead,
+    List<String>? listDownload,
+    List<Genres>? listGenres,
+  }) {
+    return MangaDetailModel(
+      idManga: idManga ?? this.idManga,
+      title: title ?? this.title,
+      isFavorite: isFavorite ?? this.isFavorite,
+      status: status ?? this.status,
+      listChapter: listChapter ?? this.listChapter,
+      author: author ?? this.author,
+      like: like ?? this.like,
+      dislike: dislike ?? this.dislike,
+      description: description ?? this.description,
+      endpoint: endpoint ?? this.endpoint,
+      thumbnailUrl: thumbnailUrl ?? this.thumbnailUrl,
+      listGenres: listGenres ?? this.listGenres,
+    );
+  }
 
   @HiveField(0)
-  String? idManga;
+  final String? idManga;
   @HiveField(1)
-  String? title;
+  final String? title;
   @HiveField(2)
-  String? thumbnailUrl;
+  final String? thumbnailUrl;
   @HiveField(3)
-  String? endpoint;
+  final String? endpoint;
   @HiveField(4)
-  String? description;
+  final String? description;
   @HiveField(5)
-  String? dislike;
+  final String? dislike;
   @HiveField(6)
-  String? like;
+  final String? like;
   @HiveField(7)
-  String? status;
+  final String? status;
   @HiveField(8)
-  String? author;
+  final String? author;
   @HiveField(9)
-  List<ChapterItem>? listChapter;
+  final List<ChapterItem>? listChapter;
   @HiveField(10)
-  bool? isFavorite;
+  final bool? isFavorite;
   @HiveField(11)
-  List<String>? listChapRead = [];
+  final List<String>? listChapRead = [];
   @HiveField(12)
-  List<String>? listDownload = [];
+  final List<String>? listDownload = [];
   @HiveField(13)
-  List<Genres>? listGenres;
+  final List<Genres>? listGenres;
+
+  @override
+  List<Object?> get props => [
+        idManga,
+        title,
+        isFavorite,
+        status,
+        listChapter,
+        author,
+        like,
+        dislike,
+        description,
+        endpoint,
+        thumbnailUrl,
+        listGenres,
+      ];
 }

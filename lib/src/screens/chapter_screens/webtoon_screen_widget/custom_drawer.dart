@@ -35,7 +35,7 @@ class CustomDrawer extends StatelessWidget {
             selected: (index == _getIndex),
             selectedTileColor: Colors.green,
             title: Text(
-              item.chapterTitle.toString(),
+              item.title.toString(),
               style: const TextStyle(fontSize: 17, color: Colors.white),
             ),
             onTap: () => openChapter(index),

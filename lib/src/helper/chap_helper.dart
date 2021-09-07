@@ -9,7 +9,7 @@ class ChapHelper {
     final cacheManga = mangaBox.get('listManga', defaultValue: {})[idManga];
     final listChapterReading = cacheManga.data.listChapRead.last;
     final item = cacheManga.data.listChapter
-        .firstWhere((element) => element.idChapter == listChapterReading);
+        .firstWhere((element) => element.id == listChapterReading);
     return item;
   }
 
@@ -17,7 +17,7 @@ class ChapHelper {
     var mangaBox = Hive.box('irohasu');
     final cacheManga = mangaBox.get('listManga', defaultValue: {})[idManga];
     final item = cacheManga.data.listChapter
-        .firstWhere((element) => element.idChapter == idChapter);
+        .firstWhere((element) => element.id == idChapter);
     return item;
   }
 

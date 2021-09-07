@@ -1,12 +1,13 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../resources/list_manga_repo.dart';
+import '../../repositories/manga_repository.dart';
 import './bloc.dart';
 
 class ListMangaBloc extends Bloc<ListMangaEvent, ListMangaState> {
-  ListMangaBloc(this._listRepo) : super(InitialListMangaState());
-  final ListMangaRepo _listRepo;
+  ListMangaBloc(this.repository) : super(InitialListMangaState());
+
+  final MangaRepository repository;
 
   bool _hasReachedMax(ListMangaState state) =>
       state is ListMangaLoadedState && state.hasReachedEnd!;
@@ -42,7 +43,7 @@ class ListMangaBloc extends Bloc<ListMangaEvent, ListMangaState> {
   ) async* {
     if (currentState is InitialListMangaState) {
       yield ListMangaLoadingState();
-      final data = await _listRepo.fetchListManga(page: page);
+      final data = await repository.fetchListManga(page: page);
       yield ListMangaLoadedState(
         data: data,
         page: page += 1,
@@ -50,7 +51,7 @@ class ListMangaBloc extends Bloc<ListMangaEvent, ListMangaState> {
       );
     }
     if (currentState is ListMangaLoadedState) {
-      var data = await _listRepo.fetchListManga(page: currentState.page);
+      var data = await repository.fetchListManga(page: currentState.page);
       yield data.isEmpty
           ? currentState.cloneWith(hasReachedEnd: true)
           : currentState.cloneWith(
@@ -68,7 +69,7 @@ class ListMangaBloc extends Bloc<ListMangaEvent, ListMangaState> {
     try {
       if (currentState is InitialListMangaState) {
         yield ListMangaLoadingState();
-        final data = await _listRepo.fetchListManga(page: page);
+        final data = await repository.fetchListManga(page: page);
         yield ListMangaLoadedState(
           data: data,
           hasReachedEnd: data.length < 20 ? true : false,
@@ -86,7 +87,7 @@ class ListMangaBloc extends Bloc<ListMangaEvent, ListMangaState> {
   ) async* {
     yield ListMangaLoadingState();
     try {
-      final data = await _listRepo.fetchListManga(page: page);
+      final data = await repository.fetchListManga(page: page);
       yield ListMangaLoadedState(
         data: data,
         hasReachedEnd: data.length < 20 ? true : false,

@@ -3,9 +3,6 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../../env.dart';
-import '../resources/chapter_repo.dart';
-
 class DownloadData {
   Future<String?> createFolder(String? name,
       {String folder = 'download'}) async {
@@ -55,23 +52,23 @@ class DownloadData {
     final dio = Dio();
 
     try {
-      var appDocDirFolder = await createFolder('$folderName/$name');
-      if (appDocDirFolder != null) {
-        final data = await ChapterRepo().getDataChapter(uri!);
-        for (var item in data.listImageChapter!) {
-          var fileName = nameFile(item.chapterImageLink!, item.number);
-          // Name file
-          var _appDocDirImage = '$appDocDirFolder/$fileName';
-          await dio.download(item.chapterImageLink!, _appDocDirImage,
-              options: Options(headers: {
-                HttpHeaders.refererHeader: ENV.webPage,
-              }));
-          onProgress!(item.number! / data.listImageChapter!.length);
-        }
-        return appDocDirFolder;
-      } else {
-        return null;
-      }
+      // var appDocDirFolder = await createFolder('$folderName/$name');
+      // if (appDocDirFolder != null) {
+      //   final data = await ChapterRepo().getDataChapter(uri!);
+      //   for (var item in data.listImage!) {
+      //     var fileName = nameFile(item.chapterImageLink!, item.number);
+      //     // Name file
+      //     var _appDocDirImage = '$appDocDirFolder/$fileName';
+      //     await dio.download(item.chapterImageLink!, _appDocDirImage,
+      //         options: Options(headers: {
+      //           HttpHeaders.refererHeader: ENV.webPage,
+      //         }));
+      //     onProgress!(item.number! / data.listImage!.length);
+      //   }
+      //   return appDocDirFolder;
+      // } else {
+      //   return null;
+      // }
     } catch (e) {
       print(e);
       return null;

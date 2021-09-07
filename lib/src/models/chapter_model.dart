@@ -1,41 +1,69 @@
 import 'package:equatable/equatable.dart';
+import 'package:html/dom.dart';
+import '../extensions/iterable_extension.dart';
 
-class ChapterModel {
+class ChapterModel extends Equatable {
   ChapterModel({
-    this.idChapter,
-    this.titleChapter,
-    this.chapterEndpoint,
-    this.listImageChapter,
-    this.mangaDetail,
-    this.titleManga,
+    this.id,
+    this.title,
+    this.endpoint,
+    this.listImage,
+    this.mangaEndpoint,
+    this.nameManga,
     this.totalImage,
   });
 
-  factory ChapterModel.fromJson(Map<String, dynamic> json) => ChapterModel(
-        idChapter: json['idChapter'] as String?,
-        titleManga: json['titleManga'] as String?,
-        titleChapter: json['titleChapter'] as String?,
-        mangaDetail: json['mangaDetail'] as String?,
-        chapterEndpoint: json['chapterEndpoint'] as String?,
-        listImageChapter: List<ChapterImage>.from(
-            json['chapterImage'].map((json) => ChapterImage.fromJson(json))),
-        totalImage: json['totalImage'] as int?,
-      );
+  factory ChapterModel.fromData(Document data, String endpoint) {
+    final responseData = data.querySelectorAll('#content > img');
+    final responseLink = data.querySelectorAll('.linkchapter > a');
+    return ChapterModel(
+      id: endpoint.substring(1),
+      title: data.querySelector('header > h1')?.text,
+      endpoint: endpoint,
+      totalImage: 30,
+      mangaEndpoint: responseLink[3].attributes['href'],
+      listImage: List<ChapterImage>.from(
+        responseData.mapIndexed<ChapterImage>(
+          (image, index) => ChapterImage.fromData(image, index),
+        ),
+      ),
+      nameManga: data
+          .querySelector('div.al-c.linkchapter.mt20 > a.mr10.ml10')
+          ?.attributes['title']
+          ?.replaceFirst('truyện tranh', '')
+          .trim(),
+    );
+  }
 
-  String? idChapter;
-  String? titleChapter;
-  String? chapterEndpoint;
-  String? mangaDetail;
-  String? titleManga;
+  String? id;
+  String? title;
+  String? endpoint;
+  String? mangaEndpoint;
+  String? nameManga;
   int? totalImage;
-  List<ChapterImage>? listImageChapter;
+  List<ChapterImage>? listImage;
+
+  @override
+  List<Object?> get props => [
+        id,
+        title,
+        endpoint,
+        mangaEndpoint,
+        nameManga,
+        totalImage,
+        listImage,
+      ];
 }
 
 class ChapterImage extends Equatable {
   ChapterImage({required this.chapterImageLink, required this.number});
 
-  factory ChapterImage.fromJson(Map<String, dynamic> json) => ChapterImage(
-      number: json['imageNumber'], chapterImageLink: json['imageLink']);
+  factory ChapterImage.fromData(Element data, int index) {
+    return ChapterImage(
+      number: index,
+      chapterImageLink: data.attributes['src'],
+    );
+  }
 
   final String? chapterImageLink;
   final int? number;

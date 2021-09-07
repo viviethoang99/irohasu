@@ -113,7 +113,7 @@ class _ChapterLoadedScreenState extends State<ChapterLoadedScreen> {
           controller: _scrollController,
           itemBuilder: (context, index) {
             return CachedNetworkImage(
-              imageUrl: data!.listImageChapter![index].chapterImageLink!,
+              imageUrl: data!.listImage![index].chapterImageLink!,
               httpHeaders: ENV.headersBuilder,
             );
           },

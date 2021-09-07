@@ -4,9 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../blocs/history_bloc/history_bloc.dart';
 import '../../helper/chap_helper.dart';
 import '../../helper/convert_date_time.dart';
+import '../../local/history_data.dart';
 import '../../models/chapter_item_model.dart';
 import '../../screens/detail_screens/manga_detail_screen.dart';
-import '../../service/history_data.dart';
 
 class DetailItemWidget extends StatelessWidget {
   const DetailItemWidget({
@@ -42,7 +42,7 @@ class DetailItemWidget extends StatelessWidget {
                */
               Text(
                 ChapHelper.removeNameManga(
-                  titleChapter: item!.chapterTitle!,
+                  titleChapter: item!.title!,
                   nameManga: titleManga,
                 ),
                 style: TextStyle(

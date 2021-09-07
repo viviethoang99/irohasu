@@ -1,3 +1,4 @@
+import 'package:html/dom.dart';
 import 'package:intl/intl.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
@@ -8,28 +9,31 @@ part 'chapter_item_model.g.dart';
 class ChapterItem extends Equatable {
   ChapterItem({
     required this.idChapter,
-    required this.chapterTitle,
-    required this.chapterEndpoint,
-    required this.chapterUpload,
+    required this.title,
+    required this.endpoint,
+    required this.createAt,
     this.isDownload,
     this.isReading = false,
   });
 
-  factory ChapterItem.fromJson({required Map<String, dynamic> json}) =>
-      ChapterItem(
-        idChapter: json['idChapter'] as String?,
-        chapterTitle: json['chapterTitle'] as String?,
-        chapterEndpoint: json['chapterEndpoint'] as String?,
-        chapterUpload: DateFormat('dd/MMM/yyyy hh:mm')
-            .parse(json['chapterUpload'] as String),
-      );
+  factory ChapterItem.fromMap({required Element data}) {
+    final dateTime = data.querySelector('.publishedDate')?.text;
+    final dateToString = DateFormat('dd/MM/yyyy hh:mm').parse(dateTime ?? '');
+    final endpoint = data.querySelector('.title > a')?.attributes['href'];
+    return ChapterItem(
+      idChapter: endpoint?.substring(2, 8),
+      title: data.querySelector('.title > a')?.text,
+      endpoint: endpoint,
+      createAt: dateToString,
+    );
+  }
 
   @HiveField(0)
-  final String? chapterTitle;
+  final String? title;
   @HiveField(1)
-  final String? chapterEndpoint;
+  final String? endpoint;
   @HiveField(2)
-  final DateTime? chapterUpload;
+  final DateTime? createAt;
   @HiveField(3)
   int? _progressReading = 0;
   @HiveField(4)
@@ -51,9 +55,9 @@ class ChapterItem extends Equatable {
 
   @override
   List<Object?> get props => [
-        chapterTitle,
-        chapterEndpoint,
-        chapterUpload,
+        title,
+        endpoint,
+        createAt,
         idChapter,
       ];
 }

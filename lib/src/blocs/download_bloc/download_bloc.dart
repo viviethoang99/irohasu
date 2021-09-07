@@ -1,14 +1,13 @@
 import 'dart:async';
-import 'package:bloc/bloc.dart';
 
+import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 
+import '../../local/download_data.dart';
 import '../../models/chapter_item_model.dart';
-import '../../service/download_data.dart';
 
 part 'download_event.dart';
-
 part 'download_state.dart';
 
 class DownloadBloc extends Bloc<DownloadEvent, DownloadState> {
@@ -22,7 +21,7 @@ class DownloadBloc extends Bloc<DownloadEvent, DownloadState> {
     if (event is DownloadChapterEvent) {
       yield DownloadingState();
       try {
-        var uri = event.chapterModel.chapterEndpoint!;
+        var uri = event.chapterModel.endpoint!;
         var fileName = _downloadData.nameFolder(uri);
         _path = _downloadData.downloadChapter(
           uri: uri,
@@ -85,7 +84,7 @@ class DownloadBloc extends Bloc<DownloadEvent, DownloadState> {
       listManga[indexManga].listDownload = listDownload;
       listManga[indexManga]
           .listChapter
-          .firstWhere((manga) => manga.idChapter == idChapter)
+          .firstWhere((manga) => manga.id == idChapter)
           .isDownload = null;
       await mangaBox.put('listManga', listManga);
       return true;
@@ -109,7 +108,7 @@ class DownloadBloc extends Bloc<DownloadEvent, DownloadState> {
       listManga[idManga]
           .data
           .listChapter
-          .firstWhere((manga) => manga.idChapter == idChapter)
+          .firstWhere((manga) => manga.id == idChapter)
           .isDownload = url;
       await mangaBox.put('listManga', listManga);
       return true;

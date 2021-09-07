@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../blocs/manga_detail_bloc/bloc.dart';
-import '../../service/cache_manager_data.dart';
+import '../../local/cache_manager_data.dart';
 //
 import '../../widgets/loading_screen.dart';
 import 'manga_detail_loaded_screen.dart';

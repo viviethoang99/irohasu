@@ -13,13 +13,14 @@ import '../blocs/list_manga_library_bloc/list_manga_library_bloc.dart';
 import '../blocs/manga_detail_bloc/bloc.dart';
 import '../blocs/search_bloc/bloc.dart';
 import '../helper/routes.dart';
-import '../resources/chapter_repo.dart';
-import '../resources/list_manga_repo.dart';
-import '../resources/manga_detail_repo.dart';
-import '../resources/search_repo.dart';
+import '../local/cache_manager_data.dart';
+import '../repositories/chaper_repository.dart';
+import '../repositories/imp/chapter_repository_imp.dart';
+import '../repositories/imp/manga_repository_imp.dart';
+import '../repositories/manga_repository.dart';
 import '../screens/index_screen/index_screen.dart';
-
-
+import '../services/chapter_services.dart';
+import '../services/manga_services.dart';
 
 class AppWidget extends StatefulWidget {
   @override
@@ -27,6 +28,18 @@ class AppWidget extends StatefulWidget {
 }
 
 class _AppWidgetState extends State<AppWidget> {
+  late final MangaRepository mangaRepository;
+  late final ChapterRepository chapterRepository;
+  late final CacheManagerData cacheManagerData;
+
+  @override
+  void initState() {
+    mangaRepository = MangaRepositoryImp(MangaService());
+    chapterRepository = ChapterRepositoryImp(ChapterServices());
+    cacheManagerData = CacheManagerData();
+    super.initState();
+  }
+
   @override
   void dispose() {
     Hive.close();
@@ -44,16 +57,19 @@ class _AppWidgetState extends State<AppWidget> {
           create: (context) => HistoryBloc(),
         ),
         BlocProvider<MangaDetailBloc>(
-          create: (context) => MangaDetailBloc(MangaDetailRepo()),
+          create: (context) => MangaDetailBloc(
+            mangaRepository,
+            cacheManagerData,
+          ),
         ),
         BlocProvider<ListMangaBloc>(
-          create: (context) => ListMangaBloc(ListMangaRepo()),
+          create: (context) => ListMangaBloc(mangaRepository),
         ),
         BlocProvider<ChapterBloc>(
-          create: (context) => ChapterBloc(ChapterRepo()),
+          create: (context) => ChapterBloc(chapterRepository),
         ),
         BlocProvider<SearchBloc>(
-          create: (context) => SearchBloc(SearchRepo()),
+          create: (context) => SearchBloc(mangaRepository),
         ),
         BlocProvider<ChangeBackgroundBloc>(
           create: (context) => ChangeBackgroundBloc(),
@@ -69,16 +85,16 @@ class _AppWidgetState extends State<AppWidget> {
         create: (context) => ChangeThemeBloc()..add(DecideTheme()),
         child: BlocBuilder<ChangeThemeBloc, ChangeThemeState>(
             builder: (context, state) {
-              return MaterialApp(
-                debugShowCheckedModeBanner: false,
-                title: ENV.nameApp,
-                theme: state.themeLight,
-                darkTheme: state.themeDark,
-                home: IndexScreen(),
-                initialRoute: IndexScreen.routeName,
-                onGenerateRoute: generateRoute,
-              );
-            }),
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: ENV.nameApp,
+            theme: state.themeLight,
+            darkTheme: state.themeDark,
+            home: IndexScreen(),
+            initialRoute: IndexScreen.routeName,
+            onGenerateRoute: generateRoute,
+          );
+        }),
       ),
     );
   }

@@ -4,11 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../blocs/manga_detail_bloc/bloc.dart';
 import '../../config/base_content.dart';
+import '../../local/history_data.dart';
 import '../../models/chapter_item_model.dart';
 import '../../models/manga_detail_model.dart';
 import '../../screens/chapter_screens/chapter_screen.dart';
-import '../../service/history_data.dart';
-
 import 'widget/custom_button_reading_widget.dart';
 import 'widget/description_text_widget.dart';
 import 'widget/header_manga_detail.dart';
@@ -41,7 +40,7 @@ class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
       final _titleLastChapter = data!.listChapter!
           .firstWhere(
               (chapter) => chapter.idChapter == data!.listChapRead!.last)
-          .chapterTitle!
+          .title!
           .split(' ');
       final _getIndexNumberLastChapter = _titleLastChapter.indexWhere(
               (element) => _keywordChapter.contains(element.toLowerCase())) +
@@ -65,9 +64,9 @@ class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
     Navigator.of(context).pushNamed(
       ChapterScreen.routeName,
       arguments: ChapterScreen(
-        endpoint: item.chapterEndpoint,
+        endpoint: item.endpoint,
         chapterList: data!.listChapter,
-        titleChapter: item.chapterTitle,
+        titleChapter: item.title,
         titleManga: data!.title,
         mangaDetail: data!.endpoint,
       ),

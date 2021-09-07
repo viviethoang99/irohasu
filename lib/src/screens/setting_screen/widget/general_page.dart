@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../blocs/change_theme_bloc/change_theme_bloc.dart';
 import '../../../config/config.dart';
 import '../../../helper/media_query_helper.dart';
-import '../../../service/cache_manager_data.dart';
+import '../../../local/cache_manager_data.dart';
 
 class GeneralSetting extends StatefulWidget {
   static const routeName = '/setting/generaSetting';
