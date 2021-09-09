@@ -41,13 +41,7 @@ Route generateRoute(RouteSettings routeSettings) {
       var data = args as ChapterScreen;
       return pageRoute(
           routeSettings: routeSettings,
-          builder: ChapterScreen(
-            endpoint: data.endpoint,
-            chapterList: data.chapterList,
-            titleChapter: data.titleChapter,
-            titleManga: data.titleManga,
-            mangaDetail: data.mangaDetail,
-          ));
+          builder: ChapterScreen(endpoint: data.endpoint));
     case SettingChapter.routeName:
       return pageRoute(
         routeSettings: routeSettings,

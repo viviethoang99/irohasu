@@ -12,8 +12,10 @@ part 'manga_detail_model.g.dart';
 @HiveType(typeId: 0)
 class MangaDetailModel extends Equatable {
   MangaDetailModel({
-    this.idManga,
-    this.title,
+    required this.idManga,
+    required this.title,
+    required this.endpoint,
+    required this.thumbnailUrl,
     this.isFavorite,
     this.status,
     this.listChapter,
@@ -21,8 +23,6 @@ class MangaDetailModel extends Equatable {
     this.like,
     this.dislike,
     this.description,
-    this.endpoint,
-    this.thumbnailUrl,
     this.listGenres,
   });
 
@@ -40,12 +40,12 @@ class MangaDetailModel extends Equatable {
     final title = data
         .querySelector('Title')!
         .text
-        .replaceFirst('| BlogTruyen.Com', '')
+        .replaceFirst('| BlogTruyen.VN', '')
         .trim();
     return MangaDetailModel(
       idManga: endpoint.split('/')[1],
       title: title,
-      thumbnailUrl: urlThumb,
+      thumbnailUrl: urlThumb ?? '',
       endpoint: endpoint,
       author: MangaDetailHelper.getElement(getAuthor),
       description: data.querySelector('div.detail > div.content')?.text.trim(),
@@ -96,13 +96,13 @@ class MangaDetailModel extends Equatable {
   }
 
   @HiveField(0)
-  final String? idManga;
+  final String idManga;
   @HiveField(1)
-  final String? title;
+  final String title;
   @HiveField(2)
-  final String? thumbnailUrl;
+  final String thumbnailUrl;
   @HiveField(3)
-  final String? endpoint;
+  final String endpoint;
   @HiveField(4)
   final String? description;
   @HiveField(5)

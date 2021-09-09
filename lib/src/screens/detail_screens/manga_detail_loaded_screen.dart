@@ -63,13 +63,7 @@ class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
     );
     Navigator.of(context).pushNamed(
       ChapterScreen.routeName,
-      arguments: ChapterScreen(
-        endpoint: item.endpoint,
-        chapterList: data!.listChapter,
-        titleChapter: item.title,
-        titleManga: data!.title,
-        mangaDetail: data!.endpoint,
-      ),
+      arguments: ChapterScreen(endpoint: item.endpoint),
     );
     BlocProvider.of<MangaDetailBloc>(context)
         .add(AddChapterToListReading(data!.idManga));
@@ -89,11 +83,12 @@ class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
       backgroundColor: theme.backgroundColor,
       appBar: AppBar(
         leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back,
-              color: theme.primaryColor,
-            ),
-            onPressed: () => Navigator.of(context).pop()),
+          icon: Icon(
+            Icons.arrow_back,
+            color: theme.primaryColor,
+          ),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0.0,
@@ -125,39 +120,26 @@ class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
         removeTop: true,
         removeBottom: true,
         context: context,
-        child: BlocBuilder<MangaDetailBloc, MangaDetailState>(
-          builder: (context, state) {
-            return ListView(
-              shrinkWrap: true,
-              children: <Widget>[
-                HeaderMangaDetail(data: data),
-                DescriptionTextWidget(
-                  text: data!.description ?? '',
-                  listGenres: data!.listGenres,
+        child: ListView(
+          shrinkWrap: true,
+          children: <Widget>[
+            const HeaderMangaDetail(),
+            DescriptionTextWidget(text: data!.description ?? ''),
+            const SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: CustomButtonReadingWidget(
+                status: _continueReading,
+                lastChapter: data!.listChapter!.last,
+                openChap: (ChapterItem item) => openChapter(
+                  item: item,
+                  context: context,
                 ),
-                const SizedBox(height: 10),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: CustomButtonReadingWidget(
-                    status: _continueReading,
-                    lastChapter: data!.listChapter!.last,
-                    openChap: (ChapterItem item) => openChapter(
-                      item: item,
-                      context: context,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                ListChapterWidget(
-                  data: data,
-                  openChap: (ChapterItem item) => openChapter(
-                    item: item,
-                    context: context,
-                  ),
-                ),
-              ],
-            );
-          },
+              ),
+            ),
+            const SizedBox(height: 10),
+            const ListChapterWidget(),
+          ],
         ),
       ),
     );

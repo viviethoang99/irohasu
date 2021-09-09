@@ -62,5 +62,5 @@ class RemoveDownloadChapterEvent extends DownloadEvent {
   final String? idManga;
 
   @override
-  List<Object> get props => throw UnimplementedError();
+  List<Object?> get props => [chapter, idManga];
 }

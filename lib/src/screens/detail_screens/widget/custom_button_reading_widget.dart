@@ -14,28 +14,31 @@ class CustomButtonReadingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      type: MaterialType.transparency,
-      //Makes it usable on any background color
-      child: Ink(
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-        decoration: BoxDecoration(
-          border: Border.all(color: Theme.of(context).buttonColor, width: 3),
-          borderRadius: BorderRadius.circular(25.0),
+    return TextButton(
+      style: TextButton.styleFrom(
+        primary: Colors.teal,
+        onSurface: Colors.red,
+        side: BorderSide(
+          color: Theme.of(context).buttonColor,
+          width: 3,
         ),
-        child: InkWell(
-          onTap: () => openChap!(lastChapter),
-          child: Container(
-            margin: const EdgeInsets.symmetric(vertical: 3),
-            alignment: Alignment.center,
-            child: Text(
-              status.toUpperCase(),
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-                color: Theme.of(context).buttonColor,
-              ),
-            ),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(25),
+          ),
+        ),
+      ),
+      onPressed: () {
+        openChap!(lastChapter);
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+        child: Text(
+          status.toUpperCase(),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+            color: Theme.of(context).buttonColor,
           ),
         ),
       ),

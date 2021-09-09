@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../blocs/change_reading_mode_bloc/change_reading_mode_bloc.dart';
 import '../../blocs/chapter_screen/chapter_screen_cubit.dart';
 import '../../blocs/manga_detail_bloc/bloc.dart';
-import '../../local/history_data.dart';
 import '../../repositories/imp/chapter_repository_imp.dart';
 import '../../services/chapter_services.dart';
 import '../../widgets/loading_screen.dart';
@@ -15,26 +14,17 @@ class ChapterScreen extends StatefulWidget {
   ChapterScreen({
     Key? key,
     required this.endpoint,
-    required this.chapterList,
-    this.titleChapter,
-    this.titleManga,
-    this.mangaDetail,
+
   }) : super(key: key);
 
   static const routeName = '/chapter';
-  final String? titleManga;
-  final String? titleChapter;
   final String? endpoint;
-  final List? chapterList;
-  final String? mangaDetail;
 
   @override
   _ChapterScreenState createState() => _ChapterScreenState();
 }
 
 class _ChapterScreenState extends State<ChapterScreen> {
-  List get getChapterList => widget.chapterList!.reversed.toList();
-
   late final ChapterScreenCubit _cubit;
 
   @override
@@ -49,10 +39,10 @@ class _ChapterScreenState extends State<ChapterScreen> {
   }
 
   void nextChapter(int chapter) {
-    HistoryData.addChapToHistory(
-      idManga: widget.mangaDetail!.split('/')[4],
-      idChapter: getChapterList[chapter].id,
-    );
+    // HistoryData.addChapToHistory(
+    //   idManga: widget.mangaDetail!.split('/')[4],
+    //   idChapter: getChapterList[chapter].id,
+    // );
   }
 
   @override
@@ -69,7 +59,7 @@ class _ChapterScreenState extends State<ChapterScreen> {
               if (stateReading is AdvancedReadingModeState) {
                 return HorizontalReadingWidget(
                   data: state.chapter,
-                  chapterList: getChapterList,
+                  chapterList: [],
                   indexChapter: 23,
                   openChapter: nextChapter,
                 );
@@ -77,7 +67,7 @@ class _ChapterScreenState extends State<ChapterScreen> {
               if (stateReading is WebtoonModeState) {
                 return ChapterLoadedScreen(
                   data: state.chapter,
-                  chapterList: getChapterList,
+                  chapterList: [],
                   getIndexChapter: 23,
                   openChapter: nextChapter,
                 );

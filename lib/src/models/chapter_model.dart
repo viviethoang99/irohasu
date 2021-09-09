@@ -35,13 +35,13 @@ class ChapterModel extends Equatable {
     );
   }
 
-  String? id;
-  String? title;
-  String? endpoint;
-  String? mangaEndpoint;
-  String? nameManga;
-  int? totalImage;
-  List<ChapterImage>? listImage;
+  final String? id;
+  final String? title;
+  final String? endpoint;
+  final String? mangaEndpoint;
+  final String? nameManga;
+  final int? totalImage;
+  final List<ChapterImage>? listImage;
 
   @override
   List<Object?> get props => [

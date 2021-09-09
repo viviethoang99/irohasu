@@ -67,7 +67,7 @@ class _MangaDetailScreenState extends State<MangaDetailScreen> {
         if (state is MangaDetailFailureState) {
           Navigator.of(context).pop();
         }
-        return Container();
+        return const SizedBox.shrink();
       },
     );
   }

@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../blocs/manga_detail_bloc/bloc.dart';
 import '../../../config/base_content.dart';
-import '../../../models/genres_model.dart';
-
 class DescriptionTextWidget extends StatefulWidget {
-  DescriptionTextWidget({required this.text, this.listGenres});
+  DescriptionTextWidget({required this.text});
 
   final String text;
-  final List<Genres>? listGenres;
 
   @override
   _DescriptionTextWidgetState createState() => _DescriptionTextWidgetState();
@@ -117,55 +116,56 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget>
                       ),
                 ),
         ),
-        if (!_isMoreThan100Characters || !flag)
-          CustomChips(flag: flag, widget: widget),
+        if (!_isMoreThan100Characters || !flag) const CustomChips(),
       ],
     );
   }
 }
 
 class CustomChips extends StatelessWidget {
-  const CustomChips({
-    Key? key,
-    required this.flag,
-    required this.widget,
-  }) : super(key: key);
-
-  final bool flag;
-  final DescriptionTextWidget widget;
+  const CustomChips({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Container(
-      // margin: const EdgeInsets.only(top: 7.0, bottom: 5.0),
+    return SizedBox(
       height: 50,
-      child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: widget.listGenres!.length,
-          itemBuilder: (context, index) {
-            return Container(
-              margin: const EdgeInsets.symmetric(horizontal: 5),
-              child: ActionChip(
-                padding: const EdgeInsets.all(2.0),
-                label: Text(
-                  widget.listGenres![index].genreName!,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: theme.primaryColor,
+      child: BlocBuilder<MangaDetailBloc, MangaDetailState>(
+        buildWhen: (pre, cur) => pre.runtimeType != cur.runtimeType,
+        builder: (_, state) {
+          if (state is MangaDetailLoadedState) {
+            return ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: state.data?.listGenres?.length ?? 0,
+              itemBuilder: (_, index) {
+                return Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 5),
+                  child: ActionChip(
+                    padding: const EdgeInsets.all(2.0),
+                    label: Text(
+                      state.data!.listGenres![index].genreName!,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: theme.primaryColor,
+                      ),
+                    ),
+                    onPressed: () {},
+                    backgroundColor: theme.backgroundColor,
+                    shape: StadiumBorder(
+                      side: BorderSide(
+                        width: 2.5,
+                        color: theme.primaryColor,
+                      ),
+                    ),
                   ),
-                ),
-                onPressed: () {},
-                backgroundColor: theme.backgroundColor,
-                shape: StadiumBorder(
-                    side: BorderSide(
-                  width: 2.5,
-                  color: theme.primaryColor,
-                )),
-              ),
+                );
+              },
             );
-          }),
+          }
+          return const SizedBox.shrink();
+        },
+      ),
     );
   }
 }

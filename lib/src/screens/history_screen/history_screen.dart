@@ -58,10 +58,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           ChapterScreen.routeName,
                           arguments: ChapterScreen(
                             endpoint: lastChapter.endpoint,
-                            chapterList: cacheData.data.listChapter,
-                            titleManga: cacheData.data.title,
-                            titleChapter: lastChapter.title,
-                            mangaDetail: cacheData.data.endpoint,
                           ),
                         );
                       },
@@ -80,7 +76,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                   bottomLeft: Radius.circular(15.0),
                                 ),
                                 child: CachedNetworkImage(
-                                  imageUrl: cacheData.data.thumbnailUrl!,
+                                  imageUrl: cacheData.data.thumbnailUrl,
                                   httpHeaders: ENV.headersBuilder,
                                   fit: BoxFit.cover,
                                   height: 150,

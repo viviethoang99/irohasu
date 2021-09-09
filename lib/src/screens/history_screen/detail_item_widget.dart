@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../blocs/history_bloc/history_bloc.dart';
+import '../../extensions/datetime_extension.dart';
 import '../../helper/chap_helper.dart';
-import '../../helper/convert_date_time.dart';
 import '../../local/history_data.dart';
 import '../../models/chapter_item_model.dart';
 import '../../screens/detail_screens/manga_detail_screen.dart';
@@ -25,7 +25,7 @@ class DetailItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Container(
+      child: SizedBox(
         height: 150,
         child: Padding(
           padding: const EdgeInsets.symmetric(
@@ -65,9 +65,7 @@ class DetailItemWidget extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                ConvertDateTime.checkLastRead(
-                  item!.timeReading ?? DateTime.now(),
-                ),
+                item?.timeReading.checkLastRead() ?? '',
                 style: const TextStyle(
                   fontSize: 18,
                   color: Colors.white70,
@@ -146,7 +144,7 @@ class DetailItemWidget extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     fontSize: 24),
               ),
-              content: Container(
+              content: SizedBox( 
                 height: 80,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
