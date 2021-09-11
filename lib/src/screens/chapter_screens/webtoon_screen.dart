@@ -7,21 +7,22 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../../env.dart';
 import '../../helper/alphanum_comparator.dart';
+import '../../models/chapter_item_model.dart';
 import '../../models/chapter_model.dart';
-import './webtoon_screen_widget/app_bar_widget.dart';
-import './webtoon_screen_widget/bottom_bar_widget.dart';
-import './webtoon_screen_widget/custom_drawer.dart';
+import 'webtoon_screen_widget/app_bar_widget.dart';
+import 'webtoon_screen_widget/bottom_bar_widget.dart';
+import 'webtoon_screen_widget/custom_drawer.dart';
 
 class ChapterLoadedScreen extends StatefulWidget {
   const ChapterLoadedScreen({
     required this.data,
-    required this.chapterList,
+    this.chapterList = const [],
     required this.getIndexChapter,
     required this.openChapter,
   });
 
   final ChapterModel? data;
-  final List chapterList;
+  final List<ChapterItem>? chapterList;
   final int getIndexChapter;
   final Function openChapter;
 
@@ -30,12 +31,12 @@ class ChapterLoadedScreen extends StatefulWidget {
 }
 
 class _ChapterLoadedScreenState extends State<ChapterLoadedScreen> {
-  List get _getChapterList => widget.chapterList.toList();
+  List get _getChapterList => widget.chapterList!.toList();
 
   ChapterModel? get data => widget.data;
   int get getIndex => widget.getIndexChapter;
 
-  final ScrollController _scrollController = ScrollController();
+  late final ScrollController _scrollController;
   final scrollDirection = Axis.vertical;
   ItemScrollController? _scrollListController;
   int? countImage = 0;
@@ -47,17 +48,26 @@ class _ChapterLoadedScreenState extends State<ChapterLoadedScreen> {
   @override
   void initState() {
     super.initState();
+    _scrollController = ScrollController();
     _scrollListController = ItemScrollController();
     _getChapterList[getIndex]?.isDownload != null
         ? _listofFiles()
-        : setState(() => countImage = data!.totalImage);
+        : setState(() => countImage = data!.listImage!.length);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
   void didUpdateWidget(covariant ChapterLoadedScreen oldWidget) {
     _getChapterList[getIndex]?.isDownload != null
         ? _listofFiles()
-        : setState(() => countImage = data!.totalImage,);
+        : setState(
+            () => countImage = data!.listImage!.length,
+          );
     super.didUpdateWidget(oldWidget);
   }
 

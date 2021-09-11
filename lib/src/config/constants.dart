@@ -8,4 +8,6 @@ class Constants {
     ThemeModel(index: 3, name: 'Theo hệ thống (Màu trắng và tối)'),
     ThemeModel(index: 4, name: 'Theo hệ thống (Màu trắng và đen)'),
   ];
+
+  static const heightAppBar = 110.0;
 }

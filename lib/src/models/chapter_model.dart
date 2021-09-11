@@ -10,7 +10,6 @@ class ChapterModel extends Equatable {
     this.listImage,
     this.mangaEndpoint,
     this.nameManga,
-    this.totalImage,
   });
 
   factory ChapterModel.fromData(Document data, String endpoint) {
@@ -20,7 +19,6 @@ class ChapterModel extends Equatable {
       id: endpoint.substring(1),
       title: data.querySelector('header > h1')?.text,
       endpoint: endpoint,
-      totalImage: 30,
       mangaEndpoint: responseLink[3].attributes['href'],
       listImage: List<ChapterImage>.from(
         responseData.mapIndexed<ChapterImage>(
@@ -40,7 +38,6 @@ class ChapterModel extends Equatable {
   final String? endpoint;
   final String? mangaEndpoint;
   final String? nameManga;
-  final int? totalImage;
   final List<ChapterImage>? listImage;
 
   @override
@@ -50,7 +47,6 @@ class ChapterModel extends Equatable {
         endpoint,
         mangaEndpoint,
         nameManga,
-        totalImage,
         listImage,
       ];
 }

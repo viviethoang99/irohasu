@@ -1,6 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
+import '../../extensions/string_extension.dart';
 import '../../models/chapter_model.dart';
 import '../../models/manga_detail_model.dart';
 import '../../repositories/chaper_repository.dart';
@@ -9,11 +11,11 @@ import '../manga_detail_bloc/bloc.dart';
 part 'chapter_screen_state.dart';
 
 class ChapterScreenCubit extends Cubit<ChapterScreenState> {
-  ChapterScreenCubit(
-    this.repository,
+  ChapterScreenCubit({
+    required this.repository,
     // this.changeReadingModeBloc,
-    this.mangaDetailBloc,
-  ) : super(const ChapterScreenState());
+    required this.mangaDetailBloc,
+  }) : super(const ChapterScreenState());
 
   final ChapterRepository repository;
   final MangaDetailBloc mangaDetailBloc;
@@ -27,6 +29,14 @@ class ChapterScreenCubit extends Cubit<ChapterScreenState> {
       await fetchDataFromApi(endpoint);
     }
   }
+
+  String get nameChapter => state.chapter!.title!
+      .replaceAll(state.mangaDetail!.title, '')
+      .trim()
+      .capitalize();
+
+  int get indexChapter => state.mangaDetail!.listChapter!
+      .indexWhere((element) => element.endpoint == state.chapter!.endpoint);
 
   Future<void> getListChapter() async {
     if (mangaDetailBloc.state is MangaDetailLoadedState) {
@@ -46,7 +56,10 @@ class ChapterScreenCubit extends Cubit<ChapterScreenState> {
     emit(state.copyWith(isLoading: true, error: ''));
     try {
       final data = await repository.fetchDataChapter(endpoint);
-      emit(state.copyWith(chapter: data));
+      emit(state.copyWith(
+        chapter: data,
+        isLoading: false,
+      ));
     } catch (e) {
       emit(state.copyWith(error: e.toString()));
     }
@@ -66,5 +79,15 @@ class ChapterScreenCubit extends Cubit<ChapterScreenState> {
     // } catch (e) {
     //   rethrow;
     // }
+  }
+
+  void nextChapter() {
+    final chapter = state.mangaDetail!.listChapter![indexChapter + 1];
+    fetchDataFromApi(chapter.endpoint!);
+  }
+
+  void preChapter() {
+    final chapter = state.mangaDetail!.listChapter![indexChapter - 1];
+    fetchDataFromApi(chapter.endpoint!);
   }
 }
