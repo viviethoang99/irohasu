@@ -10,7 +10,7 @@ class BtnVoteWidget extends StatelessWidget {
     return BlocBuilder<MangaDetailBloc, MangaDetailState>(
       buildWhen: (pre, cur) => pre.runtimeType != cur.runtimeType,
       builder: (context, state) {
-        if (state is MangaDetailLoadedState) {
+        if (state is MangaDetailSuccessState) {
           return Row(
             children: <Widget>[
               const IconButton(
@@ -20,7 +20,7 @@ class BtnVoteWidget extends StatelessWidget {
                   ),
                   onPressed: null),
               Text(
-                '${state.data?.like ?? 0}',
+                '${state.mangaDetail.like ?? 0}',
                 style: Theme.of(context).textTheme.bodyText1,
               ),
               const IconButton(
@@ -30,7 +30,7 @@ class BtnVoteWidget extends StatelessWidget {
                   ),
                   onPressed: null),
               Text(
-                '${state.data?.dislike ?? 0}',
+                '${state.mangaDetail.dislike ?? 0}',
                 style: Theme.of(context).textTheme.bodyText1,
               ),
             ],

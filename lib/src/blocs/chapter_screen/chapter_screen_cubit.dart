@@ -39,9 +39,9 @@ class ChapterScreenCubit extends Cubit<ChapterScreenState> {
       .indexWhere((element) => element.endpoint == state.chapter!.endpoint);
 
   Future<void> getListChapter() async {
-    if (mangaDetailBloc.state is MangaDetailLoadedState) {
-      final stateManga = mangaDetailBloc.state as MangaDetailLoadedState;
-      emit(state.copyWith(mangaDetail: stateManga.data));
+    if (mangaDetailBloc.state is MangaDetailSuccessState) {
+      final stateManga = mangaDetailBloc.state as MangaDetailSuccessState;
+      emit(state.copyWith(mangaDetail: stateManga.mangaDetail));
     } else {
       emit(state.copyWith(isLoading: true));
     }

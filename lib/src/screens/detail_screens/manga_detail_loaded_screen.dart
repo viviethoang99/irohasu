@@ -32,29 +32,29 @@ class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
   @override
   void initState() {
     super.initState();
-    continueReading();
+    // continueReading();
   }
 
-  void continueReading() {
-    if (data!.listChapRead!.isNotEmpty) {
-      final _titleLastChapter = data!.listChapter!
-          .firstWhere(
-              (chapter) => chapter.idChapter == data!.listChapRead!.last)
-          .title!
-          .split(' ');
-      final _getIndexNumberLastChapter = _titleLastChapter.indexWhere(
-              (element) => _keywordChapter.contains(element.toLowerCase())) +
-          1;
-      if (_getIndexNumberLastChapter == 0) {
-        _continueReading = 'TIẾP TỤC ĐỌC';
-      } else {
-        final lastChapter = _titleLastChapter[_getIndexNumberLastChapter]
-            .replaceAll(':', '')
-            .trim();
-        _continueReading = 'TIẾP TỤC ĐỌC TỪ CHƯƠNG $lastChapter';
-      }
-    }
-  }
+  // void continueReading() {
+  //   if (data!.listChapRead!.isNotEmpty) {
+  //     final _titleLastChapter = data!.listChapter!
+  //         .firstWhere(
+  //             (chapter) => chapter.idChapter == data!.listChapRead!.last)
+  //         .title!
+  //         .split(' ');
+  //     final _getIndexNumberLastChapter = _titleLastChapter.indexWhere(
+  //             (element) => _keywordChapter.contains(element.toLowerCase())) +
+  //         1;
+  //     if (_getIndexNumberLastChapter == 0) {
+  //       _continueReading = 'TIẾP TỤC ĐỌC';
+  //     } else {
+  //       final lastChapter = _titleLastChapter[_getIndexNumberLastChapter]
+  //           .replaceAll(':', '')
+  //           .trim();
+  //       _continueReading = 'TIẾP TỤC ĐỌC TỪ CHƯƠNG $lastChapter';
+  //     }
+  //   }
+  // }
 
   void openChapter({required ChapterItem item, required BuildContext context}) {
     HistoryData.addChapToHistory(
@@ -71,7 +71,7 @@ class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
 
   @override
   void didUpdateWidget(covariant MangaDetailLoadedScreen oldWidget) {
-    continueReading();
+    // continueReading();
     super.didUpdateWidget(oldWidget);
   }
 

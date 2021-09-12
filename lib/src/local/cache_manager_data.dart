@@ -1,4 +1,6 @@
 import 'package:hive/hive.dart';
+
+import '../../env.dart';
 import '../models/cache_manga_model.dart';
 import '../models/manga_detail_model.dart';
 
@@ -15,7 +17,6 @@ abstract class IFileManager {
 class CacheManagerData extends IFileManager {
   // CacheManagerData._(this._box);
 
-  final _irohasu = 'irohasu';
   final _listManga = 'listManga';
 
   // final Box<dynamic> _box;
@@ -28,7 +29,7 @@ class CacheManagerData extends IFileManager {
 
   @override
   Future<CacheMangaModel?> getMangaRequestData(String? idManga) async {
-    var mangaBox = Hive.box(_irohasu);
+    var mangaBox = Hive.box(ENV.nameDatabase);
     var manga = mangaBox.get(_listManga, defaultValue: {});
     if (manga.containsKey(idManga)) return manga[idManga];
     return null;
@@ -37,7 +38,7 @@ class CacheManagerData extends IFileManager {
   @override
   Future<bool> removeMangaRequestCache() async {
     try {
-      var mangaBox = Hive.box(_irohasu);
+      var mangaBox = Hive.box(ENV.nameDatabase);
       await mangaBox.put(_listManga, {});
       print('Remove all Manga: Success');
       return true;
@@ -49,7 +50,7 @@ class CacheManagerData extends IFileManager {
 
   @override
   Future<bool> removeMangaRequestSingleCache(String? idManga) async {
-    var mangaBox = Hive.box(_irohasu);
+    var mangaBox = Hive.box(ENV.nameDatabase);
     var listManga = mangaBox.get(_listManga, defaultValue: {});
     try {
       listManga.remove(idManga);
@@ -64,7 +65,7 @@ class CacheManagerData extends IFileManager {
   @override
   Future<bool> writeMangaRequestDataWithTime(MangaDetailModel body) async {
     try {
-      var mangaBox = Hive.box(_irohasu);
+      var mangaBox = Hive.box(ENV.nameDatabase);
       var listManga = mangaBox.get(_listManga, defaultValue: {});
       listManga[body.idManga] = CacheMangaModel(
         createTime: DateTime.now(),

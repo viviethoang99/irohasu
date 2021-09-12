@@ -3,32 +3,16 @@ import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../../../env.dart';
 import '../../../blocs/manga_detail_bloc/bloc.dart';
 import '../../../config/base_colors.dart';
 import '../../../helper/media_query_helper.dart';
-import '../../../local/favorite_data.dart';
 import '../../../widgets/webview_widget.dart';
 import 'btn_vote_widget.dart';
 
-class HeaderMangaDetail extends StatefulWidget {
+class HeaderMangaDetail extends StatelessWidget {
   const HeaderMangaDetail();
-
-  @override
-  _HeaderMangaDetailState createState() => _HeaderMangaDetailState();
-}
-
-class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
-  late final Box mangaBox;
-
-  @override
-  void initState() {
-    mangaBox = Hive.box<dynamic>('irohasu');
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,57 +35,56 @@ class _HeaderMangaDetailState extends State<HeaderMangaDetail> {
       padding: const EdgeInsets.only(left: 12, bottom: 10),
       child: BlocBuilder<MangaDetailBloc, MangaDetailState>(
         builder: (context, state) {
-          if (state is MangaDetailLoadedState) {
-            final idManga = state.data!.idManga;
-            return ValueListenableBuilder(
-                valueListenable: mangaBox.listenable(keys: ['listManga']),
-                builder: (_, Box _box, child) {
-                  var listManga = _box.get('listManga', defaultValue: {});
-                  return Row(
-                    children: <Widget>[
-                      listManga[idManga]?.chapter?.isFavorite ?? false
-                          ? IconButton(
-                              icon: Icon(
-                                Icons.favorite,
-                                color: Theme.of(context).buttonColor,
-                                size: 38,
-                              ),
-                              onPressed: () => FavoriteData.isFavorite(idManga))
-                          : IconButton(
-                              icon: Icon(
-                                Icons.favorite_border,
-                                color: Theme.of(context).primaryColor,
-                                size: 38,
-                              ),
-                              onPressed: () => FavoriteData.isFavorite(idManga),
-                            ),
-                      IconButton(
+          if (state is MangaDetailSuccessState) {
+            return Row(
+              children: <Widget>[
+                state.mangaDetail.isFavorite
+                    ? IconButton(
                         icon: Icon(
-                          Icons.language,
+                          Icons.favorite,
+                          color: Theme.of(context).buttonColor,
+                          size: 38,
+                        ),
+                        onPressed: () => context
+                            .read<MangaDetailBloc>()
+                            .add(FavoriteMangaEvent()),
+                      )
+                    : IconButton(
+                        icon: Icon(
+                          Icons.favorite_border,
                           color: Theme.of(context).primaryColor,
                           size: 38,
                         ),
-                        onPressed: () {
-                          Navigator.of(context).pushNamed(
-                            WebViewPage.routeName,
-                            arguments: WebViewPage(
-                              title: state.data!.title,
-                              url: ENV.urlWebView(state.data!.endpoint),
-                            ),
-                          );
-                        },
+                        onPressed: () => context
+                            .read<MangaDetailBloc>()
+                            .add(FavoriteMangaEvent()),
                       ),
-                      IconButton(
-                        icon: Icon(
-                          Icons.share,
-                          color: Theme.of(context).primaryColor,
-                          size: 38,
-                        ),
-                        onPressed: null,
+                IconButton(
+                  icon: Icon(
+                    Icons.language,
+                    color: Theme.of(context).primaryColor,
+                    size: 38,
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(
+                      WebViewPage.routeName,
+                      arguments: WebViewPage(
+                        title: state.mangaDetail.title,
+                        url: ENV.urlWebView(state.mangaDetail.endpoint),
                       ),
-                    ],
-                  );
-                });
+                    );
+                  },
+                ),
+                IconButton(
+                  icon: Icon(
+                    Icons.share,
+                    color: Theme.of(context).primaryColor,
+                    size: 38,
+                  ),
+                  onPressed: null,
+                ),
+              ],
+            );
           }
           return const SizedBox.shrink();
         },
@@ -118,7 +101,7 @@ class _InfomationMangaWidget extends StatelessWidget {
     return BlocBuilder<MangaDetailBloc, MangaDetailState>(
       buildWhen: (pre, cur) => pre.runtimeType != cur.runtimeType,
       builder: (context, state) {
-        if (state is MangaDetailLoadedState) {
+        if (state is MangaDetailSuccessState) {
           return Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -128,7 +111,7 @@ class _InfomationMangaWidget extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: CachedNetworkImage(
-                    imageUrl: state.data!.thumbnailUrl,
+                    imageUrl: state.mangaDetail.thumbnailUrl,
                     httpHeaders: ENV.headersBuilder,
                     fit: BoxFit.cover,
                     height: ScreenHelper.getHeight(context) / 5,
@@ -145,7 +128,7 @@ class _InfomationMangaWidget extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(right: 10, top: 10),
                         child: Text(
-                          state.data!.title,
+                          state.mangaDetail.title,
                           style: TextStyle(
                             fontSize: 22,
                             color: Theme.of(context).primaryColor,
@@ -154,7 +137,7 @@ class _InfomationMangaWidget extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        state.data?.author ?? '',
+                        state.mangaDetail.author ?? '',
                         style: TextStyle(
                           fontSize: 18,
                           color: Theme.of(context).primaryColor,
@@ -162,7 +145,7 @@ class _InfomationMangaWidget extends StatelessWidget {
                       ),
                       const SizedBox(height: 15),
                       Text(
-                        state.data!.status!,
+                        state.mangaDetail.status!,
                         style: TextStyle(
                           fontSize: 15,
                           color: Theme.of(context).primaryColor,
@@ -216,9 +199,9 @@ class __ImageBackgroundWidgetState extends State<_ImageBackgroundWidget> {
       child: BlocBuilder<MangaDetailBloc, MangaDetailState>(
         buildWhen: (pre, cur) => pre.runtimeType != cur.runtimeType,
         builder: (context, state) {
-          if (state is MangaDetailLoadedState) {
+          if (state is MangaDetailSuccessState) {
             return CachedNetworkImage(
-              imageUrl: state.data?.thumbnailUrl ?? '',
+              imageUrl: state.mangaDetail.thumbnailUrl,
               imageBuilder: (context, imageProvider) => Container(
                 width: ScreenHelper.getWidth(context),
                 height: ScreenHelper.getHeight(context) / 2.5,

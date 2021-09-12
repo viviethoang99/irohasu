@@ -16,7 +16,7 @@ class MangaDetailModel extends Equatable {
     required this.title,
     required this.endpoint,
     required this.thumbnailUrl,
-    this.isFavorite,
+    this.isFavorite = false,
     this.status,
     this.listChapter,
     this.author,
@@ -24,6 +24,7 @@ class MangaDetailModel extends Equatable {
     this.dislike,
     this.description,
     this.listGenres,
+    this.lastRead,
   });
 
   factory MangaDetailModel.fromMap(Document data, String endpoint) {
@@ -75,9 +76,8 @@ class MangaDetailModel extends Equatable {
     String? author,
     List<ChapterItem>? listChapter,
     bool? isFavorite,
-    List<String>? listChapRead,
-    List<String>? listDownload,
     List<Genres>? listGenres,
+    DateTime? lastRead,
   }) {
     return MangaDetailModel(
       idManga: idManga ?? this.idManga,
@@ -92,6 +92,7 @@ class MangaDetailModel extends Equatable {
       endpoint: endpoint ?? this.endpoint,
       thumbnailUrl: thumbnailUrl ?? this.thumbnailUrl,
       listGenres: listGenres ?? this.listGenres,
+      lastRead: lastRead ?? this.lastRead,
     );
   }
 
@@ -116,13 +117,11 @@ class MangaDetailModel extends Equatable {
   @HiveField(9)
   final List<ChapterItem>? listChapter;
   @HiveField(10)
-  final bool? isFavorite;
+  final bool isFavorite;
   @HiveField(11)
-  final List<String>? listChapRead = [];
-  @HiveField(12)
-  final List<String>? listDownload = [];
-  @HiveField(13)
   final List<Genres>? listGenres;
+  @HiveField(12)
+  final DateTime? lastRead;
 
   @override
   List<Object?> get props => [
@@ -138,5 +137,6 @@ class MangaDetailModel extends Equatable {
         endpoint,
         thumbnailUrl,
         listGenres,
+        lastRead,
       ];
 }

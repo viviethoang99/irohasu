@@ -8,26 +8,32 @@ abstract class MangaDetailState extends Equatable {
   List<Object?> get props => [];
 }
 
-class InitialMangaDetailState extends MangaDetailState{}
+class MangaDetailLoadingState extends MangaDetailState {}
 
-class MangaDetailLoadingState extends MangaDetailState{}
+class MangaDetailSuccessState extends MangaDetailState {
+  const MangaDetailSuccessState({
+    required this.mangaDetail,
+    this.listChapterReading = const [],
+  });
 
-class MangaDetailLoadedState extends MangaDetailState{
-  const MangaDetailLoadedState({this.data});
-  final MangaDetailModel? data;
+  final MangaDetailModel mangaDetail;
+  final List<String> listChapterReading;
+
+  MangaDetailSuccessState copyWith({
+    MangaDetailModel? mangaDetail,
+    List<String>? listChapterReading,
+  }) {
+    return MangaDetailSuccessState(
+      mangaDetail: mangaDetail ?? this.mangaDetail,
+      listChapterReading: listChapterReading ?? this.listChapterReading,
+    );
+  }
 
   @override
-  List<Object?> get props => [data];
-}
-class MangaDetailSyncState extends MangaDetailState{
-  const MangaDetailSyncState({this.data});
-  final MangaDetailModel? data;
-
-  @override
-  List<Object?> get props => [data];
+  List<Object?> get props => [mangaDetail, listChapterReading];
 }
 
-class MangaDetailFailureState extends MangaDetailState{
+class MangaDetailFailureState extends MangaDetailState {
   MangaDetailFailureState({this.msg});
   final String? msg;
 

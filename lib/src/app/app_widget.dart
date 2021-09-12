@@ -19,7 +19,6 @@ import '../repositories/imp/manga_repository_imp.dart';
 import '../repositories/manga_repository.dart';
 import '../screens/index_screen/index_screen.dart';
 import '../services/chapter_services.dart';
-import '../services/manga_services.dart';
 
 class AppWidget extends StatefulWidget {
   @override
@@ -33,10 +32,14 @@ class _AppWidgetState extends State<AppWidget> {
 
   @override
   void initState() {
-    mangaRepository = MangaRepositoryImp(MangaService());
+    initLoad();
+    super.initState();
+  }
+
+  Future<void> initLoad() async {
+    mangaRepository = await MangaRepositoryImp.getInstance();
     chapterRepository = ChapterRepositoryImp(ChapterServices());
     cacheManagerData = CacheManagerData();
-    super.initState();
   }
 
   @override
@@ -56,10 +59,7 @@ class _AppWidgetState extends State<AppWidget> {
           create: (context) => HistoryBloc(),
         ),
         BlocProvider<MangaDetailBloc>(
-          create: (context) => MangaDetailBloc(
-            mangaRepository,
-            cacheManagerData,
-          ),
+          create: (context) => MangaDetailBloc(mangaRepository),
         ),
         BlocProvider<ListMangaBloc>(
           create: (context) => ListMangaBloc(mangaRepository),
@@ -71,16 +71,14 @@ class _AppWidgetState extends State<AppWidget> {
           create: (context) => ChangeBackgroundBloc(),
         ),
         BlocProvider<ChangeThemeBloc>(
-          create: (context) => ChangeThemeBloc(),
+          create: (_) => ChangeThemeBloc()..add(DecideTheme()),
         ),
         BlocProvider<ChangeReadingModeBloc>(
           create: (context) => ChangeReadingModeBloc(),
         ),
       ],
-      child: BlocProvider<ChangeThemeBloc>(
-        create: (context) => ChangeThemeBloc()..add(DecideTheme()),
-        child: BlocBuilder<ChangeThemeBloc, ChangeThemeState>(
-            builder: (context, state) {
+      child: BlocBuilder<ChangeThemeBloc, ChangeThemeState>(
+        builder: (_, state) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             title: ENV.nameApp,
@@ -90,7 +88,7 @@ class _AppWidgetState extends State<AppWidget> {
             initialRoute: IndexScreen.routeName,
             onGenerateRoute: generateRoute,
           );
-        }),
+        },
       ),
     );
   }

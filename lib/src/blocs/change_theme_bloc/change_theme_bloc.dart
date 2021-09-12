@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import '../../../env.dart';
 import 'utils.dart';
 
 part 'change_theme_event.dart';
@@ -80,7 +81,7 @@ class ChangeThemeBloc extends Bloc<ChangeThemeEvent, ChangeThemeState> {
   }
 
   Future<Null> _setOptionValue(int optionValue) async {
-    var mangaBox = Hive.box('irohasu');
+    var mangaBox = Hive.box(ENV.nameDatabase);
     var setting = mangaBox
         .get('sharedPreferences', defaultValue: {}).cast<String, dynamic>();
     if (setting.containsKey('generalSetting')) {
@@ -93,7 +94,7 @@ class ChangeThemeBloc extends Bloc<ChangeThemeEvent, ChangeThemeState> {
   }
 
   Future<int?> _getOption() async {
-    var mangaBox = Hive.box('irohasu');
+    var mangaBox = Hive.box(ENV.nameDatabase);
     int? _option = 0;
     var setting = mangaBox.get('sharedPreferences', defaultValue: {});
     if (setting['generalSetting']?.containsKey('themeData') ?? false) {

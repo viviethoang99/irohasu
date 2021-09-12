@@ -12,8 +12,10 @@ class ChapterItem extends Equatable {
     required this.title,
     required this.endpoint,
     required this.createAt,
-    this.isDownload,
+    this.isDownload = '',
     this.isReading = false,
+    this.progressReading = 0,
+    this.timeReading,
   });
 
   factory ChapterItem.fromMap({required Element data}) {
@@ -35,23 +37,15 @@ class ChapterItem extends Equatable {
   @HiveField(2)
   final DateTime? createAt;
   @HiveField(3)
-  int? _progressReading = 0;
+  final int progressReading;
   @HiveField(4)
-  bool? isReading;
+  final bool isReading;
   @HiveField(5)
-  String? isDownload;
+  final String? isDownload;
   @HiveField(6)
   final String? idChapter;
   @HiveField(7)
-  DateTime? timeReading;
-
-  int get progressReading => _progressReading!;
-
-  set progressReading(int progress) {
-    if (progress > 0 && progress > _progressReading!) {
-      _progressReading = progress;
-    }
-  }
+  final DateTime? timeReading;
 
   @override
   List<Object?> get props => [
@@ -59,5 +53,10 @@ class ChapterItem extends Equatable {
         endpoint,
         createAt,
         idChapter,
+        progressReading,
+        isReading,
+        isDownload,
+        idChapter,
+        timeReading,
       ];
 }

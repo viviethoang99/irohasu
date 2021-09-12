@@ -133,17 +133,17 @@ class CustomChips extends StatelessWidget {
       child: BlocBuilder<MangaDetailBloc, MangaDetailState>(
         buildWhen: (pre, cur) => pre.runtimeType != cur.runtimeType,
         builder: (_, state) {
-          if (state is MangaDetailLoadedState) {
+          if (state is MangaDetailSuccessState) {
             return ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: state.data?.listGenres?.length ?? 0,
+              itemCount: state.mangaDetail.listGenres?.length ?? 0,
               itemBuilder: (_, index) {
                 return Container(
                   margin: const EdgeInsets.symmetric(horizontal: 5),
                   child: ActionChip(
                     padding: const EdgeInsets.all(2.0),
                     label: Text(
-                      state.data!.listGenres![index].genreName!,
+                      state.mangaDetail.listGenres![index].genreName!,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,

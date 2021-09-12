@@ -6,13 +6,17 @@ abstract class MangaDetailEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class FetchMangaDetailEvent extends MangaDetailEvent{
-  FetchMangaDetailEvent(this.endpoint);
+class FetchMangaDetailEvent extends MangaDetailEvent {
+  const FetchMangaDetailEvent(this.endpoint);
   final String? endpoint;
 }
 
 class AddChapterToListReading extends MangaDetailEvent {
-  AddChapterToListReading(this.idManga);
+  const AddChapterToListReading(this.idManga);
 
   final String? idManga;
 }
+
+class FavoriteMangaEvent extends MangaDetailEvent {}
+
+class CacheMangaDetailEvent extends MangaDetailEvent {}

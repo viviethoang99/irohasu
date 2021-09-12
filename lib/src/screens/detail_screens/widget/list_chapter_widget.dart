@@ -31,9 +31,9 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
               BlocBuilder<MangaDetailBloc, MangaDetailState>(
                 buildWhen: (pre, cur) => pre.runtimeType != cur.runtimeType,
                 builder: (_, state) {
-                  if (state is MangaDetailLoadedState) {
+                  if (state is MangaDetailSuccessState) {
                     return Text(
-                      '${state.data!.listChapter!.length} Chương',
+                      '${state.mangaDetail.listChapter!.length} Chương',
                       style: TextStyle(
                         color: Theme.of(context).primaryColor,
                         fontSize: 21,
@@ -67,14 +67,10 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
         MediaQuery.removePadding(
           removeTop: true,
           context: context,
-          child: loadListChapter(),
+          child: _ListChapterWidget(isReversed: _isReversed),
         ),
       ],
     );
-  }
-
-  Widget loadListChapter() {
-    return _ListChapterWidget(isReversed: _isReversed);
   }
 }
 
@@ -94,7 +90,7 @@ class _ListChapterWidget extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: BlocBuilder<MangaDetailBloc, MangaDetailState>(
           builder: (context, state) {
-            if (state is MangaDetailLoadedState) {
+            if (state is MangaDetailSuccessState) {
               return ListView.separated(
                 reverse: _isReversed,
                 separatorBuilder: (_, index) => Divider(
@@ -102,16 +98,16 @@ class _ListChapterWidget extends StatelessWidget {
                   height: 20,
                 ),
                 shrinkWrap: true,
-                itemCount: state.data!.listChapter!.length,
+                itemCount: state.mangaDetail.listChapter!.length,
                 physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (_, index) {
-                  final chapter = state.data!.listChapter![index];
+                  final chapter = state.mangaDetail.listChapter![index];
                   return ListTile(
                     contentPadding: const EdgeInsets.all(5),
                     dense: true,
                     title: Text(
-                      chapter.title!.replaceFirst(state.data!.title, '').trim(),
-                      style: chapter.isReading!
+                      chapter.title!.replaceFirst(state.mangaDetail.title, '').trim(),
+                      style: chapter.isReading
                           ? theme.textTheme.subtitle1!.copyWith(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,

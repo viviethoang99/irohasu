@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../env.dart';
+import '../../../blocs/manga_detail_bloc/bloc.dart';
 import '../../detail_screens/manga_detail_screen.dart';
 
 class ItemManga extends StatelessWidget {
@@ -21,10 +23,14 @@ class ItemManga extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.of(context).pushNamed(
+        Navigator.of(context)
+            .pushNamed(
           MangaDetailScreen.routeName,
           arguments: setUrlWithoutDomain,
-        );
+        )
+            .then((_) {
+          context.read<MangaDetailBloc>().add(CacheMangaDetailEvent());
+        });
       },
       child: Card(
         color: Colors.transparent,

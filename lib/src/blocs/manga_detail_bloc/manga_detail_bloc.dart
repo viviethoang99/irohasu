@@ -1,91 +1,62 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../local/cache_manager_data.dart';
-import '../../models/chapter_item_model.dart';
-import '../../models/manga_detail_model.dart';
 import '../../repositories/manga_repository.dart';
 import 'bloc.dart';
 
 class MangaDetailBloc extends Bloc<MangaDetailEvent, MangaDetailState> {
-  MangaDetailBloc(this.repository, this.cacheManagerData)
-      : super(InitialMangaDetailState());
+  MangaDetailBloc(this.repo) : super(MangaDetailLoadingState());
 
-  final MangaRepository repository;
-  final CacheManagerData cacheManagerData;
+  final MangaRepository repo;
+
+  MangaDetailSuccessState? get currentState {
+    if (state is MangaDetailSuccessState) {
+      return state as MangaDetailSuccessState;
+    }
+  }
 
   @override
   Stream<MangaDetailState> mapEventToState(MangaDetailEvent event) async* {
     if (event is FetchMangaDetailEvent) {
       yield MangaDetailLoadingState();
       try {
-        final data = await repository.fetchDataMangaDetail(event.endpoint!);
+        final data = await repo.fetchMangaDetail(event.endpoint!);
         if (data != null) {
-          yield MangaDetailLoadedState(data: data);
-          // yield* _loadDataListManga(data: data);
-        } else {
-          final idManga = event.endpoint!.split('/')[4];
-          final cache = await (cacheManagerData.getMangaRequestData(idManga));
-          yield MangaDetailLoadedState(data: cache!.data);
+          yield MangaDetailSuccessState(mangaDetail: data);
+          final listChapter = await repo.getListChapterReading(data.idManga);
+          final mangaLocal = await repo.getMangaDetailLocal(data.idManga);
+          yield currentState!.copyWith(
+            mangaDetail: currentState!.mangaDetail.copyWith(
+              isFavorite: mangaLocal?.isFavorite,
+            ),
+            listChapterReading: listChapter as List<String>,
+          );
         }
-      } catch (e) {
+      } on DioError catch (e) {
         yield MangaDetailFailureState(msg: e.toString());
       }
     }
-    if (event is AddChapterToListReading) {
+    if (event is CacheMangaDetailEvent && state is MangaDetailSuccessState) {
+      if (currentState!.mangaDetail.isFavorite ||
+          currentState!.listChapterReading.isNotEmpty) {
+        await repo.addListChapterRead(
+          currentState!.listChapterReading,
+          currentState!.mangaDetail.idManga,
+        );
+        await repo.addMangaDetail(
+          currentState!.mangaDetail.copyWith(lastRead: DateTime.now()),
+        );
+      } else {
+        await repo.removeMangaDetail(currentState!.mangaDetail.idManga);
+      }
       yield MangaDetailLoadingState();
-      try {
-        final item = await cacheManagerData.getMangaRequestData(event.idManga);
-        yield MangaDetailLoadedState(data: item!.data);
-      } catch (e) {
-        print(e);
-        yield MangaDetailFailureState(msg: e.toString());
-      }
     }
-  }
-
-  Stream<MangaDetailSyncState> _loadDataListManga(
-      {required MangaDetailModel data}) async* {
-    final _manga = await cacheManagerData.getMangaRequestData(data.idManga);
-
-    if (_manga != null) {
-      final listManga = await syncDataListChapter(
-        fetchData: data.listChapter!,
-        dataCache: _manga.data.listChapter!,
-      );
-      _manga.data.copyWith(
-        listGenres: data.listGenres,
-        listChapter: listManga,
+    if (event is FavoriteMangaEvent) {
+      yield currentState!.copyWith(
+        mangaDetail: currentState!.mangaDetail.copyWith(
+          isFavorite: !currentState!.mangaDetail.isFavorite,
+        ),
       );
     }
-    yield MangaDetailSyncState(data: _manga?.data ?? data);
-  }
-
-  /*
-  Input:
-  -  fetchData is list chapter get from the server
-  -  dataCache is list chapter get from database Irohasu
-  Output:
-  -  Returns the data displayed on the screen.
-  Process:
-  -  Synchronize retrieved data with the database Irohasu.
-  -  If equatable length chapter database => return data database.
-  -  Else assign a value to the chapter fetch data if they are equatable.
-   */
-  Future<List<ChapterItem>?> syncDataListChapter({
-    required List<ChapterItem> fetchData,
-    required List<ChapterItem> dataCache,
-  }) async {
-    var resultList = <ChapterItem>[];
-    if (fetchData.length != dataCache.length) {
-      resultList = fetchData.map((ChapterItem manga) {
-        for (var cache in dataCache) {
-          if (manga == cache) return cache;
-        }
-        return manga;
-      }).toList();
-    } else {
-      return dataCache;
-    }
-    return resultList;
   }
 }
