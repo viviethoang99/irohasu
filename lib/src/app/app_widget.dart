@@ -6,9 +6,9 @@ import '../../env.dart';
 import '../blocs/change_background_color_bloc/change_background_bloc.dart';
 import '../blocs/change_reading_mode_bloc/change_reading_mode_bloc.dart';
 import '../blocs/change_theme_bloc/change_theme_bloc.dart';
-import '../blocs/history_bloc/history_bloc.dart';
+import '../blocs/history_screen_bloc/history_screen_bloc.dart';
+import '../blocs/library_screen_bloc/library_screen_bloc.dart';
 import '../blocs/list_manga_bloc/bloc.dart';
-import '../blocs/list_manga_library_bloc/list_manga_library_bloc.dart';
 import '../blocs/manga_detail_bloc/bloc.dart';
 import '../blocs/search_bloc/bloc.dart';
 import '../helper/routes.dart';
@@ -52,11 +52,11 @@ class _AppWidgetState extends State<AppWidget> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<ListMangaLibraryBloc>(
-          create: (context) => ListMangaLibraryBloc(),
+        BlocProvider<LibraryScreenBloc>(
+          create: (context) => LibraryScreenBloc(mangaRepository),
         ),
-        BlocProvider<HistoryBloc>(
-          create: (context) => HistoryBloc(),
+        BlocProvider<HistoryScreenBloc>(
+          create: (context) => HistoryScreenBloc(mangaRepository),
         ),
         BlocProvider<MangaDetailBloc>(
           create: (context) => MangaDetailBloc(mangaRepository),

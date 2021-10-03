@@ -13,24 +13,24 @@ class MangaDetailLoadingState extends MangaDetailState {}
 class MangaDetailSuccessState extends MangaDetailState {
   const MangaDetailSuccessState({
     required this.mangaDetail,
-    this.listChapterReading = const [],
+    this.chapterReading = const [],
   });
 
   final MangaDetailModel mangaDetail;
-  final List<String> listChapterReading;
+  final List<String> chapterReading;
 
   MangaDetailSuccessState copyWith({
     MangaDetailModel? mangaDetail,
-    List<String>? listChapterReading,
+    List<String>? chapterReading,
   }) {
     return MangaDetailSuccessState(
       mangaDetail: mangaDetail ?? this.mangaDetail,
-      listChapterReading: listChapterReading ?? this.listChapterReading,
+      chapterReading: chapterReading ?? this.chapterReading,
     );
   }
 
   @override
-  List<Object?> get props => [mangaDetail, listChapterReading];
+  List<Object?> get props => [mangaDetail, chapterReading];
 }
 
 class MangaDetailFailureState extends MangaDetailState {

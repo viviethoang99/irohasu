@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../blocs/history_bloc/history_bloc.dart';
+import '../../blocs/history_screen_bloc/history_screen_bloc.dart';
+import '../../blocs/manga_detail_bloc/bloc.dart';
 import '../../extensions/datetime_extension.dart';
 import '../../helper/chap_helper.dart';
 import '../../local/history_data.dart';
@@ -13,8 +14,8 @@ class DetailItemWidget extends StatelessWidget {
     Key? key,
     required this.item,
     required this.titleManga,
-    required this.urlManga,
-    required this.idManga,
+    required this.urlManga, 
+    required this.idManga,  
   }) : super(key: key);
 
   final ChapterItem? item;
@@ -79,10 +80,16 @@ class DetailItemWidget extends StatelessWidget {
                 children: <Widget>[
                   TextButton(
                     onPressed: () {
-                      Navigator.of(context).pushNamed(
-                        MangaDetailScreen.routeName,
-                        arguments: urlManga,
-                      );
+                      Navigator.of(context)
+                          .pushNamed(
+                            MangaDetailScreen.routeName,
+                            arguments: urlManga,
+                          )
+                          .then(
+                            (_) => context
+                                .read<MangaDetailBloc>()
+                                .add(CacheMangaDetailEvent()),
+                          );
                     },
                     child: const Text(
                       'Xem chi tiết',
@@ -94,19 +101,20 @@ class DetailItemWidget extends StatelessWidget {
                     ),
                   ),
                   TextButton(
-                      onPressed: () => _removeHistory(
-                            context,
-                            idManga: idManga,
-                            idChapter: item!.idChapter,
-                          ),
-                      child: const Text(
-                        'Xoá',
-                        style: TextStyle(
-                          color: Colors.red,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      )),
+                    onPressed: () => _removeHistory(
+                      context,
+                      idManga: idManga,
+                      idChapter: item!.id,
+                    ),
+                    child: const Text(
+                      'Xoá',
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
                 ],
               )
             ],
@@ -144,7 +152,7 @@ class DetailItemWidget extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     fontSize: 24),
               ),
-              content: SizedBox( 
+              content: SizedBox(
                 height: 80,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -195,10 +203,9 @@ class DetailItemWidget extends StatelessWidget {
                         var statusRemove = await HistoryData.removeHistory(
                             idChapter: _value ? 'all' : idChapter,
                             idManga: idManga);
-                        if (statusRemove) {
-                          BlocProvider.of<HistoryBloc>(context)
-                              .add(FetchDataHistoryEvent());
-                        }
+                        // if (statusRemove) {
+                        //   context.read<HistoryScreenCubit>().fetchData();
+                        // }
                         Navigator.of(context, rootNavigator: true).pop(true);
                       },
                       child: Text(

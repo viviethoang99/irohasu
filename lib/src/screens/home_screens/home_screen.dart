@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-// Widget
 import '../../blocs/list_manga_bloc/bloc.dart';
 import '../../widgets/loading_screen.dart';
-import './list_manga_widget.dart';
-import './widget/appbar_widget.dart';
+import 'list_manga_widget.dart';
+import 'widget/appbar_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routeName = '/home';

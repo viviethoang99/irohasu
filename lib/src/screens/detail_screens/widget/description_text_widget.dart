@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../blocs/manga_detail_bloc/bloc.dart';
 import '../../../config/base_content.dart';
+
 class DescriptionTextWidget extends StatefulWidget {
   DescriptionTextWidget({required this.text});
 
@@ -127,7 +128,6 @@ class CustomChips extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return SizedBox(
       height: 50,
       child: BlocBuilder<MangaDetailBloc, MangaDetailState>(
@@ -136,6 +136,7 @@ class CustomChips extends StatelessWidget {
           if (state is MangaDetailSuccessState) {
             return ListView.builder(
               scrollDirection: Axis.horizontal,
+              shrinkWrap: true,
               itemCount: state.mangaDetail.listGenres?.length ?? 0,
               itemBuilder: (_, index) {
                 return Container(
@@ -147,15 +148,15 @@ class CustomChips extends StatelessWidget {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
-                        color: theme.primaryColor,
+                        color: Theme.of(context).primaryColor,
                       ),
                     ),
                     onPressed: () {},
-                    backgroundColor: theme.backgroundColor,
+                    backgroundColor: Theme.of(context).backgroundColor,
                     shape: StadiumBorder(
                       side: BorderSide(
                         width: 2.5,
-                        color: theme.primaryColor,
+                        color: Theme.of(context).primaryColor,
                       ),
                     ),
                   ),

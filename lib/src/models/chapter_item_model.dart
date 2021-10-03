@@ -1,14 +1,14 @@
-import 'package:html/dom.dart';
-import 'package:intl/intl.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
+import 'package:html/dom.dart';
+import 'package:intl/intl.dart';
 
 part 'chapter_item_model.g.dart';
 
 @HiveType(typeId: 1)
 class ChapterItem extends Equatable {
   ChapterItem({
-    required this.idChapter,
+    required this.id,
     required this.title,
     required this.endpoint,
     required this.createAt,
@@ -23,7 +23,7 @@ class ChapterItem extends Equatable {
     final dateToString = DateFormat('dd/MM/yyyy hh:mm').parse(dateTime ?? '');
     final endpoint = data.querySelector('.title > a')?.attributes['href'];
     return ChapterItem(
-      idChapter: endpoint?.substring(2, 8),
+      id: endpoint?.substring(2, 8),
       title: data.querySelector('.title > a')?.text,
       endpoint: endpoint,
       createAt: dateToString,
@@ -31,7 +31,7 @@ class ChapterItem extends Equatable {
   }
 
   @HiveField(0)
-  final String? title;
+  final String? id;
   @HiveField(1)
   final String? endpoint;
   @HiveField(2)
@@ -43,20 +43,19 @@ class ChapterItem extends Equatable {
   @HiveField(5)
   final String? isDownload;
   @HiveField(6)
-  final String? idChapter;
+  final String? title;
   @HiveField(7)
   final DateTime? timeReading;
 
   @override
   List<Object?> get props => [
+        id,
         title,
         endpoint,
         createAt,
-        idChapter,
         progressReading,
         isReading,
         isDownload,
-        idChapter,
         timeReading,
       ];
 }

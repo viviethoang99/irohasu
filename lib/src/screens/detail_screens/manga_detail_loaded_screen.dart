@@ -1,13 +1,8 @@
 // Packages
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:irohasu/src/helper/size_config.dart';
 
-import '../../blocs/manga_detail_bloc/bloc.dart';
-import '../../config/base_content.dart';
-import '../../local/history_data.dart';
-import '../../models/chapter_item_model.dart';
 import '../../models/manga_detail_model.dart';
-import '../../screens/chapter_screens/chapter_screen.dart';
 import 'widget/custom_button_reading_widget.dart';
 import 'widget/description_text_widget.dart';
 import 'widget/header_manga_detail.dart';
@@ -25,48 +20,10 @@ class MangaDetailLoadedScreen extends StatefulWidget {
 class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
   MangaDetailModel? get data => widget.data;
 
-  String _continueReading = ConstantStrings.startReading;
-
-  final List<String> _keywordChapter = ['chương', 'chapter', 'chap'];
-
   @override
   void initState() {
     super.initState();
     // continueReading();
-  }
-
-  // void continueReading() {
-  //   if (data!.listChapRead!.isNotEmpty) {
-  //     final _titleLastChapter = data!.listChapter!
-  //         .firstWhere(
-  //             (chapter) => chapter.idChapter == data!.listChapRead!.last)
-  //         .title!
-  //         .split(' ');
-  //     final _getIndexNumberLastChapter = _titleLastChapter.indexWhere(
-  //             (element) => _keywordChapter.contains(element.toLowerCase())) +
-  //         1;
-  //     if (_getIndexNumberLastChapter == 0) {
-  //       _continueReading = 'TIẾP TỤC ĐỌC';
-  //     } else {
-  //       final lastChapter = _titleLastChapter[_getIndexNumberLastChapter]
-  //           .replaceAll(':', '')
-  //           .trim();
-  //       _continueReading = 'TIẾP TỤC ĐỌC TỪ CHƯƠNG $lastChapter';
-  //     }
-  //   }
-  // }
-
-  void openChapter({required ChapterItem item, required BuildContext context}) {
-    HistoryData.addChapToHistory(
-      idManga: data!.idManga,
-      idChapter: item.idChapter,
-    );
-    Navigator.of(context).pushNamed(
-      ChapterScreen.routeName,
-      arguments: ChapterScreen(endpoint: item.endpoint),
-    );
-    BlocProvider.of<MangaDetailBloc>(context)
-        .add(AddChapterToListReading(data!.idManga));
   }
 
   @override
@@ -77,6 +34,7 @@ class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     final theme = Theme.of(context);
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -129,12 +87,7 @@ class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: CustomButtonReadingWidget(
-                status: _continueReading,
                 lastChapter: data!.listChapter!.last,
-                openChap: (ChapterItem item) => openChapter(
-                  item: item,
-                  context: context,
-                ),
               ),
             ),
             const SizedBox(height: 10),

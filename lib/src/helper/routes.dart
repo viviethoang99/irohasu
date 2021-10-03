@@ -6,7 +6,6 @@ import '../screens/index_screen/index_screen.dart';
 import '../screens/search_screens/search_screen.dart';
 import '../screens/setting_screen/widget/general_page.dart';
 import '../screens/setting_screen/widget/setting_chapter.dart';
-import '../widgets/webview_widget.dart';
 
 MaterialPageRoute pageRoute({
   RouteSettings? routeSettings,
@@ -47,12 +46,12 @@ Route generateRoute(RouteSettings routeSettings) {
         routeSettings: routeSettings,
         builder: SettingChapter(),
       );
-    case WebViewPage.routeName:
-      var data = args as WebViewPage;
-      return pageRoute(
-        routeSettings: routeSettings,
-        builder: WebViewPage(title: data.title, url: data.url),
-      );
+    // case WebViewPage.routeName:
+    //   var data = args as WebViewPage;
+    //   return pageRoute(
+    //     routeSettings: routeSettings,
+    //     builder: WebViewPage(title: data.title, url: data.url),
+    //   );
     case SearchScreen.routeName:
       return pageRoute(routeSettings: routeSettings, builder: SearchScreen());
     default:

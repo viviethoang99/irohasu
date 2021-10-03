@@ -24,11 +24,6 @@ class _MangaDetailScreenState extends State<MangaDetailScreen> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return BlocConsumer<MangaDetailBloc, MangaDetailState>(
       listenWhen: (pre, cur) => pre.runtimeType != cur.runtimeType,

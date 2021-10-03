@@ -1,8 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../repositories/manga_repository.dart';
 import './bloc.dart';
+import '../../repositories/manga_repository.dart';
 
 class ListMangaBloc extends Bloc<ListMangaEvent, ListMangaState> {
   ListMangaBloc(this.repository) : super(InitialListMangaState());

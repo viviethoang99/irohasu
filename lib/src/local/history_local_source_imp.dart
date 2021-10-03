@@ -44,4 +44,9 @@ class HistoryLocalSourceImp implements HiveLocalSource {
     listManga?[idManga!] = listData;
     await _box.put(_key, listManga!);
   }
+
+  @override
+  Future getDataKey() async {
+    return _box.get(_key, defaultValue: <String, dynamic>{}) as Map;
+  }
 }

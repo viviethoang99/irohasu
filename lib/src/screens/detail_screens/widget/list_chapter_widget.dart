@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../blocs/manga_detail_bloc/bloc.dart';
+import '../../../extensions/string_extension.dart';
 import '../../../helper/convert_date_time.dart';
 import '../../chapter_screens/chapter_screen.dart';
-import 'download_button_widget.dart';
 
 class ListChapterWidget extends StatefulWidget {
   const ListChapterWidget({Key? key}) : super(key: key);
@@ -47,9 +47,9 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
               IconButton(
                 icon: _isReversed
                     ? Icon(Icons.swap_vertical_circle,
-                        color: Theme.of(context).buttonColor, size: 26)
+                        color: Theme.of(context).buttonColor, size: 35)
                     : Icon(Icons.swap_vert,
-                        color: Theme.of(context).primaryColor, size: 26),
+                        color: Theme.of(context).primaryColor, size: 35),
                 onPressed: () {
                   setState(() => _isReversed = !_isReversed);
                 },
@@ -106,7 +106,10 @@ class _ListChapterWidget extends StatelessWidget {
                     contentPadding: const EdgeInsets.all(5),
                     dense: true,
                     title: Text(
-                      chapter.title!.replaceFirst(state.mangaDetail.title, '').trim(),
+                      chapter.title!
+                          .replaceFirst(state.mangaDetail.title, '')
+                          .trim()
+                          .capitalize(),
                       style: chapter.isReading
                           ? theme.textTheme.subtitle1!.copyWith(
                               fontSize: 20,
@@ -122,7 +125,7 @@ class _ListChapterWidget extends StatelessWidget {
                       ConvertDateTime.dateTimeToString(chapter.createAt!),
                       style: theme.textTheme.subtitle1!.copyWith(fontSize: 18),
                     ),
-                    trailing: DownloadButtonWidget(item: chapter),
+                    // trailing: DownloadButtonWidget(item: chapter),
                     isThreeLine: true,
                     onTap: () {
                       Navigator.of(context).pushNamed(ChapterScreen.routeName,

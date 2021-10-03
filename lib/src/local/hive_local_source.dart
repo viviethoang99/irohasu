@@ -1,4 +1,6 @@
 abstract class HiveLocalSource {
+  Future getDataKey();
+
   Future<List> getList({String idManga});
 
   Future addList({List listData, String idManga});

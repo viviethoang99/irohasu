@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../blocs/manga_detail_bloc/bloc.dart';
 import '../../../models/chapter_item_model.dart';
+import '../../chapter_screens/chapter_screen.dart';
 
 class CustomButtonReadingWidget extends StatelessWidget {
   CustomButtonReadingWidget({
-    required this.status,
     required this.lastChapter,
-    this.openChap,
   });
 
-  final String status;
   final ChapterItem lastChapter;
-  final Function? openChap;
 
   @override
   Widget build(BuildContext context) {
@@ -28,20 +28,32 @@ class CustomButtonReadingWidget extends StatelessWidget {
           ),
         ),
       ),
-      onPressed: () {
-        openChap!(lastChapter);
-      },
+      onPressed: () => openChapter(context: context),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-        child: Text(
-          status.toUpperCase(),
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-            color: Theme.of(context).buttonColor,
-          ),
+        child: BlocBuilder<MangaDetailBloc, MangaDetailState>(
+          builder: (context, state) {
+            return Text(
+              context.read<MangaDetailBloc>().textLastChapter(),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+                color: Theme.of(context).buttonColor,
+              ),
+            );
+          },
         ),
       ),
+    );
+  }
+
+  void openChapter({required BuildContext context}) {
+    Navigator.of(context).pushNamed(
+      ChapterScreen.routeName,
+      arguments: ChapterScreen(endpoint: lastChapter.endpoint),
+    );
+    BlocProvider.of<MangaDetailBloc>(context).add(
+      AddChapterToListReading(lastChapter.endpoint!),
     );
   }
 }

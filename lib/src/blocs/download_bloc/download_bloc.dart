@@ -29,7 +29,7 @@ class DownloadBloc extends Bloc<DownloadEvent, DownloadState> {
           folderName: event.titleManga,
           onProgress: (process) => add(ChapterDownloadPercentageChangedEvent(
             percentage: process,
-            idChapter: event.chapterModel.idChapter,
+            idChapter: event.chapterModel.id,
             idManga: event.idManga,
           )),
         );
@@ -59,7 +59,7 @@ class DownloadBloc extends Bloc<DownloadEvent, DownloadState> {
         try {
           var _isRemove = await _downloadData.removeFolder(url: urlDownload);
           if (_isRemove) {
-            await removeChapToDownload(idChapter: event.chapter!.idChapter);
+            await removeChapToDownload(idChapter: event.chapter!.id);
           }
           yield DownloadInitialState();
         } catch (e) {

@@ -36,7 +36,7 @@ class _DrawerSearchScreenState extends State<DrawerSearchScreen> {
           onTap: () {
             widget.showDrawer!();
           },
-          child: Container(
+          child: SizedBox(
             height: 70,
             child: Center(
               child: Text(

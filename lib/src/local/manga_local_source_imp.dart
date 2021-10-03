@@ -51,8 +51,7 @@ class MangaLocalSourceImp implements MangaLocalSource {
 
   @override
   List<MangaDetailModel> getListManga() {
-    final listManga = _box.get(_key, defaultValue: <String, dynamic>{})
-        as Map<String, dynamic>;
+    final listManga = _box.get(_key, defaultValue: <String, dynamic>{}) as Map;
     return listManga.toList((e) => e.value);
   }
 

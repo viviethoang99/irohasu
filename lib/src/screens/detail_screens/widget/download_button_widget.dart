@@ -85,7 +85,7 @@ class DownloadButtonWidget extends StatelessWidget {
                     child: InkWell(
                       onTap: () {
                         BlocProvider.of<DownloadBloc>(context).add(
-                            CancelDownloadEvent(idChapter: item.idChapter!));
+                            CancelDownloadEvent(idChapter: item.id!));
                       },
                       child: Stack(
                         alignment: Alignment.center,

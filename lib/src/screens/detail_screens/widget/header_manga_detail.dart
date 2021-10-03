@@ -7,8 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../env.dart';
 import '../../../blocs/manga_detail_bloc/bloc.dart';
 import '../../../config/base_colors.dart';
-import '../../../helper/media_query_helper.dart';
-import '../../../widgets/webview_widget.dart';
+import '../../../helper/size_config.dart';
 import 'btn_vote_widget.dart';
 
 class HeaderMangaDetail extends StatelessWidget {
@@ -66,13 +65,13 @@ class HeaderMangaDetail extends StatelessWidget {
                     size: 38,
                   ),
                   onPressed: () {
-                    Navigator.of(context).pushNamed(
-                      WebViewPage.routeName,
-                      arguments: WebViewPage(
-                        title: state.mangaDetail.title,
-                        url: ENV.urlWebView(state.mangaDetail.endpoint),
-                      ),
-                    );
+                    // Navigator.of(context).pushNamed(
+                    //   WebViewPage.routeName,
+                    //   arguments: WebViewPage(
+                    //     title: state.mangaDetail.title,
+                    //     url: ENV.urlWebView(state.mangaDetail.endpoint),
+                    //   ),
+                    // );
                   },
                 ),
                 IconButton(
@@ -114,8 +113,8 @@ class _InfomationMangaWidget extends StatelessWidget {
                     imageUrl: state.mangaDetail.thumbnailUrl,
                     httpHeaders: ENV.headersBuilder,
                     fit: BoxFit.cover,
-                    height: ScreenHelper.getHeight(context) / 5,
-                    width: ScreenHelper.getWidth(context) / 3.5,
+                    height: SizeConfig.screenHeight / 5,
+                    width: SizeConfig.screenWidth / 3.5,
                   ),
                 ),
               ),
@@ -203,8 +202,8 @@ class __ImageBackgroundWidgetState extends State<_ImageBackgroundWidget> {
             return CachedNetworkImage(
               imageUrl: state.mangaDetail.thumbnailUrl,
               imageBuilder: (context, imageProvider) => Container(
-                width: ScreenHelper.getWidth(context),
-                height: ScreenHelper.getHeight(context) / 2.5,
+                width: SizeConfig.screenWidth,
+                height: SizeConfig.screenHeight / 2.5,
                 decoration: BoxDecoration(
                   color: AppColors.listColorsApp[indexColor],
                   image: DecorationImage(
@@ -219,8 +218,7 @@ class __ImageBackgroundWidgetState extends State<_ImageBackgroundWidget> {
               ),
               httpHeaders: ENV.headersBuilder,
               placeholder: (context, url) => const CircularProgressIndicator(),
-              errorWidget: (context, url, dynamic error) =>
-                  const Icon(Icons.error),
+              errorWidget: (_, url, error) => const Icon(Icons.error),
             );
           }
           return const SizedBox.shrink();

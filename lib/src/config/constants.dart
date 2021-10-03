@@ -10,4 +10,6 @@ class Constants {
   ];
 
   static const heightAppBar = 110.0;
+
+  static const keywordChapter = ['chương', 'chapter', 'chap'];
 }

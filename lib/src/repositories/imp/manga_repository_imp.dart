@@ -51,7 +51,10 @@ class MangaRepositoryImp implements MangaRepository {
 
   @override
   Future<void> addListChapterRead(List listChapter, String idManga) {
-    return _historyLocalSource.addList(listData: listChapter, idManga: idManga);
+    return _historyLocalSource.addList(
+      listData: listChapter,
+      idManga: idManga,
+    );
   }
 
   @override
@@ -62,5 +65,15 @@ class MangaRepositoryImp implements MangaRepository {
   @override
   Future<void> removeMangaDetail(String id) {
     return _mangaLocalSource.removeById(id);
+  }
+
+  @override
+  Stream<List<MangaDetailModel>> getListChapter() {
+    return _mangaLocalSource.watchListManga();
+  }
+
+  @override
+  Future getAllDataChapterRead() async {
+    return await _historyLocalSource.getDataKey();
   }
 }

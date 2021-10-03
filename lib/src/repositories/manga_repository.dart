@@ -17,4 +17,8 @@ abstract class MangaRepository {
   Future<void> addMangaDetail(MangaDetailModel item);
 
   Future<void> removeMangaDetail(String id);
+
+  Stream<List<MangaDetailModel>> getListChapter();
+
+  Future getAllDataChapterRead();
 }

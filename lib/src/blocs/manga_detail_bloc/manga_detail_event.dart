@@ -14,7 +14,7 @@ class FetchMangaDetailEvent extends MangaDetailEvent {
 class AddChapterToListReading extends MangaDetailEvent {
   const AddChapterToListReading(this.idManga);
 
-  final String? idManga;
+  final String idManga;
 }
 
 class FavoriteMangaEvent extends MangaDetailEvent {}
