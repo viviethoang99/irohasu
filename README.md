@@ -1,3 +1,5 @@
+## The project is in the process of being revised
+
 ## **Irohasu - Learn Flutter**
 
 # About
@@ -19,14 +21,13 @@ The API is still in development.
 
 # Demo
 
-|     Library Screen   |      History Screen     |  Detail Screen |
-|:---------------------:|:---------------------:|:-------------------------:
-![](.github/readme-images/library.png)|![](.github/readme-images/MangaDetails.png)| ![](.github/readme-images/history.png)
+|             Library Screen             |               History Screen                |             Detail Screen              |
+| :------------------------------------: | :-----------------------------------------: | :------------------------------------: |
+| ![](.github/readme-images/library.png) | ![](.github/readme-images/MangaDetails.png) | ![](.github/readme-images/history.png) |
 
-|     Search Screen         |   Vertically Screen    |  Horizontally Screen |
-:-------------------------:|:-------------------------:|:-------------------------:
-![](.github/readme-images/search.png)|![](.github/readme-images/chapter.png)|![](.github/readme-images/webtoon.png)
-
+|             Search Screen             |           Vertically Screen            |          Horizontally Screen           |
+| :-----------------------------------: | :------------------------------------: | :------------------------------------: |
+| ![](.github/readme-images/search.png) | ![](.github/readme-images/chapter.png) | ![](.github/readme-images/webtoon.png) |
 
 # Code Dependencies
 
