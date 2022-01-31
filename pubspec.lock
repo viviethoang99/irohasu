@@ -284,13 +284,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_webview_plugin:
-    dependency: "direct main"
-    description:
-      name: flutter_webview_plugin
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.4.0"
   frontend_server_client:
     dependency: transitive
     description:
@@ -500,7 +493,7 @@ packages:
       name: photo_view
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.11.1"
+    version: "0.13.0"
   platform:
     dependency: transitive
     description:

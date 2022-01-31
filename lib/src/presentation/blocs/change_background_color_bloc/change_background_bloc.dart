@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:meta/meta.dart';
 
 part 'change_background_event.dart';
 
