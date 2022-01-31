@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/extensions/extensions.dart';
 import '../../../core/helper/chap_helper.dart';
 import '../../../data/model/chapter_item_model.dart';
-import '../../blocs/manga_detail_bloc/bloc.dart';
+import '../../blocs/manga_detail_bloc/manga_detail_bloc.dart';
 import '../../screens/detail_screens/manga_detail_screen.dart';
 
 class DetailItemWidget extends StatelessWidget {

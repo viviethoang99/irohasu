@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../config/base_content.dart';
-import '../../../blocs/manga_detail_bloc/bloc.dart';
+import '../../../blocs/manga_detail_bloc/manga_detail_bloc.dart';
 
 class DescriptionTextWidget extends StatefulWidget {
   DescriptionTextWidget({required this.text});

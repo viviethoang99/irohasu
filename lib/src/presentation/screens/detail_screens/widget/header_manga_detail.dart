@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../env.dart';
 import '../../../../config/base_colors.dart';
 import '../../../../core/helper/size_config.dart';
-import '../../../blocs/manga_detail_bloc/bloc.dart';
+import '../../../blocs/manga_detail_bloc/manga_detail_bloc.dart';
 import 'btn_vote_widget.dart';
 
 class HeaderMangaDetail extends StatelessWidget {

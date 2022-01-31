@@ -1,15 +1,21 @@
-import 'package:dio/dio.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 
 import '../../../config/base_content.dart';
 import '../../../config/config.dart';
+import '../../../data/model/manga_detail_model.dart';
 import '../../../domain/repositories/manga_repository.dart';
-import 'bloc.dart';
+
+part 'manga_detail_event.dart';
+part 'manga_detail_state.dart';
 
 class MangaDetailBloc extends Bloc<MangaDetailEvent, MangaDetailState> {
-  MangaDetailBloc(repo)
-      : _repo = repo,
-        super(MangaDetailLoadingState());
+  MangaDetailBloc(this._repo) : super(MangaDetailLoadingState()) {
+    on<FetchMangaDetailEvent>(_fetchMangaDetail);
+    on<CacheMangaDetailEvent>(_saveMangaToLocal);
+    on<FavoriteMangaEvent>(_favoriteManga);
+    on<AddChapterToListReading>(_setLastReadingToChapter);
+  }
 
   final MangaRepository _repo;
 
@@ -19,63 +25,72 @@ class MangaDetailBloc extends Bloc<MangaDetailEvent, MangaDetailState> {
     }
   }
 
-  @override
-  Stream<MangaDetailState> mapEventToState(MangaDetailEvent event) async* {
-    if (event is FetchMangaDetailEvent) {
-      yield MangaDetailLoadingState();
-      try {
-        final data = await _repo.fetchMangaDetail(event.endpoint!);
-        if (data != null) {
-          yield MangaDetailSuccessState(mangaDetail: data);
-          final listChapter = await _repo.getListChapterReading(data.idManga);
-          final mangaLocal = await _repo.getMangaDetailLocal(data.idManga);
-          yield currentState!.copyWith(
-            mangaDetail: currentState!.mangaDetail.copyWith(
-              isFavorite: mangaLocal?.isFavorite,
-            ),
-            chapterReading: listChapter as List<String>,
-          );
-        } else {
-          final id = event.endpoint!.split('/')[1];
-          final listChapter = await _repo.getListChapterReading(id);
-          final mangaLocal = await _repo.getMangaDetailLocal(id);
-          yield MangaDetailSuccessState(
-            mangaDetail: mangaLocal!,
-            chapterReading: listChapter as List<String>,
-          );
-        }
-      } on DioError catch (e) {
-        yield MangaDetailFailureState(msg: e.toString());
-      }
-    }
-    if (event is CacheMangaDetailEvent && state is MangaDetailSuccessState) {
-      if (currentState!.mangaDetail.isFavorite ||
-          currentState!.chapterReading.isNotEmpty) {
-        await _repo.addListChapterRead(
-          currentState!.chapterReading,
-          currentState!.mangaDetail.idManga,
-        );
-        await _repo.addMangaDetail(
-          currentState!.mangaDetail.copyWith(lastRead: DateTime.now()),
-        );
+  Future<void> _fetchMangaDetail(
+    FetchMangaDetailEvent event,
+    Emitter<MangaDetailState> emit,
+  ) async {
+    emit(MangaDetailLoadingState());
+    try {
+      final data = await _repo.fetchMangaDetail(event.endpoint!);
+      if (data != null) {
+        emit(MangaDetailSuccessState(mangaDetail: data));
+        final listChapter = await _repo.getListChapterReading(data.idManga);
+        final mangaLocal = await _repo.getMangaDetailLocal(data.idManga);
+        emit(currentState!.copyWith(
+          mangaDetail: currentState!.mangaDetail.copyWith(
+            isFavorite: mangaLocal?.isFavorite,
+          ),
+          chapterReading: listChapter as List<String>,
+        ));
       } else {
-        await _repo.removeMangaDetail(currentState!.mangaDetail.idManga);
+        final id = event.endpoint!.split('/')[1];
+        final listChapter = await _repo.getListChapterReading(id);
+        final mangaLocal = await _repo.getMangaDetailLocal(id);
+        emit(MangaDetailSuccessState(
+          mangaDetail: mangaLocal!,
+          chapterReading: listChapter as List<String>,
+        ));
       }
-      yield MangaDetailLoadingState();
+    } catch (e) {
+      emit(MangaDetailFailureState(msg: e.toString()));
     }
-    if (event is FavoriteMangaEvent) {
-      yield currentState!.copyWith(
-        mangaDetail: currentState!.mangaDetail.copyWith(
-          isFavorite: !currentState!.mangaDetail.isFavorite,
-        ),
+  }
+
+  Future<void> _saveMangaToLocal(
+    CacheMangaDetailEvent event,
+    Emitter<MangaDetailState> emit,
+  ) async {
+    if (currentState!.mangaDetail.isFavorite ||
+        currentState!.chapterReading.isNotEmpty) {
+      await _repo.addListChapterRead(
+        currentState!.chapterReading,
+        currentState!.mangaDetail.idManga,
       );
+      await _repo.addMangaDetail(
+        currentState!.mangaDetail.copyWith(lastRead: DateTime.now()),
+      );
+    } else {
+      await _repo.removeMangaDetail(currentState!.mangaDetail.idManga);
     }
-    if (event is AddChapterToListReading) {
-      final newList = currentState!.chapterReading
-        ..remove(event.idManga)
-        ..add(event.idManga);
-      yield currentState!.copyWith(chapterReading: newList);
-    }
+  }
+
+  Future<void> _favoriteManga(
+    FavoriteMangaEvent event,
+    Emitter<MangaDetailState> emit,
+  ) async {
+    emit(currentState!.copyWith(
+      mangaDetail: currentState!.mangaDetail.setFavorite(),
+    ));
+  }
+
+  Future<void> _setLastReadingToChapter(
+    AddChapterToListReading event,
+    Emitter<MangaDetailState> emit,
+  ) async {
+    final newList = currentState!.chapterReading
+      ..remove(event.idManga)
+      ..add(event.idManga);
+    emit(currentState!.copyWith(chapterReading: newList));
   }
 
   String textLastChapter() {

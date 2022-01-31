@@ -1,4 +1,4 @@
-import 'package:equatable/equatable.dart';
+part of 'manga_detail_bloc.dart';
 
 abstract class MangaDetailEvent extends Equatable {
   const MangaDetailEvent();

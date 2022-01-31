@@ -5,7 +5,7 @@ import '../../../core/helper/size_config.dart';
 import '../../../data/repositories/chapter_repository_imp.dart';
 import '../../blocs/change_reading_mode_bloc/change_reading_mode_bloc.dart';
 import '../../blocs/chapter_screen/chapter_screen_cubit.dart';
-import '../../blocs/manga_detail_bloc/bloc.dart';
+import '../../blocs/manga_detail_bloc/manga_detail_bloc.dart';
 import '../../widgets/loading_screen.dart';
 import 'default_reading_screen.dart';
 import 'webtoon_screen.dart';
@@ -51,7 +51,7 @@ class _ChapterScreenState extends State<ChapterScreen> {
       child: BlocBuilder<ChapterScreenCubit, ChapterScreenState>(
         builder: (_, state) {
           if (state.isLoading) {
-            return LoadingScreen();
+            return const LoadingScreen();
           } else if (state.chapter != null) {
             return BlocBuilder<ChangeReadingModeBloc, ChangeReadingModeState>(
               builder: (_, stateReading) {

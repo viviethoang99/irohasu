@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../env.dart';
-import '../../../blocs/manga_detail_bloc/bloc.dart';
+import '../../../blocs/manga_detail_bloc/manga_detail_bloc.dart';
 import '../../detail_screens/manga_detail_screen.dart';
 
 class ItemManga extends StatelessWidget {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../blocs/manga_detail_bloc/bloc.dart';
+import '../../../blocs/manga_detail_bloc/manga_detail_bloc.dart';
 
 class BtnVoteWidget extends StatelessWidget {
   const BtnVoteWidget({Key? key}) : super(key: key);

@@ -6,7 +6,7 @@ import '../../../core/extensions/extensions.dart';
 import '../../../data/model/chapter/chapter_model.dart';
 import '../../../data/model/manga_detail_model.dart';
 import '../../../domain/repositories/chaper_repository.dart';
-import '../manga_detail_bloc/bloc.dart';
+import '../manga_detail_bloc/manga_detail_bloc.dart';
 
 part 'chapter_screen_state.dart';
 

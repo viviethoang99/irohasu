@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/extensions/extensions.dart';
+import '../../../../core/extensions/string_extension.dart';
 import '../../../../core/helper/convert_date_time.dart';
-import '../../../blocs/manga_detail_bloc/bloc.dart';
+import '../../../blocs/manga_detail_bloc/manga_detail_bloc.dart';
 import '../../chapter_screens/chapter_screen.dart';
 
 class ListChapterWidget extends StatefulWidget {

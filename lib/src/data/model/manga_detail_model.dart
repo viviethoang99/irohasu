@@ -11,7 +11,7 @@ part 'manga_detail_model.g.dart';
 
 @HiveType(typeId: 0)
 class MangaDetailModel extends Equatable {
-  MangaDetailModel({
+  const MangaDetailModel({
     required this.idManga,
     required this.title,
     required this.endpoint,
@@ -94,6 +94,10 @@ class MangaDetailModel extends Equatable {
       listGenres: listGenres ?? this.listGenres,
       lastRead: lastRead ?? this.lastRead,
     );
+  }
+
+  MangaDetailModel setFavorite() {
+    return copyWith(isFavorite: !isFavorite);
   }
 
   @HiveField(0)
