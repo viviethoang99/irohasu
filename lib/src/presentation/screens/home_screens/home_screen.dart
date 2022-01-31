@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../blocs/list_manga_bloc/bloc.dart';
+import '../../blocs/list_manga_bloc/list_manga_bloc.dart';
 import '../../widgets/loading_screen.dart';
 import 'list_manga_widget.dart';
 import 'widget/appbar_widget.dart';
@@ -16,8 +15,7 @@ class ListMangaScreen extends StatefulWidget {
 }
 
 class _ListMangaScreenState extends State<ListMangaScreen> {
-  // Scroll Controller
-  ScrollController? _scrollController;
+  late final ScrollController? _scrollController;
   final _scrollThreshold = 300.0;
 
   @override
@@ -29,9 +27,15 @@ class _ListMangaScreenState extends State<ListMangaScreen> {
         final maxScrollExtent = _scrollController!.position.maxScrollExtent;
         final currentScroll = _scrollController!.position.pixels;
         if (maxScrollExtent - currentScroll <= _scrollThreshold) {
-          BlocProvider.of<ListMangaBloc>(context).add(FetchListMangaEvent());
+          context.read<ListMangaBloc>().add(FetchListMangaEvent());
         }
       });
+  }
+
+  @override
+  void dispose() {
+    _scrollController?.dispose();
+    super.dispose();
   }
 
   @override
@@ -44,20 +48,18 @@ class _ListMangaScreenState extends State<ListMangaScreen> {
             appBar: AppBarHomeWidget(),
             body: BlocBuilder<ListMangaBloc, ListMangaState>(
                 builder: (context, state) {
-              if (state is InitialListMangaState) return Container();
-              if (state is ListMangaLoadingState) {
-                return LoadingScreen();
-              }
-              if (state is ListMangaLoadedState) {
+              if (state.listManga.isNotEmpty) {
                 return ListMangaWidget(
                   scrollController: _scrollController,
-                  data: state.data,
-                  hasReachedEnd: state.hasReachedEnd,
+                  data: state.listManga,
+                  hasReachedEnd: state.hasReachedMax,
                 );
               }
-              // if (state is ListMangaFailureState) {
-              return Container(
-                child: Center(
+              if (state.listManga.isEmpty) return const LoadingScreen();
+
+              if (state.listManga.isEmpty &&
+                  state.status == ListMangaScreenStatus.failure) {
+                return Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -83,11 +85,11 @@ class _ListMangaScreenState extends State<ListMangaScreen> {
                       )
                     ],
                   ),
-                ),
-              );
-              // }
-              // return Container();
+                );
+              }
+
               //never run this line, only fix warning.
+              return const SizedBox.shrink();
             }),
           ),
         ],

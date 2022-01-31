@@ -7,7 +7,7 @@ import '../../../blocs/manga_detail_bloc/bloc.dart';
 import '../../detail_screens/manga_detail_screen.dart';
 
 class ItemManga extends StatelessWidget {
-  ItemManga({
+  const ItemManga({
     required this.title,
     required this.thumbnailUrl,
     required this.setUrlWithoutDomain,

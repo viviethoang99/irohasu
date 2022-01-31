@@ -1,44 +1,39 @@
-import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
-import '../../../data/model/manga_list_model.dart';
+part of 'list_manga_bloc.dart';
 
-@immutable
-abstract class ListMangaState extends Equatable {
-  const ListMangaState();
+enum ListMangaScreenStatus { initial, success, failure }
 
-  @override
-  List<Object?> get props => [];
-}
+class ListMangaState extends Equatable {
+  const ListMangaState({
+    this.status = ListMangaScreenStatus.initial,
+    this.listManga = const <MangaModel>[],
+    this.hasReachedMax = false,
+    this.page = 0,
+  });
 
-class InitialListMangaState extends ListMangaState {}
-
-class ListMangaLoadingState extends ListMangaState {}
-
-class ListMangaLoadedState extends ListMangaState {
-  ListMangaLoadedState({this.data, this.hasReachedEnd, this.page = 0});
-
-  final List<MangaModel>? data;
-  final bool? hasReachedEnd;
+  final ListMangaScreenStatus status;
+  final List<MangaModel> listManga;
+  final bool hasReachedMax;
   final int page;
 
-  ListMangaLoadedState cloneWith(
-      {List<MangaModel>? data, bool? hasReachedEnd, int? page}) {
-    return ListMangaLoadedState(
-      data: data ?? this.data,
-      hasReachedEnd: hasReachedEnd ?? this.hasReachedEnd,
+  ListMangaState copyWith({
+    ListMangaScreenStatus? status,
+    List<MangaModel>? listManga,
+    bool? hasReachedMax,
+    int? page,
+  }) {
+    return ListMangaState(
+      status: status ?? this.status,
+      listManga: listManga ?? this.listManga,
+      hasReachedMax: hasReachedMax ?? this.hasReachedMax,
       page: page ?? this.page,
     );
   }
 
   @override
-  List<Object?> get props => [data, hasReachedEnd, page];
-}
-
-class ListMangaFailureState extends ListMangaState {
-  ListMangaFailureState({this.msg});
-
-  final String? msg;
-
-  @override
-  List<Object?> get props => [msg];
+  List<Object> get props => [
+        status,
+        listManga,
+        hasReachedMax,
+        page,
+      ];
 }

@@ -15,7 +15,7 @@ import '../presentation/blocs/change_reading_mode_bloc/change_reading_mode_bloc.
 import '../presentation/blocs/change_theme_bloc/change_theme_bloc.dart';
 import '../presentation/blocs/history_screen_bloc/history_screen_bloc.dart';
 import '../presentation/blocs/library_screen_bloc/library_screen_bloc.dart';
-import '../presentation/blocs/list_manga_bloc/bloc.dart';
+import '../presentation/blocs/list_manga_bloc/list_manga_bloc.dart';
 import '../presentation/blocs/manga_detail_bloc/bloc.dart';
 import '../presentation/blocs/search_bloc/bloc.dart';
 import '../presentation/screens/index_screen/index_screen.dart';

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../env.dart';
-import '../../../blocs/list_manga_bloc/bloc.dart';
+import '../../../blocs/list_manga_bloc/list_manga_bloc.dart';
 import '../../../screens/search_screens/search_screen.dart';
 
 class AppBarHomeWidget extends StatelessWidget implements PreferredSizeWidget {
@@ -40,7 +40,7 @@ class AppBarHomeWidget extends StatelessWidget implements PreferredSizeWidget {
               color: theme.primaryColor,
             ),
             onPressed: () {
-              BlocProvider.of<ListMangaBloc>(context).add(RefreshMangaEvent());
+              context.read<ListMangaBloc>().add(RefreshMangaEvent());
             }),
         Container(
           margin: const EdgeInsets.only(right: 8),
