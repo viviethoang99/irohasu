@@ -7,13 +7,16 @@ import '../home_screens/home_screen.dart';
 import '../library_screen/library_screen.dart';
 import '../setting_screen/setting_screen.dart';
 
-class IndexScreen extends StatefulWidget {
+class HomeScreen extends StatefulWidget {
+  const HomeScreen();
+
   static const routeName = '/';
+
   @override
-  _IndexScreenState createState() => _IndexScreenState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _IndexScreenState extends State<IndexScreen> {
+class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
   PageController? _pageController;
 
@@ -25,7 +28,7 @@ class _IndexScreenState extends State<IndexScreen> {
 
   @override
   void dispose() {
-    _pageController!.dispose();
+    _pageController?.dispose();
     super.dispose();
   }
 
@@ -39,7 +42,7 @@ class _IndexScreenState extends State<IndexScreen> {
             setState(() => _currentIndex = index);
           },
           children: <Widget>[
-            HomeScreen(),
+            const ListMangaScreen(),
             LibraryScreen(),
             HistoryScreen(),
             SettingScreen(),

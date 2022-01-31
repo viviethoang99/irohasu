@@ -50,45 +50,55 @@ class _AppWidgetState extends State<AppWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
+    return MultiRepositoryProvider(
       providers: [
-        BlocProvider<LibraryScreenBloc>(
-          create: (context) => LibraryScreenBloc(mangaRepository),
+        RepositoryProvider<MangaRepository>(
+          create: (context) => mangaRepository,
         ),
-        BlocProvider<HistoryScreenBloc>(
-          create: (context) => HistoryScreenBloc(mangaRepository),
-        ),
-        BlocProvider<MangaDetailBloc>(
-          create: (context) => MangaDetailBloc(mangaRepository),
-        ),
-        BlocProvider<ListMangaBloc>(
-          create: (context) => ListMangaBloc(mangaRepository),
-        ),
-        BlocProvider<SearchBloc>(
-          create: (context) => SearchBloc(mangaRepository),
-        ),
-        BlocProvider<ChangeBackgroundBloc>(
-          create: (context) => ChangeBackgroundBloc(),
-        ),
-        BlocProvider<ChangeThemeBloc>(
-          create: (_) => ChangeThemeBloc()..add(DecideTheme()),
-        ),
-        BlocProvider<ChangeReadingModeBloc>(
-          create: (context) => ChangeReadingModeBloc(),
+        RepositoryProvider<ChapterRepository>(
+          create: (context) => chapterRepository,
         ),
       ],
-      child: BlocBuilder<ChangeThemeBloc, ChangeThemeState>(
-        builder: (_, state) {
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: ENV.nameApp,
-            theme: state.themeLight,
-            darkTheme: state.themeDark,
-            home: IndexScreen(),
-            initialRoute: IndexScreen.routeName,
-            onGenerateRoute: AppRoutes.generateRoute,
-          );
-        },
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<LibraryScreenBloc>(
+            create: (context) => LibraryScreenBloc(mangaRepository),
+          ),
+          BlocProvider<HistoryScreenBloc>(
+            create: (context) => HistoryScreenBloc(mangaRepository),
+          ),
+          BlocProvider<MangaDetailBloc>(
+            create: (context) => MangaDetailBloc(mangaRepository),
+          ),
+          BlocProvider<ListMangaBloc>(
+            create: (context) => ListMangaBloc(mangaRepository),
+          ),
+          BlocProvider<SearchBloc>(
+            create: (context) => SearchBloc(mangaRepository),
+          ),
+          BlocProvider<ChangeBackgroundBloc>(
+            create: (context) => ChangeBackgroundBloc(),
+          ),
+          BlocProvider<ChangeThemeBloc>(
+            create: (_) => ChangeThemeBloc()..add(DecideTheme()),
+          ),
+          BlocProvider<ChangeReadingModeBloc>(
+            create: (context) => ChangeReadingModeBloc(),
+          ),
+        ],
+        child: BlocBuilder<ChangeThemeBloc, ChangeThemeState>(
+          builder: (_, state) {
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              title: ENV.nameApp,
+              theme: state.themeLight,
+              darkTheme: state.themeDark,
+              home: const HomeScreen(),
+              initialRoute: HomeScreen.routeName,
+              onGenerateRoute: AppRoutes.generateRoute,
+            );
+          },
+        ),
       ),
     );
   }

@@ -7,10 +7,13 @@ import '../../widgets/loading_screen.dart';
 import 'manga_detail_loaded_screen.dart';
 
 class MangaDetailScreen extends StatefulWidget {
-  const MangaDetailScreen({Key? key, this.endpoint}) : super(key: key);
+  const MangaDetailScreen({
+    Key? key,
+    required this.endpoint,
+  }) : super(key: key);
 
   static const routeName = '/mangaDetail';
-  final String? endpoint;
+  final String endpoint;
 
   @override
   _MangaDetailScreenState createState() => _MangaDetailScreenState();

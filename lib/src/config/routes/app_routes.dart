@@ -23,10 +23,10 @@ class AppRoutes {
     final args = routeSettings.arguments;
 
     switch (routeSettings.name) {
-      case IndexScreen.routeName:
+      case HomeScreen.routeName:
         return _pageRoute(
           routeSettings: routeSettings,
-          builder: IndexScreen(),
+          builder: const HomeScreen(),
         );
       case GeneralSetting.routeName:
         return _pageRoute(
@@ -34,9 +34,11 @@ class AppRoutes {
           builder: GeneralSetting(),
         );
       case MangaDetailScreen.routeName:
+        final data = args as MangaDetailScreen;
+
         return _pageRoute(
             routeSettings: routeSettings,
-            builder: MangaDetailScreen(endpoint: args.toString()));
+            builder: MangaDetailScreen(endpoint: data.endpoint));
       case ChapterScreen.routeName:
         var data = args as ChapterScreen;
         return _pageRoute(
@@ -54,15 +56,12 @@ class AppRoutes {
       //     builder: WebViewPage(title: data.title, url: data.url),
       //   );
       case SearchScreen.routeName:
-        return _pageRoute(routeSettings: routeSettings, builder: SearchScreen());
+        return _pageRoute(
+            routeSettings: routeSettings, builder: SearchScreen());
       default:
-        return MaterialPageRoute(
-          builder: (_) => Scaffold(
-            appBar: AppBar(
-              title: const Text('Error'),
-            ),
-            body: const Center(child: Text('No route defined for app')),
-          ),
+        return _pageRoute(
+          routeSettings: routeSettings,
+          builder: const HomeScreen(),
         );
     }
   }

@@ -10,7 +10,7 @@ class MangaDetailHelper {
   }
 
   static Map<String, String> countTotalLike(String? value) {
-    var keyValuePairs = value?.split(';') ?? const [];
+    final keyValuePairs = value?.split(';') ?? const [];
     final map = <String, String>{};
     for (var pair in keyValuePairs) {
       final entry = pair.split('=');

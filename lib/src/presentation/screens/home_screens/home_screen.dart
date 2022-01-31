@@ -6,14 +6,16 @@ import '../../widgets/loading_screen.dart';
 import 'list_manga_widget.dart';
 import 'widget/appbar_widget.dart';
 
-class HomeScreen extends StatefulWidget {
+class ListMangaScreen extends StatefulWidget {
+  const ListMangaScreen();
+
   static const routeName = '/home';
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _ListMangaScreenState createState() => _ListMangaScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _ListMangaScreenState extends State<ListMangaScreen> {
   // Scroll Controller
   ScrollController? _scrollController;
   final _scrollThreshold = 300.0;

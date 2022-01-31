@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/helper/size_config.dart';
-import '../../../data/datasource/remote/chapter_services.dart';
 import '../../../data/repositories/chapter_repository_imp.dart';
 import '../../blocs/change_reading_mode_bloc/change_reading_mode_bloc.dart';
 import '../../blocs/chapter_screen/chapter_screen_cubit.dart';
@@ -30,7 +29,7 @@ class _ChapterScreenState extends State<ChapterScreen> {
   @override
   void initState() {
     _cubit = ChapterScreenCubit(
-      repository: ChapterRepositoryImp(ChapterServices()),
+      repository: context.read<ChapterRepositoryImp>(),
       mangaDetailBloc: context.read<MangaDetailBloc>(),
     )..initLoad(widget.endpoint!);
     BlocProvider.of<ChangeReadingModeBloc>(context).add(GetReadingMode());
