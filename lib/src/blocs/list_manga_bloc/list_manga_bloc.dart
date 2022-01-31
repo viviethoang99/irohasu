@@ -12,14 +12,14 @@ class ListMangaBloc extends Bloc<ListMangaEvent, ListMangaState> {
   bool _hasReachedMax(ListMangaState state) =>
       state is ListMangaLoadedState && state.hasReachedEnd!;
 
-  @override
-  Stream<Transition<ListMangaEvent, ListMangaState>> transformEvents(
-      Stream<ListMangaEvent> events, transitionFn) {
-    return super.transformEvents(
-      events.debounceTime(const Duration(milliseconds: 500)),
-      transitionFn,
-    );
-  }
+  // @override
+  // Stream<Transition<ListMangaEvent, ListMangaState>> transformEvents(
+  //     Stream<ListMangaEvent> events, transitionFn) {
+  //   return super.transformEvents(
+  //     events.debounceTime(const Duration(milliseconds: 500)),
+  //     transitionFn,
+  //   );
+  // }
 
   @override
   Stream<ListMangaState> mapEventToState(ListMangaEvent event) async* {
