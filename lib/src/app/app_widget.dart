@@ -3,22 +3,22 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 
 import '../../env.dart';
-import '../blocs/change_background_color_bloc/change_background_bloc.dart';
-import '../blocs/change_reading_mode_bloc/change_reading_mode_bloc.dart';
-import '../blocs/change_theme_bloc/change_theme_bloc.dart';
-import '../blocs/history_screen_bloc/history_screen_bloc.dart';
-import '../blocs/library_screen_bloc/library_screen_bloc.dart';
-import '../blocs/list_manga_bloc/bloc.dart';
-import '../blocs/manga_detail_bloc/bloc.dart';
-import '../blocs/search_bloc/bloc.dart';
-import '../helper/routes.dart';
-import '../local/cache_manager_data.dart';
-import '../repositories/chaper_repository.dart';
-import '../repositories/imp/chapter_repository_imp.dart';
-import '../repositories/imp/manga_repository_imp.dart';
-import '../repositories/manga_repository.dart';
-import '../screens/index_screen/index_screen.dart';
-import '../services/chapter_services.dart';
+import '../config/routes/app_routes.dart';
+import '../data/datasource/local/cache_manager_data.dart';
+import '../data/datasource/remote/chapter_services.dart';
+import '../data/repositories/chapter_repository_imp.dart';
+import '../data/repositories/manga_repository_imp.dart';
+import '../domain/repositories/chaper_repository.dart';
+import '../domain/repositories/manga_repository.dart';
+import '../presentation/blocs/change_background_color_bloc/change_background_bloc.dart';
+import '../presentation/blocs/change_reading_mode_bloc/change_reading_mode_bloc.dart';
+import '../presentation/blocs/change_theme_bloc/change_theme_bloc.dart';
+import '../presentation/blocs/history_screen_bloc/history_screen_bloc.dart';
+import '../presentation/blocs/library_screen_bloc/library_screen_bloc.dart';
+import '../presentation/blocs/list_manga_bloc/bloc.dart';
+import '../presentation/blocs/manga_detail_bloc/bloc.dart';
+import '../presentation/blocs/search_bloc/bloc.dart';
+import '../presentation/screens/index_screen/index_screen.dart';
 
 class AppWidget extends StatefulWidget {
   @override
@@ -86,7 +86,7 @@ class _AppWidgetState extends State<AppWidget> {
             darkTheme: state.themeDark,
             home: IndexScreen(),
             initialRoute: IndexScreen.routeName,
-            onGenerateRoute: generateRoute,
+            onGenerateRoute: AppRoutes.generateRoute,
           );
         },
       ),

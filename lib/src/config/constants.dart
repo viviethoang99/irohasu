@@ -1,4 +1,4 @@
-import '../models/setting_model.dart';
+import '../data/model/setting_model/setting_model.dart';
 
 class Constants {
   static final List<ThemeModel> listTheme = [
