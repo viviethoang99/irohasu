@@ -29,11 +29,11 @@ class ListMangaBloc extends Bloc<ListMangaEvent, ListMangaState> {
     final data = await _repository.fetchListManga(page: state.page);
     data.isEmpty
         ? emit(state.copyWith(hasReachedMax: true))
-        : state.copyWith(
+        : emit(state.copyWith(
             listManga: [...state.listManga, ...data],
             hasReachedMax: false,
             page: state.page + 1,
-          );
+          ));
   }
 
   Future<void> _initialEvent(
@@ -41,7 +41,7 @@ class ListMangaBloc extends Bloc<ListMangaEvent, ListMangaState> {
     Emitter<ListMangaState> emit,
   ) async {
     emit(const ListMangaState());
-    final data = await _repository.fetchListManga(page: 0);
+    final data = await _repository.fetchListManga();
     emit(state.copyWith(
       listManga: data,
       hasReachedMax: data.length < 20 ? true : false,

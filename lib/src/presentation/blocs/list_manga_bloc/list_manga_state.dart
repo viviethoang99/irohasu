@@ -7,7 +7,7 @@ class ListMangaState extends Equatable {
     this.status = ListMangaScreenStatus.initial,
     this.listManga = const <MangaModel>[],
     this.hasReachedMax = false,
-    this.page = 0,
+    this.page = 1,
   });
 
   final ListMangaScreenStatus status;

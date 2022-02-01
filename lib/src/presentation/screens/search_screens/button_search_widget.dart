@@ -73,7 +73,7 @@ class ButtonSearchWidget extends SearchDelegate<MangaDetailModel?> {
               return ItemManga(
                 title: item.title,
                 thumbnailUrl: item.thumbnailUrl,
-                setUrlWithoutDomain: item.endpoint,
+                endpoint: item.endpoint,
               );
             },
           ),

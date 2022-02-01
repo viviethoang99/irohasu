@@ -24,7 +24,7 @@ class MangaRepositoryImp implements MangaRepository {
   }
 
   @override
-  Future<List<MangaModel>> fetchListManga({int? page}) {
+  Future<List<MangaModel>> fetchListManga({int page = 1}) {
     return _mangaService.fetchListManga(page: page);
   }
 

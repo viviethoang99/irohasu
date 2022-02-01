@@ -10,13 +10,13 @@ class ItemManga extends StatelessWidget {
   const ItemManga({
     required this.title,
     required this.thumbnailUrl,
-    required this.setUrlWithoutDomain,
+    required this.endpoint,
     this.status,
   });
 
   final String? title;
   final String? thumbnailUrl;
-  final String? setUrlWithoutDomain;
+  final String? endpoint;
   final String? status;
 
   @override
@@ -26,7 +26,7 @@ class ItemManga extends StatelessWidget {
         Navigator.of(context)
             .pushNamed(
           MangaDetailScreen.routeName,
-          arguments: setUrlWithoutDomain,
+          arguments: (MangaDetailScreen(endpoint: endpoint!,)),
         )
             .then((_) {
           context.read<MangaDetailBloc>().add(CacheMangaDetailEvent());

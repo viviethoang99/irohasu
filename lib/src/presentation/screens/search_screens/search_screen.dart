@@ -109,7 +109,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       return ItemManga(
                         title: manga.title,
                         thumbnailUrl: manga.thumbnailUrl,
-                        setUrlWithoutDomain: manga.endpoint,
+                        endpoint: manga.endpoint,
                       );
                     },
                   ),

@@ -47,7 +47,7 @@ class _ListMangaWidgetState extends State<ListMangaWidget> {
           return ItemManga(
             title: data![index].title,
             thumbnailUrl: data![index].thumbnailUrl,
-            setUrlWithoutDomain: data![index].endpoint,
+            endpoint: data![index].endpoint,
           );
         },
       ),

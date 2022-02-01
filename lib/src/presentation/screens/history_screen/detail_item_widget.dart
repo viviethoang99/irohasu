@@ -81,7 +81,7 @@ class DetailItemWidget extends StatelessWidget {
                       Navigator.of(context)
                           .pushNamed(
                             MangaDetailScreen.routeName,
-                            arguments: urlManga,
+                            arguments: MangaDetailScreen(endpoint: urlManga!),
                           )
                           .then(
                             (_) => context

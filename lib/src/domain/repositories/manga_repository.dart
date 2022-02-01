@@ -2,7 +2,7 @@ import '../../data/model/manga_detail_model.dart';
 import '../../data/model/manga_list_model.dart';
 
 abstract class MangaRepository {
-  Future<List<MangaModel>> fetchListManga({int? page});
+  Future<List<MangaModel>> fetchListManga({int page});
 
   Future<List<MangaModel>> fetchListMangaSearch({String? query});
 

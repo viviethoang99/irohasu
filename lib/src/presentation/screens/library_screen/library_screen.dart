@@ -43,7 +43,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                 return ItemManga(
                   title: manga.title,
                   thumbnailUrl: manga.thumbnailUrl,
-                  setUrlWithoutDomain: manga.endpoint,
+                  endpoint: manga.endpoint,
                   status: 'library',
                 );
               },
