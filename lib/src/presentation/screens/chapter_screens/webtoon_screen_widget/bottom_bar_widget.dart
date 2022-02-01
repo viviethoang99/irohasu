@@ -43,7 +43,9 @@ class _BottomBarChapterScreenState extends State<BottomBarChapterScreen> {
           _delta += (offset - _oldOffset);
           if (_delta > _containerMaxHeight) {
             _delta = _containerMaxHeight;
-          } else if (_delta < 0) _delta = 0;
+          } else if (_delta < 0) {
+            _delta = 0;
+          }
           _oldOffset = offset;
           _offset = -_delta;
         });

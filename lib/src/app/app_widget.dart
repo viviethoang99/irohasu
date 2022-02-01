@@ -80,7 +80,7 @@ class _AppWidgetState extends State<AppWidget> {
             create: (context) => ChangeBackgroundBloc(),
           ),
           BlocProvider<ChangeThemeBloc>(
-            create: (_) => ChangeThemeBloc()..add(DecideTheme()),
+            create: (_) => ChangeThemeBloc()..add(SetTheme()),
           ),
           BlocProvider<ChangeReadingModeBloc>(
             create: (context) => ChangeReadingModeBloc(),

@@ -1,26 +1,28 @@
 part of 'change_background_bloc.dart';
 
-@immutable
-class ChangeBackgroundState {
-  ChangeBackgroundState({this.color, this.string, this.selectOption});
+class ChangeBackgroundState extends Equatable{
+  const ChangeBackgroundState({this.color, this.name, this.selectOption});
 
   factory ChangeBackgroundState.white() {
-    return ChangeBackgroundState(
+    return const ChangeBackgroundState(
       color: Colors.white,
-      string: 'Trắng',
+      name: 'Trắng',
       selectOption: 0,
     );
   }
 
   factory ChangeBackgroundState.black() {
-    return ChangeBackgroundState(
+    return const ChangeBackgroundState(
       color: Colors.black87,
-      string: 'Đen',
+      name: 'Đen',
       selectOption: 1,
     );
   }
 
-  final String? string;
+  final String? name;
   final Color? color;
   final int? selectOption;
+
+  @override
+  List<Object?> get props => [];
 }

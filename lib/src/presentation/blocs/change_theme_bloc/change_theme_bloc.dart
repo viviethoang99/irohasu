@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import '../../../../env.dart';
@@ -11,73 +12,75 @@ part 'change_theme_event.dart';
 part 'change_theme_state.dart';
 
 class ChangeThemeBloc extends Bloc<ChangeThemeEvent, ChangeThemeState> {
-  ChangeThemeBloc() : super(ChangeThemeState.lightTheme());
+  ChangeThemeBloc() : super(ChangeThemeState.lightTheme()) {
+    on<SetTheme>(_setTheme);
+    on<LightTheme>(_lightTheme);
+    on<BlackTheme>(_blackTheme);
+    on<DarkTheme>(_darkTheme);
+    on<LightBlackTheme>(_lightBlackTheme);
+    on<LightDarkTheme>(_lightDarkTheme);
+  }
 
-  @override
-  Stream<ChangeThemeState> mapEventToState(ChangeThemeEvent event) async* {
-    if (event is DecideTheme) {
-      final optionValue = await _getOption();
-      if (optionValue == 0) {
-        yield ChangeThemeState.lightTheme();
-      }
-      if (optionValue == 1) {
-        yield ChangeThemeState.blackTheme();
-      }
-      if (optionValue == 2) {
-        yield ChangeThemeState.darkTheme();
-      }
-      if (optionValue == 3) {
-        yield ChangeThemeState.lightBlackTheme();
-      }
-      if (optionValue == 4) {
-        yield ChangeThemeState.lightDarkTheme();
-      }
+  Future<void> _setTheme(
+    SetTheme event,
+    Emitter<ChangeThemeState> emit,
+  ) async {
+    final optionValue = await _getOption();
+    if (optionValue == 0) {
+      emit(ChangeThemeState.lightTheme());
     }
+    if (optionValue == 1) {
+      emit(ChangeThemeState.blackTheme());
+    }
+    if (optionValue == 2) {
+      emit(ChangeThemeState.darkTheme());
+    }
+    if (optionValue == 3) {
+      emit(ChangeThemeState.lightBlackTheme());
+    }
+    if (optionValue == 4) {
+      emit(ChangeThemeState.lightDarkTheme());
+    }
+  }
 
-    if (event is LightTheme) {
-      yield ChangeThemeState.lightTheme();
-      try {
-        await _setOptionValue(0);
-      } catch (_) {
-        throw Exception('Could not persist change');
-      }
-    }
+  Future<void> _lightTheme(
+    LightTheme event,
+    Emitter<ChangeThemeState> emit,
+  ) async {
+    emit(ChangeThemeState.lightTheme());
+    await _setOptionValue(0);
+  }
 
-    if (event is BlackTheme) {
-      yield ChangeThemeState.blackTheme();
-      try {
-        await _setOptionValue(1);
-      } catch (_) {
-        throw Exception('Could not persist change');
-      }
-    }
+  Future<void> _blackTheme(
+    BlackTheme event,
+    Emitter<ChangeThemeState> emit,
+  ) async {
+    emit(ChangeThemeState.blackTheme());
+    await _setOptionValue(1);
+  }
 
-    if (event is DarkTheme) {
-      yield ChangeThemeState.darkTheme();
-      try {
-        await _setOptionValue(2);
-      } catch (_) {
-        throw Exception('Could not persist change');
-      }
-    }
+  Future<void> _darkTheme(
+    DarkTheme event,
+    Emitter<ChangeThemeState> emit,
+  ) async {
+    emit(ChangeThemeState.darkTheme());
+    await _setOptionValue(2);
+  }
 
-    if (event is LightBlackTheme) {
-      yield ChangeThemeState.lightBlackTheme();
-      try {
-        await _setOptionValue(3);
-      } catch (_) {
-        throw Exception('Could not persist change');
-      }
-    }
+  Future<void> _lightBlackTheme(
+    LightBlackTheme event,
+    Emitter<ChangeThemeState> emit,
+  ) async {
+    emit(ChangeThemeState.lightBlackTheme());
+    await _setOptionValue(3);
+  }
 
-    if (event is LightDarkTheme) {
-      yield ChangeThemeState.lightDarkTheme();
-      try {
-        await _setOptionValue(4);
-      } catch (_) {
-        throw Exception('Could not persist change');
-      }
-    }
+  Future<void> _lightDarkTheme(
+    LightDarkTheme event,
+    Emitter<ChangeThemeState> emit,
+  ) async {
+    emit(ChangeThemeState.lightDarkTheme());
+    await _setOptionValue(4);
   }
 
   Future<Null> _setOptionValue(int optionValue) async {

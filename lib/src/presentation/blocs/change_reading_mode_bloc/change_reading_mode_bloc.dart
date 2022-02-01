@@ -10,37 +10,39 @@ part 'change_reading_mode_state.dart';
 
 class ChangeReadingModeBloc
     extends Bloc<ChangeReadingModeEvent, ChangeReadingModeState> {
-  ChangeReadingModeBloc() : super(AdvancedReadingModeState());
+  ChangeReadingModeBloc() : super(AdvancedReadingModeState()) {
+    on<GetReadingMode>(_getMode);
+    on<DefaultMode>(_defaultMode);
+    on<WebtoonMode>(_webtoonMode);
+  }
 
-  @override
-  Stream<ChangeReadingModeState> mapEventToState(
-    ChangeReadingModeEvent event,
-  ) async* {
-    if (event is GetReadingMode) {
-      final optionValue = await _getOption();
-      if (optionValue == 0) {
-        yield AdvancedReadingModeState();
-      }
-      if (optionValue == 1) {
-        yield WebtoonModeState();
-      }
+  Future<void> _getMode(
+    GetReadingMode event,
+    Emitter<ChangeReadingModeState> emit,
+  ) async {
+    final optionValue = await _getOption();
+    if (optionValue == 0) {
+      emit(AdvancedReadingModeState());
     }
-    if (event is DefaultMode) {
-      yield AdvancedReadingModeState();
-      try {
-        await _setOptionValue(0);
-      } catch (_) {
-        throw Exception('Could not persist change');
-      }
+    if (optionValue == 1) {
+      emit(WebtoonModeState());
     }
-    if (event is WebtoonMode) {
-      yield WebtoonModeState();
-      try {
-        await _setOptionValue(1);
-      } catch (_) {
-        throw Exception('Could not persist change');
-      }
-    }
+  }
+
+  Future<void> _defaultMode(
+    DefaultMode event,
+    Emitter<ChangeReadingModeState> emit,
+  ) async {
+    emit(AdvancedReadingModeState());
+    await _setOptionValue(0);
+  }
+
+  Future<void> _webtoonMode(
+    WebtoonMode event,
+    Emitter<ChangeReadingModeState> emit,
+  ) async {
+    emit(WebtoonModeState());
+    await _setOptionValue(1);
   }
 
   Future<Null> _setOptionValue(int optionValue) async {

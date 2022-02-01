@@ -49,7 +49,7 @@ class ButtonSearchWidget extends SearchDelegate<MangaDetailModel?> {
       }
       if (state is SearchLoadingState) {
         return Container(
-          child: LoadingScreen(),
+          child: const LoadingScreen(),
         );
       }
       if (state is SearchLoadedState) {

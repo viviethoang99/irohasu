@@ -135,7 +135,7 @@ class _SettingChapterState extends State<SettingChapter> {
                         .toList();
                   },
                   child: Text(
-                    state.string!,
+                    state.name!,
                     style: TextStyle(
                       fontSize: 20,
                       color: theme.primaryColor,
@@ -160,9 +160,9 @@ class _SettingChapterState extends State<SettingChapter> {
 
   void _setBackgroundColor(String choice) async {
     if (choice == PopupMenuSetting.white) {
-      BlocProvider.of<ChangeBackgroundBloc>(context).add(BackgroundWhite());
+      BlocProvider.of<ChangeBackgroundBloc>(context).add(SetBackgroundWhite());
     } else if (choice == PopupMenuSetting.black) {
-      BlocProvider.of<ChangeBackgroundBloc>(context).add(BackgroundBlack());
+      BlocProvider.of<ChangeBackgroundBloc>(context).add(SetBackgroundBlack());
     }
   }
 }

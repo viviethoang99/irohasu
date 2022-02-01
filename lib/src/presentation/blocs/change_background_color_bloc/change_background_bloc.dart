@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
@@ -10,37 +11,39 @@ part 'change_background_state.dart';
 
 class ChangeBackgroundBloc
     extends Bloc<ChangeBackgroundEvent, ChangeBackgroundState> {
-  ChangeBackgroundBloc() : super(ChangeBackgroundState.black());
+  ChangeBackgroundBloc() : super(ChangeBackgroundState.black()) {
+    on<GetBackgroundColor>(_getBackground);
+    on<SetBackgroundBlack>(_setBackgroundBlack);
+    on<SetBackgroundWhite>(_setBackgroundWhite);
+  }
 
-  @override
-  Stream<ChangeBackgroundState> mapEventToState(
-    ChangeBackgroundEvent event,
-  ) async* {
-    if (event is GetBackgroundColor) {
-      final optionValue = await _getOption();
-      if (optionValue == 'black') {
-        yield ChangeBackgroundState.black();
-      }
-      if (optionValue == 'white') {
-        yield ChangeBackgroundState.white();
-      }
+  Future<void> _getBackground(
+    GetBackgroundColor event,
+    Emitter<ChangeBackgroundState> emit,
+  ) async {
+    final optionValue = await _getOption();
+    if (optionValue == 'black') {
+      emit(ChangeBackgroundState.black());
     }
-    if (event is BackgroundBlack) {
-      yield ChangeBackgroundState.black();
-      try {
-        await _setOptionValue(0);
-      } catch (_) {
-        throw Exception('Could not persist change');
-      }
+    if (optionValue == 'white') {
+      emit(ChangeBackgroundState.white());
     }
-    if (event is BackgroundWhite) {
-      yield ChangeBackgroundState.white();
-      try {
-        await _setOptionValue(1);
-      } catch (_) {
-        throw Exception('Could not persist change');
-      }
-    }
+  }
+
+  Future<void> _setBackgroundBlack(
+    SetBackgroundBlack event,
+    Emitter<ChangeBackgroundState> emit,
+  ) async {
+    emit(ChangeBackgroundState.black());
+    await _setOptionValue(0);
+  }
+
+  Future<void> _setBackgroundWhite(
+    SetBackgroundWhite event,
+    Emitter<ChangeBackgroundState> emit,
+  ) async {
+    emit(ChangeBackgroundState.white());
+    await _setOptionValue(0);
   }
 
   Future<Null> _setOptionValue(int optionValue) async {

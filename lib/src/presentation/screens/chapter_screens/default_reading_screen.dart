@@ -6,11 +6,11 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../../../env.dart';
 import '../../../config/config.dart';
-import '../../widgets/border_text.dart';
 import '../../../core/helper/size_config.dart';
 import '../../blocs/change_background_color_bloc/change_background_bloc.dart';
 import '../../blocs/chapter_screen/chapter_screen_cubit.dart';
 import '../../blocs/horizontal_reading_cubit/horizontal_reading_cubit.dart';
+import '../../widgets/border_text.dart';
 import '../setting_screen/widget/setting_chapter.dart';
 import 'default_screen_widget/custom_bottom_drawer.dart';
 

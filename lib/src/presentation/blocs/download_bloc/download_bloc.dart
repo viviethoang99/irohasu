@@ -3,8 +3,9 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
-import 'package:irohasu/src/data/model/chapter_item_model.dart';
+
 import '../../../data/datasource/local/download_data.dart';
+import '../../../data/model/chapter_item_model.dart';
 
 part 'download_event.dart';
 part 'download_state.dart';

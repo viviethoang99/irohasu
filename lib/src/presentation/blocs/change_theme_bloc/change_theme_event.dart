@@ -4,7 +4,7 @@ abstract class ChangeThemeEvent {
   const ChangeThemeEvent();
 }
 
-class DecideTheme extends ChangeThemeEvent {}
+class SetTheme extends ChangeThemeEvent {}
 
 class LightTheme extends ChangeThemeEvent {
   @override

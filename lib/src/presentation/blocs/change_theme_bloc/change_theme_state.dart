@@ -1,11 +1,14 @@
 part of 'change_theme_bloc.dart';
 
-class ChangeThemeState {
+class ChangeThemeState extends Equatable {
   ChangeThemeState({this.themeLight, this.themeDark, this.optionSelect});
 
   factory ChangeThemeState.lightTheme() {
     return ChangeThemeState(
-        themeLight: iLightTheme, themeDark: null, optionSelect: 0);
+      themeLight: iLightTheme,
+      themeDark: null,
+      optionSelect: 0,
+    );
   }
 
   factory ChangeThemeState.darkTheme() {
@@ -43,4 +46,7 @@ class ChangeThemeState {
   final ThemeData? themeLight;
   final ThemeData? themeDark;
   final int? optionSelect;
+
+  @override
+  List<Object?> get props => [themeDark, themeLight, optionSelect];
 }
