@@ -40,8 +40,6 @@ class _ListMangaWidgetState extends State<ListMangaWidget> {
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           childAspectRatio: 0.6,
           crossAxisCount: 3,
-          crossAxisSpacing: 2,
-          mainAxisSpacing: 2,
         ),
         itemBuilder: (context, index) {
           return ItemManga(

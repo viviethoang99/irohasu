@@ -11,7 +11,7 @@ class SettingScreen extends StatelessWidget {
       appBar: AppBar(
         elevation: 20,
         brightness: Brightness.light,
-        backgroundColor: theme.accentColor,
+        backgroundColor: theme.backgroundColor,
         iconTheme: const IconThemeData(color: Colors.black),
         title: Text(
           'Cài đặt',

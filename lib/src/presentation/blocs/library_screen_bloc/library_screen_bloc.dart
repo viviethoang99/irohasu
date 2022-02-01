@@ -15,7 +15,10 @@ class LibraryScreenBloc extends Bloc<LibraryScreenEvent, LibraryScreenState> {
 
   final MangaRepository _repo;
 
-  void _fetchData(FetchDataLibrary event, Emitter<LibraryScreenState> emit) {
+  void _fetchData(
+    FetchDataLibrary event,
+    Emitter<LibraryScreenState> emit,
+  ) {
     _repo.getListChapter().listen(
           (event) => emit(state.copyWith(listManga: event)),
         );

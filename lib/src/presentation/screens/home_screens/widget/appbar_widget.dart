@@ -7,7 +7,7 @@ import '../../../screens/search_screens/search_screen.dart';
 
 class AppBarHomeWidget extends StatelessWidget implements PreferredSizeWidget {
   @override
-  Size get preferredSize => const Size.fromHeight(70);
+  Size get preferredSize => const Size.fromHeight(60);
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class AppBarHomeWidget extends StatelessWidget implements PreferredSizeWidget {
         ENV.nameApp,
         style: theme.textTheme.headline5,
       ),
-      backgroundColor: theme.accentColor,
+      backgroundColor: theme.backgroundColor,
       elevation: 1.0,
       centerTitle: true,
       leading: Container(

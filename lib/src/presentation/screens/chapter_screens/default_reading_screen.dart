@@ -123,7 +123,7 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                               '${state.indexPage + 1}'
                               '/${state.chapter!.listImage!.length}',
                               style: TextStyle(
-                                color: Theme.of(context).accentColor,
+                                color: Theme.of(context).backgroundColor,
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                               ),

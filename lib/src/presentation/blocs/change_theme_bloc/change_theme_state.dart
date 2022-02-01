@@ -5,7 +5,7 @@ class ChangeThemeState extends Equatable {
 
   factory ChangeThemeState.lightTheme() {
     return ChangeThemeState(
-      themeLight: iLightTheme,
+      themeLight: AppTheme.light,
       themeDark: null,
       optionSelect: 0,
     );
@@ -13,7 +13,7 @@ class ChangeThemeState extends Equatable {
 
   factory ChangeThemeState.darkTheme() {
     return ChangeThemeState(
-      themeLight: iDarkTheme,
+      themeLight: AppTheme.dark,
       themeDark: null,
       optionSelect: 1,
     );
@@ -21,7 +21,7 @@ class ChangeThemeState extends Equatable {
 
   factory ChangeThemeState.blackTheme() {
     return ChangeThemeState(
-      themeLight: iBlackTheme,
+      themeLight: AppTheme.black,
       themeDark: null,
       optionSelect: 2,
     );
@@ -29,16 +29,16 @@ class ChangeThemeState extends Equatable {
 
   factory ChangeThemeState.lightBlackTheme() {
     return ChangeThemeState(
-      themeLight: iLightTheme,
-      themeDark: iBlackTheme,
+      themeLight: AppTheme.light,
+      themeDark: AppTheme.black,
       optionSelect: 4,
     );
   }
 
   factory ChangeThemeState.lightDarkTheme() {
     return ChangeThemeState(
-      themeLight: iLightTheme,
-      themeDark: iBlackTheme,
+      themeLight: AppTheme.light,
+      themeDark: AppTheme.dark,
       optionSelect: 3,
     );
   }

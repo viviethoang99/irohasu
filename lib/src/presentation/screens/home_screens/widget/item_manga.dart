@@ -15,6 +15,7 @@ class ItemManga extends StatelessWidget {
   });
 
   final String? title;
+  
   final String? thumbnailUrl;
   final String? endpoint;
   final String? status;
@@ -26,7 +27,7 @@ class ItemManga extends StatelessWidget {
         Navigator.of(context)
             .pushNamed(
           MangaDetailScreen.routeName,
-          arguments: (MangaDetailScreen(endpoint: endpoint!,)),
+          arguments: MangaDetailScreen(endpoint: endpoint!),
         )
             .then((_) {
           context.read<MangaDetailBloc>().add(CacheMangaDetailEvent());
@@ -44,7 +45,7 @@ class ItemManga extends StatelessWidget {
                   borderRadius: BorderRadius.circular(5.0),
                   child: (status == 'library')
                       ? CachedNetworkImage(
-                          placeholder: (context, url) =>
+                          placeholder: (_, url) =>
                               const CircularProgressIndicator(),
                           fit: BoxFit.cover,
                           imageUrl: thumbnailUrl!,
@@ -53,8 +54,7 @@ class ItemManga extends StatelessWidget {
                           thumbnailUrl!,
                           headers: ENV.headersBuilder,
                           fit: BoxFit.cover,
-                          errorBuilder: (BuildContext context, Object exception,
-                              StackTrace? stackTrace) {
+                          errorBuilder: (_, exception, stackTrace) {
                             return Image.asset('assets/images/404.png');
                           },
                         ),
@@ -63,15 +63,15 @@ class ItemManga extends StatelessWidget {
             ),
             Container(
               alignment: Alignment.topLeft,
-              height: 50,
+              height: 35,
               child: Padding(
-                padding: const EdgeInsets.all(6.0),
+                padding: const EdgeInsets.all(5.0).copyWith(bottom: 0),
                 child: Text(
                   title!,
                   style: TextStyle(
-                      color: Theme.of(context).primaryColor,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 15),
+                    color: Theme.of(context).primaryColor,
+                    fontSize: 11,
+                  ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),

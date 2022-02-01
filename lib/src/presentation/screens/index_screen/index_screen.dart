@@ -51,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       bottomNavigationBar: BottomNavyBar(
         animationDuration: const Duration(milliseconds: 500),
-        backgroundColor: Theme.of(context).accentColor,
+        backgroundColor: Theme.of(context).backgroundColor,
         showElevation: true,
         selectedIndex: _currentIndex,
         iconSize: 30,

@@ -44,7 +44,7 @@ class _GeneralSettingState extends State<GeneralSetting> {
     return Scaffold(
       backgroundColor: theme.backgroundColor,
       appBar: AppBar(
-        backgroundColor: theme.accentColor,
+        backgroundColor: theme.backgroundColor,
         elevation: 20,
         title: Text(
           'Cài đặt chung',

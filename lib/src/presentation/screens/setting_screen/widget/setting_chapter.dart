@@ -20,7 +20,7 @@ class _SettingChapterState extends State<SettingChapter> {
       backgroundColor: theme.backgroundColor,
       appBar: AppBar(
         elevation: 20,
-        backgroundColor: theme.accentColor,
+        backgroundColor: theme.backgroundColor,
         title: Text(
           ConstantStrings.settings,
           style: theme.textTheme.headline5,

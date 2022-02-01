@@ -4,11 +4,11 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+
 import '../../../../env.dart';
-import 'utils.dart';
+import '../../../config/themes/app_theme.dart';
 
 part 'change_theme_event.dart';
-
 part 'change_theme_state.dart';
 
 class ChangeThemeBloc extends Bloc<ChangeThemeEvent, ChangeThemeState> {

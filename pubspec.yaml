@@ -43,10 +43,9 @@ flutter:
     - assets/images/default_image.jpeg
 
   fonts:
-    - family: OpenSans
+    - family: BeVietnamPro
       fonts:
-        - asset: assets/fonts/OpenSans-Regular.ttf
-        - asset: assets/fonts/OpenSans-Italic.ttf
-          style: italic
-        - asset: assets/fonts/OpenSans-Bold.ttf
-          weight: 600
+        - asset: assets/fonts/BeVietnamPro-Bold.ttf
+        - asset: assets/fonts/BeVietnamPro-Light.ttf
+        - asset: assets/fonts/BeVietnamPro-Regular.ttf
+        - asset: assets/fonts/BeVietnamPro-SemiBold.ttf
