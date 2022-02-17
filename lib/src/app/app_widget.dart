@@ -4,6 +4,7 @@ import 'package:hive/hive.dart';
 
 import '../../env.dart';
 import '../config/routes/app_routes.dart';
+import '../core/helper/remove_scroll_glow.dart';
 import '../data/datasource/local/cache_manager_data.dart';
 import '../data/datasource/remote/chapter_services.dart';
 import '../data/repositories/chapter_repository_imp.dart';
@@ -90,6 +91,7 @@ class _AppWidgetState extends State<AppWidget> {
           builder: (_, state) {
             return MaterialApp(
               debugShowCheckedModeBanner: false,
+              scrollBehavior: CustomScrollBehavior(),
               title: ENV.nameApp,
               theme: state.themeLight,
               darkTheme: state.themeDark,

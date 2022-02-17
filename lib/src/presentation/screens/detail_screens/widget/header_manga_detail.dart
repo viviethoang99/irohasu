@@ -1,26 +1,27 @@
-import 'dart:math';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../env.dart';
-import '../../../../config/base_colors.dart';
 import '../../../../core/helper/size_config.dart';
 import '../../../blocs/manga_detail_bloc/manga_detail_bloc.dart';
 import 'btn_vote_widget.dart';
 
 class HeaderMangaDetail extends StatelessWidget {
-  const HeaderMangaDetail();
+  const HeaderMangaDetail({
+    Key? key,
+    required this.color,
+  }) : super(key: key);
 
+  final Color color;
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        const _ImageBackgroundWidget(),
+        _ImageBackgroundWidget(color: color),
         Column(
           children: [
-            const SizedBox(height: 100),
+            const SizedBox(height: 50),
             const _InfomationMangaWidget(),
             btnSocialWidget(),
           ],
@@ -31,7 +32,7 @@ class HeaderMangaDetail extends StatelessWidget {
 
   Widget btnSocialWidget() {
     return Padding(
-      padding: const EdgeInsets.only(left: 12, bottom: 10),
+      padding: const EdgeInsets.only(left: 12),
       child: BlocBuilder<MangaDetailBloc, MangaDetailState>(
         builder: (context, state) {
           if (state is MangaDetailSuccessState) {
@@ -41,8 +42,8 @@ class HeaderMangaDetail extends StatelessWidget {
                     ? IconButton(
                         icon: Icon(
                           Icons.favorite,
-                          color: Theme.of(context).buttonColor,
-                          size: 38,
+                          color: color,
+                          size: 30,
                         ),
                         onPressed: () => context
                             .read<MangaDetailBloc>()
@@ -51,8 +52,8 @@ class HeaderMangaDetail extends StatelessWidget {
                     : IconButton(
                         icon: Icon(
                           Icons.favorite_border,
-                          color: Theme.of(context).primaryColor,
-                          size: 38,
+                          color: color,
+                          size: 30,
                         ),
                         onPressed: () => context
                             .read<MangaDetailBloc>()
@@ -61,8 +62,8 @@ class HeaderMangaDetail extends StatelessWidget {
                 IconButton(
                   icon: Icon(
                     Icons.language,
-                    color: Theme.of(context).primaryColor,
-                    size: 38,
+                    color: color,
+                    size: 30,
                   ),
                   onPressed: () {
                     // Navigator.of(context).pushNamed(
@@ -77,8 +78,8 @@ class HeaderMangaDetail extends StatelessWidget {
                 IconButton(
                   icon: Icon(
                     Icons.share,
-                    color: Theme.of(context).primaryColor,
-                    size: 38,
+                    color: color,
+                    size: 30,
                   ),
                   onPressed: null,
                 ),
@@ -129,25 +130,26 @@ class _InfomationMangaWidget extends StatelessWidget {
                         child: Text(
                           state.mangaDetail.title,
                           style: TextStyle(
-                            fontSize: 22,
+                            fontSize: 17,
                             color: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                       ),
                       Text(
                         state.mangaDetail.author ?? '',
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 14,
                           color: Theme.of(context).primaryColor,
                         ),
                       ),
-                      const SizedBox(height: 15),
+                      const SizedBox(height: 5),
                       Text(
                         state.mangaDetail.status!,
                         style: TextStyle(
-                          fontSize: 15,
-                          color: Theme.of(context).primaryColor,
+                          fontSize: 14,
+                          color:
+                              Theme.of(context).primaryColor.withOpacity(0.8),
                         ),
                       ),
                       const BtnVoteWidget()
@@ -164,24 +166,13 @@ class _InfomationMangaWidget extends StatelessWidget {
   }
 }
 
-class _ImageBackgroundWidget extends StatefulWidget {
-  const _ImageBackgroundWidget({Key? key}) : super(key: key);
+class _ImageBackgroundWidget extends StatelessWidget {
+  const _ImageBackgroundWidget({
+    Key? key,
+    required this.color,
+  }) : super(key: key);
 
-  @override
-  __ImageBackgroundWidgetState createState() => __ImageBackgroundWidgetState();
-}
-
-class __ImageBackgroundWidgetState extends State<_ImageBackgroundWidget> {
-  late final int indexColor;
-  late final Random random;
-
-  @override
-  void initState() {
-    random = Random();
-    indexColor = random.nextInt(AppColors.listColorsApp.length);
-    super.initState();
-  }
-
+  final Color color;
   @override
   Widget build(BuildContext context) {
     return ShaderMask(
@@ -205,7 +196,7 @@ class __ImageBackgroundWidgetState extends State<_ImageBackgroundWidget> {
                 width: SizeConfig.screenWidth,
                 height: SizeConfig.screenHeight / 2.5,
                 decoration: BoxDecoration(
-                  color: AppColors.listColorsApp[indexColor],
+                  color: color,
                   image: DecorationImage(
                     image: imageProvider,
                     fit: BoxFit.fitWidth,

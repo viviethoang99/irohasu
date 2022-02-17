@@ -6,21 +6,24 @@ import '../../../blocs/manga_detail_bloc/manga_detail_bloc.dart';
 import '../../chapter_screens/chapter_screen.dart';
 
 class CustomButtonReadingWidget extends StatelessWidget {
-  CustomButtonReadingWidget({
+  const CustomButtonReadingWidget({
     required this.lastChapter,
+    required this.color,
   });
 
   final ChapterItem lastChapter;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
       style: TextButton.styleFrom(
+        backgroundColor: color,
         primary: Colors.teal,
         onSurface: Colors.red,
-        side: BorderSide(
-          color: Theme.of(context).buttonColor,
-          width: 3,
+        side: const BorderSide(
+          width: 0,
+          color: Colors.transparent,
         ),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
@@ -30,15 +33,17 @@ class CustomButtonReadingWidget extends StatelessWidget {
       ),
       onPressed: () => openChapter(context: context),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+        padding: const EdgeInsets.symmetric(vertical: 5),
         child: BlocBuilder<MangaDetailBloc, MangaDetailState>(
           builder: (context, state) {
-            return Text(
-              context.read<MangaDetailBloc>().textLastChapter(),
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-                color: Theme.of(context).buttonColor,
+            return Center(
+              child: Text(
+                context.read<MangaDetailBloc>().lastChapter,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  color: Colors.white,
+                ),
               ),
             );
           },

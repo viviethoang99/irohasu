@@ -93,7 +93,7 @@ class MangaDetailBloc extends Bloc<MangaDetailEvent, MangaDetailState> {
     emit(currentState!.copyWith(chapterReading: newList));
   }
 
-  String textLastChapter() {
+  String get lastChapter {
     if (currentState!.chapterReading.isNotEmpty) {
       final title = currentState!.mangaDetail.listChapter!
           .firstWhere((chap) => chap.id == currentState!.chapterReading.last)

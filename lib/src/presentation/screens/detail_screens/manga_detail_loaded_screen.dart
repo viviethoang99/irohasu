@@ -1,6 +1,8 @@
 // Packages
-import 'package:flutter/material.dart';
+import 'dart:math';
 
+import 'package:flutter/material.dart';
+import '../../../config/base_colors.dart';
 import '../../../core/helper/size_config.dart';
 import '../../../data/model/manga_detail_model.dart';
 import 'widget/custom_button_reading_widget.dart';
@@ -19,11 +21,21 @@ class MangaDetailLoadedScreen extends StatefulWidget {
 
 class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
   MangaDetailModel? get data => widget.data;
+  late final Color _colorPage;
+  late final Random random;
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   void initState() {
+    random = Random();
+    final indexColor = random.nextInt(AppColors.listColors.length);
+    _colorPage = AppColors.listColors[indexColor];
+
     super.initState();
-    // continueReading();
   }
 
   @override
@@ -37,62 +49,79 @@ class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
     SizeConfig().init(context);
     final theme = Theme.of(context);
     return Scaffold(
-      extendBodyBehindAppBar: true,
+      resizeToAvoidBottomInset: false,
       backgroundColor: theme.backgroundColor,
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: theme.primaryColor,
-          ),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.search,
-              color: theme.primaryColor,
-            ),
-            onPressed: null,
-          ),
-          IconButton(
-            icon: Icon(
-              Icons.get_app,
-              color: theme.primaryColor,
-            ),
-            onPressed: null,
-          ),
-          IconButton(
-            icon: Icon(
-              Icons.more_vert,
-              color: theme.primaryColor,
-            ),
-            onPressed: null,
-          ),
-        ],
-      ),
-      body: MediaQuery.removePadding(
-        removeTop: true,
-        removeBottom: true,
-        context: context,
-        child: ListView(
-          shrinkWrap: true,
-          children: <Widget>[
-            const HeaderMangaDetail(),
-            DescriptionTextWidget(text: data!.description ?? ''),
-            const SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: CustomButtonReadingWidget(
-                lastChapter: data!.listChapter!.last,
+      body: NestedScrollView(
+        physics: const NeverScrollableScrollPhysics(),
+        floatHeaderSlivers: true,
+        headerSliverBuilder: (context, innerBoxIsScrolled) {
+          return [
+            SliverAppBar(
+              elevation: 0,
+              leading: IconButton(
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: theme.primaryColor,
+                ),
+                onPressed: () => Navigator.of(context).pop(),
               ),
-            ),
-            const SizedBox(height: 10),
-            const ListChapterWidget(),
-          ],
+              backgroundColor: innerBoxIsScrolled
+                  ? Theme.of(context).backgroundColor
+                  : Colors.transparent,
+              floating: true,
+              actions: <Widget>[
+                IconButton(
+                  icon: Icon(
+                    Icons.search,
+                    color: theme.primaryColor,
+                  ),
+                  onPressed: null,
+                ),
+                IconButton(
+                  icon: Icon(
+                    Icons.get_app,
+                    color: theme.primaryColor,
+                  ),
+                  onPressed: null,
+                ),
+                IconButton(
+                  icon: Icon(
+                    Icons.more_vert,
+                    color: theme.primaryColor,
+                  ),
+                  onPressed: null,
+                ),
+              ],
+              title: Text(
+                innerBoxIsScrolled ? data!.title : '',
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+            )
+          ];
+        },
+        body: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              HeaderMangaDetail(
+                color: _colorPage,
+              ),
+              DescriptionTextWidget(
+                text: data!.description ?? '',
+                color: _colorPage,
+              ),
+              const SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: CustomButtonReadingWidget(
+                  lastChapter: data!.listChapter!.last,
+                  color: _colorPage,
+                ),
+              ),
+              const SizedBox(height: 10),
+              ListChapterWidget(color: _colorPage),
+            ],
+          ),
         ),
       ),
     );

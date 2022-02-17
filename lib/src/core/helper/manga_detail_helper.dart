@@ -7,6 +7,7 @@ class MangaDetailHelper {
         return description[index];
       }
     }
+    return null;
   }
 
   static Map<String, String> countTotalLike(String? value) {

@@ -34,7 +34,7 @@ class _ListMangaWidgetState extends State<ListMangaWidget> {
       color: Theme.of(context).backgroundColor,
       child: GridView.builder(
         shrinkWrap: true,
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(5),
         itemCount: hasReachedEnd! ? data!.length + 20 : data!.length,
         controller: _scrollController,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

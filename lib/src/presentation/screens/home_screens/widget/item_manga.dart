@@ -15,7 +15,6 @@ class ItemManga extends StatelessWidget {
   });
 
   final String? title;
-  
   final String? thumbnailUrl;
   final String? endpoint;
   final String? status;
@@ -34,36 +33,36 @@ class ItemManga extends StatelessWidget {
         });
       },
       child: Card(
-        color: Colors.transparent,
-        elevation: 0,
+        elevation: 2,
         child: Column(
           children: <Widget>[
             Expanded(
-              child: AspectRatio(
-                aspectRatio: 0.7,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(5.0),
-                  child: (status == 'library')
-                      ? CachedNetworkImage(
-                          placeholder: (_, url) =>
-                              const CircularProgressIndicator(),
-                          fit: BoxFit.cover,
-                          imageUrl: thumbnailUrl!,
-                        )
-                      : Image.network(
-                          thumbnailUrl!,
-                          headers: ENV.headersBuilder,
-                          fit: BoxFit.cover,
-                          errorBuilder: (_, exception, stackTrace) {
-                            return Image.asset('assets/images/404.png');
-                          },
-                        ),
+              child: ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(5),
+                  topRight: Radius.circular(5),
                 ),
+                child: (status == 'library')
+                    ? CachedNetworkImage(
+                        placeholder: (_, url) =>
+                            const CircularProgressIndicator(),
+                        fit: BoxFit.cover,
+                        imageUrl: thumbnailUrl!,
+                      )
+                    : Image.network(
+                        thumbnailUrl!,
+                        headers: ENV.headersBuilder,
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, exception, stackTrace) {
+                          return Image.asset('assets/images/404.png');
+                        },
+                      ),
               ),
             ),
             Container(
-              alignment: Alignment.topLeft,
+              color: Theme.of(context).canvasColor.withOpacity(0.05),
               height: 35,
+              width: double.infinity,
               child: Padding(
                 padding: const EdgeInsets.all(5.0).copyWith(bottom: 0),
                 child: Text(

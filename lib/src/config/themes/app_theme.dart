@@ -11,6 +11,20 @@ class AppTheme {
       primaryColor: Colors.black,
       canvasColor: Colors.black54,
       fontFamily: _fontFamily,
+      textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+        primary: Colors.teal,
+        onSurface: Colors.red,
+        side: const BorderSide(
+          color: AppColors.blue,
+          width: 3,
+        ),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(25),
+          ),
+        ),
+      )),
       textTheme: ThemeData.light().textTheme.copyWith(
             headline5: const TextStyle(
               color: Colors.black,
