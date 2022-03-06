@@ -2,19 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
-import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:snapping_sheet/snapping_sheet.dart';
 
 import '../../../../env.dart';
 import '../../../config/config.dart';
 import '../../../core/helper/size_config.dart';
-import '../../blocs/change_background_color_bloc/change_background_bloc.dart';
 import '../../blocs/chapter_screen/chapter_screen_cubit.dart';
-import '../../blocs/horizontal_reading_cubit/horizontal_reading_cubit.dart';
-import '../../widgets/border_text.dart';
-import '../setting_screen/widget/setting_chapter.dart';
-import 'default_screen_widget/custom_bottom_drawer.dart';
-
-typedef AnimationListener = void Function();
+import '../../blocs/horizontal_mode_bloc/horizatal_mode_bloc.dart';
+import 'default_screen_widget/list_chaper_widget.dart';
+import 'default_screen_widget/process.dart';
 
 class HorizontalReadingWidget extends StatefulWidget {
   const HorizontalReadingWidget();
@@ -26,122 +22,83 @@ class HorizontalReadingWidget extends StatefulWidget {
 
 class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
     with TickerProviderStateMixin {
-  late final HorizontalReadingCubit _cubit;
-  late final ItemScrollController _scrollListController;
-  late final PageController _pageController;
-
+  late final HorizatalModeBloc _cubit;
+  late final SnappingSheetController snappingSheetController;
   //Declare Globaly
   String? directory;
   List file = [];
 
   @override
   void initState() {
-    _scrollListController = ItemScrollController();
-    _pageController = PageController(initialPage: 0);
-    _cubit = HorizontalReadingCubit(
-      chapterCubit: context.read<ChapterScreenCubit>(),
-      scrollController: _scrollListController,
-      pageController: _pageController,
-    )..initload();
+    _cubit = HorizatalModeBloc();
+    snappingSheetController = SnappingSheetController();
     super.initState();
-
-    // _getChapterList[getIndex!]?.isDownload != null
-    //     ? _listofFiles()
-    //     : setState(() => countImage = data!.totalImage);
-  }
-
-  // void _listofFiles() async {
-  //   final directory = (await getApplicationDocumentsDirectory()).absolute.path;
-  //   setState(() {
-  //     file = io.Directory(directory + _getChapterList[getIndex!].isDownload)
-  //         .listSync()
-  //           ..sort((a, b) => AlphanumComparator.compare(a.path, b.path));
-  //     countImage = file.length;
-  //   });
-  // }
-
-  // @override
-  // void didUpdateWidget(covariant HorizontalReadingWidget oldWidget) {
-  //   _getChapterList[getIndex!]?.isDownload != null
-  //       ? _listofFiles()
-  //       : setState(() => countImage = data!.totalImage);
-  //   super.didUpdateWidget(oldWidget);
-  // }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _pageController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final prePage = SizeConfig.screenWidth * 0.3;
-    final nextPage = SizeConfig.screenWidth * 0.7;
-    return BlocProvider<HorizontalReadingCubit>(
+    return BlocProvider<HorizatalModeBloc>(
       create: (context) => _cubit,
-      child: BlocBuilder<ChangeBackgroundBloc, ChangeBackgroundState>(
-        builder: (context, state) {
-          return Scaffold(
-            backgroundColor: state.color ?? Colors.black87,
-            body: GestureDetector(
-              onPanEnd: context.read<HorizontalReadingCubit>().onPanEndEvent,
-              onTapDown: (details) =>
-                  context.read<HorizontalReadingCubit>().onTapDownEvent(
-                        details: details,
-                        left: prePage,
-                        right: nextPage,
-                      ),
-              child: Stack(
-                alignment: Alignment.bottomCenter,
-                children: [
-                  /*
-                        1, Show Image
-                        2, Show AppBar if _showMenu is true
-                        3, Show the page number if _showMenu is false
-                        4, Show drawer bottom if _showMenu is true
-                     */
-
-                  // Show Image
-                  (file.isNotEmpty)
-                      ? _imageLocalWidget()
-                      : const ShowImageFromAPI(),
-
-                  // Show Appbar
-                  const _AppBarWidget(),
-
-                  // Show number Page
-                  BlocBuilder<HorizontalReadingCubit, HorizontalReadingState>(
-                    builder: (context, state) {
-                      if (state.showMenu) {
-                        return Positioned(
-                          bottom: 20,
-                          child: BorderText(
-                            strokeColor: Theme.of(context).primaryColor,
-                            strokeWidth: 4,
-                            child: Text(
-                              '${state.indexPage + 1}'
-                              '/${state.chapter!.listImage!.length}',
-                              style: TextStyle(
-                                color: Theme.of(context).backgroundColor,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        );
-                      }
-                      return const SizedBox.shrink();
-                    },
-                  ),
-
-                  // Show Drawer Bottom
-                  const CustomBottomDrawer(),
-                ],
+      child: Scaffold(
+        body: Stack(
+          alignment: Alignment.center,
+          children: [
+            SnappingSheet(
+              controller: snappingSheetController,
+              lockOverflowDrag: true,
+              onSnapStart: (positionData, snappingPosition) {},
+              snappingPositions: [
+                const SnappingPosition.factor(
+                  snappingCurve: Curves.elasticOut,
+                  snappingDuration: Duration(milliseconds: 1750),
+                  positionFactor: -1,
+                ),
+                const SnappingPosition.factor(
+                  positionFactor: 0.0,
+                  snappingCurve: Curves.easeOutExpo,
+                  snappingDuration: Duration(seconds: 1),
+                  grabbingContentOffset: GrabbingContentOffset.top,
+                ),
+                const SnappingPosition.factor(
+                  snappingCurve: Curves.elasticOut,
+                  snappingDuration: Duration(milliseconds: 1750),
+                  positionFactor: 0.5,
+                ),
+              ],
+              onSheetMoved: (sheetPosition) {
+                _cubit.add(SheetMovedChange(
+                  relativeToSheetHeight: sheetPosition.relativeToSheetHeight,
+                  currentPosition: sheetPosition.pixels,
+                ));
+              },
+              grabbing: GrabbingWidget(),
+              grabbingHeight: 60,
+              sheetBelow: SnappingSheetContent(
+                draggable: true,
+                child: const ListChapterWidget(),
+              ),
+              child: BlocListener<HorizatalModeBloc, HorizatalModeState>(
+                listenWhen: (pre, cur) => pre.showInfo != cur.showInfo,
+                listener: (context, state) {
+                  if (state.showInfo) {
+                    snappingSheetController
+                        .snapToPosition(const SnappingPosition.factor(
+                      positionFactor: 0.0,
+                      snappingCurve: Curves.easeOutExpo,
+                      snappingDuration: Duration(seconds: 1),
+                      grabbingContentOffset: GrabbingContentOffset.top,
+                    ));
+                  } else {
+                    snappingSheetController.setSnappingSheetFactor(-.5);
+                  }
+                },
+                child: const ShowImageFromAPI(),
               ),
             ),
-          );
-        },
+            const _AppBarWidget(),
+            const ProcessReadingChapter(),
+          ],
+        ),
       ),
     );
   }
@@ -195,113 +152,182 @@ class _AppBarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HorizontalReadingCubit, HorizontalReadingState>(
+    return BlocBuilder<HorizatalModeBloc, HorizatalModeState>(
       builder: (context, state) {
-        if (state.showMenu) {
-          return Positioned(
-            top: 0,
-            width: SizeConfig.screenWidth,
-            height: Constants.heightAppBar,
-            child: AppBar(
-              leading: IconButton(
-                icon: const Icon(
-                  Icons.arrow_back,
-                  color: Colors.white,
-                ),
-                onPressed: () => Navigator.pop(context),
+        final theme = Theme.of(context);
+        return AnimatedPositioned(
+          duration: const Duration(milliseconds: 500),
+          top: state.showInfo ? 0 : -200,
+          width: SizeConfig.screenWidth,
+          height: Constants.heightAppBar,
+          child: AppBar(
+            leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back,
+                color: theme.primaryColor,
               ),
-              centerTitle: false,
-              backgroundColor: Colors.black.withOpacity(0.8),
-              elevation: 0,
-              title: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  BlocBuilder<ChapterScreenCubit, ChapterScreenState>(
-                    builder: (context, state) {
-                      return Text(
-                        state.mangaDetail!.title.length > 25
-                            ? '${state.mangaDetail!.title.substring(0, 25)}..'
-                            : state.mangaDetail!.title,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      );
-                    },
-                  ),
-                  BlocBuilder<ChapterScreenCubit, ChapterScreenState>(
-                    builder: (context, state) {
-                      return Text(
-                        context.read<ChapterScreenCubit>().nameChapter,
-                        style: const TextStyle(color: Colors.grey),
-                      );
-                    },
-                  ),
-                  // const SizedBox(height: 20)
-                ],
-              ),
-              actions: <Widget>[
-                IconButton(
-                  icon: const Icon(
-                    Icons.settings,
-                    size: 35,
-                    color: Colors.white,
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pushNamed(SettingChapter.routeName);
-                  },
-                )
-              ],
+              onPressed: () => Navigator.pop(context),
             ),
-          );
-        }
-        return const SizedBox.shrink();
+            centerTitle: true,
+            backgroundColor: theme.backgroundColor.withOpacity(0.9),
+            elevation: 0,
+            title: BlocBuilder<ChapterScreenCubit, ChapterScreenState>(
+              builder: (context, state) {
+                return Column(
+                  children: <Widget>[
+                    Text(
+                      state.mangaDetail!.title.length > 30
+                          ? '${state.mangaDetail!.title.substring(0, 30)}..'
+                          : state.mangaDetail!.title,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        color: theme.primaryColor,
+                        fontSize: 17,
+                      ),
+                    ),
+                    Text(
+                      context.read<ChapterScreenCubit>().nameChapter,
+                      style: TextStyle(
+                        color: theme.primaryColor.withOpacity(0.5),
+                        fontSize: 15,
+                      ),
+                    ),
+                    // const SizedBox(height: 20)
+                  ],
+                );
+              },
+            ),
+          ),
+        );
       },
     );
   }
 }
 
-class ShowImageFromAPI extends StatelessWidget {
+class ShowImageFromAPI extends StatefulWidget {
   const ShowImageFromAPI({Key? key}) : super(key: key);
 
   @override
+  State<ShowImageFromAPI> createState() => _ShowImageFromAPIState();
+}
+
+class _ShowImageFromAPIState extends State<ShowImageFromAPI> {
+  late final PageController _pageController;
+  late int page;
+
+  @override
+  void initState() {
+    _pageController = PageController();
+    page = 0;
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final prePage = SizeConfig.screenWidth * 0.3;
+    final nextPage = SizeConfig.screenWidth * 0.7;
     return BlocBuilder<ChapterScreenCubit, ChapterScreenState>(
-      builder: (_, stateChapter) {
-        return BlocBuilder<HorizontalReadingCubit, HorizontalReadingState>(
-          builder: (context, state) {
-            return PhotoViewGallery.builder(
-              itemCount: stateChapter.chapter!.listImage!.length,
-              scrollPhysics: const BouncingScrollPhysics(),
-              builder: (context, index) {
-                final image = stateChapter.chapter?.listImage?[index];
-                return PhotoViewGalleryPageOptions(
-                  imageProvider: NetworkImage(
-                    image?.chapterImageLink ?? '',
-                    headers: ENV.headersBuilder,
-                  ),
-                  minScale: PhotoViewComputedScale.contained,
-                  maxScale: PhotoViewComputedScale.contained * 2,
-                  initialScale: PhotoViewComputedScale.contained,
-                  heroAttributes: PhotoViewHeroAttributes(
-                    tag: image!.number!,
-                  ),
-                );
-              },
-              scrollDirection: Axis.horizontal,
-              onPageChanged:
-                  context.read<HorizontalReadingCubit>().changeIndexPage,
-              loadingBuilder: (context, event) => Center(
-                child: Container(
-                  width: 20.0,
-                  height: 20.0,
-                  child: const CircularProgressIndicator(),
-                ),
-              ),
-            );
+      builder: (_, state) {
+        return GestureDetector(
+          onTapDown: (details) {
+            final possion = details.globalPosition.dx;
+            if (possion < prePage) {
+              _pageController.jumpToPage(page - 1);
+            } else if (possion > nextPage) {
+              _pageController.jumpToPage(page + 1);
+            } else {
+              context.read<HorizatalModeBloc>().add(ShowInfo());
+            }
           },
+          child: PhotoViewGallery.builder(
+            itemCount: state.chapter!.listImage!.length,
+            pageController: _pageController,
+            scrollPhysics: const BouncingScrollPhysics(),
+            builder: (context, index) {
+              final image = state.chapter?.listImage?[index];
+              return PhotoViewGalleryPageOptions(
+                imageProvider: NetworkImage(
+                  image?.chapterImageLink ?? '',
+                  headers: ENV.headersBuilder,
+                ),
+                minScale: PhotoViewComputedScale.contained,
+                maxScale: PhotoViewComputedScale.contained * 2,
+                initialScale: PhotoViewComputedScale.contained,
+                heroAttributes: PhotoViewHeroAttributes(
+                  tag: image!.number!,
+                ),
+              );
+            },
+            scrollDirection: Axis.horizontal,
+            onPageChanged: (value) {
+              setState(() => page = value);
+            },
+            loadingBuilder: (context, event) => Center(
+              child: Container(
+                width: 20.0,
+                height: 20.0,
+                child: const CircularProgressIndicator(),
+              ),
+            ),
+          ),
         );
       },
+    );
+  }
+}
+
+class GrabbingWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Container(
+      width: SizeConfig.screenWidth,
+      padding: const EdgeInsets.symmetric(
+        vertical: 10,
+      ),
+      decoration: BoxDecoration(
+        color: theme.backgroundColor,
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+      ),
+      child: Column(
+        children: [
+          Container(
+            width: 50,
+            height: 3,
+            decoration: BoxDecoration(
+              color: Colors.grey,
+              borderRadius: BorderRadius.circular(20),
+            ),
+          ),
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Icon(
+                Icons.format_list_numbered_rounded,
+                color: theme.primaryColor,
+              ),
+              Icon(
+                Icons.question_answer_rounded,
+                color: theme.primaryColor,
+              ),
+              Icon(
+                Icons.tune_rounded,
+                color: theme.primaryColor,
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

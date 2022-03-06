@@ -50,7 +50,9 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget>
   Widget showTextDescription() {
     return InkWell(
       onTap: () {
-        setState(() => flag = !flag);
+        if (_isMoreThan100Characters) {
+          setState(() => flag = !flag);
+        }
       },
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
@@ -78,7 +80,7 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget>
           ),
           const SizedBox(height: 5),
           if (!_isMoreThan100Characters || !flag) const CustomChips(),
-          if (!flag)
+          if (_isMoreThan100Characters && !flag)
             Align(
               alignment: Alignment.bottomRight,
               child: Padding(

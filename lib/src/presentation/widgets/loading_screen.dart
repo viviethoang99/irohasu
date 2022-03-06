@@ -13,7 +13,7 @@ class LoadingScreen extends StatelessWidget {
         child: CircularProgressIndicator(
           strokeWidth: 5,
           valueColor: AlwaysStoppedAnimation<Color>(
-            theme.buttonColor,
+            theme.primaryColor,
           ),
         ),
       ),

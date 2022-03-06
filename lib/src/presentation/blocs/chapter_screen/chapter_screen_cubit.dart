@@ -23,11 +23,12 @@ class ChapterScreenCubit extends Cubit<ChapterScreenState> {
 
   Future<void> initLoad(String endpoint) async {
     await getListChapter();
-    if (isDownload(endpoint) ?? false) {
-      await fetchDataFromLocal();
-    } else {
-      await fetchDataFromApi(endpoint);
-    }
+    await fetchDataFromApi(endpoint);
+    // if (isDownload(endpoint) ?? false) {
+    //   await fetchDataFromLocal();
+    // } else {
+    //   await fetchDataFromApi(endpoint);
+    // }
   }
 
   String get nameChapter => state.chapter!.title!

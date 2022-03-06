@@ -9,7 +9,7 @@ class Constants {
     ThemeModel(index: 4, name: 'Theo hệ thống (Màu trắng và đen)'),
   ];
 
-  static const heightAppBar = 110.0;
+  static const heightAppBar = 80.0;
 
   static const keywordChapter = ['chương', 'chapter', 'chap'];
 }

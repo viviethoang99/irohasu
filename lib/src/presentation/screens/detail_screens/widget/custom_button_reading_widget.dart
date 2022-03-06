@@ -57,8 +57,5 @@ class CustomButtonReadingWidget extends StatelessWidget {
       ChapterScreen.routeName,
       arguments: ChapterScreen(endpoint: lastChapter.endpoint),
     );
-    BlocProvider.of<MangaDetailBloc>(context).add(
-      AddChapterToListReading(lastChapter.endpoint!),
-    );
   }
 }

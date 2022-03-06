@@ -7,6 +7,7 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../../../env.dart';
 import '../../../core/helper/alphanum_comparator.dart';
+import '../../../core/helper/size_config.dart';
 import '../../../data/model/chapter/chapter_model.dart';
 import '../../../data/model/chapter_item_model.dart';
 import 'webtoon_screen_widget/app_bar_widget.dart';
@@ -18,13 +19,11 @@ class ChapterLoadedScreen extends StatefulWidget {
     required this.data,
     this.chapterList = const [],
     required this.getIndexChapter,
-    required this.openChapter,
   });
 
   final ChapterModel? data;
   final List<ChapterItem>? chapterList;
   final int getIndexChapter;
-  final Function openChapter;
 
   @override
   _ChapterLoadedScreenState createState() => _ChapterLoadedScreenState();
@@ -85,11 +84,12 @@ class _ChapterLoadedScreenState extends State<ChapterLoadedScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Colors.white,
         body: LayoutBuilder(builder: (context, constraints) {
           return Stack(
             alignment: Alignment.bottomCenter,
             children: <Widget>[
-              (file.isNotEmpty) ? loadImageDownload() : loadImageNetwork(),
+              loadImageNetwork(),
               AppBarChapterScreen(
                 maxWidth: constraints.maxWidth,
                 scrollController: _scrollController,
@@ -100,7 +100,6 @@ class _ChapterLoadedScreenState extends State<ChapterLoadedScreen> {
                 getIndex: getIndex,
                 scrollController: _scrollController,
                 scrollListController: _scrollListController,
-                openChapter: widget.openChapter,
               ),
             ],
           );
@@ -109,37 +108,47 @@ class _ChapterLoadedScreenState extends State<ChapterLoadedScreen> {
           scrollListController: _scrollListController,
           getIndex: getIndex,
           getChapterList: _getChapterList,
-          openChapter: widget.openChapter,
         ),
       ),
     );
   }
 
   Widget loadImageNetwork() {
-    return Container(
+    return InteractiveViewer(
       child: ListView.builder(
-          padding: const EdgeInsets.only(bottom: 56),
-          physics: const ClampingScrollPhysics(),
-          controller: _scrollController,
-          itemBuilder: (context, index) {
-            return CachedNetworkImage(
-              imageUrl: data!.listImage![index].chapterImageLink!,
-              httpHeaders: ENV.headersBuilder,
-            );
-          },
-          itemCount: countImage),
+        padding: const EdgeInsets.only(bottom: 56),
+        physics: const AlwaysScrollableScrollPhysics(),
+        controller: _scrollController,
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
+          return CachedNetworkImage(
+            imageUrl: data!.listImage![index].chapterImageLink!,
+            httpHeaders: ENV.headersBuilder,
+            placeholder: (context, string) => SizedBox(
+              height: SizeConfig.screenHeight,
+              width: SizeConfig.screenWidth,
+              child: const Center(
+                heightFactor: 70,
+                widthFactor: 70,
+                child: CircularProgressIndicator(),
+              ),
+            ),
+            fadeInDuration: const Duration(milliseconds: 100),
+            errorWidget: (context, string, e) => const Icon(Icons.error),
+          );
+        },
+        itemCount: data!.listImage!.length,
+      ),
     );
   }
 
   Widget loadImageDownload() {
-    return Container(
-      child: ListView.builder(
-        padding: const EdgeInsets.only(bottom: 56),
-        physics: const ClampingScrollPhysics(),
-        controller: _scrollController,
-        itemBuilder: (context, index) => Image.file(file[index]),
-        itemCount: countImage,
-      ),
+    return ListView.builder(
+      padding: const EdgeInsets.only(bottom: 56),
+      physics: const ClampingScrollPhysics(),
+      controller: _scrollController,
+      itemBuilder: (context, index) => Image.file(file[index]),
+      itemCount: countImage,
     );
   }
 }

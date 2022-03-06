@@ -9,7 +9,6 @@ class BottomBarChapterScreen extends StatefulWidget {
     this.scrollController,
     this.getIndex,
     this.scrollListController,
-    this.openChapter,
   });
 
   final int? countChapter;
@@ -17,7 +16,6 @@ class BottomBarChapterScreen extends StatefulWidget {
   final int? getIndex;
   final ScrollController? scrollController;
   final ItemScrollController? scrollListController;
-  final Function? openChapter;
 
   @override
   _BottomBarChapterScreenState createState() => _BottomBarChapterScreenState();
@@ -25,7 +23,7 @@ class BottomBarChapterScreen extends StatefulWidget {
 
 class _BottomBarChapterScreenState extends State<BottomBarChapterScreen> {
   double _offset = 0.0, _delta = 0.0, _oldOffset = 0.0;
-  final double _containerMaxHeight = 56;
+  final _containerMaxHeight = 56.0;
 
   bool hasReachedEnd = false;
 
@@ -69,19 +67,18 @@ class _BottomBarChapterScreenState extends State<BottomBarChapterScreen> {
         height: _containerMaxHeight,
         color: Colors.grey[300],
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             IconButton(
-                icon: const Icon(Icons.skip_previous),
-                color: Colors.black87,
-                iconSize: 35,
-                onPressed: widget.getIndex != 0
-                    ? () => widget.openChapter!(widget.getIndex! - 1)
-                    : null),
+              icon: const Icon(Icons.skip_previous),
+              color: Colors.black87,
+              iconSize: 30,
+              onPressed: widget.getIndex != 0 ? () {} : null,
+            ),
             IconButton(
               icon: const Icon(Icons.home),
               color: Colors.black87,
-              iconSize: 35,
+              iconSize: 30,
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -89,7 +86,7 @@ class _BottomBarChapterScreenState extends State<BottomBarChapterScreen> {
             IconButton(
               icon: const Icon(Icons.view_list),
               color: Colors.black87,
-              iconSize: 35,
+              iconSize: 30,
               onPressed: () {
                 Scaffold.of(context).openDrawer();
                 SchedulerBinding.instance!.addPostFrameCallback((_) {
@@ -101,10 +98,9 @@ class _BottomBarChapterScreenState extends State<BottomBarChapterScreen> {
             IconButton(
               icon: const Icon(Icons.skip_next),
               color: Colors.black87,
-              iconSize: 35,
-              onPressed: (widget.getIndex != widget.countChapter! - 1)
-                  ? () => widget.openChapter!(widget.getIndex! + 1)
-                  : null,
+              iconSize: 30,
+              onPressed:
+                  (widget.getIndex != widget.countChapter! - 1) ? () {} : null,
             ),
           ],
         ),

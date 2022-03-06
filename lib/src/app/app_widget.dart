@@ -95,7 +95,6 @@ class _AppWidgetState extends State<AppWidget> {
               title: ENV.nameApp,
               theme: state.themeLight,
               darkTheme: state.themeDark,
-              home: const HomeScreen(),
               initialRoute: HomeScreen.routeName,
               onGenerateRoute: AppRoutes.generateRoute,
             );

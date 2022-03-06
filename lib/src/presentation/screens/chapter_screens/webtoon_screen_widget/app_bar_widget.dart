@@ -1,4 +1,3 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import '../../setting_screen/widget/setting_chapter.dart';
 
@@ -14,11 +13,12 @@ class AppBarChapterScreen extends StatefulWidget {
 
 class _AppBarChapterScreenState extends State<AppBarChapterScreen> {
   double _offset = 0, _delta = 0, _oldOffset = 0;
-  final double _containerMaxHeight = 70;
 
   double? get maxWidth => widget.maxWidth;
 
   ScrollController? get _scrollController => widget.scrollController;
+
+  final _containerMaxHeight = 60.0;
 
   @override
   void initState() {
@@ -29,7 +29,9 @@ class _AppBarChapterScreenState extends State<AppBarChapterScreen> {
         _delta += (offset - _oldOffset);
         if (_delta > _containerMaxHeight) {
           _delta = _containerMaxHeight;
-        } else if (_delta < 0) _delta = 0;
+        } else if (_delta < 0) {
+          _delta = 0;
+        }
         _oldOffset = offset;
         _offset = -_delta;
       });
@@ -51,19 +53,19 @@ class _AppBarChapterScreenState extends State<AppBarChapterScreen> {
             IconButton(
               icon: const Icon(Icons.comment),
               color: Colors.green[500],
-              iconSize: 39,
+              iconSize: 30,
               onPressed: () {},
             ),
             IconButton(
               icon: const Icon(Icons.bookmark),
               color: Colors.green[500],
-              iconSize: 39,
+              iconSize: 30,
               onPressed: () {},
             ),
             IconButton(
               icon: const Icon(Icons.settings),
               color: Colors.green[500],
-              iconSize: 39,
+              iconSize: 30,
               onPressed: () {
                 Navigator.of(context).pushNamed(SettingChapter.routeName);
               },
@@ -73,14 +75,4 @@ class _AppBarChapterScreenState extends State<AppBarChapterScreen> {
       ),
     );
   }
-}
-
-class RadioGroup extends Equatable {
-  RadioGroup({this.name, this.index});
-
-  final String? name;
-  final int? index;
-
-  @override
-  List<Object?> get props => [name, index];
 }
