@@ -10,7 +10,6 @@ class SettingScreen extends StatelessWidget {
       backgroundColor: theme.backgroundColor,
       appBar: AppBar(
         elevation: 20,
-        brightness: Brightness.light,
         backgroundColor: theme.backgroundColor,
         iconTheme: const IconThemeData(color: Colors.black),
         title: Text(

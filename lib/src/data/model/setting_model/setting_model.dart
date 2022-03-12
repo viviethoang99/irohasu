@@ -1,17 +1,24 @@
 import 'package:equatable/equatable.dart';
+import '../../../core/type/type.dart';
 
-class ThemeModel extends Equatable {
-  ThemeModel({this.name, this.index});
+class ThemeOption extends Equatable {
+  const ThemeOption({
+    required this.name,
+    required this.type,
+  });
 
-  final String? name;
-  final int? index;
+  final String name;
+  final ThemeApp type;
 
   @override
-  List<Object?> get props => [name, index];
+  List<Object?> get props => [name, type];
 }
 
-class ReadingMode extends Equatable {
-  ReadingMode({this.name, this.index});
+class ReadingOption extends Equatable {
+  const ReadingOption({
+    this.name,
+    this.index,
+  });
 
   final String? name;
   final String? index;

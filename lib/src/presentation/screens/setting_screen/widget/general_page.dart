@@ -14,7 +14,6 @@ class GeneralSetting extends StatefulWidget {
 }
 
 class _GeneralSettingState extends State<GeneralSetting> {
-  bool switchValue = false;
   int? _selectTheme = 0;
   final _cacheManagerData = CacheManagerData();
 
@@ -75,8 +74,7 @@ class _GeneralSettingState extends State<GeneralSetting> {
                   builder: (context, state) {
                 _selectTheme = state.optionSelect;
                 return Text(
-                  Constants.listTheme[state.optionSelect!].name ??
-                      Constants.listTheme[0].name!,
+                  Constants.listTheme[state.optionSelect!].name,
                   style: theme.textTheme.subtitle1,
                 );
               }),
@@ -190,15 +188,14 @@ class _GeneralSettingState extends State<GeneralSetting> {
                     return RadioListTile(
                       activeColor: Theme.of(context).buttonColor,
                       title: Text(
-                        data.name!,
+                        data.name,
                         style: TextStyle(
                           color: Theme.of(context).primaryColor,
                         ),
                       ),
-                      value: data.index,
+                      value: data.type,
                       groupValue: _selectTheme,
-                      onChanged: (dynamic context) =>
-                          _setThemeMode(newValue: data.index),
+                      onChanged: (value) {},
                     );
                   }).toList(),
                 ),

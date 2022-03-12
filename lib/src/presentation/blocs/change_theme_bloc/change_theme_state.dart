@@ -1,7 +1,11 @@
 part of 'change_theme_bloc.dart';
 
 class ChangeThemeState extends Equatable {
-  ChangeThemeState({this.themeLight, this.themeDark, this.optionSelect});
+  const ChangeThemeState({
+    this.themeLight,
+    this.themeDark,
+    this.optionSelect,
+  });
 
   factory ChangeThemeState.lightTheme() {
     return ChangeThemeState(

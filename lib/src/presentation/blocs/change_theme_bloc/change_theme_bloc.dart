@@ -6,13 +6,15 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 import '../../../../env.dart';
-import '../../../config/themes/app_theme.dart';
+import '../../../config/themes/app_theme_data.dart';
+import '../../../core/type/type.dart';
 
 part 'change_theme_event.dart';
 part 'change_theme_state.dart';
 
 class ChangeThemeBloc extends Bloc<ChangeThemeEvent, ChangeThemeState> {
   ChangeThemeBloc() : super(ChangeThemeState.lightTheme()) {
+    on<GetTheme>(_getTheme);
     on<SetTheme>(_setTheme);
     on<LightTheme>(_lightTheme);
     on<BlackTheme>(_blackTheme);
@@ -41,6 +43,15 @@ class ChangeThemeBloc extends Bloc<ChangeThemeEvent, ChangeThemeState> {
     if (optionValue == 4) {
       emit(ChangeThemeState.lightDarkTheme());
     }
+  }
+
+  Future<void> _getTheme(
+    GetTheme event,
+    Emitter<ChangeThemeState> emit,
+  ) async {
+    emit(ChangeThemeState.lightTheme());
+
+    await _setOptionValue(0);
   }
 
   Future<void> _lightTheme(
