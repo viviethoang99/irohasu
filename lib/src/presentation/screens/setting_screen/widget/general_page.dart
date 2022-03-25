@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../config/config.dart';
 import '../../../../core/helper/media_query_helper.dart';
+import '../../../../core/type/type.dart';
 import '../../../../data/datasource/local/cache_manager_data.dart';
 import '../../../blocs/change_theme_bloc/change_theme_bloc.dart';
 
@@ -16,26 +17,6 @@ class GeneralSetting extends StatefulWidget {
 class _GeneralSettingState extends State<GeneralSetting> {
   int? _selectTheme = 0;
   final _cacheManagerData = CacheManagerData();
-
-  void _setThemeMode({int? newValue}) {
-    switch (newValue) {
-      case 0:
-        BlocProvider.of<ChangeThemeBloc>(context).add(LightTheme());
-        break;
-      case 2:
-        BlocProvider.of<ChangeThemeBloc>(context).add(BlackTheme());
-        break;
-      case 1:
-        BlocProvider.of<ChangeThemeBloc>(context).add(DarkTheme());
-        break;
-      case 4:
-        BlocProvider.of<ChangeThemeBloc>(context).add(LightBlackTheme());
-        break;
-      case 3:
-        BlocProvider.of<ChangeThemeBloc>(context).add(LightDarkTheme());
-        break;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,18 +60,6 @@ class _GeneralSettingState extends State<GeneralSetting> {
                 );
               }),
             ),
-            // ListTile(
-            //   onTap: () {
-            //     //TODO
-            //   },
-            //   title: Text(
-            //     'Định dạng ngày tháng',
-            //     style: TextStyle(
-            //         fontWeight: FontWeight.bold, color: theme.primaryColor),
-            //   ),
-            //   subtitle:
-            //       Text('Mặc định hệ thống', style: theme.textTheme.subtitle1),
-            // ),
             ListTile(
               onTap: _clearCache,
               title: Text(
@@ -104,31 +73,6 @@ class _GeneralSettingState extends State<GeneralSetting> {
               ),
               isThreeLine: true,
             ),
-            // ListTile(
-            //   onTap: () {
-            //     //TODO
-            //   },
-            //   title: Text(
-            //     'Kiểm tra cập nhật',
-            //     style: TextStyle(
-            //         fontWeight: FontWeight.bold, color: theme.primaryColor),
-            //   ),
-            //   subtitle: Text(
-            //     'Tự động cập nhật mỗi khi ứng dụng có '
-            //     'phiên bản mới',
-            //     style: theme.textTheme.subtitle1,
-            //   ),
-            //   isThreeLine: true,
-            //   trailing: Switch(
-            //     activeColor: theme.buttonColor,
-            //     value: switchValue,
-            //     onChanged: (state) {
-            //       setState(() {
-            //         switchValue = !switchValue;
-            //       });
-            //     },
-            //   ),
-            // ),
           ],
         ),
       ),
@@ -165,7 +109,7 @@ class _GeneralSettingState extends State<GeneralSetting> {
   void _showDialogChangeTheme() {
     showDialog(
         context: context,
-        builder: (BuildContext context) {
+        builder: (_) {
           return BlocBuilder<ChangeThemeBloc, ChangeThemeState>(
               builder: (BuildContext context, state) {
             return AlertDialog(
@@ -182,11 +126,11 @@ class _GeneralSettingState extends State<GeneralSetting> {
               content: Container(
                 margin: const EdgeInsets.all(10),
                 width: ScreenHelper.getWidth(context),
-                height: 300,
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: Constants.listTheme.map((data) {
                     return RadioListTile(
-                      activeColor: Theme.of(context).buttonColor,
+                      activeColor: Theme.of(context).primaryColor,
                       title: Text(
                         data.name,
                         style: TextStyle(
@@ -195,7 +139,10 @@ class _GeneralSettingState extends State<GeneralSetting> {
                       ),
                       value: data.type,
                       groupValue: _selectTheme,
-                      onChanged: (value) {},
+                      onChanged: (value) {
+                        final theme = value as ThemeApp;
+                        context.read<ChangeThemeBloc>().add(SetTheme(theme));
+                      },
                     );
                   }).toList(),
                 ),

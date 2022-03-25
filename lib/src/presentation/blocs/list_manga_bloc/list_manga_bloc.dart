@@ -15,7 +15,7 @@ class ListMangaBloc extends Bloc<ListMangaEvent, ListMangaState> {
     on<RefreshMangaEvent>(_refreshEvent, transformer: _debounce());
   }
 
-  final MangaRepository _repository;
+  final IMangaRepository _repository;
 
   EventTransformer<T> _debounce<T>() {
     final _duration = const Duration(milliseconds: 500);

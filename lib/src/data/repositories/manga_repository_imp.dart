@@ -1,3 +1,5 @@
+import 'package:injectable/injectable.dart';
+
 import '../../domain/repositories/manga_repository.dart';
 import '../datasource/local/history_local_source_imp.dart';
 import '../datasource/local/manga_local_source_imp.dart';
@@ -5,8 +7,9 @@ import '../datasource/remote/manga_services.dart';
 import '../model/manga_detail_model.dart';
 import '../model/manga_list_model.dart';
 
-class MangaRepositoryImp implements MangaRepository {
-  MangaRepositoryImp._(
+@LazySingleton(as: IMangaRepository)
+class MangaRepositoryImp implements IMangaRepository {
+  MangaRepositoryImp(
     this._mangaService,
     this._historyLocalSource,
     this._mangaLocalSource,
@@ -15,13 +18,6 @@ class MangaRepositoryImp implements MangaRepository {
   final MangaService _mangaService;
   final HistoryLocalSourceImp _historyLocalSource;
   final MangaLocalSourceImp _mangaLocalSource;
-
-  static Future<MangaRepositoryImp> getInstance() async {
-    final manga = await MangaLocalSourceImp.getInstance();
-    final history = await HistoryLocalSourceImp.getInstance();
-    final service = MangaService();
-    return MangaRepositoryImp._(service, history, manga);
-  }
 
   @override
   Future<List<MangaModel>> fetchListManga({int page = 1}) {

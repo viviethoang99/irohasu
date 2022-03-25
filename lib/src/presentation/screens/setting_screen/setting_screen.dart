@@ -28,13 +28,8 @@ class SettingScreen extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0),
               ),
-              margin: const EdgeInsets.only(
-                top: 15,
-                bottom: 8,
-                left: 8,
-                right: 8,
-              ),
-              color: theme.buttonColor,
+              margin: const EdgeInsets.all(8).copyWith(top: 15),
+              color: theme.primaryColor,
               child: const ListTile(
                 onTap: null, // TO DO
                 title: Text(
@@ -77,19 +72,6 @@ class SettingScreen extends StatelessWidget {
                     leading: const Icon(Icons.tune),
                     trailing: const Icon(Icons.keyboard_arrow_right),
                   ),
-                  // const _BuildDivider(),
-                  // ListTile(
-                  //   onTap: () {
-                  //     // TODO
-                  //     print('Test app');
-                  //   },
-                  //   title: Text(
-                  //     'Thư viện',
-                  //     style: theme.textTheme.bodyText1,
-                  //   ),
-                  //   leading: const Icon(Icons.local_library),
-                  //   trailing: const Icon(Icons.keyboard_arrow_right),
-                  // ),
                   const _BuildDivider(),
                   ListTile(
                     onTap: () {
@@ -104,16 +86,6 @@ class SettingScreen extends StatelessWidget {
                     leading: const Icon(Icons.description),
                     trailing: const Icon(Icons.keyboard_arrow_right),
                   ),
-                  // const _BuildDivider(),
-                  // ListTile(
-                  //   onTap: null, // TO DO
-                  //   title: Text(
-                  //     'Tải xuống',
-                  //     style: theme.textTheme.bodyText1,
-                  //   ),
-                  //   leading: const Icon(Icons.file_download),
-                  //   trailing: const Icon(Icons.keyboard_arrow_right),
-                  // ),
                   const _BuildDivider(),
                   ListTile(
                     onTap: null, // TO DO

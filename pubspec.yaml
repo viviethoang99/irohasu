@@ -35,6 +35,10 @@ dependencies:
   # Remote API
   dio: ^4.0.4
 
+  # Dependency Injection
+  get_it: ^7.2.0
+  injectable: ^1.5.3
+
   # Misc
   rxdart: ^0.27.3
   path_provider: ^2.0.3
@@ -47,6 +51,7 @@ dev_dependencies:
   pedantic: ^1.11.0
   hive_generator: ^1.1.2
   build_runner: ^2.1.7
+  injectable_generator: ^1.5.3
 
 flutter:
   uses-material-design: true

@@ -1,27 +1,28 @@
 import 'dart:async';
 
 import 'package:dartz/dartz.dart';
+import 'package:injectable/injectable.dart';
 
 import '../../core/error/exceptions.dart';
 import '../../core/error/failures.dart';
-import '../../domain/entities/entities.dart';
 import '../../domain/repositories/i_setting_app_repository.dart';
-import '../datasource/local/local.dart';
+import '../../domain/usecaes/update_setting_app_usecase.dart';
+import '../datasource/local/setting_local_datasource.dart';
 import '../model/setting_model/setting_app.dart';
 
+@Injectable(as: ISettingAppRepository)
 class SettingAppRepository implements ISettingAppRepository {
-  SettingAppRepository(this._localDataSource);
+  const SettingAppRepository(this._localDataSource);
 
   final ISettingLocalDataSource _localDataSource;
 
   @override
-  Future<Either<Failure, void>> changeSetting(
-      UpdateSettingAppParams params) async {
+  Future<Either<Failure, void>> setThemeApp(SetThemeAppParams params) async {
     try {
-      await _localDataSource.updateSetting(params.model);
+      await _localDataSource.setThemeApp(params.model);
       return const Right(null);
     } on CacheException {
-      return Left(CacheFailure());
+      throw CacheException();
     }
   }
 
@@ -29,7 +30,6 @@ class SettingAppRepository implements ISettingAppRepository {
   Future<Either<Failure, SettingApp>> setDefault() async {
     final defaultSetting = const SettingApp();
     try {
-      unawaited(_localDataSource.updateSetting(defaultSetting));
       return Right(defaultSetting);
     } on CacheException {
       return Left(CacheFailure());
@@ -37,9 +37,9 @@ class SettingAppRepository implements ISettingAppRepository {
   }
 
   @override
-  Future<Either<Failure, SettingApp>> getSetting() async {
+  Future<Either<Failure, String>> getThemeApp() async {
     try {
-      final model = await _localDataSource.getSettingApp();
+      final model = _localDataSource.getThemeApp();
       return Right(model);
     } on CacheException {
       return Left(CacheFailure());

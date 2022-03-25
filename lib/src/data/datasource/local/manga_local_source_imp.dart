@@ -1,22 +1,20 @@
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../../../env.dart';
 import '../../../core/extensions/extensions.dart';
 import '../../model/manga_detail_model.dart';
 import 'manga_local_source.dart';
 
+@injectable
 class MangaLocalSourceImp implements MangaLocalSource {
-  const MangaLocalSourceImp._(this._box);
+  const MangaLocalSourceImp(
+    @Named('irohasu_iz_bezt_girl') this._box,
+  );
 
   static const _key = 'com.irohasu_iz_bezt_girl.list_manga';
 
   final Box _box;
-
-  static Future<MangaLocalSourceImp> getInstance() async {
-    final box = await Hive.openBox(ENV.nameDatabase);
-    return MangaLocalSourceImp._(box);
-  }
 
   @override
   Future<void> removeAll() => _box.put(_key, <String, dynamic>{});

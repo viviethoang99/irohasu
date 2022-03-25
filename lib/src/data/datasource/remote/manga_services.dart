@@ -1,10 +1,12 @@
 import 'package:html/parser.dart';
+import 'package:injectable/injectable.dart';
 import '../../model/manga_detail_model.dart';
 import '../../model/manga_list_model.dart';
 import '../../model/search_manga_model.dart';
 
 import 'base_service.dart';
 
+@injectable
 class MangaService extends BaseService {
   Future<List<MangaModel>> fetchListManga({int? page}) async {
     final response = await request(url: '/page-$page');
@@ -28,8 +30,8 @@ class MangaService extends BaseService {
       final response = await request(url: endpoint);
       final document = parse(response!.data);
       return MangaDetailModel.fromHTML(document, endpoint);
-    } catch (e) {
-      print(e);
+    } on Exception {
+      throw Exception();
     }
   }
 }

@@ -3,7 +3,7 @@ import '../core/type/type.dart';
 import '../data/model/setting_model/setting_model.dart';
 
 class Constants {
-  static final List<ThemeOption> listTheme = const [
+  static const List<ThemeOption> listTheme = [
     ThemeOption(type: ThemeApp.light, name: 'Màu sáng'),
     ThemeOption(type: ThemeApp.dark, name: 'Màu đen'),
     ThemeOption(type: ThemeApp.black, name: 'Màu tối'),

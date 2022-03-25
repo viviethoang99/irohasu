@@ -42,7 +42,7 @@ class _SettingChapterState extends State<SettingChapter> {
               Text(
                 'Cài đặt chung',
                 style: TextStyle(
-                  color: theme.buttonColor,
+                  color: theme.primaryColor,
                   fontSize: 23,
                 ),
               ),

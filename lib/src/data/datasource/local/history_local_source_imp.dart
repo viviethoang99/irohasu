@@ -1,19 +1,17 @@
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:injectable/injectable.dart';
 
-import '../../../../env.dart';
 import 'hive_local_source.dart';
 
+@injectable
 class HistoryLocalSourceImp implements HiveLocalSource {
-  const HistoryLocalSourceImp._(this._box);
+  const HistoryLocalSourceImp(
+    @Named('irohasu_iz_bezt_girl') this._box,
+  );
 
   static const _key = 'com.irohasu_iz_bezt_girl.chapter_read';
 
   final Box _box;
-
-  static Future<HistoryLocalSourceImp> getInstance() async {
-    final box = await Hive.openBox(ENV.nameDatabase);
-    return HistoryLocalSourceImp._(box);
-  }
 
   @override
   Future<List> getList({String? idManga}) async {

@@ -17,7 +17,7 @@ class MangaDetailBloc extends Bloc<MangaDetailEvent, MangaDetailState> {
     on<AddChapterToListReading>(_setLastReadingToChapter);
   }
 
-  final MangaRepository _repo;
+  final IMangaRepository _repo;
 
   MangaDetailSuccessState? get currentState {
     if (state is MangaDetailSuccessState) {

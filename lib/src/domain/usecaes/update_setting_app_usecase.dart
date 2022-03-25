@@ -1,17 +1,25 @@
 import 'package:dartz/dartz.dart';
+import 'package:injectable/injectable.dart';
 
 import '../../core/error/failures.dart';
 import '../../core/usecase/usecase.dart';
-import '../entities/entities.dart';
 import '../repositories/i_setting_app_repository.dart';
 
-class UpdateSettingAppUseCase extends UseCase<void, UpdateSettingAppParams> {
-  UpdateSettingAppUseCase(this.repository);
+@lazySingleton
+class SetThemeAppUseCase extends UseCase<void, SetThemeAppParams> {
+  SetThemeAppUseCase(this.repository);
 
   final ISettingAppRepository repository;
 
   @override
-  Future<Either<Failure, void>> call({UpdateSettingAppParams? params}) {
-    return repository.changeSetting(params!);
+  Future<Either<Failure, void>> call({SetThemeAppParams? params}) {
+    return repository.setThemeApp(params!);
   }
 }
+
+class SetThemeAppParams {
+  SetThemeAppParams(this.model);
+
+  final String model;
+}
+

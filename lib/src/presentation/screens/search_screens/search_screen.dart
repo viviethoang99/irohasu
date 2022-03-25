@@ -86,7 +86,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 );
               }
               if (state is SearchLoadingState) {
-                return LoadingScreen();
+                return const LoadingScreen();
               }
               if (state is SearchLoadedState) {
                 return Container(

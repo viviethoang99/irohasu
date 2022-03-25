@@ -8,7 +8,7 @@ import '../../../domain/repositories/manga_repository.dart';
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
   SearchBloc(this.searchRepo) : super(InitialSearchState());
 
-  final MangaRepository searchRepo;
+  final IMangaRepository searchRepo;
 
   @override
   Stream<SearchState> mapEventToState(SearchEvent event) async* {

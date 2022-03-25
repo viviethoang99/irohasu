@@ -4,11 +4,11 @@ import 'package:hive/hive.dart';
 
 import '../../env.dart';
 import '../config/routes/app_routes.dart';
+import '../core/dependency_injection/dependency_injection.dart';
 import '../core/helper/remove_scroll_glow.dart';
 import '../data/datasource/local/cache_manager_data.dart';
 import '../data/datasource/remote/chapter_services.dart';
 import '../data/repositories/chapter_repository_imp.dart';
-import '../data/repositories/manga_repository_imp.dart';
 import '../domain/repositories/chaper_repository.dart';
 import '../domain/repositories/manga_repository.dart';
 import '../presentation/blocs/change_background_color_bloc/change_background_bloc.dart';
@@ -27,7 +27,7 @@ class AppWidget extends StatefulWidget {
 }
 
 class _AppWidgetState extends State<AppWidget> {
-  late final MangaRepository mangaRepository;
+  late final IMangaRepository mangaRepository;
   late final ChapterRepository chapterRepository;
   late final CacheManagerData cacheManagerData;
 
@@ -38,7 +38,7 @@ class _AppWidgetState extends State<AppWidget> {
   }
 
   Future<void> initLoad() async {
-    mangaRepository = await MangaRepositoryImp.getInstance();
+    mangaRepository = getIt<IMangaRepository>();
     chapterRepository = ChapterRepositoryImp(ChapterServices());
     cacheManagerData = CacheManagerData();
   }
@@ -53,7 +53,7 @@ class _AppWidgetState extends State<AppWidget> {
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider<MangaRepository>(
+        RepositoryProvider<IMangaRepository>(
           create: (context) => mangaRepository,
         ),
         RepositoryProvider<ChapterRepository>(
@@ -81,7 +81,7 @@ class _AppWidgetState extends State<AppWidget> {
             create: (context) => ChangeBackgroundBloc(),
           ),
           BlocProvider<ChangeThemeBloc>(
-            create: (_) => ChangeThemeBloc()..add(GetTheme()),
+            create: (_) => getIt<ChangeThemeBloc>()..add(GetTheme()),
           ),
           BlocProvider<ChangeReadingModeBloc>(
             create: (context) => ChangeReadingModeBloc(),

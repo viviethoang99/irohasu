@@ -1,35 +1,43 @@
 import 'dart:async';
 
 import 'package:hive/hive.dart';
+import 'package:injectable/injectable.dart';
+
+import '../../../config/config.dart';
 import '../../model/setting_model/setting_app.dart';
 
-const String kScreenMode = 'CACHED_SETTING_APP';
+const String kThemeApp = 'CACHED_THEME_APP';
 
 abstract class ISettingLocalDataSource {
-  Future<void> updateSetting(SettingApp value);
-  Future<SettingApp> getSettingApp();
+  Future<void> setThemeApp(String value);
+  String getThemeApp();
   Future<SettingApp> setDefault();
 }
 
+@Injectable(as: ISettingLocalDataSource)
 class SettingLocalDataSource implements ISettingLocalDataSource {
-  SettingLocalDataSource(this._box);
+  const SettingLocalDataSource(
+    @Named('shared_preferences') this._box,
+  );
 
   final Box _box;
 
   @override
-  Future<SettingApp> getSettingApp() {
-    return _box.get(kScreenMode);
+  String getThemeApp() {
+    return _box.get(
+      kThemeApp,
+      defaultValue: Constants.listTheme.first.name,
+    );
   }
 
   @override
   Future<SettingApp> setDefault() async {
     final setting = const SettingApp();
-    unawaited(updateSetting(setting));
     return setting;
   }
 
   @override
-  Future<void> updateSetting(SettingApp value) async {
-    await _box.put(kScreenMode, value);
+  Future<void> setThemeApp(String value) async {
+    await _box.put(kThemeApp, value);
   }
 }

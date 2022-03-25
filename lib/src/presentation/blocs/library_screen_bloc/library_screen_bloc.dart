@@ -13,7 +13,7 @@ class LibraryScreenBloc extends Bloc<LibraryScreenEvent, LibraryScreenState> {
     on<FetchDataLibrary>(_fetchData);
   }
 
-  final MangaRepository _repo;
+  final IMangaRepository _repo;
 
   void _fetchData(
     FetchDataLibrary event,
