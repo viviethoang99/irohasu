@@ -6,7 +6,7 @@ import 'package:injectable/injectable.dart';
 import '../../../config/config.dart';
 import '../../model/setting_model/setting_app.dart';
 
-const String kThemeApp = 'CACHED_THEME_APP';
+const String _kThemeApp = 'CACHED_THEME_APP';
 
 abstract class ISettingLocalDataSource {
   Future<void> setThemeApp(String value);
@@ -25,7 +25,7 @@ class SettingLocalDataSource implements ISettingLocalDataSource {
   @override
   String getThemeApp() {
     return _box.get(
-      kThemeApp,
+      _kThemeApp,
       defaultValue: Constants.listTheme.first.name,
     );
   }
@@ -38,6 +38,6 @@ class SettingLocalDataSource implements ISettingLocalDataSource {
 
   @override
   Future<void> setThemeApp(String value) async {
-    await _box.put(kThemeApp, value);
+    await _box.put(_kThemeApp, value);
   }
 }

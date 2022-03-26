@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
+import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
+import 'package:injectable/injectable.dart';
 
 import '../../../config/base_content.dart';
 import '../../../config/config.dart';
@@ -9,15 +11,17 @@ import '../../../domain/repositories/manga_repository.dart';
 part 'manga_detail_event.dart';
 part 'manga_detail_state.dart';
 
+@injectable
 class MangaDetailBloc extends Bloc<MangaDetailEvent, MangaDetailState> {
-  MangaDetailBloc(this._repo) : super(MangaDetailLoadingState()) {
+  MangaDetailBloc(this._repo, @factoryParam this.endpoint)
+      : super(MangaDetailLoadingState()) {
     on<FetchMangaDetailEvent>(_fetchMangaDetail);
     on<CacheMangaDetailEvent>(_saveMangaToLocal);
-    on<FavoriteMangaEvent>(_favoriteManga);
     on<AddChapterToListReading>(_setLastReadingToChapter);
   }
 
   final IMangaRepository _repo;
+  final String endpoint;
 
   MangaDetailSuccessState? get currentState {
     if (state is MangaDetailSuccessState) {
@@ -31,26 +35,8 @@ class MangaDetailBloc extends Bloc<MangaDetailEvent, MangaDetailState> {
   ) async {
     emit(MangaDetailLoadingState());
     try {
-      final data = await _repo.fetchMangaDetail(event.endpoint!);
-      if (data != null) {
-        emit(MangaDetailSuccessState(mangaDetail: data));
-        final listChapter = await _repo.getListChapterReading(data.idManga);
-        final mangaLocal = await _repo.getMangaDetailLocal(data.idManga);
-        emit(currentState!.copyWith(
-          mangaDetail: currentState!.mangaDetail.copyWith(
-            isFavorite: mangaLocal?.isFavorite,
-          ),
-          chapterReading: listChapter as List<String>,
-        ));
-      } else {
-        final id = event.endpoint!.split('/')[1];
-        final listChapter = await _repo.getListChapterReading(id);
-        final mangaLocal = await _repo.getMangaDetailLocal(id);
-        emit(MangaDetailSuccessState(
-          mangaDetail: mangaLocal!,
-          chapterReading: listChapter as List<String>,
-        ));
-      }
+      final data = await _repo.fetchMangaDetail(endpoint);
+      emit(MangaDetailSuccessState(mangaDetail: data!));
     } catch (e) {
       emit(MangaDetailFailureState(msg: e.toString()));
     }
@@ -60,8 +46,7 @@ class MangaDetailBloc extends Bloc<MangaDetailEvent, MangaDetailState> {
     CacheMangaDetailEvent event,
     Emitter<MangaDetailState> emit,
   ) async {
-    if (currentState!.mangaDetail.isFavorite ||
-        currentState!.chapterReading.isNotEmpty) {
+    if (currentState!.chapterReading.isNotEmpty) {
       await _repo.addListChapterRead(
         currentState!.chapterReading,
         currentState!.mangaDetail.idManga,
@@ -74,14 +59,19 @@ class MangaDetailBloc extends Bloc<MangaDetailEvent, MangaDetailState> {
     }
   }
 
-  Future<void> _favoriteManga(
-    FavoriteMangaEvent event,
-    Emitter<MangaDetailState> emit,
-  ) async {
-    emit(currentState!.copyWith(
-      mangaDetail: currentState!.mangaDetail.setFavorite(),
-    ));
+  Either<void, MangaDetailModel> get idManga {
+    if (state is MangaDetailSuccessState) {
+      final data = (state as MangaDetailSuccessState).mangaDetail;
+      return Right(data);
+    } else {
+      return const Left(null);
+    }
   }
+
+  void changeStatusFavorite(
+    MangaDetailModel r,
+    Emitter<MangaDetailState> emit,
+  ) {}
 
   Future<void> _setLastReadingToChapter(
     AddChapterToListReading event,

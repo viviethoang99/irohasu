@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../env.dart';
 import '../../../../core/helper/size_config.dart';
+import '../../../blocs/favorite_manga_detail_bloc/favorite_manga_detail_bloc.dart';
 import '../../../blocs/manga_detail_bloc/manga_detail_bloc.dart';
 import 'btn_vote_widget.dart';
 
@@ -33,61 +34,39 @@ class HeaderMangaDetail extends StatelessWidget {
   Widget btnSocialWidget() {
     return Padding(
       padding: const EdgeInsets.only(left: 12),
-      child: BlocBuilder<MangaDetailBloc, MangaDetailState>(
-        builder: (context, state) {
-          if (state is MangaDetailSuccessState) {
-            return Row(
-              children: <Widget>[
-                state.mangaDetail.isFavorite
-                    ? IconButton(
-                        icon: Icon(
-                          Icons.favorite,
-                          color: color,
-                          size: 30,
-                        ),
-                        onPressed: () => context
-                            .read<MangaDetailBloc>()
-                            .add(FavoriteMangaEvent()),
-                      )
-                    : IconButton(
-                        icon: Icon(
-                          Icons.favorite_border,
-                          color: color,
-                          size: 30,
-                        ),
-                        onPressed: () => context
-                            .read<MangaDetailBloc>()
-                            .add(FavoriteMangaEvent()),
-                      ),
-                IconButton(
-                  icon: Icon(
-                    Icons.language,
-                    color: color,
-                    size: 30,
-                  ),
-                  onPressed: () {
-                    // Navigator.of(context).pushNamed(
-                    //   WebViewPage.routeName,
-                    //   arguments: WebViewPage(
-                    //     title: state.mangaDetail.title,
-                    //     url: ENV.urlWebView(state.mangaDetail.endpoint),
-                    //   ),
-                    // );
-                  },
+      child: Row(
+        children: <Widget>[
+          BlocBuilder<FavoriteMangaDetailBloc, bool>(
+            builder: (context, state) {
+              return IconButton(
+                icon: Icon(
+                  state ? Icons.favorite : Icons.favorite_border,
+                  color: color,
+                  size: 30,
                 ),
-                IconButton(
-                  icon: Icon(
-                    Icons.share,
-                    color: color,
-                    size: 30,
-                  ),
-                  onPressed: null,
-                ),
-              ],
-            );
-          }
-          return const SizedBox.shrink();
-        },
+                onPressed: () => context
+                    .read<FavoriteMangaDetailBloc>()
+                    .add(SetStatusFavoriteManga()),
+              );
+            },
+          ),
+          IconButton(
+            icon: Icon(
+              Icons.language,
+              color: color,
+              size: 30,
+            ),
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: Icon(
+              Icons.share,
+              color: color,
+              size: 30,
+            ),
+            onPressed: null,
+          ),
+        ],
       ),
     );
   }

@@ -7,8 +7,6 @@ abstract class MangaDetailEvent extends Equatable {
 }
 
 class FetchMangaDetailEvent extends MangaDetailEvent {
-  const FetchMangaDetailEvent(this.endpoint);
-  final String? endpoint;
 }
 
 class AddChapterToListReading extends MangaDetailEvent {
@@ -16,7 +14,5 @@ class AddChapterToListReading extends MangaDetailEvent {
 
   final String idManga;
 }
-
-class FavoriteMangaEvent extends MangaDetailEvent {}
 
 class CacheMangaDetailEvent extends MangaDetailEvent {}

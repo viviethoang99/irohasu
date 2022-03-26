@@ -2,6 +2,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+
 import '../../../config/base_colors.dart';
 import '../../../core/helper/size_config.dart';
 import '../../../data/model/manga_detail_model.dart';
@@ -12,6 +13,7 @@ import 'widget/list_chapter_widget.dart';
 
 class MangaDetailLoadedScreen extends StatefulWidget {
   const MangaDetailLoadedScreen({Key? key, this.data}) : super(key: key);
+
   final MangaDetailModel? data;
 
   @override
@@ -20,7 +22,7 @@ class MangaDetailLoadedScreen extends StatefulWidget {
 }
 
 class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
-  MangaDetailModel? get data => widget.data;
+  MangaDetailModel get data => widget.data!;
   late final Color _colorPage;
   late final Random random;
 
@@ -34,7 +36,6 @@ class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
     random = Random();
     final indexColor = random.nextInt(AppColors.listColors.length);
     _colorPage = AppColors.listColors[indexColor];
-
     super.initState();
   }
 
@@ -93,7 +94,7 @@ class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
                 ),
               ],
               title: Text(
-                innerBoxIsScrolled ? data!.title : '',
+                innerBoxIsScrolled ? data.title : '',
                 style: Theme.of(context).textTheme.bodyText1,
               ),
             )
@@ -107,14 +108,14 @@ class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
                 color: _colorPage,
               ),
               DescriptionTextWidget(
-                text: data!.description ?? '',
+                text: data.description ?? '',
                 color: _colorPage,
               ),
               const SizedBox(height: 10),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: CustomButtonReadingWidget(
-                  lastChapter: data!.listChapter!.last,
+                  lastChapter: data.listChapter!.last,
                   color: _colorPage,
                 ),
               ),

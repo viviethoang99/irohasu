@@ -10,8 +10,8 @@ import '../../../config/themes/app_theme_data.dart';
 import '../../../core/error/exceptions.dart';
 import '../../../core/error/failures.dart';
 import '../../../core/type/type.dart';
-import '../../../domain/usecaes/get_setting_app_usecase.dart';
-import '../../../domain/usecaes/update_setting_app_usecase.dart';
+import '../../../domain/usecaes/setting_app/get_setting_app_usecase.dart';
+import '../../../domain/usecaes/setting_app/update_setting_app_usecase.dart';
 
 part 'change_theme_event.dart';
 part 'change_theme_state.dart';
@@ -70,8 +70,6 @@ class ChangeThemeBloc extends Bloc<ChangeThemeEvent, ChangeThemeState> {
       emit(ChangeThemeState.darkTheme());
     } else if (theme == Constants.listTheme[3].type.name) {
       emit(ChangeThemeState.lightBlackTheme());
-    } else if (theme == Constants.listTheme[4].type.name) {
-      emit(ChangeThemeState.lightDarkTheme());
     } else {
       emit(ChangeThemeState.lightTheme());
     }

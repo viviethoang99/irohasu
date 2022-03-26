@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 
 import '../../core/error/failures.dart';
 import '../../data/model/setting_model/setting_app.dart';
-import '../usecaes/update_setting_app_usecase.dart';
+import '../usecaes/setting_app/update_setting_app_usecase.dart';
 
 abstract class ISettingAppRepository {
   Future<Either<Failure, String>> getThemeApp();

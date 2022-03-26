@@ -2,22 +2,19 @@ import 'package:injectable/injectable.dart';
 
 import '../../domain/repositories/manga_repository.dart';
 import '../datasource/local/history_local_source_imp.dart';
-import '../datasource/local/manga_local_source_imp.dart';
 import '../datasource/remote/manga_services.dart';
 import '../model/manga_detail_model.dart';
 import '../model/manga_list_model.dart';
 
 @LazySingleton(as: IMangaRepository)
-class MangaRepositoryImp implements IMangaRepository {
-  MangaRepositoryImp(
+class MangaRepository implements IMangaRepository {
+  MangaRepository(
     this._mangaService,
     this._historyLocalSource,
-    this._mangaLocalSource,
   );
 
   final MangaService _mangaService;
   final HistoryLocalSourceImp _historyLocalSource;
-  final MangaLocalSourceImp _mangaLocalSource;
 
   @override
   Future<List<MangaModel>> fetchListManga({int page = 1}) {
@@ -40,35 +37,38 @@ class MangaRepositoryImp implements IMangaRepository {
   }
 
   @override
-  Future<MangaDetailModel?> getMangaDetailLocal(String idManga) async {
-    return _mangaLocalSource.getMangaDetail(idManga);
-  }
-
-  @override
-  Future<void> addListChapterRead(List listChapter, String idManga) {
-    return _historyLocalSource.addList(
-      listData: listChapter,
-      idManga: idManga,
-    );
+  Future<void> addListChapterRead(List listManga, String idManga) {
+    // TODO: implement addListChapterRead
+    throw UnimplementedError();
   }
 
   @override
   Future<void> addMangaDetail(MangaDetailModel item) {
-    return _mangaLocalSource.saveManga(item);
+    // TODO: implement addMangaDetail
+    throw UnimplementedError();
   }
 
   @override
-  Future<void> removeMangaDetail(String id) {
-    return _mangaLocalSource.removeById(id);
+  Future getAllDataChapterRead() {
+    // TODO: implement getAllDataChapterRead
+    throw UnimplementedError();
   }
 
   @override
   Stream<List<MangaDetailModel>> getListChapter() {
-    return _mangaLocalSource.watchListManga();
+    // TODO: implement getListChapter
+    throw UnimplementedError();
   }
 
   @override
-  Future getAllDataChapterRead() async {
-    return await _historyLocalSource.getDataKey();
+  Future<MangaDetailModel?> getMangaDetailLocal(String idManga) {
+    // TODO: implement getMangaDetailLocal
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> removeMangaDetail(String id) {
+    // TODO: implement removeMangaDetail
+    throw UnimplementedError();
   }
 }

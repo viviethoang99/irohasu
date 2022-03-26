@@ -16,7 +16,6 @@ class MangaDetailModel extends Equatable {
     required this.title,
     required this.endpoint,
     required this.thumbnailUrl,
-    this.isFavorite = false,
     this.status,
     this.listChapter,
     this.author,
@@ -82,7 +81,6 @@ class MangaDetailModel extends Equatable {
     return MangaDetailModel(
       idManga: idManga ?? this.idManga,
       title: title ?? this.title,
-      isFavorite: isFavorite ?? this.isFavorite,
       status: status ?? this.status,
       listChapter: listChapter ?? this.listChapter,
       author: author ?? this.author,
@@ -96,9 +94,6 @@ class MangaDetailModel extends Equatable {
     );
   }
 
-  MangaDetailModel setFavorite() {
-    return copyWith(isFavorite: !isFavorite);
-  }
 
   @HiveField(0)
   final String idManga;
@@ -121,17 +116,14 @@ class MangaDetailModel extends Equatable {
   @HiveField(9)
   final List<ChapterItem>? listChapter;
   @HiveField(10)
-  final bool isFavorite;
-  @HiveField(11)
   final List<Genres>? listGenres;
-  @HiveField(12)
+  @HiveField(11)
   final DateTime? lastRead;
 
   @override
   List<Object?> get props => [
         idManga,
         title,
-        isFavorite,
         status,
         listChapter,
         author,

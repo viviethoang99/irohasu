@@ -6,7 +6,7 @@ import 'package:injectable/injectable.dart';
 import '../../core/error/exceptions.dart';
 import '../../core/error/failures.dart';
 import '../../domain/repositories/i_setting_app_repository.dart';
-import '../../domain/usecaes/update_setting_app_usecase.dart';
+import '../../domain/usecaes/setting_app/update_setting_app_usecase.dart';
 import '../datasource/local/setting_local_datasource.dart';
 import '../model/setting_model/setting_app.dart';
 
