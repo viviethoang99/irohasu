@@ -1,6 +1,8 @@
+import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../domain/repositories/manga_repository.dart';
+import '../../../core/core.dart';
+import '../../domain/repositories/i_manga_repository.dart';
 import '../datasource/local/history_local_source_imp.dart';
 import '../datasource/remote/manga_services.dart';
 import '../model/manga_detail_model.dart';
@@ -27,8 +29,14 @@ class MangaRepository implements IMangaRepository {
   }
 
   @override
-  Future<MangaDetailModel?> fetchMangaDetail(String endpoint) {
-    return _mangaService.fetchMangaDetail(endpoint);
+  Future<Either<Failure, MangaDetailModel>> fetchMangaDetail(
+      String endpoint) async {
+    try {
+      final data = await _mangaService.fetchMangaDetail(endpoint);
+      return Right(data!);
+    } on CacheException {
+      throw CacheException();
+    }
   }
 
   @override

@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:rxdart/rxdart.dart' as rx;
 
 import '../../../data/model/manga_list_model.dart';
-import '../../../domain/repositories/manga_repository.dart';
+import '../../../domain/repositories/i_manga_repository.dart';
 
 part 'list_manga_event.dart';
 part 'list_manga_state.dart';

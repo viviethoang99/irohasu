@@ -6,21 +6,26 @@ import 'package:injectable/injectable.dart';
 import '../../../config/base_content.dart';
 import '../../../config/config.dart';
 import '../../../data/model/manga_detail_model.dart';
-import '../../../domain/repositories/manga_repository.dart';
+import '../../../domain/repositories/i_manga_repository.dart';
+import '../../../domain/usecaes/manga_detail/fetch_manga_detail_usecase.dart';
 
 part 'manga_detail_event.dart';
 part 'manga_detail_state.dart';
 
 @injectable
 class MangaDetailBloc extends Bloc<MangaDetailEvent, MangaDetailState> {
-  MangaDetailBloc(this._repo, @factoryParam this.endpoint)
-      : super(MangaDetailLoadingState()) {
+  MangaDetailBloc(
+    @factoryParam this.endpoint,
+    this._repo,
+    this._fetchMangaDetailUseCase,
+  ) : super(MangaDetailLoadingState()) {
     on<FetchMangaDetailEvent>(_fetchMangaDetail);
     on<CacheMangaDetailEvent>(_saveMangaToLocal);
     on<AddChapterToListReading>(_setLastReadingToChapter);
   }
 
   final IMangaRepository _repo;
+  final FetchMangaDetailUseCase _fetchMangaDetailUseCase;
   final String endpoint;
 
   MangaDetailSuccessState? get currentState {
@@ -34,12 +39,13 @@ class MangaDetailBloc extends Bloc<MangaDetailEvent, MangaDetailState> {
     Emitter<MangaDetailState> emit,
   ) async {
     emit(MangaDetailLoadingState());
-    try {
-      final data = await _repo.fetchMangaDetail(endpoint);
-      emit(MangaDetailSuccessState(mangaDetail: data!));
-    } catch (e) {
-      emit(MangaDetailFailureState(msg: e.toString()));
-    }
+    final either = await _fetchMangaDetailUseCase();
+    either.fold(
+      (error) => emit(
+        MangaDetailFailureState(msg: error.runtimeType.toString()),
+      ),
+      (mangaDetail) => emit(MangaDetailSuccessState(mangaDetail: mangaDetail)),
+    );
   }
 
   Future<void> _saveMangaToLocal(

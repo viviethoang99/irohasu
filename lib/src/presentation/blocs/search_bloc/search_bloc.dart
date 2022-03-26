@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import './bloc.dart';
-import '../../../domain/repositories/manga_repository.dart';
+import '../../../domain/repositories/i_manga_repository.dart';
 
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
   SearchBloc(this.searchRepo) : super(InitialSearchState());

@@ -9,7 +9,7 @@ import '../data/datasource/local/cache_manager_data.dart';
 import '../data/datasource/remote/chapter_services.dart';
 import '../data/repositories/chapter_repository_imp.dart';
 import '../domain/repositories/chaper_repository.dart';
-import '../domain/repositories/manga_repository.dart';
+import '../domain/repositories/i_manga_repository.dart';
 import '../presentation/blocs/change_background_color_bloc/change_background_bloc.dart';
 import '../presentation/blocs/change_reading_mode_bloc/change_reading_mode_bloc.dart';
 import '../presentation/blocs/change_theme_bloc/change_theme_bloc.dart';
