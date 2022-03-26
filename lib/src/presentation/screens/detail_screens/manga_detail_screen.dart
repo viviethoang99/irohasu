@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../core/dependency_injection/dependency_injection.dart';
+import '../../../../core/core.dart';
 import '../../blocs/favorite_manga_detail_bloc/favorite_manga_detail_bloc.dart';
 import '../../blocs/manga_detail_bloc/manga_detail_bloc.dart';
 import '../../widgets/loading_screen.dart';

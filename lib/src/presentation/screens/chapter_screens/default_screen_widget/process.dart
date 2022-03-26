@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/helper/size_config.dart';
+import '../../../../../core/core.dart';
 import '../../../blocs/horizontal_mode_bloc/horizatal_mode_bloc.dart';
 
 class ProcessReadingChapter extends StatefulWidget {

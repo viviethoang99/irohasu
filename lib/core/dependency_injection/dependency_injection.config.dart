@@ -9,29 +9,31 @@ import 'package:hive/hive.dart' as _i9;
 import 'package:hive_flutter/hive_flutter.dart' as _i3;
 import 'package:injectable/injectable.dart' as _i2;
 
-import '../../data/datasource/local/favorite_local_source.dart' as _i5;
-import '../../data/datasource/local/history_local_source_imp.dart' as _i4;
-import '../../data/datasource/local/setting_local_datasource.dart' as _i8;
-import '../../data/datasource/remote/manga_services.dart' as _i11;
-import '../../data/repositories/favorite_repository.dart' as _i7;
-import '../../data/repositories/manga_repository_imp.dart' as _i15;
-import '../../data/repositories/setting_app_repository.dart' as _i17;
-import '../../domain/repositories/i_favorite_repository.dart' as _i6;
-import '../../domain/repositories/i_setting_app_repository.dart' as _i16;
-import '../../domain/repositories/manga_repository.dart' as _i14;
-import '../../domain/usecaes/favorite_manga/change_status_favorite_usercase.dart'
+import '../../src/data/datasource/local/favorite_local_source.dart' as _i5;
+import '../../src/data/datasource/local/history_local_source_imp.dart' as _i4;
+import '../../src/data/datasource/local/setting_local_datasource.dart' as _i8;
+import '../../src/data/datasource/remote/manga_services.dart' as _i11;
+import '../../src/data/repositories/favorite_repository.dart' as _i7;
+import '../../src/data/repositories/manga_repository_imp.dart' as _i15;
+import '../../src/data/repositories/setting_app_repository.dart' as _i17;
+import '../../src/domain/repositories/i_favorite_repository.dart' as _i6;
+import '../../src/domain/repositories/i_setting_app_repository.dart' as _i16;
+import '../../src/domain/repositories/manga_repository.dart' as _i14;
+import '../../src/domain/usecaes/favorite_manga/change_status_favorite_usercase.dart'
     as _i12;
-import '../../domain/usecaes/favorite_manga/is_favorite_usecase.dart' as _i10;
-import '../../domain/usecaes/setting_app/get_setting_app_usecase.dart' as _i21;
-import '../../domain/usecaes/setting_app/set_default_setting_app_usecase.dart'
+import '../../src/domain/usecaes/favorite_manga/is_favorite_usecase.dart'
+    as _i10;
+import '../../src/domain/usecaes/setting_app/get_setting_app_usecase.dart'
+    as _i21;
+import '../../src/domain/usecaes/setting_app/set_default_setting_app_usecase.dart'
     as _i19;
-import '../../domain/usecaes/setting_app/update_setting_app_usecase.dart'
+import '../../src/domain/usecaes/setting_app/update_setting_app_usecase.dart'
     as _i20;
-import '../../presentation/blocs/change_theme_bloc/change_theme_bloc.dart'
+import '../../src/presentation/blocs/change_theme_bloc/change_theme_bloc.dart'
     as _i22;
-import '../../presentation/blocs/favorite_manga_detail_bloc/favorite_manga_detail_bloc.dart'
+import '../../src/presentation/blocs/favorite_manga_detail_bloc/favorite_manga_detail_bloc.dart'
     as _i13;
-import '../../presentation/blocs/manga_detail_bloc/manga_detail_bloc.dart'
+import '../../src/presentation/blocs/manga_detail_bloc/manga_detail_bloc.dart'
     as _i18;
 import 'modules/storage_module.dart'
     as _i23; // ignore_for_file: unnecessary_lambdas

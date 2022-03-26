@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-import '../../../../core/helper/size_config.dart';
+import '../../../../../core/core.dart';
+
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({

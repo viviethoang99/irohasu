@@ -1,5 +1,6 @@
 import 'package:html/dom.dart';
-import '../../core/extensions/extensions.dart';
+
+import '../../../core/core.dart';
 import 'manga_list_model.dart';
 
 class ListSearchMangaModel {

@@ -3,8 +3,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+import '../../../../core/core.dart';
 import '../../../config/base_colors.dart';
-import '../../../core/helper/size_config.dart';
 import '../../../data/model/manga_detail_model.dart';
 import 'widget/custom_button_reading_widget.dart';
 import 'widget/description_text_widget.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../core/helper/size_config.dart';
+import '../../../../core/core.dart';
 import '../../../domain/repositories/chaper_repository.dart';
 import '../../blocs/chapter_screen/chapter_screen_cubit.dart';
 import '../../blocs/manga_detail_bloc/manga_detail_bloc.dart';

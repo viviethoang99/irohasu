@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-import '../../../../core/helper/convert_date_time.dart';
+import '../../../../../core/core.dart';
 import '../../../blocs/chapter_screen/chapter_screen_cubit.dart';
 
 class ListChapterWidget extends StatelessWidget {

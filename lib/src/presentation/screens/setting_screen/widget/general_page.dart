@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../core/core.dart';
 import '../../../../config/config.dart';
-import '../../../../core/helper/media_query_helper.dart';
-import '../../../../core/type/type.dart';
 import '../../../../data/datasource/local/cache_manager_data.dart';
 import '../../../blocs/change_theme_bloc/change_theme_bloc.dart';
 

@@ -4,9 +4,9 @@ import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:snapping_sheet/snapping_sheet.dart';
 
+import '../../../../core/core.dart';
 import '../../../../env.dart';
 import '../../../config/config.dart';
-import '../../../core/helper/size_config.dart';
 import '../../blocs/chapter_screen/chapter_screen_cubit.dart';
 import '../../blocs/horizontal_mode_bloc/horizatal_mode_bloc.dart';
 import 'default_screen_widget/list_chaper_widget.dart';

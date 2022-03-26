@@ -1,8 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../core/error/exceptions.dart';
-import '../../core/error/failures.dart';
+import '../../../core/core.dart';
 import '../../domain/repositories/i_favorite_repository.dart';
 import '../../domain/usecaes/favorite_manga/change_status_favorite_usercase.dart';
 import '../datasource/local/favorite_local_source.dart';

@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
-import '../../data/model/chapter_item_model.dart';
 
+import '../../src/data/model/chapter_item_model.dart';
 import '../extensions/string_extension.dart';
 
 class ChapHelper {

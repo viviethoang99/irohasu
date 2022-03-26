@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 
+import '../../core/core.dart';
 import '../../env.dart';
 import '../config/routes/app_routes.dart';
-import '../core/dependency_injection/dependency_injection.dart';
-import '../core/helper/remove_scroll_glow.dart';
 import '../data/datasource/local/cache_manager_data.dart';
 import '../data/datasource/remote/chapter_services.dart';
 import '../data/repositories/chapter_repository_imp.dart';

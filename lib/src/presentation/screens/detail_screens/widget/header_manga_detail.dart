@@ -2,8 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../core/core.dart';
 import '../../../../../env.dart';
-import '../../../../core/helper/size_config.dart';
 import '../../../blocs/favorite_manga_detail_bloc/favorite_manga_detail_bloc.dart';
 import '../../../blocs/manga_detail_bloc/manga_detail_bloc.dart';
 import 'btn_vote_widget.dart';

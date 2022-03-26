@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import './widget/item_manga.dart';
-import '../../../core/helper/media_query_helper.dart';
+import '../../../../core/core.dart';
 import '../../../data/model/manga_list_model.dart';
 
 class ListMangaWidget extends StatefulWidget {

@@ -5,11 +5,9 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../core/core.dart';
 import '../../../config/config.dart';
 import '../../../config/themes/app_theme_data.dart';
-import '../../../core/error/exceptions.dart';
-import '../../../core/error/failures.dart';
-import '../../../core/type/type.dart';
 import '../../../domain/usecaes/setting_app/get_setting_app_usecase.dart';
 import '../../../domain/usecaes/setting_app/update_setting_app_usecase.dart';
 
@@ -38,7 +36,7 @@ class ChangeThemeBloc extends Bloc<ChangeThemeEvent, ChangeThemeState> {
         final params = SetThemeAppParams(event.type.name);
         final result = await _setThemeApp(params: params);
         result.fold(
-          _getFailureAndThrowExpection,
+          (l) => _getFailureAndThrowExpection,
           (r) => null,
         );
         break;

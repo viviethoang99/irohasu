@@ -3,8 +3,7 @@ import 'dart:async';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../core/error/exceptions.dart';
-import '../../core/error/failures.dart';
+import '../../../core/core.dart';
 import '../../domain/repositories/i_setting_app_repository.dart';
 import '../../domain/usecaes/setting_app/update_setting_app_usecase.dart';
 import '../datasource/local/setting_local_datasource.dart';

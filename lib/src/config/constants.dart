@@ -1,5 +1,4 @@
-import '../core/type/type.dart';
-
+import '../../core/core.dart';
 import '../data/model/setting_model/setting_model.dart';
 
 class Constants {

@@ -1,8 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../core/error/failures.dart';
-import '../../../core/usecase/usecase.dart';
+import '../../../../core/core.dart';
 import '../../repositories/i_favorite_repository.dart';
 
 @lazySingleton

@@ -2,8 +2,8 @@ import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 import 'package:html/dom.dart';
 
+import '../../../core/core.dart';
 import '../../config/base_content.dart';
-import '../../core/helper/manga_detail_helper.dart';
 import 'chapter_item_model.dart';
 import 'genres_model.dart';
 

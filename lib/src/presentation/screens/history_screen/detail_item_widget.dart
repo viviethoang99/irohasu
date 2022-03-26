@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/extensions/extensions.dart';
-import '../../../core/helper/chap_helper.dart';
+import '../../../../core/core.dart';
 import '../../../data/model/chapter_item_model.dart';
 import '../../screens/detail_screens/manga_detail_screen.dart';
 

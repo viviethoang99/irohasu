@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:html/dom.dart';
-import '../../../core/extensions/extensions.dart';
+
+import '../../../../core/core.dart';
 
 class ChapterModel extends Equatable {
   ChapterModel({

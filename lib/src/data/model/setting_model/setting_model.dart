@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
-import '../../../core/type/type.dart';
+
+import '../../../../core/core.dart';
+
 
 class ThemeOption extends Equatable {
   const ThemeOption({

@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-import '../../../core/extensions/extensions.dart';
+import '../../../../core/core.dart';
 import '../../../data/model/chapter/chapter_model.dart';
 import '../../../data/model/manga_detail_model.dart';
 import '../../../domain/repositories/chaper_repository.dart';

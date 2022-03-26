@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 
-import '../../core/error/failures.dart';
+import '../../../core/core.dart';
 import '../usecaes/favorite_manga/change_status_favorite_usercase.dart';
 
 abstract class IFavoriteRepository {
