@@ -6,7 +6,6 @@ import 'package:injectable/injectable.dart';
 import '../../../config/base_content.dart';
 import '../../../config/config.dart';
 import '../../../data/model/manga_detail_model.dart';
-import '../../../domain/repositories/i_manga_repository.dart';
 import '../../../domain/usecaes/manga_detail/fetch_manga_detail_usecase.dart';
 
 part 'manga_detail_event.dart';
@@ -16,15 +15,12 @@ part 'manga_detail_state.dart';
 class MangaDetailBloc extends Bloc<MangaDetailEvent, MangaDetailState> {
   MangaDetailBloc(
     @factoryParam this.endpoint,
-    this._repo,
     this._fetchMangaDetailUseCase,
   ) : super(MangaDetailLoadingState()) {
     on<FetchMangaDetailEvent>(_fetchMangaDetail);
-    on<CacheMangaDetailEvent>(_saveMangaToLocal);
     on<AddChapterToListReading>(_setLastReadingToChapter);
   }
 
-  final IMangaRepository _repo;
   final FetchMangaDetailUseCase _fetchMangaDetailUseCase;
   final String endpoint;
 
@@ -48,23 +44,6 @@ class MangaDetailBloc extends Bloc<MangaDetailEvent, MangaDetailState> {
     );
   }
 
-  Future<void> _saveMangaToLocal(
-    CacheMangaDetailEvent event,
-    Emitter<MangaDetailState> emit,
-  ) async {
-    if (currentState!.chapterReading.isNotEmpty) {
-      await _repo.addListChapterRead(
-        currentState!.chapterReading,
-        currentState!.mangaDetail.idManga,
-      );
-      await _repo.addMangaDetail(
-        currentState!.mangaDetail.copyWith(lastRead: DateTime.now()),
-      );
-    } else {
-      await _repo.removeMangaDetail(currentState!.mangaDetail.idManga);
-    }
-  }
-
   Either<void, MangaDetailModel> get idManga {
     if (state is MangaDetailSuccessState) {
       final data = (state as MangaDetailSuccessState).mangaDetail;
@@ -73,11 +52,6 @@ class MangaDetailBloc extends Bloc<MangaDetailEvent, MangaDetailState> {
       return const Left(null);
     }
   }
-
-  void changeStatusFavorite(
-    MangaDetailModel r,
-    Emitter<MangaDetailState> emit,
-  ) {}
 
   Future<void> _setLastReadingToChapter(
     AddChapterToListReading event,

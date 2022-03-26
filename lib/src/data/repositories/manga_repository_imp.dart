@@ -3,7 +3,7 @@ import 'package:injectable/injectable.dart';
 
 import '../../../core/core.dart';
 import '../../domain/repositories/i_manga_repository.dart';
-import '../datasource/local/history_local_source_imp.dart';
+import '../datasource/local/history_local_source.dart';
 import '../datasource/remote/manga_services.dart';
 import '../model/manga_detail_model.dart';
 import '../model/manga_list_model.dart';
@@ -39,10 +39,7 @@ class MangaRepository implements IMangaRepository {
     }
   }
 
-  @override
-  Future<List> getListChapterReading(String idManga) {
-    return _historyLocalSource.getList(idManga: idManga);
-  }
+
 
   @override
   Future<void> addListChapterRead(List listManga, String idManga) {
@@ -77,6 +74,12 @@ class MangaRepository implements IMangaRepository {
   @override
   Future<void> removeMangaDetail(String id) {
     // TODO: implement removeMangaDetail
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List> getListChapterReading(String idManga) {
+    // TODO: implement getListChapterReading
     throw UnimplementedError();
   }
 }

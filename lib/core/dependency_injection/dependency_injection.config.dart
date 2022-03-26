@@ -10,7 +10,7 @@ import 'package:hive_flutter/hive_flutter.dart' as _i3;
 import 'package:injectable/injectable.dart' as _i2;
 
 import '../../src/data/datasource/local/favorite_local_source.dart' as _i5;
-import '../../src/data/datasource/local/history_local_source_imp.dart' as _i4;
+import '../../src/data/datasource/local/history_local_source.dart' as _i4;
 import '../../src/data/datasource/local/setting_local_datasource.dart' as _i8;
 import '../../src/data/datasource/remote/manga_services.dart' as _i11;
 import '../../src/data/repositories/favorite_repository.dart' as _i7;
@@ -83,8 +83,7 @@ Future<_i1.GetIt> $registerDependencies(_i1.GetIt get,
   gh.lazySingleton<_i21.GetThemeAppUseCase>(
       () => _i21.GetThemeAppUseCase(get<_i16.ISettingAppRepository>()));
   gh.factoryParam<_i22.MangaDetailBloc, String, dynamic>((endpoint, _) =>
-      _i22.MangaDetailBloc(endpoint, get<_i14.IMangaRepository>(),
-          get<_i20.FetchMangaDetailUseCase>()));
+      _i22.MangaDetailBloc(endpoint, get<_i20.FetchMangaDetailUseCase>()));
   gh.factory<_i23.ChangeThemeBloc>(() => _i23.ChangeThemeBloc(
       get<_i21.GetThemeAppUseCase>(), get<_i19.SetThemeAppUseCase>()));
   return get;

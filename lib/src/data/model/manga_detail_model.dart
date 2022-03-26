@@ -23,7 +23,6 @@ class MangaDetailModel extends Equatable {
     this.dislike,
     this.description,
     this.listGenres,
-    this.lastRead,
   });
 
   factory MangaDetailModel.fromHTML(Document data, String endpoint) {
@@ -76,7 +75,6 @@ class MangaDetailModel extends Equatable {
     List<ChapterItem>? listChapter,
     bool? isFavorite,
     List<Genres>? listGenres,
-    DateTime? lastRead,
   }) {
     return MangaDetailModel(
       idManga: idManga ?? this.idManga,
@@ -90,7 +88,6 @@ class MangaDetailModel extends Equatable {
       endpoint: endpoint ?? this.endpoint,
       thumbnailUrl: thumbnailUrl ?? this.thumbnailUrl,
       listGenres: listGenres ?? this.listGenres,
-      lastRead: lastRead ?? this.lastRead,
     );
   }
 
@@ -117,8 +114,7 @@ class MangaDetailModel extends Equatable {
   final List<ChapterItem>? listChapter;
   @HiveField(10)
   final List<Genres>? listGenres;
-  @HiveField(11)
-  final DateTime? lastRead;
+
 
   @override
   List<Object?> get props => [
@@ -133,6 +129,5 @@ class MangaDetailModel extends Equatable {
         endpoint,
         thumbnailUrl,
         listGenres,
-        lastRead,
       ];
 }
