@@ -8,6 +8,8 @@ import '../../screens/home_screens/widget/appbar_widget.dart';
 import 'detail_item_widget.dart';
 
 class HistoryScreen extends StatefulWidget {
+  const HistoryScreen({Key? key}) : super(key: key);
+
   @override
   _HistoryScreenState createState() => _HistoryScreenState();
 }
@@ -23,7 +25,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
-      appBar: AppBarHomeWidget(),
+      appBar: const AppBarHomeWidget(),
       body: BlocBuilder<HistoryScreenBloc, HistoryScreenState>(
         builder: (context, state) {
           return Container(
@@ -53,7 +55,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                         borderRadius: BorderRadius.circular(15),
                       ),
                       elevation: 5,
-                      child: Container(
+                      child: SizedBox(
                         height: 150.0,
                         child: Row(
                           children: <Widget>[

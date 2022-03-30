@@ -6,7 +6,7 @@ import 'list_manga_widget.dart';
 import 'widget/appbar_widget.dart';
 
 class ListMangaScreen extends StatefulWidget {
-  const ListMangaScreen();
+  const ListMangaScreen({Key? key}) : super(key: key);
 
   static const routeName = '/home';
 
@@ -45,7 +45,7 @@ class _ListMangaScreenState extends State<ListMangaScreen> {
         children: <Widget>[
           Scaffold(
             backgroundColor: Colors.transparent,
-            appBar: AppBarHomeWidget(),
+            appBar: const AppBarHomeWidget(),
             body: BlocBuilder<ListMangaBloc, ListMangaState>(
                 builder: (context, state) {
               if (state.listManga.isNotEmpty) {

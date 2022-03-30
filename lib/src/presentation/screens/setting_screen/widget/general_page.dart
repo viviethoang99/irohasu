@@ -7,6 +7,8 @@ import '../../../../data/datasource/local/cache_manager_data.dart';
 import '../../../blocs/change_theme_bloc/change_theme_bloc.dart';
 
 class GeneralSetting extends StatefulWidget {
+  const GeneralSetting({Key? key}) : super(key: key);
+
   static const routeName = '/setting/generaSetting';
 
   @override
@@ -51,13 +53,14 @@ class _GeneralSettingState extends State<GeneralSetting> {
                 ),
               ),
               subtitle: BlocBuilder<ChangeThemeBloc, ChangeThemeState>(
-                  builder: (context, state) {
-                _selectTheme = state.optionSelect;
-                return Text(
-                  Constants.listTheme[state.optionSelect!].name,
-                  style: theme.textTheme.subtitle1,
-                );
-              }),
+                builder: (context, state) {
+                  _selectTheme = state.optionSelect;
+                  return Text(
+                    Constants.listTheme[state.optionSelect!].name,
+                    style: theme.textTheme.subtitle1,
+                  );
+                },
+              ),
             ),
             ListTile(
               onTap: _clearCache,

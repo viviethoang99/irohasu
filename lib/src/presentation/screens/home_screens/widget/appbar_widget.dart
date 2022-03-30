@@ -6,6 +6,7 @@ import '../../../blocs/list_manga_bloc/list_manga_bloc.dart';
 import '../../../screens/search_screens/search_screen.dart';
 
 class AppBarHomeWidget extends StatelessWidget implements PreferredSizeWidget {
+  const AppBarHomeWidget({Key? key}) : super(key: key);
   @override
   Size get preferredSize => const Size.fromHeight(60);
 

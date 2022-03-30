@@ -6,11 +6,12 @@ import '../../detail_screens/manga_detail_screen.dart';
 
 class ItemManga extends StatelessWidget {
   const ItemManga({
+    Key? key,
     required this.title,
     required this.thumbnailUrl,
     required this.endpoint,
     this.status,
-  });
+  }) : super(key: key);
 
   final String? title;
   final String? thumbnailUrl;

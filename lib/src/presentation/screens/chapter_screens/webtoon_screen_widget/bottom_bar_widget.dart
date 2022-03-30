@@ -3,13 +3,14 @@ import 'package:flutter/scheduler.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class BottomBarChapterScreen extends StatefulWidget {
-  BottomBarChapterScreen({
+  const BottomBarChapterScreen({
+    Key? key,
     this.countChapter,
     this.maxWidth,
     this.scrollController,
     this.getIndex,
     this.scrollListController,
-  });
+  }) : super(key: key);
 
   final int? countChapter;
   final double? maxWidth;

@@ -15,7 +15,7 @@ class MangaDetailHelper {
     final map = <String, String>{};
     for (var pair in keyValuePairs) {
       final entry = pair.split('=');
-      map['${entry[0].trim()}'] = entry[1].trim();
+      map[entry[0].trim()] = entry[1].trim();
     }
     return map;
   }

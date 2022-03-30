@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import '../../setting_screen/widget/setting_chapter.dart';
 
 class AppBarChapterScreen extends StatefulWidget {
-  AppBarChapterScreen({this.maxWidth, this.scrollController});
+  const AppBarChapterScreen({
+    Key? key,
+    this.maxWidth,
+    this.scrollController,
+  }) : super(key: key);
 
   final double? maxWidth;
   final ScrollController? scrollController;

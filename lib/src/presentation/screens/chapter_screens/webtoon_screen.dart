@@ -1,4 +1,5 @@
 import 'dart:io' as io;
+import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -15,10 +16,11 @@ import 'webtoon_screen_widget/custom_drawer.dart';
 
 class ChapterLoadedScreen extends StatefulWidget {
   const ChapterLoadedScreen({
+    Key? key,
     required this.data,
     this.chapterList = const [],
     required this.getIndexChapter,
-  });
+  }) : super(key: key);
 
   final ChapterModel? data;
   final List<ChapterItem>? chapterList;
@@ -41,7 +43,7 @@ class _ChapterLoadedScreenState extends State<ChapterLoadedScreen> {
 
   //Declare Globaly
   String? directory;
-  List file = [];
+  List file = <File>[];
 
   @override
   void initState() {

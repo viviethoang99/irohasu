@@ -18,7 +18,7 @@ class ListMangaBloc extends Bloc<ListMangaEvent, ListMangaState> {
   final IMangaRepository _repository;
 
   EventTransformer<T> _debounce<T>() {
-    final _duration = const Duration(milliseconds: 500);
+    const _duration = Duration(milliseconds: 500);
     return (events, mapper) => events.debounceTime(_duration).flatMap(mapper);
   }
 

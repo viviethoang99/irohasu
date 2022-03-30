@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'cache_manager_data.dart';
 
@@ -22,7 +23,9 @@ class HistoryData {
       }).toList();
       await mangaBox.put('listManga', listManga);
     } catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
   }
 
@@ -36,7 +39,6 @@ class HistoryData {
       if (listManga[idManga].chapter.isFavorite != true &&
           listManga[idManga].chapter.listDownload.isEmpty) {
         await _cacheManagerData.removeMangaRequestSingleCache(idManga);
-        print('remove Manga success');
         return true;
       }
       listManga[idManga]
@@ -48,7 +50,6 @@ class HistoryData {
               ..timeReading = null)
             .toList();
       await mangaBox.put('listManga', listManga);
-      print('clear all chapter');
       return true;
     } else if (idChapter!.isNotEmpty) {
       listManga[idManga].chapter
@@ -61,7 +62,6 @@ class HistoryData {
           }
         }).toList();
       await mangaBox.put('listManga', listManga);
-      print('clear chapter');
       return true;
     }
     return false;

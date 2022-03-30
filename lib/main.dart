@@ -14,7 +14,7 @@ Future<void> main() async {
     [DeviceOrientation.portraitUp],
   );
   BlocOverrides.runZoned(
-    () => runApp(AppWidget()),
+    () => runApp(const AppWidget()),
     blocObserver: AppBlocObserver(),
   );
 }

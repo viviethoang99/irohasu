@@ -8,7 +8,7 @@ part 'history_screen_event.dart';
 part 'history_screen_state.dart';
 
 class HistoryScreenBloc extends Bloc<HistoryScreenEvent, HistoryScreenState> {
-  HistoryScreenBloc(repo)
+  HistoryScreenBloc(IMangaRepository repo)
       : _repo = repo,
         super(const HistoryScreenState()) {
     on<FetchDataHistory>(_fetchData);

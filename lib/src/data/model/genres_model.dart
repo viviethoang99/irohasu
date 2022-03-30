@@ -1,12 +1,11 @@
-import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 import 'package:html/dom.dart';
 
 part 'genres_model.g.dart';
 
 @HiveType(typeId: 2)
-class Genres extends Equatable {
-  Genres({this.genreName, this.urlGenre});
+class Genres {
+  const Genres({this.genreName, this.urlGenre});
 
   factory Genres.fromHTML({required Element data}) => Genres(
         genreName: data.text,
@@ -17,7 +16,4 @@ class Genres extends Equatable {
   final String? genreName;
   @HiveField(1)
   final String? urlGenre;
-
-  @override
-  List<Object?> get props => [genreName, urlGenre];
 }

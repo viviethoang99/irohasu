@@ -46,7 +46,7 @@ class ChangeBackgroundBloc
     await _setOptionValue(0);
   }
 
-  Future<Null> _setOptionValue(int optionValue) async {
+  Future<void> _setOptionValue(int optionValue) async {
     var mangaBox = Hive.box('irohasu');
     var setting = mangaBox
         .get('sharedPreferences', defaultValue: {})?.cast<String, dynamic>();

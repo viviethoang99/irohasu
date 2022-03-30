@@ -4,7 +4,7 @@ import 'package:html/dom.dart';
 import '../../../../core/core.dart';
 
 class ChapterModel extends Equatable {
-  ChapterModel({
+  const ChapterModel({
     this.id,
     this.title,
     this.endpoint,
@@ -22,9 +22,7 @@ class ChapterModel extends Equatable {
       endpoint: endpoint,
       mangaEndpoint: responseLink[3].attributes['href'],
       listImage: List<ChapterImage>.from(
-        responseData.mapIndexed<ChapterImage>(
-          (image, index) => ChapterImage.fromHTML(image, index),
-        ),
+        responseData.mapIndexed<ChapterImage>(ChapterImage.fromHTML),
       ),
       nameManga: data
           .querySelector('div.al-c.linkchapter.mt20 > a.mr10.ml10')
@@ -53,7 +51,10 @@ class ChapterModel extends Equatable {
 }
 
 class ChapterImage extends Equatable {
-  ChapterImage({required this.chapterImageLink, required this.number});
+  const ChapterImage({
+    required this.chapterImageLink,
+    required this.number,
+  });
 
   factory ChapterImage.fromHTML(Element data, int index) {
     return ChapterImage(

@@ -6,6 +6,8 @@ import '../home_screens/widget/appbar_widget.dart';
 import '../home_screens/widget/item_manga.dart';
 
 class LibraryScreen extends StatefulWidget {
+  const LibraryScreen({Key? key}) : super(key: key);
+
   @override
   _LibraryScreenState createState() => _LibraryScreenState();
 }
@@ -21,7 +23,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
-      appBar: AppBarHomeWidget(),
+      appBar: const AppBarHomeWidget(),
       body: BlocBuilder<LibraryScreenBloc, LibraryScreenState>(
         builder: (context, state) {
           return Container(

@@ -48,11 +48,10 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  pedantic: ^1.11.0
   hive_generator: ^1.1.2
   build_runner: ^2.1.7
   injectable_generator: ^1.5.3
-  flutter_lints: ^1.0.0
+  flutter_lints: ^1.0.4
 
 flutter:
   uses-material-design: true

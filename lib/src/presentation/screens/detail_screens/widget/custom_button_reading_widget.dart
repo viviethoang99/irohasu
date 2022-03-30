@@ -7,9 +7,10 @@ import '../../chapter_screens/chapter_screen.dart';
 
 class CustomButtonReadingWidget extends StatelessWidget {
   const CustomButtonReadingWidget({
+    Key? key,
     required this.lastChapter,
     required this.color,
-  });
+  }) : super(key: key);
 
   final ChapterItem lastChapter;
   final Color color;

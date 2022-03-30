@@ -8,7 +8,7 @@ import '../library_screen/library_screen.dart';
 import '../setting_screen/setting_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen();
+  const HomeScreen({Key? key}) : super(key: key);
 
   static const routeName = '/';
 
@@ -41,8 +41,8 @@ class _HomeScreenState extends State<HomeScreen> {
           onPageChanged: (index) {
             setState(() => _currentIndex = index);
           },
-          children: <Widget>[
-            const ListMangaScreen(),
+          children: const <Widget> [
+            ListMangaScreen(),
             LibraryScreen(),
             HistoryScreen(),
             SettingScreen(),

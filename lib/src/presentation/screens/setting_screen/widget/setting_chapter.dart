@@ -6,6 +6,8 @@ import '../../../blocs/change_background_color_bloc/change_background_bloc.dart'
 import '../../../blocs/change_reading_mode_bloc/change_reading_mode_bloc.dart';
 
 class SettingChapter extends StatefulWidget {
+  const SettingChapter({Key? key}) : super(key: key);
+
   static const routeName = '/chapterSetting';
 
   @override

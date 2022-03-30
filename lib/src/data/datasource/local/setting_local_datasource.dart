@@ -32,7 +32,7 @@ class SettingLocalDataSource implements ISettingLocalDataSource {
 
   @override
   Future<SettingApp> setDefault() async {
-    final setting = const SettingApp();
+    const setting = SettingApp();
     return setting;
   }
 

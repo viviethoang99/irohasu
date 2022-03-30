@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 
 import '../../../data/datasource/local/download_data.dart';
@@ -38,7 +39,7 @@ class DownloadBloc extends Bloc<DownloadEvent, DownloadState> {
       }
     }
     if (event is ChapterDownloadPercentageChangedEvent) {
-      yield DownloadProcessState().copyWith(
+      yield const DownloadProcessState().copyWith(
         downloadPercentageCompleted: event.percentage,
       );
       if (event.percentage == 1) {
@@ -63,7 +64,9 @@ class DownloadBloc extends Bloc<DownloadEvent, DownloadState> {
           }
           yield DownloadInitialState();
         } catch (e) {
-          print(e);
+          if (kDebugMode) {
+            print(e);
+          }
         }
       }
     }

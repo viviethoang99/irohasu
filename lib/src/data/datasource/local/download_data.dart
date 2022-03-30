@@ -25,7 +25,6 @@ class DownloadData {
         return _appDirNewFolder.path;
       }
     } catch (e) {
-      print(e);
       return null;
     }
   }
@@ -66,10 +65,9 @@ class DownloadData {
       //   }
       //   return appDocDirFolder;
       // } else {
-      //   return null;
+        return null;
       // }
     } catch (e) {
-      print(e);
       return null;
     }
   }

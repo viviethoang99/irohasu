@@ -20,6 +20,8 @@ import '../presentation/blocs/search_bloc/bloc.dart';
 import '../presentation/screens/index_screen/index_screen.dart';
 
 class AppWidget extends StatefulWidget {
+  const AppWidget({Key? key}) : super(key: key);
+  
   @override
   _AppWidgetState createState() => _AppWidgetState();
 }

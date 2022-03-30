@@ -27,9 +27,9 @@ class SettingAppRepository implements ISettingAppRepository {
 
   @override
   Future<Either<Failure, SettingApp>> setDefault() async {
-    final defaultSetting = const SettingApp();
+    const defaultSetting = SettingApp();
     try {
-      return Right(defaultSetting);
+      return const Right(defaultSetting);
     } on CacheException {
       return Left(CacheFailure());
     }

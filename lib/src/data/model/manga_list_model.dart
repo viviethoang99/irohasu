@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:html/dom.dart';
 
 class MangaModel extends Equatable {
-  MangaModel({
+  const MangaModel({
     this.idManga,
     this.title,
     this.thumbnailUrl,

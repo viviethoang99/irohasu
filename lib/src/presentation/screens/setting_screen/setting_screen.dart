@@ -3,6 +3,8 @@ import '../setting_screen/widget/general_page.dart';
 import '../setting_screen/widget/setting_chapter.dart';
 
 class SettingScreen extends StatelessWidget {
+  const SettingScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

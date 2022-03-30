@@ -88,7 +88,7 @@ class _DrawerSearchScreenState extends State<DrawerSearchScreen> {
           ),
         ),
         const SizedBox(height: 20),
-        Container(
+        Padding(
           padding: const EdgeInsets.only(bottom: 10),
           child: Text(
             'Thể loại:',

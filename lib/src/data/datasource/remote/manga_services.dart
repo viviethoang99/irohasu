@@ -12,10 +12,9 @@ class MangaService extends BaseService {
     final response = await request(url: '/page-$page');
     final document = parse(response!.data);
     final responseData = document.getElementsByClassName('storyitem');
-    var data = List<MangaModel>.from(
-      responseData.map<MangaModel>((manga) => MangaModel.listManga(manga)),
+    return List<MangaModel>.from(
+      responseData.map<MangaModel>(MangaModel.listManga),
     );
-    return data;
   }
 
   Future<List<MangaModel>> getDataResult({String? query}) async {

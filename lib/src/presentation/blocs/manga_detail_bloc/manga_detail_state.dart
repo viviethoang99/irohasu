@@ -33,7 +33,7 @@ class MangaDetailSuccessState extends MangaDetailState {
 }
 
 class MangaDetailFailureState extends MangaDetailState {
-  MangaDetailFailureState({this.msg});
+  const MangaDetailFailureState({this.msg});
   final String? msg;
 
   @override

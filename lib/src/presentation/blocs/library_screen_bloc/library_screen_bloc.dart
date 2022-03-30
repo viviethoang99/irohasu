@@ -7,7 +7,7 @@ part 'library_screen_event.dart';
 part 'library_screen_state.dart';
 
 class LibraryScreenBloc extends Bloc<LibraryScreenEvent, LibraryScreenState> {
-  LibraryScreenBloc(repo)
+  LibraryScreenBloc(IMangaRepository repo)
       : _repo = repo,
         super(const LibraryScreenState()) {
     on<FetchDataLibrary>(_fetchData);

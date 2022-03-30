@@ -36,7 +36,6 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
         final list = await searchRepo.fetchListMangaSearch(query: query);
         yield SearchLoadedState(list: list);
       } catch (e) {
-        print(e);
         yield SearchFailureState();
       }
     }

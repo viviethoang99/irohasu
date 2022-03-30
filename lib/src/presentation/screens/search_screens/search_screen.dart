@@ -10,6 +10,8 @@ import '../../screens/search_screens/show_list_genres.dart';
 import '../../widgets/loading_screen.dart';
 
 class SearchScreen extends StatefulWidget {
+  const SearchScreen({Key? key}) : super(key: key);
+
   static const routeName = '/search';
 
   @override
@@ -82,9 +84,7 @@ class _SearchScreenState extends State<SearchScreen> {
           BlocBuilder<SearchBloc, SearchState>(
             builder: (context, state) {
               if (state is InitialSearchState) {
-                return Container(
-                  child: const Center(),
-                );
+                return const Center();
               }
               if (state is SearchLoadingState) {
                 return const LoadingScreen();
@@ -146,7 +146,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 height: getHeight,
                 color: _showDrawer
                     ? theme.backgroundColor
-                    : theme.buttonColor.withOpacity(0.8),
+                    : theme.primaryColor.withOpacity(0.8),
                 child: DrawerSearchScreen(
                   isShowDrawer: _showDrawer,
                   searchAdvanced: (

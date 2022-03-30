@@ -12,7 +12,7 @@ class DownloadInitialState extends DownloadState {}
 class DownloadingState extends DownloadState {}
 
 class DownloadProcessState extends DownloadState {
-  DownloadProcessState({this.downloadPercentageCompleted = 0});
+  const DownloadProcessState({this.downloadPercentageCompleted = 0});
 
   final double downloadPercentageCompleted;
 
@@ -42,7 +42,7 @@ class DownloadedState extends DownloadState {
 }
 
 class DownloadFailureState extends DownloadState {
-  DownloadFailureState({this.msg});
+  const DownloadFailureState({this.msg});
   final String? msg;
 
   @override

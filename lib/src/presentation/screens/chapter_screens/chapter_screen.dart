@@ -9,7 +9,7 @@ import '../../widgets/loading_screen.dart';
 import 'default_reading_screen.dart';
 
 class ChapterScreen extends StatefulWidget {
-  ChapterScreen({
+  const ChapterScreen({
     Key? key,
     required this.endpoint,
   }) : super(key: key);

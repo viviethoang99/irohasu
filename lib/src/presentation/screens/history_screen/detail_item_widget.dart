@@ -118,7 +118,7 @@ class DetailItemWidget extends StatelessWidget {
     required String? idChapter,
     required String? idManga,
   }) {
-    showDialog(
+    showDialog<void>(
         context: context,
         builder: (BuildContext context) {
           var _value = false;

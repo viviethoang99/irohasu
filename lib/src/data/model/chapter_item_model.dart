@@ -7,7 +7,7 @@ part 'chapter_item_model.g.dart';
 
 @HiveType(typeId: 1)
 class ChapterItem extends Equatable {
-  ChapterItem({
+  const ChapterItem({
     required this.id,
     required this.title,
     required this.endpoint,

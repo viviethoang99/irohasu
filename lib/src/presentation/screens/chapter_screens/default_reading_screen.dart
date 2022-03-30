@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:photo_view/photo_view.dart';
@@ -13,7 +15,7 @@ import 'default_screen_widget/list_chaper_widget.dart';
 import 'default_screen_widget/process.dart';
 
 class HorizontalReadingWidget extends StatefulWidget {
-  const HorizontalReadingWidget();
+  const HorizontalReadingWidget({Key? key}) : super(key: key);
 
   @override
   _HorizontalReadingWidgetState createState() =>
@@ -26,7 +28,7 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
   late final SnappingSheetController snappingSheetController;
   //Declare Globaly
   String? directory;
-  List file = [];
+  List file = <File>[];
 
   @override
   void initState() {
@@ -47,19 +49,19 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
               controller: snappingSheetController,
               lockOverflowDrag: true,
               onSnapStart: (positionData, snappingPosition) {},
-              snappingPositions: [
-                const SnappingPosition.factor(
+              snappingPositions:const  [
+                SnappingPosition.factor(
                   snappingCurve: Curves.elasticOut,
                   snappingDuration: Duration(milliseconds: 1750),
                   positionFactor: -1,
                 ),
-                const SnappingPosition.factor(
+                SnappingPosition.factor(
                   positionFactor: 0.0,
                   snappingCurve: Curves.easeOutExpo,
                   snappingDuration: Duration(seconds: 1),
                   grabbingContentOffset: GrabbingContentOffset.top,
                 ),
-                const SnappingPosition.factor(
+                SnappingPosition.factor(
                   snappingCurve: Curves.elasticOut,
                   snappingDuration: Duration(milliseconds: 1750),
                   positionFactor: 0.5,
@@ -71,7 +73,7 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                   currentPosition: sheetPosition.pixels,
                 ));
               },
-              grabbing: GrabbingWidget(),
+              grabbing: const GrabbingWidget(),
               grabbingHeight: 60,
               sheetBelow: SnappingSheetContent(
                 draggable: true,
@@ -103,8 +105,8 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
     );
   }
 
-  Widget _imageLocalWidget() {
-    return Container();
+  // Widget _imageLocalWidget() {
+  //   return Container();
     // return ExtendedImageGesturePageView.builder(
     //   itemCount: countImage,
     //   scrollDirection: Axis.horizontal,
@@ -144,7 +146,7 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
     //   onPageChanged: context.read<HorizontalReadingCubit>().changeIndexPage,
     //   physics: const BouncingScrollPhysics(),
     // );
-  }
+  // }
 }
 
 class _AppBarWidget extends StatelessWidget {
@@ -268,11 +270,11 @@ class _ShowImageFromAPIState extends State<ShowImageFromAPI> {
             onPageChanged: (value) {
               setState(() => page = value);
             },
-            loadingBuilder: (context, event) => Center(
-              child: Container(
+            loadingBuilder: (context, event) => const Center(
+              child: SizedBox(
                 width: 20.0,
                 height: 20.0,
-                child: const CircularProgressIndicator(),
+                child: CircularProgressIndicator(),
               ),
             ),
           ),
@@ -283,6 +285,8 @@ class _ShowImageFromAPIState extends State<ShowImageFromAPI> {
 }
 
 class GrabbingWidget extends StatelessWidget {
+  const GrabbingWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

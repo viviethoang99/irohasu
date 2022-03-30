@@ -31,7 +31,7 @@ class AppRoutes {
       case GeneralSetting.routeName:
         return _pageRoute(
           routeSettings: routeSettings,
-          builder: GeneralSetting(),
+          builder: const GeneralSetting(),
         );
       case MangaDetailScreen.routeName:
         final data = args as MangaDetailScreen;
@@ -48,7 +48,7 @@ class AppRoutes {
       case SettingChapter.routeName:
         return _pageRoute(
           routeSettings: routeSettings,
-          builder: SettingChapter(),
+          builder: const SettingChapter(),
         );
       // case WebViewPage.routeName:
       //   var data = args as WebViewPage;
@@ -58,7 +58,7 @@ class AppRoutes {
       //   );
       case SearchScreen.routeName:
         return _pageRoute(
-            routeSettings: routeSettings, builder: SearchScreen());
+            routeSettings: routeSettings, builder: const SearchScreen());
       default:
         return _pageRoute(
           routeSettings: routeSettings,

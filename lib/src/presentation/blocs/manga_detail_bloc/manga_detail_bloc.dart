@@ -28,6 +28,7 @@ class MangaDetailBloc extends Bloc<MangaDetailEvent, MangaDetailState> {
     if (state is MangaDetailSuccessState) {
       return state as MangaDetailSuccessState;
     }
+    return null;
   }
 
   Future<void> _fetchMangaDetail(

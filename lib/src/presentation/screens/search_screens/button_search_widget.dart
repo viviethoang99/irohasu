@@ -43,14 +43,10 @@ class ButtonSearchWidget extends SearchDelegate<MangaDetailModel?> {
     bloc!.add(FetchDataSearchEvent(query: query));
     return BlocBuilder<SearchBloc, SearchState>(builder: (context, state) {
       if (state is InitialSearchState) {
-        return Container(
-          child: const Center(),
-        );
+        return const Center();
       }
       if (state is SearchLoadingState) {
-        return Container(
-          child: const LoadingScreen(),
-        );
+        return const LoadingScreen();
       }
       if (state is SearchLoadedState) {
         return Container(

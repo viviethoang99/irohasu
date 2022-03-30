@@ -4,9 +4,10 @@ import '../../../widgets/custom_chip.dart';
 
 class DescriptionTextWidget extends StatefulWidget {
   const DescriptionTextWidget({
+    Key? key,
     required this.text,
     required this.color,
-  });
+  }) : super(key: key);
 
   final String text;
   final Color color;

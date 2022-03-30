@@ -40,10 +40,8 @@ class CacheManagerData extends IFileManager {
     try {
       var mangaBox = Hive.box(ENV.nameDatabase);
       await mangaBox.put(_listManga, {});
-      print('Remove all Manga: Success');
       return true;
     } catch (e) {
-      print('Cant remove all history Manga: $e');
       return false;
     }
   }
@@ -57,7 +55,6 @@ class CacheManagerData extends IFileManager {
       await mangaBox.put(_listManga, listManga);
       return true;
     } catch (e) {
-      print('Cant remove Manga');
       return false;
     }
   }
@@ -74,7 +71,6 @@ class CacheManagerData extends IFileManager {
       await mangaBox.put(_listManga, listManga);
       return true;
     } catch (e) {
-      print('Can not write Manga request');
       return false;
     }
   }

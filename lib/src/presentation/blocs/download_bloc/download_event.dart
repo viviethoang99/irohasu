@@ -5,7 +5,7 @@ abstract class DownloadEvent extends Equatable {
 }
 
 class DownloadChapterEvent extends DownloadEvent {
-  DownloadChapterEvent({
+  const DownloadChapterEvent({
     required this.chapterModel,
     this.titleManga,
     this.idManga,
@@ -20,7 +20,7 @@ class DownloadChapterEvent extends DownloadEvent {
 }
 
 class CancelDownloadEvent extends DownloadEvent {
-  CancelDownloadEvent({required this.idChapter});
+  const CancelDownloadEvent({required this.idChapter});
 
   final String idChapter;
 
@@ -29,7 +29,7 @@ class CancelDownloadEvent extends DownloadEvent {
 }
 
 class ChapterDownloadPercentageChangedEvent extends DownloadEvent {
-  ChapterDownloadPercentageChangedEvent({
+  const ChapterDownloadPercentageChangedEvent({
     this.idManga,
     this.idChapter,
     this.percentage,
@@ -56,7 +56,7 @@ class ChapterDownloadPercentageChangedEvent extends DownloadEvent {
 }
 
 class RemoveDownloadChapterEvent extends DownloadEvent {
-  RemoveDownloadChapterEvent({this.idManga, this.chapter});
+  const RemoveDownloadChapterEvent({this.idManga, this.chapter});
 
   final ChapterItem? chapter;
   final String? idManga;
