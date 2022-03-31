@@ -129,9 +129,10 @@ class _ListChapterWidget extends StatelessWidget {
                             theme.textTheme.subtitle1?.copyWith(fontSize: 12),
                       ),
                       onTap: () {
-                        Navigator.of(context).pushNamed(ChapterScreen.routeName,
-                            arguments:
-                                ChapterScreen(endpoint: chapter.endpoint));
+                        Navigator.of(context).pushNamed(
+                          ChapterScreen.routeName,
+                          arguments: ChapterScreen(endpoint: chapter.endpoint!),
+                        );
                       },
                     );
                   },

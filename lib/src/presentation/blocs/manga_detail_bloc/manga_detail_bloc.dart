@@ -36,12 +36,12 @@ class MangaDetailBloc extends Bloc<MangaDetailEvent, MangaDetailState> {
     Emitter<MangaDetailState> emit,
   ) async {
     emit(MangaDetailLoadingState());
-    final either = await _fetchMangaDetailUseCase();
+    final either = await _fetchMangaDetailUseCase(params: endpoint);
     either.fold(
       (error) => emit(
         MangaDetailFailureState(msg: error.runtimeType.toString()),
       ),
-      (mangaDetail) => emit(MangaDetailSuccessState(mangaDetail: mangaDetail)),
+      (data) => emit(MangaDetailSuccessState(mangaDetail: data)),
     );
   }
 

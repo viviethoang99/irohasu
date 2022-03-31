@@ -8,7 +8,7 @@ import '../config/routes/app_routes.dart';
 import '../data/datasource/local/cache_manager_data.dart';
 import '../data/datasource/remote/chapter_services.dart';
 import '../data/repositories/chapter_repository_imp.dart';
-import '../domain/repositories/chaper_repository.dart';
+import '../domain/repositories/i_chaper_repository.dart';
 import '../domain/repositories/i_manga_repository.dart';
 import '../presentation/blocs/change_background_color_bloc/change_background_bloc.dart';
 import '../presentation/blocs/change_reading_mode_bloc/change_reading_mode_bloc.dart';
@@ -28,7 +28,7 @@ class AppWidget extends StatefulWidget {
 
 class _AppWidgetState extends State<AppWidget> {
   late final IMangaRepository mangaRepository;
-  late final ChapterRepository chapterRepository;
+  late final IChapterRepository chapterRepository;
   late final CacheManagerData cacheManagerData;
 
   @override
@@ -56,9 +56,6 @@ class _AppWidgetState extends State<AppWidget> {
         RepositoryProvider<IMangaRepository>(
           create: (context) => mangaRepository,
         ),
-        RepositoryProvider<ChapterRepository>(
-          create: (context) => chapterRepository,
-        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -69,7 +66,7 @@ class _AppWidgetState extends State<AppWidget> {
             create: (context) => HistoryScreenBloc(mangaRepository),
           ),
           BlocProvider<ListMangaBloc>(
-            create: (context) => ListMangaBloc(mangaRepository),
+            create: (_) => getIt<ListMangaBloc>(),
           ),
           BlocProvider<SearchBloc>(
             create: (context) => SearchBloc(mangaRepository),

@@ -56,7 +56,7 @@ class CustomButtonReadingWidget extends StatelessWidget {
   void openChapter({required BuildContext context}) {
     Navigator.of(context).pushNamed(
       ChapterScreen.routeName,
-      arguments: ChapterScreen(endpoint: lastChapter.endpoint),
+      arguments: ChapterScreen(endpoint: lastChapter.endpoint!),
     );
   }
 }

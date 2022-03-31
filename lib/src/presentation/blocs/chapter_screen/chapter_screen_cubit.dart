@@ -1,25 +1,28 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:injectable/injectable.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../../../core/core.dart';
 import '../../../data/model/chapter/chapter_model.dart';
 import '../../../data/model/manga_detail_model.dart';
-import '../../../domain/repositories/chaper_repository.dart';
+import '../../../domain/repositories/i_chaper_repository.dart';
+import '../../../domain/usecaes/chapter/fetch_data_chapter_usecase.dart';
 import '../manga_detail_bloc/manga_detail_bloc.dart';
 
 part 'chapter_screen_state.dart';
 
+@injectable
 class ChapterScreenCubit extends Cubit<ChapterScreenState> {
-  ChapterScreenCubit({
+  ChapterScreenCubit(
+    this.fetchDataChapterUsecase, {
     required this.repository,
-    // this.changeReadingModeBloc,
     required this.mangaDetailBloc,
   }) : super(const ChapterScreenState());
 
-  final ChapterRepository repository;
+  final IChapterRepository repository;
   final MangaDetailBloc mangaDetailBloc;
-  // final ChangeReadingModeBloc changeReadingModeBloc;
+  final FetchDataChapterUsecase fetchDataChapterUsecase;
 
   Future<void> initLoad(String endpoint) async {
     await getListChapter();
@@ -55,15 +58,16 @@ class ChapterScreenCubit extends Cubit<ChapterScreenState> {
 
   Future<void> fetchDataFromApi(String endpoint) async {
     emit(state.copyWith(isLoading: true, error: ''));
-    try {
-      final data = await repository.fetchDataChapter(endpoint);
-      emit(state.copyWith(
+    final either = await fetchDataChapterUsecase(params: endpoint);
+    either.fold(
+      (error) => emit(state.copyWith(
+        error: error.toString(),
+      )),
+      (data) => emit(state.copyWith(
         chapter: data,
         isLoading: false,
-      ));
-    } catch (e) {
-      emit(state.copyWith(error: e.toString()));
-    }
+      )),
+    );
   }
 
   Future<void> fetchDataFromLocal() async {

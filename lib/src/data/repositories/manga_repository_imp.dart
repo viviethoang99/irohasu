@@ -3,24 +3,27 @@ import 'package:injectable/injectable.dart';
 
 import '../../../core/core.dart';
 import '../../domain/repositories/i_manga_repository.dart';
-import '../datasource/local/history_local_source.dart';
 import '../datasource/remote/manga_services.dart';
 import '../model/manga_detail_model.dart';
 import '../model/manga_list_model.dart';
 
 @LazySingleton(as: IMangaRepository)
 class MangaRepository implements IMangaRepository {
-  MangaRepository(
+  const MangaRepository(
     this._mangaService,
-    this._historyLocalSource,
   );
 
   final MangaService _mangaService;
-  final HistoryLocalSourceImp _historyLocalSource;
 
   @override
-  Future<List<MangaModel>> fetchListManga({int page = 1}) {
-    return _mangaService.fetchListManga(page: page);
+  Future<Either<Failure, List<MangaModel>>> fetchListManga(
+      {int page = 1}) async {
+    try {
+      final listManga = await _mangaService.fetchListManga(page: page);
+      return Right(listManga);
+    } on ServerException {
+      return Left(ServerFailure());
+    }
   }
 
   @override
@@ -34,12 +37,10 @@ class MangaRepository implements IMangaRepository {
     try {
       final data = await _mangaService.fetchMangaDetail(endpoint);
       return Right(data!);
-    } on CacheException {
-      throw CacheException();
+    } on ServerException {
+      return Left(ServerFailure());
     }
   }
-
-
 
   @override
   Future<void> addListChapterRead(List listManga, String idManga) {
@@ -62,12 +63,6 @@ class MangaRepository implements IMangaRepository {
   @override
   Stream<List<MangaDetailModel>> getListChapter() {
     // TODO: implement getListChapter
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<MangaDetailModel?> getMangaDetailLocal(String idManga) {
-    // TODO: implement getMangaDetailLocal
     throw UnimplementedError();
   }
 

@@ -8,13 +8,12 @@ abstract class IMangaRepository {
   /// Returns [MangaDetailModel]s matching with the given [endpoint].
   Future<Either<Failure, MangaDetailModel>> fetchMangaDetail(String endpoint);
 
-  Future<List<MangaModel>> fetchListManga({int page});
+  /// Returns list [MangaModel] matching with the given [page] website.
+  Future<Either<Failure, List<MangaModel>>> fetchListManga({int page});
 
   Future<List<MangaModel>> fetchListMangaSearch({String? query});
 
   Future<List> getListChapterReading(String idManga);
-
-  Future<MangaDetailModel?> getMangaDetailLocal(String idManga);
 
   Future<void> addListChapterRead(List listManga, String idManga);
 

@@ -2,43 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/core.dart';
-import '../../../domain/repositories/chaper_repository.dart';
 import '../../blocs/chapter_screen/chapter_screen_cubit.dart';
-import '../../blocs/manga_detail_bloc/manga_detail_bloc.dart';
 import '../../widgets/loading_screen.dart';
 import 'default_reading_screen.dart';
 
-class ChapterScreen extends StatefulWidget {
+class ChapterScreen extends StatelessWidget {
   const ChapterScreen({
     Key? key,
     required this.endpoint,
   }) : super(key: key);
 
   static const routeName = '/chapter';
-  final String? endpoint;
-
-  @override
-  _ChapterScreenState createState() => _ChapterScreenState();
-}
-
-class _ChapterScreenState extends State<ChapterScreen> {
-  late final ChapterScreenCubit _cubit;
-
-  @override
-  void initState() {
-    _cubit = ChapterScreenCubit(
-      repository: context.read<ChapterRepository>(),
-      mangaDetailBloc: context.read<MangaDetailBloc>(),
-    )..initLoad(widget.endpoint!);
-    // BlocProvider.of<ChangeReadingModeBloc>(context).add(GetReadingMode());
-    super.initState();
-  }
+  
+  final String endpoint;
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return BlocProvider<ChapterScreenCubit>(
-      create: (context) => _cubit,
+      create: (_) => getIt<ChapterScreenCubit>()..initLoad(endpoint),
       child: BlocBuilder<ChapterScreenCubit, ChapterScreenState>(
         builder: (_, state) {
           if (state.isLoading) {
