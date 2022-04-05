@@ -9,6 +9,4 @@ abstract class FavoriteMangaDetailEvent extends Equatable {
 
 class GetStatusFavoriteManga extends FavoriteMangaDetailEvent {}
 
-class SetStatusFavoriteManga extends FavoriteMangaDetailEvent {
-  
-}
+class SetStatusFavoriteManga extends FavoriteMangaDetailEvent {}

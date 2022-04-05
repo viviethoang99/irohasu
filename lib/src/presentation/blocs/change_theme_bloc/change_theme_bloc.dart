@@ -36,7 +36,7 @@ class ChangeThemeBloc extends Bloc<ChangeThemeEvent, ChangeThemeState> {
         final params = SetThemeAppParams(event.type.name);
         final result = await _setThemeApp(params: params);
         result.fold(
-          (l) => _getFailureAndThrowExpection,
+          _getFailureAndThrowExpection,
           (r) => null,
         );
         break;
@@ -51,7 +51,7 @@ class ChangeThemeBloc extends Bloc<ChangeThemeEvent, ChangeThemeState> {
   ) async {
     final either = await _getThemeApp();
     either.fold(
-      (l) => _getFailureAndThrowExpection,
+      _getFailureAndThrowExpection,
       (r) => _updateTheme(r, emit),
     );
   }

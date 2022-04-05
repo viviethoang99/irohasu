@@ -1,10 +1,19 @@
 part of 'change_reading_mode_bloc.dart';
 
-@immutable
-abstract class ChangeReadingModeEvent {}
+abstract class ChangeReadingModeEvent extends Equatable {
+  const ChangeReadingModeEvent();
 
-class DefaultMode extends ChangeReadingModeEvent {}
+  @override
+  List<Object?> get props => [];
+}
 
-class WebtoonMode extends ChangeReadingModeEvent {}
+class UpdateReadingMode extends ChangeReadingModeEvent {
+  const UpdateReadingMode(this.type);
+
+  final ReadMode type;
+
+  @override
+  List<Object?> get props => [type];
+}
 
 class GetReadingMode extends ChangeReadingModeEvent {}

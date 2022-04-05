@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 extension DateTimeExtension on DateTime? {
   String checkLastRead() {
     const toString = 'Đọc ';
@@ -11,5 +13,12 @@ extension DateTimeExtension on DateTime? {
       return '$toString${dateDifferent.inDays} ngày trước.';
     }
     return toString;
+  }
+
+  String dateToString() {
+    if (this != null) {
+      return DateFormat('dd/MM/yyyy hh:mm').format(this!);
+    }
+    return '';
   }
 }

@@ -24,5 +24,5 @@ class ChangeBackgroundState extends Equatable{
   final int? selectOption;
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [name, color, selectOption];
 }

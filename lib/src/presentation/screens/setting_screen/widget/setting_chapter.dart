@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../config/base_content.dart';
+import '../../../../config/config.dart';
+import '../../../../data/model/setting_model/setting_model.dart';
 import '../../../blocs/change_background_color_bloc/change_background_bloc.dart';
 import '../../../blocs/change_reading_mode_bloc/change_reading_mode_bloc.dart';
 
@@ -66,7 +68,7 @@ class _SettingChapterState extends State<SettingChapter> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(
-                'Reading Mode',
+                'Chế độ đọc',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -75,15 +77,15 @@ class _SettingChapterState extends State<SettingChapter> {
               ),
               BlocBuilder<ChangeReadingModeBloc, ChangeReadingModeState>(
                 builder: (context, state) {
-                  return PopupMenuButton<String>(
+                  return PopupMenuButton<ReadingOption>(
                     onSelected: _setReadingMode,
-                    itemBuilder: (BuildContext context) {
-                      return PopupMenuSetting.listScreenMode
-                          .map((String choice) {
-                        return PopupMenuItem<String>(
-                          value: choice,
+                    itemBuilder: (context) {
+                      return Constants.listReadingMode
+                          .map((ReadingOption item) {
+                        return PopupMenuItem<ReadingOption>(
+                          value: item,
                           child: Text(
-                            choice,
+                            item.name,
                             style: TextStyle(
                               fontSize: 20,
                               color: theme.primaryColor,
@@ -120,20 +122,22 @@ class _SettingChapterState extends State<SettingChapter> {
               ),
               BlocBuilder<ChangeBackgroundBloc, ChangeBackgroundState>(
                   builder: (context, state) {
-                return PopupMenuButton<String>(
+                return PopupMenuButton<BackgroundReadingOption>(
                   onSelected: _setBackgroundColor,
                   itemBuilder: (context) {
-                    return PopupMenuSetting.listBackground
-                        .map((String choice) => PopupMenuItem<String>(
+                    return Constants.listBackgroundColor
+                        .map((BackgroundReadingOption choice) {
+                          return PopupMenuItem<BackgroundReadingOption>(
                               value: choice,
                               child: Text(
-                                choice,
+                                choice.name,
                                 style: TextStyle(
                                   fontSize: 20,
                                   color: theme.primaryColor,
                                 ),
                               ),
-                            ))
+                            );
+                        })
                         .toList();
                   },
                   child: Text(
@@ -152,31 +156,11 @@ class _SettingChapterState extends State<SettingChapter> {
     );
   }
 
-  void _setReadingMode(String choice) async {
-    if (choice == PopupMenuSetting.webtoon) {
-      BlocProvider.of<ChangeReadingModeBloc>(context).add(WebtoonMode());
-    } else if (choice == PopupMenuSetting.defaultMode) {
-      BlocProvider.of<ChangeReadingModeBloc>(context).add(DefaultMode());
-    }
+  void _setReadingMode(ReadingOption choice) async {
+    context.read<ChangeReadingModeBloc>().add(UpdateReadingMode(choice.type));
   }
 
-  void _setBackgroundColor(String choice) async {
-    if (choice == PopupMenuSetting.white) {
-      BlocProvider.of<ChangeBackgroundBloc>(context).add(SetBackgroundWhite());
-    } else if (choice == PopupMenuSetting.black) {
-      BlocProvider.of<ChangeBackgroundBloc>(context).add(SetBackgroundBlack());
-    }
+  void _setBackgroundColor(BackgroundReadingOption choice) async {
+    context.read<ChangeBackgroundBloc>().add(SetBackgroundReading(choice.type));
   }
-}
-
-class PopupMenuSetting {
-  static const String webtoon = 'Webtoon';
-  static const String defaultMode = 'Mặc định';
-
-  static const String white = 'Trắng';
-  static const String black = 'Đen';
-
-  static const List<String> listScreenMode = <String>[defaultMode, webtoon];
-
-  static const List<String> listBackground = <String>[white, black];
 }

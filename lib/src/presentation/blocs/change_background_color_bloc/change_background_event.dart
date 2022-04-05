@@ -1,9 +1,19 @@
 part of 'change_background_bloc.dart';
 
-abstract class ChangeBackgroundEvent {}
+abstract class ChangeBackgroundEvent extends Equatable {
+  const ChangeBackgroundEvent();
+
+  @override
+  List<Object?> get props => [];
+}
 
 class GetBackgroundColor extends ChangeBackgroundEvent {}
 
-class SetBackgroundWhite extends ChangeBackgroundEvent {}
+class SetBackgroundReading extends ChangeBackgroundEvent {
+  const SetBackgroundReading(this.type);
 
-class SetBackgroundBlack extends ChangeBackgroundEvent {}
+  final BackgroundReading type;
+
+  @override
+  List<Object?> get props => [type];
+}

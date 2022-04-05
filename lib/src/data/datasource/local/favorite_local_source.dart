@@ -16,7 +16,7 @@ abstract class IFavoriteLocalSource {
 @Injectable(as: IFavoriteLocalSource)
 class FavoriteLocalSource implements IFavoriteLocalSource {
   const FavoriteLocalSource(
-    @Named('irohasu_iz_bezt_girl') this._box,
+    @Named('favorite_box') this._box,
   );
 
   final Box _box;

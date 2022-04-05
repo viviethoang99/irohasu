@@ -18,13 +18,27 @@ class ThemeOption extends Equatable {
 
 class ReadingOption extends Equatable {
   const ReadingOption({
-    this.name,
-    this.index,
+    required this.name,
+    required this.type,
   });
 
-  final String? name;
-  final String? index;
+  final String name;
+  final ReadMode type;
 
   @override
-  List<Object?> get props => [name, index];
+  List<Object?> get props => [name, type];
+}
+
+
+class BackgroundReadingOption extends Equatable {
+  const BackgroundReadingOption({
+    required this.name,
+    required this.type,
+  });
+
+  final String name;
+  final BackgroundReading type;
+
+  @override
+  List<Object?> get props => [name, type];
 }

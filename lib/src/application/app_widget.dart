@@ -72,13 +72,13 @@ class _AppWidgetState extends State<AppWidget> {
             create: (context) => SearchBloc(mangaRepository),
           ),
           BlocProvider<ChangeBackgroundBloc>(
-            create: (context) => ChangeBackgroundBloc(),
+            create: (_) => getIt<ChangeBackgroundBloc>(),
           ),
           BlocProvider<ChangeThemeBloc>(
             create: (_) => getIt<ChangeThemeBloc>()..add(GetTheme()),
           ),
-          BlocProvider<ChangeReadingModeBloc>(
-            create: (context) => ChangeReadingModeBloc(),
+          BlocProvider(
+            create: (_) => getIt<ChangeReadingModeBloc>(),
           ),
         ],
         child: BlocBuilder<ChangeThemeBloc, ChangeThemeState>(

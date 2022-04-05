@@ -31,7 +31,7 @@ class ListChapterWidget extends StatelessWidget {
                   ),
                 ),
                 subtitle: Text(
-                  ConvertDateTime.dateTimeToString(chapter.createAt!),
+                  chapter.createAt.dateToString(),
                   style: TextStyle(
                     fontSize: 10,
                     color: theme.primaryColor,

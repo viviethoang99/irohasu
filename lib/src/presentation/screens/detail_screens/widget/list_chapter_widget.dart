@@ -124,7 +124,7 @@ class _ListChapterWidget extends StatelessWidget {
                               ),
                       ),
                       subtitle: Text(
-                        ConvertDateTime.dateTimeToString(chapter.createAt!),
+                        chapter.createAt.dateToString(),
                         style:
                             theme.textTheme.subtitle1?.copyWith(fontSize: 12),
                       ),

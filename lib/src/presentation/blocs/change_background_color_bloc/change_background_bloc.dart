@@ -3,69 +3,78 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
+import 'package:injectable/injectable.dart';
+
+import '../../../../core/core.dart';
+import '../../../config/config.dart';
+import '../../../domain/usecaes/setting_app/get_background_reading_usecase.dart';
+import '../../../domain/usecaes/setting_app/update_background_reading_usecase.dart';
 
 part 'change_background_event.dart';
 
 part 'change_background_state.dart';
 
+@injectable
 class ChangeBackgroundBloc
     extends Bloc<ChangeBackgroundEvent, ChangeBackgroundState> {
-  ChangeBackgroundBloc() : super(ChangeBackgroundState.black()) {
+  ChangeBackgroundBloc(
+    this._getUsecase,
+    this._setUsecase,
+  ) : super(ChangeBackgroundState.black()) {
     on<GetBackgroundColor>(_getBackground);
-    on<SetBackgroundBlack>(_setBackgroundBlack);
-    on<SetBackgroundWhite>(_setBackgroundWhite);
+    on<SetBackgroundReading>(_setBackground);
   }
+
+  final SetBackgroundReadingUseCase _setUsecase;
+  final GetBackgroundReadingUseCase _getUsecase;
 
   Future<void> _getBackground(
     GetBackgroundColor event,
     Emitter<ChangeBackgroundState> emit,
   ) async {
-    final optionValue = await _getOption();
-    if (optionValue == 'black') {
-      emit(ChangeBackgroundState.black());
+    final either = await _getUsecase();
+    either.fold(
+      _getFailureAndThrowExpection,
+      (r) => _updateBackground(r, emit),
+    );
+  }
+
+  Future<void> _setBackground(
+    SetBackgroundReading event,
+    Emitter<ChangeBackgroundState> emit,
+  ) async {
+    for (var theme in Constants.listBackgroundColor) {
+      if (event.type.name == theme.type.name) {
+        final params = SetBackgroundReadingParams(event.type.name);
+        final result = await _setUsecase(params: params);
+        result.fold(
+          _getFailureAndThrowExpection,
+          (r) => null,
+        );
+        break;
+      }
     }
-    if (optionValue == 'white') {
+    add(GetBackgroundColor());
+  }
+
+  void _updateBackground(
+    String theme,
+    Emitter<ChangeBackgroundState> emit,
+  ) {
+    if (theme == Constants.listBackgroundColor[0].name) {
+      emit(ChangeBackgroundState.black());
+    } else if (theme == Constants.listBackgroundColor[1].name) {
       emit(ChangeBackgroundState.white());
     }
   }
 
-  Future<void> _setBackgroundBlack(
-    SetBackgroundBlack event,
-    Emitter<ChangeBackgroundState> emit,
-  ) async {
-    emit(ChangeBackgroundState.black());
-    await _setOptionValue(0);
-  }
-
-  Future<void> _setBackgroundWhite(
-    SetBackgroundWhite event,
-    Emitter<ChangeBackgroundState> emit,
-  ) async {
-    emit(ChangeBackgroundState.white());
-    await _setOptionValue(0);
-  }
-
-  Future<void> _setOptionValue(int optionValue) async {
-    var mangaBox = Hive.box('irohasu');
-    var setting = mangaBox
-        .get('sharedPreferences', defaultValue: {})?.cast<String, dynamic>();
-    if (setting.containsKey('chapterSetting')) {
-      setting['chapterSetting']['backgroundColor'] = optionValue;
+  Exception _getFailureAndThrowExpection(Failure l) {
+    if (l is ServerFailure) {
+      return ServerException();
+    } else if (l is CacheFailure) {
+      return CacheException();
     } else {
-      setting['chapterSetting'] = {}
-        ..putIfAbsent('backgroundColor', () => optionValue);
+      return UnknownException();
     }
-    await mangaBox.put('sharedPreferences', setting);
-  }
-
-  Future<String?> _getOption() async {
-    var mangaBox = Hive.box('irohasu');
-    String? _option = 'black';
-    var setting = mangaBox.get('sharedPreferences', defaultValue: {});
-    if (setting['chapterSetting']?.containsKey('backgroundColor') ?? false) {
-      _option = setting['chapterSetting']['backgroundColor'];
-    }
-    return _option;
   }
 }

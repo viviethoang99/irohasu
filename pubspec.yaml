@@ -48,10 +48,21 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  # Code generators
   hive_generator: ^1.1.2
   build_runner: ^2.1.7
   injectable_generator: ^1.5.3
+
+  # Linting
   flutter_lints: ^1.0.4
+
+  # Testing
+  bloc_test: ^9.0.3
+  mocktail: ^0.3.0
+
+dependency_overrides:
+  analyzer: ^3.0.0
 
 flutter:
   uses-material-design: true
