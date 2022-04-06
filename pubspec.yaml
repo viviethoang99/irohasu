@@ -39,6 +39,9 @@ dependencies:
   get_it: ^7.2.0
   injectable: ^1.5.3
 
+  # Dart data class
+  json_serializable: ^6.1.5
+
   # Misc
   rxdart: ^0.27.3
   path_provider: ^2.0.3

@@ -5,6 +5,7 @@ import '../../../src/data/model/manga_detail_model.dart';
 
 @module
 abstract class StorageModule {
+  @preResolve
   @lazySingleton
   @Named('irohasu_iz_bezt_girl')
   Future<Box<MangaDetailModel>> get listMangaBox async {
@@ -18,6 +19,7 @@ abstract class StorageModule {
     return Hive.openBox<String>('setting_box');
   }
 
+  @preResolve
   @lazySingleton
   @Named('favorite_box')
   Future<Box<List<String>>> get favoriteBox async {

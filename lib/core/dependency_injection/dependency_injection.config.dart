@@ -70,31 +70,38 @@ Future<_i1.GetIt> $registerDependencies(_i1.GetIt get,
     {String? environment, _i2.EnvironmentFilter? environmentFilter}) async {
   final gh = _i2.GetItHelper(get, environment, environmentFilter);
   final storageModule = _$StorageModule();
-  gh.lazySingletonAsync<_i3.Box<_i4.MangaDetailModel>>(
+  await gh.lazySingletonAsync<_i3.Box<_i4.MangaDetailModel>>(
       () => storageModule.listMangaBox,
-      instanceName: 'irohasu_iz_bezt_girl');
+      instanceName: 'irohasu_iz_bezt_girl',
+      preResolve: true);
   await gh.lazySingletonAsync<_i3.Box<String>>(() => storageModule.settingBox,
       instanceName: 'setting_box', preResolve: true);
-  gh.lazySingletonAsync<_i3.Box<List<String>>>(() => storageModule.favoriteBox,
-      instanceName: 'favorite_box');
+  await gh.lazySingletonAsync<_i3.Box<List<String>>>(
+      () => storageModule.favoriteBox,
+      instanceName: 'favorite_box',
+      preResolve: true);
   gh.factory<_i5.ChapterServices>(() => _i5.ChapterServices());
   gh.factory<_i6.HistoryLocalSourceImp>(() => _i6.HistoryLocalSourceImp(
-      get<_i3.Box<dynamic>>(instanceName: 'irohasu_iz_bezt_girl')));
+      get<_i3.Box<_i4.MangaDetailModel>>(
+          instanceName: 'irohasu_iz_bezt_girl')));
   gh.lazySingleton<_i7.IChapterRepository>(
       () => _i8.ChapterRepositoryImp(get<_i5.ChapterServices>()));
   gh.factory<_i9.IFavoriteLocalSource>(() => _i9.FavoriteLocalSource(
-      get<_i3.Box<dynamic>>(instanceName: 'favorite_box')));
+      get<_i3.Box<List<String>>>(instanceName: 'favorite_box')));
   gh.factory<_i10.IFavoriteRepository>(
       () => _i11.FavoriteRepository(get<_i9.IFavoriteLocalSource>()));
   gh.factory<_i12.ISettingLocalDataSource>(() => _i12.SettingLocalDataSource(
-      get<_i13.Box<dynamic>>(instanceName: 'setting_box')));
+      get<_i13.Box<String>>(instanceName: 'setting_box')));
   gh.lazySingleton<_i14.IsFavoriteUseCase>(
       () => _i14.IsFavoriteUseCase(get<_i10.IFavoriteRepository>()));
   gh.factory<_i15.MangaService>(() => _i15.MangaService());
   gh.lazySingleton<_i16.ChangeStatusFavoriteUseCase>(
       () => _i16.ChangeStatusFavoriteUseCase(get<_i10.IFavoriteRepository>()));
-  gh.factory<_i17.FavoriteMangaDetailBloc>(() => _i17.FavoriteMangaDetailBloc(
-      get<_i16.ChangeStatusFavoriteUseCase>(), get<_i14.IsFavoriteUseCase>()));
+  gh.factoryParam<_i17.FavoriteMangaDetailBloc, String, dynamic>(
+      (endpoint, _) => _i17.FavoriteMangaDetailBloc(
+          get<_i16.ChangeStatusFavoriteUseCase>(),
+          get<_i14.IsFavoriteUseCase>(),
+          endpoint));
   gh.lazySingleton<_i18.FetchDataChapterUsecase>(
       () => _i18.FetchDataChapterUsecase(get<_i7.IChapterRepository>()));
   gh.lazySingleton<_i19.IMangaRepository>(

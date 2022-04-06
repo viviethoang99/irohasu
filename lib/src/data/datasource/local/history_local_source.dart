@@ -18,7 +18,7 @@ class HistoryLocalSourceImp implements IHiveLocalSource {
     @Named('irohasu_iz_bezt_girl') this._box,
   );
 
-  final Box _box;
+  final Box<MangaDetailModel> _box;
 
   @override
   Future<MangaDetailModel> findMangaByEndpoint(String endpoint) {

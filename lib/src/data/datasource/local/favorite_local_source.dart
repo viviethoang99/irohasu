@@ -19,7 +19,7 @@ class FavoriteLocalSource implements IFavoriteLocalSource {
     @Named('favorite_box') this._box,
   );
 
-  final Box _box;
+  final Box<List<String>> _box;
 
   @override
   Future<bool> isFavorite(String id) async {
@@ -30,10 +30,7 @@ class FavoriteLocalSource implements IFavoriteLocalSource {
 
   @override
   List<String> getListFavorite() {
-    return _box.get(
-      _kFavoriteManga,
-      defaultValue: <String>[],
-    );
+    return _box.get(_kFavoriteManga) ?? <String>[];
   }
 
   @override

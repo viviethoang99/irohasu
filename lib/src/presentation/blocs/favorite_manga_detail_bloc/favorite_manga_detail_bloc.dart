@@ -11,6 +11,7 @@ class FavoriteMangaDetailBloc extends Bloc<FavoriteMangaDetailEvent, bool> {
   FavoriteMangaDetailBloc(
     this._changeStatusFavoriteUseCase,
     this._isFavoriteUseCase,
+    @factoryParam this.endpoint,
   ) : super(false) {
     on<GetStatusFavoriteManga>(_updateStatus);
     on<SetStatusFavoriteManga>(_setStatusManga);
@@ -18,8 +19,7 @@ class FavoriteMangaDetailBloc extends Bloc<FavoriteMangaDetailEvent, bool> {
 
   final IsFavoriteUseCase _isFavoriteUseCase;
   final ChangeStatusFavoriteUseCase _changeStatusFavoriteUseCase;
-
-  String endpoint = '';
+  final String endpoint;
 
   String get idManga {
     return endpoint.split('/')[1];
