@@ -1,11 +1,8 @@
-import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../core/core.dart';
 import '../../domain/repositories/i_manga_repository.dart';
-import '../datasource/remote/manga_services.dart';
+import '../datasource/remote/manga_api_source.dart';
 import '../model/manga_detail_model.dart';
-import '../model/manga_list_model.dart';
 
 @LazySingleton(as: IMangaRepository)
 class MangaRepository implements IMangaRepository {
@@ -13,33 +10,23 @@ class MangaRepository implements IMangaRepository {
     this._mangaService,
   );
 
-  final MangaService _mangaService;
+  final IMangaApiSource _mangaService;
 
   @override
-  Future<Either<Failure, List<MangaModel>>> fetchListManga(
-      {int page = 1}) async {
-    try {
-      final listManga = await _mangaService.fetchListManga(page: page);
-      return Right(listManga);
-    } on ServerException {
-      return Left(ServerFailure());
-    }
+  Future<ListMangaRemoteRepository> findMangaByPage({int page = 1}) async {
+    final listManga = await _mangaService.findMangaByPage(page: page);
+    return listManga;
   }
 
   @override
-  Future<List<MangaModel>> fetchListMangaSearch({String? query}) {
-    return _mangaService.getDataResult(query: query);
+  Future<ListMangaRemoteRepository> findMangaByQuery({String? query}) {
+    return _mangaService.findMangaByQuery(query: query);
   }
 
   @override
-  Future<Either<Failure, MangaDetailModel>> fetchMangaDetail(
-      String endpoint) async {
-    try {
-      final data = await _mangaService.fetchMangaDetail(endpoint);
-      return Right(data!);
-    } on ServerException {
-      return Left(ServerFailure());
-    }
+  Future<MangaDetailRemoteRepository> fetchMangaDetail(String endpoint) async {
+    final mangaDetail = await _mangaService.findMangaDetail(endpoint);
+    return mangaDetail;
   }
 
   @override

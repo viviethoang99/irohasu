@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../core/core.dart';
+import '../../data/datasource/remote/manga_api_source.dart';
 import '../../data/model/manga_detail_model.dart';
 import '../../data/model/manga_list_model.dart';
 
@@ -9,9 +10,9 @@ abstract class IMangaRepository {
   Future<Either<Failure, MangaDetailModel>> fetchMangaDetail(String endpoint);
 
   /// Returns list [MangaModel] matching with the given [page] website.
-  Future<Either<Failure, List<MangaModel>>> fetchListManga({int page});
+  Future<ListMangaRemoteRepository> findMangaByPage({int page});
 
-  Future<List<MangaModel>> fetchListMangaSearch({String? query});
+  Future<ListMangaRemoteRepository> findMangaByQuery({String? query});
 
   Future<List> getListChapterReading(String idManga);
 

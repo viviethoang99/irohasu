@@ -48,6 +48,9 @@ dependencies:
   intl: ^0.17.0
   scrollable_positioned_list: ^0.2.3
 
+  # logger
+  pretty_dio_logger: ^1.1.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../env.dart';
 import '../../../blocs/list_manga_bloc/list_manga_bloc.dart';
-import '../../../screens/search_screens/search_screen.dart';
+import '../../search_screen/search_screen.dart';
 
 class AppBarHomeWidget extends StatelessWidget implements PreferredSizeWidget {
   const AppBarHomeWidget({Key? key}) : super(key: key);

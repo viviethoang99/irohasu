@@ -3,14 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../config/base_content.dart';
 import '../../../data/model/manga_detail_model.dart';
-import '../../blocs/search_bloc/bloc.dart';
+import '../../blocs/search_screen/search_screen_bloc.dart';
 import '../../widgets/loading_screen.dart';
 import '../home_screens/widget/item_manga.dart';
 
 class ButtonSearchWidget extends SearchDelegate<MangaDetailModel?> {
-  ButtonSearchWidget({this.bloc});
-
-  final Bloc<SearchEvent, SearchState>? bloc;
+  ButtonSearchWidget();
 
   @override
   String get searchFieldLabel => ConstantStrings.search;
@@ -40,15 +38,16 @@ class ButtonSearchWidget extends SearchDelegate<MangaDetailModel?> {
 
   @override
   Widget buildResults(BuildContext context) {
-    bloc!.add(FetchDataSearchEvent(query: query));
-    return BlocBuilder<SearchBloc, SearchState>(builder: (context, state) {
-      if (state is InitialSearchState) {
+    context.read<SearchScreenBloc>().add(FetchDataSearchEvent(query: query));
+    return BlocBuilder<SearchScreenBloc, SearchScreenState>(
+        builder: (context, state) {
+      if (state is SearchScreenInitial) {
         return const Center();
       }
-      if (state is SearchLoadingState) {
+      if (state is SearchScreenLoadingState) {
         return const LoadingScreen();
       }
-      if (state is SearchLoadedState) {
+      if (state is SearchScreenLoadedState) {
         return Container(
           height: double.infinity,
           decoration: BoxDecoration(

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../presentation/screens/chapter_screens/chapter_screen.dart';
 import '../../presentation/screens/detail_screens/manga_detail_screen.dart';
 import '../../presentation/screens/index_screen/index_screen.dart';
-import '../../presentation/screens/search_screens/search_screen.dart';
+import '../../presentation/screens/search_screen/search_screen.dart';
 import '../../presentation/screens/setting_screen/widget/general_page.dart';
 import '../../presentation/screens/setting_screen/widget/setting_chapter.dart';
 

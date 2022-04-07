@@ -29,7 +29,7 @@ void main() {
 
   test('should return list of manga when requested with offset', () async {
     // arrange
-    when(() => mockRepository.fetchListManga(page: tPage))
+    when(() => mockRepository.findMangaByPage(page: tPage))
         .thenAnswer((_) async => Right(tListManga));
     // act
     final result = await usecase(params: 1);

@@ -5,7 +5,10 @@ import '../../../../data/model/chapter_item_model.dart';
 import '../../../blocs/download_bloc/download_bloc.dart';
 
 class DownloadButtonWidget extends StatelessWidget {
-  const DownloadButtonWidget({Key? key, required this.item}) : super(key: key);
+  const DownloadButtonWidget({
+    Key? key,
+    required this.item,
+  }) : super(key: key);
 
   final ChapterItem item;
   final Duration transitionDuration = const Duration(milliseconds: 500);

@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/core.dart';
-import '../../blocs/search_bloc/bloc.dart';
+import '../../blocs/search_screen/search_screen_bloc.dart';
 import '../../screens/home_screens/widget/item_manga.dart';
-import '../../screens/search_screens/show_list_genres.dart';
 import '../../widgets/loading_screen.dart';
+import 'show_list_genres.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key}) : super(key: key);
@@ -66,7 +66,7 @@ class _SearchScreenState extends State<SearchScreen> {
             fontSize: 20,
           ),
           onSubmitted: (value) {
-            BlocProvider.of<SearchBloc>(context).add(FetchDataSearchEvent(
+            context.read<SearchScreenBloc>().add(FetchDataSearchEvent(
               query: value,
             ));
           },
@@ -81,15 +81,15 @@ class _SearchScreenState extends State<SearchScreen> {
       ),
       body: Stack(
         children: [
-          BlocBuilder<SearchBloc, SearchState>(
+          BlocBuilder<SearchScreenBloc, SearchScreenState>(
             builder: (context, state) {
-              if (state is InitialSearchState) {
+              if (state is SearchScreenInitial) {
                 return const Center();
               }
-              if (state is SearchLoadingState) {
+              if (state is SearchScreenLoadingState) {
                 return const LoadingScreen();
               }
-              if (state is SearchLoadedState) {
+              if (state is SearchScreenLoadedState) {
                 return Container(
                   height: double.infinity,
                   color: Theme.of(context).backgroundColor,
@@ -154,7 +154,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     String removeGenres,
                     String addGenres,
                   ) {
-                    BlocProvider.of<SearchBloc>(context).add(
+                    BlocProvider.of<SearchScreenBloc>(context).add(
                       AdvancedSearchEvent(
                         query: _controllerSearch.text,
                         author: author,

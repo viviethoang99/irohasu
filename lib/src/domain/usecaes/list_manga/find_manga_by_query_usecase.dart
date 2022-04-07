@@ -6,13 +6,13 @@ import '../../../data/model/manga_list_model.dart';
 import '../../repositories/i_manga_repository.dart';
 
 @lazySingleton
-class FetchListMangaUseCase implements UseCase<List<MangaModel>, int> {
-  const FetchListMangaUseCase(this._repository);
+class FindMangaByQueryUseCase implements UseCase<List<MangaModel>, String> {
+  const FindMangaByQueryUseCase(this._repository);
 
   final IMangaRepository _repository;
 
   @override
-  Future<Either<Failure, List<MangaModel>>> call({int? params}) async {
-    return _repository.findMangaByPage(page: params!);
+  Future<Either<Failure, List<MangaModel>>> call({String? params}) async {
+    return _repository.findMangaByQuery(query: params!);
   }
 }
