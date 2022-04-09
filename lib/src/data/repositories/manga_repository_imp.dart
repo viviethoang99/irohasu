@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:injectable/injectable.dart';
 
 import '../../domain/repositories/i_manga_repository.dart';
+import '../datasource/local/manga_local_source.dart';
 import '../datasource/remote/manga_api_source.dart';
 import '../model/manga_detail_model.dart';
 
@@ -8,9 +11,11 @@ import '../model/manga_detail_model.dart';
 class MangaRepository implements IMangaRepository {
   const MangaRepository(
     this._mangaService,
+    this._mangaLocalSource,
   );
 
   final IMangaApiSource _mangaService;
+  final IMangaLocalSource _mangaLocalSource;
 
   @override
   Future<ListMangaRemoteRepository> findMangaByPage({int page = 1}) async {
@@ -26,42 +31,30 @@ class MangaRepository implements IMangaRepository {
   @override
   Future<MangaDetailRemoteRepository> fetchMangaDetail(String endpoint) async {
     final mangaDetail = await _mangaService.findMangaDetail(endpoint);
+    unawaited(mangaDetail.fold(
+      (error) => null,
+      saveManga,
+    ));
     return mangaDetail;
   }
 
   @override
-  Future<void> addListChapterRead(List listManga, String idManga) {
-    // TODO: implement addListChapterRead
-    throw UnimplementedError();
+  Future<void> saveManga(MangaDetailModel manga) {
+    return _mangaLocalSource.saveManga(manga);
   }
 
   @override
-  Future<void> addMangaDetail(MangaDetailModel item) {
-    // TODO: implement addMangaDetail
-    throw UnimplementedError();
+  Future<void> deleteManga(String endpoint) {
+    return _mangaLocalSource.deleteManga(endpoint);
   }
 
   @override
-  Future getAllDataChapterRead() {
-    // TODO: implement getAllDataChapterRead
-    throw UnimplementedError();
+  Future<void> deleteAllManga() {
+    return _mangaLocalSource.deleteAllManga();
   }
 
   @override
-  Stream<List<MangaDetailModel>> getListChapter() {
-    // TODO: implement getListChapter
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> removeMangaDetail(String id) {
-    // TODO: implement removeMangaDetail
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<List> getListChapterReading(String idManga) {
-    // TODO: implement getListChapterReading
-    throw UnimplementedError();
+  Future<List<MangaDetailModel>> getAllManga() {
+    return _mangaLocalSource.findAllManga();
   }
 }

@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/core.dart';
 import '../../../../config/config.dart';
-import '../../../../data/datasource/local/cache_manager_data.dart';
 import '../../../blocs/change_theme_bloc/change_theme_bloc.dart';
 
 class GeneralSetting extends StatefulWidget {
@@ -17,7 +16,6 @@ class GeneralSetting extends StatefulWidget {
 
 class _GeneralSettingState extends State<GeneralSetting> {
   int? _selectTheme = 0;
-  final _cacheManagerData = CacheManagerData();
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +96,6 @@ class _GeneralSettingState extends State<GeneralSetting> {
               ),
               TextButton(
                 onPressed: () async {
-                  await _cacheManagerData.removeMangaRequestCache();
                   Navigator.of(context, rootNavigator: true).pop(true);
                 },
                 child: const Text('Có'),

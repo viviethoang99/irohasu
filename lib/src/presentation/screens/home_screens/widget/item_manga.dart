@@ -10,13 +10,13 @@ class ItemManga extends StatelessWidget {
     required this.title,
     required this.thumbnailUrl,
     required this.endpoint,
-    this.status,
+    this.imageCache = false,
   }) : super(key: key);
 
   final String? title;
   final String? thumbnailUrl;
   final String? endpoint;
-  final String? status;
+  final bool imageCache;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,7 @@ class ItemManga extends StatelessWidget {
                   topLeft: Radius.circular(5),
                   topRight: Radius.circular(5),
                 ),
-                child: (status == 'library')
+                child: imageCache
                     ? CachedNetworkImage(
                         placeholder: (_, url) =>
                             const CircularProgressIndicator(),

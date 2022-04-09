@@ -16,9 +16,5 @@ class HistoryScreenBloc extends Bloc<HistoryScreenEvent, HistoryScreenState> {
 
   final IMangaRepository _repo;
 
-  void _fetchData(FetchDataHistory event, Emitter<HistoryScreenState> emit) {
-    _repo.getListChapter().listen(
-          (event) => emit(state.copyWith(listManga: event)),
-        );
-  }
+  void _fetchData(FetchDataHistory event, Emitter<HistoryScreenState> emit) {}
 }

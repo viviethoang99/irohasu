@@ -12,17 +12,17 @@ abstract class IMangaRepository {
   /// Returns list [MangaModel] matching with the given [page] website.
   Future<ListMangaRemoteRepository> findMangaByPage({int page});
 
+  /// Returns list [MangaModel] matching with the given [query] website.
   Future<ListMangaRemoteRepository> findMangaByQuery({String? query});
 
-  Future<List> getListChapterReading(String idManga);
+  /// Stores an manga to the local storage and returns the same [manga].
+  Future<void> saveManga(MangaDetailModel manga);
 
-  Future<void> addListChapterRead(List listManga, String idManga);
+  /// Deletes a manga from the local storage matching the given [endpoint].
+  Future<void> deleteManga(String endpoint);
 
-  Future<void> addMangaDetail(MangaDetailModel item);
+  /// Deletes all manga from the local storage.
+  Future<void> deleteAllManga();
 
-  Future<void> removeMangaDetail(String id);
-
-  Stream<List<MangaDetailModel>> getListChapter();
-
-  Future getAllDataChapterRead();
+  Future<List<MangaDetailModel>> getAllManga();
 }

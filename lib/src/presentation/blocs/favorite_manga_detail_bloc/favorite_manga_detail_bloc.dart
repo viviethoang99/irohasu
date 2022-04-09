@@ -1,6 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
+
+import '../../../../core/core.dart';
 import '../../../domain/usecaes/favorite_manga/change_status_favorite_usercase.dart';
 import '../../../domain/usecaes/favorite_manga/is_favorite_usecase.dart';
 
@@ -21,15 +23,12 @@ class FavoriteMangaDetailBloc extends Bloc<FavoriteMangaDetailEvent, bool> {
   final ChangeStatusFavoriteUseCase _changeStatusFavoriteUseCase;
   final String endpoint;
 
-  String get idManga {
-    return endpoint.split('/')[1];
-  }
 
   Future<void> _updateStatus(
     GetStatusFavoriteManga event,
     Emitter<bool> emit,
   ) async {
-    final either = await _isFavoriteUseCase(params: idManga);
+    final either = await _isFavoriteUseCase(params: endpoint.toId);
     either.fold(
       (error) => null,
       (isFavorite) => emit(isFavorite),
@@ -41,7 +40,7 @@ class FavoriteMangaDetailBloc extends Bloc<FavoriteMangaDetailEvent, bool> {
     Emitter<bool> emit,
   ) async {
     final params = ChangeStatusFavoriteParams(
-      id: idManga,
+      id: endpoint.toId,
       isFavorite: state,
     );
     final either = await _changeStatusFavoriteUseCase(params: params);
