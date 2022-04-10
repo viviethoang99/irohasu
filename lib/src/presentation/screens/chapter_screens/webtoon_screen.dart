@@ -9,7 +9,7 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import '../../../../core/core.dart';
 import '../../../../env.dart';
 import '../../../data/model/chapter/chapter_model.dart';
-import '../../../data/model/chapter_item_model.dart';
+import '../../../domain/entities/chapter_item.dart';
 import 'webtoon_screen_widget/app_bar_widget.dart';
 import 'webtoon_screen_widget/bottom_bar_widget.dart';
 import 'webtoon_screen_widget/custom_drawer.dart';

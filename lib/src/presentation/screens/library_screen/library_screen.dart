@@ -22,7 +22,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => getIt<LibraryScreenBloc>()..add(FetchDataLibrary()),
+      create: (_) => getIt<LibraryScreenBloc>()..add(WatchDataLibrary()),
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: const AppBarHomeWidget(),

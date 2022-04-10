@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import '../../../data/model/manga_detail_model.dart';
 
+import '../../../domain/entities/manga_detail.dart';
 import '../../../domain/repositories/i_manga_repository.dart';
 
 part 'history_screen_event.dart';

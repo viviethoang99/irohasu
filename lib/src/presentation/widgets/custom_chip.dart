@@ -29,7 +29,7 @@ class CustomChips extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
-                        state.mangaDetail.listGenres![index].genreName!,
+                        state.mangaDetail.listGenres![index].name!,
                         style: TextStyle(
                           fontSize: 12,
                           color: Theme.of(context).primaryColor,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import './widget/item_manga.dart';
 import '../../../../core/core.dart';
-import '../../../data/model/manga_list_model.dart';
+import '../../../domain/entities/manga.dart';
 
 class ListMangaWidget extends StatefulWidget {
   const ListMangaWidget({
@@ -13,7 +13,7 @@ class ListMangaWidget extends StatefulWidget {
   }) : super(key: key);
 
   final ScrollController? scrollController;
-  final List<MangaModel>? data;
+  final List<Manga>? data;
   final bool? hasReachedEnd;
 
   @override
@@ -21,7 +21,7 @@ class ListMangaWidget extends StatefulWidget {
 }
 
 class _ListMangaWidgetState extends State<ListMangaWidget> {
-  List<MangaModel>? get data => widget.data;
+  List<Manga>? get data => widget.data;
 
   ScrollController? get _scrollController => widget.scrollController;
 

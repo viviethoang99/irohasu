@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 
 import '../../../data/datasource/local/download_data.dart';
-import '../../../data/model/chapter_item_model.dart';
+import '../../../domain/entities/chapter_item.dart';
 
 part 'download_event.dart';
 part 'download_state.dart';

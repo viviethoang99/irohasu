@@ -5,7 +5,7 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../../../core/core.dart';
 import '../../../data/model/chapter/chapter_model.dart';
-import '../../../data/model/manga_detail_model.dart';
+import '../../../domain/entities/manga_detail.dart';
 import '../../../domain/repositories/i_chaper_repository.dart';
 import '../../../domain/usecaes/chapter/fetch_data_chapter_usecase.dart';
 import '../manga_detail_bloc/manga_detail_bloc.dart';
@@ -39,7 +39,7 @@ class ChapterScreenCubit extends Cubit<ChapterScreenState> {
       .trim()
       .capitalize();
 
-  int get indexChapter => state.mangaDetail!.listChapter!
+  int get indexChapter => state.mangaDetail!.listChapter
       .indexWhere((element) => element.endpoint == state.chapter!.endpoint);
 
   Future<void> getListChapter() async {
@@ -52,7 +52,7 @@ class ChapterScreenCubit extends Cubit<ChapterScreenState> {
   }
 
   bool? isDownload(endpoint) => state.mangaDetail?.listChapter
-      ?.firstWhere((chapter) => chapter.endpoint == endpoint)
+      .firstWhere((chapter) => chapter.endpoint == endpoint)
       .isDownload
       ?.isEmpty;
 
@@ -87,12 +87,12 @@ class ChapterScreenCubit extends Cubit<ChapterScreenState> {
   }
 
   void nextChapter() {
-    final chapter = state.mangaDetail!.listChapter![indexChapter + 1];
+    final chapter = state.mangaDetail!.listChapter[indexChapter + 1];
     fetchDataFromApi(chapter.endpoint!);
   }
 
   void preChapter() {
-    final chapter = state.mangaDetail!.listChapter![indexChapter - 1];
+    final chapter = state.mangaDetail!.listChapter[indexChapter - 1];
     fetchDataFromApi(chapter.endpoint!);
   }
 }

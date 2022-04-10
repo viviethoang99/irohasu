@@ -1,22 +1,26 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../core/core.dart';
-import '../../data/datasource/remote/manga_api_source.dart';
-import '../../data/model/manga_detail_model.dart';
-import '../../data/model/manga_list_model.dart';
+import '../../data/dtos/dtos.dart';
+import '../entities/manga.dart';
+import '../entities/manga_detail.dart';
+
+typedef MangaDetailRepository = Either<Failure, MangaDetail>;
+
+typedef ListMangaRepository = Either<Failure, ListManga>;
 
 abstract class IMangaRepository {
-  /// Returns [MangaDetailModel]s matching with the given [endpoint].
-  Future<Either<Failure, MangaDetailModel>> fetchMangaDetail(String endpoint);
+  /// Returns [MangaDetail]s matching with the given [endpoint].
+  Future<MangaDetailRepository> fetchMangaDetail(String endpoint);
 
-  /// Returns list [MangaModel] matching with the given [page] website.
-  Future<ListMangaRemoteRepository> findMangaByPage({int page});
+  /// Returns list [Manga] matching with the given [page] website.
+  Future<ListMangaRepository> findMangaByPage({int page});
 
-  /// Returns list [MangaModel] matching with the given [query] website.
-  Future<ListMangaRemoteRepository> findMangaByQuery({String? query});
+  /// Returns list [Manga] matching with the given [query] website.
+  Future<ListMangaRepository> findMangaByQuery({String? query});
 
   /// Stores an manga to the local storage and returns the same [manga].
-  Future<void> saveManga(MangaDetailModel manga);
+  Future<void> saveManga(MangaDetailDto manga);
 
   /// Deletes a manga from the local storage matching the given [endpoint].
   Future<void> deleteManga(String endpoint);
@@ -24,5 +28,9 @@ abstract class IMangaRepository {
   /// Deletes all manga from the local storage.
   Future<void> deleteAllManga();
 
-  Future<List<MangaDetailModel>> getAllManga();
+  Future<List<MangaDetail>> getAllManga();
+
+  /// Returns stream of [ListMangaDetail] by listening to updates in the local
+  /// storage.
+  Stream<ListMangaDetail> watchAllManga();
 }

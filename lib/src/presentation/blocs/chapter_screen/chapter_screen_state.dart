@@ -10,14 +10,14 @@ class ChapterScreenState extends Equatable {
   });
 
   final ChapterModel? chapter;
-  final MangaDetailModel? mangaDetail;
+  final MangaDetail? mangaDetail;
   final bool isLoading;
   final String error;
   final int indexChapter;
 
   ChapterScreenState copyWith({
     ChapterModel? chapter,
-    MangaDetailModel? mangaDetail,
+    MangaDetail? mangaDetail,
     bool? isLoading,
     String? error,
     int? indexChapter,

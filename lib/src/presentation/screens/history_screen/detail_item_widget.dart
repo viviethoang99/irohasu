@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/core.dart';
-import '../../../data/model/chapter_item_model.dart';
+import '../../../domain/entities/chapter_item.dart';
 import '../../screens/detail_screens/manga_detail_screen.dart';
 
 class DetailItemWidget extends StatelessWidget {

@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:irohasu/src/data/model/manga_list_model.dart';
+import 'package:irohasu/src/domain/entities/manga.dart';
 import 'package:irohasu/src/domain/repositories/i_manga_repository.dart';
 import 'package:irohasu/src/domain/usecaes/list_manga/fetch_list_manga_usecase.dart';
 import 'package:mocktail/mocktail.dart';
@@ -19,7 +19,7 @@ void main() {
   final tPage = 1;
   final tListManga = List.generate(
     20,
-    (index) => MangaModel(
+    (index) => Manga(
       idManga: index.toString(),
       thumbnailUrl: 'http://irohasu_iz_bezt_girl.com',
       title: 'Irohasu',

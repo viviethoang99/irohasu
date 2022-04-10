@@ -1,9 +1,9 @@
 import 'package:hive/hive.dart';
-import '../../model/manga_list_model.dart';
+import '../../../domain/entities/manga.dart';
 
 abstract class ILibraryLocalDataSource {
-  List<MangaModel> getListManga();
-  List<MangaModel> getListSearch(String keyword);
+  List<Manga> getListManga();
+  List<Manga> getListSearch(String keyword);
   Future<void> removeManga(String id);
 }
 
@@ -13,13 +13,13 @@ class LibraryLocalDataSource implements ILibraryLocalDataSource {
   final Box _box;
   
   @override
-  List<MangaModel> getListManga() {
+  List<Manga> getListManga() {
     // TODO: implement getListManga
     throw UnimplementedError();
   }
 
   @override
-  List<MangaModel> getListSearch(String keyword) {
+  List<Manga> getListSearch(String keyword) {
     // TODO: implement getListSearch
     throw UnimplementedError();
   }

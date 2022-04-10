@@ -5,7 +5,7 @@ import 'package:injectable/injectable.dart';
 
 import '../../../config/base_content.dart';
 import '../../../config/config.dart';
-import '../../../data/model/manga_detail_model.dart';
+import '../../../domain/entities/manga_detail.dart';
 import '../../../domain/usecaes/manga_detail/fetch_manga_detail_usecase.dart';
 
 part 'manga_detail_event.dart';
@@ -45,7 +45,7 @@ class MangaDetailBloc extends Bloc<MangaDetailEvent, MangaDetailState> {
     );
   }
 
-  Either<void, MangaDetailModel> get idManga {
+  Either<void, MangaDetail> get idManga {
     if (state is MangaDetailSuccessState) {
       final data = (state as MangaDetailSuccessState).mangaDetail;
       return Right(data);
@@ -66,7 +66,7 @@ class MangaDetailBloc extends Bloc<MangaDetailEvent, MangaDetailState> {
 
   String get lastChapter {
     if (currentState!.chapterReading.isNotEmpty) {
-      final title = currentState!.mangaDetail.listChapter!
+      final title = currentState!.mangaDetail.listChapter
           .firstWhere((chap) => chap.id == currentState!.chapterReading.last)
           .title!
           .split(' ');

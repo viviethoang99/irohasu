@@ -1,11 +1,13 @@
 import 'dart:async';
 
+import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../domain/entities/manga_detail.dart';
 import '../../domain/repositories/i_manga_repository.dart';
 import '../datasource/local/manga_local_source.dart';
 import '../datasource/remote/manga_api_source.dart';
-import '../model/manga_detail_model.dart';
+import '../dtos/dtos.dart';
 
 @LazySingleton(as: IMangaRepository)
 class MangaRepository implements IMangaRepository {
@@ -18,28 +20,37 @@ class MangaRepository implements IMangaRepository {
   final IMangaLocalSource _mangaLocalSource;
 
   @override
-  Future<ListMangaRemoteRepository> findMangaByPage({int page = 1}) async {
-    final listManga = await _mangaService.findMangaByPage(page: page);
-    return listManga;
+  Future<ListMangaRepository> findMangaByPage({int page = 1}) async {
+    final response = await _mangaService.findMangaByPage(page: page);
+    return response.fold(
+      Left.new,
+      (dto) => Right(dto.toEntities()),
+    );
   }
 
   @override
-  Future<ListMangaRemoteRepository> findMangaByQuery({String? query}) {
-    return _mangaService.findMangaByQuery(query: query);
+  Future<ListMangaRepository> findMangaByQuery({String? query}) async {
+    final response = await _mangaService.findMangaByQuery(query: query);
+    return response.fold(
+      Left.new,
+      (dto) => Right(dto.toEntities()),
+    );
   }
 
   @override
-  Future<MangaDetailRemoteRepository> fetchMangaDetail(String endpoint) async {
+  Future<MangaDetailRepository> fetchMangaDetail(String endpoint) async {
     final mangaDetail = await _mangaService.findMangaDetail(endpoint);
-    unawaited(mangaDetail.fold(
-      (error) => null,
-      saveManga,
-    ));
-    return mangaDetail;
+    return mangaDetail.fold(
+      Left.new,
+      (manga) {
+        saveManga(manga);
+        return Right(manga.toEntity());
+      },
+    );
   }
 
   @override
-  Future<void> saveManga(MangaDetailModel manga) {
+  Future<void> saveManga(MangaDetailDto manga) {
     return _mangaLocalSource.saveManga(manga);
   }
 
@@ -54,7 +65,15 @@ class MangaRepository implements IMangaRepository {
   }
 
   @override
-  Future<List<MangaDetailModel>> getAllManga() {
-    return _mangaLocalSource.findAllManga();
+  Future<List<MangaDetail>> getAllManga() async {
+    final repository = await _mangaLocalSource.findAllManga();
+    return repository.toEntities();
+  }
+
+  @override
+  Stream<ListMangaDetail> watchAllManga() {
+    return _mangaLocalSource
+        .watchAllManga()
+        .map((listManga) => listManga.toEntities());
   }
 }

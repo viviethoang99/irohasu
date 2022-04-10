@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../config/base_content.dart';
-import '../../../data/model/manga_detail_model.dart';
+import '../../../domain/entities/manga_detail.dart';
 import '../../blocs/search_screen/search_screen_bloc.dart';
 import '../../widgets/loading_screen.dart';
 import '../home_screens/widget/item_manga.dart';
 
-class ButtonSearchWidget extends SearchDelegate<MangaDetailModel?> {
+class ButtonSearchWidget extends SearchDelegate<MangaDetail?> {
   ButtonSearchWidget();
 
   @override

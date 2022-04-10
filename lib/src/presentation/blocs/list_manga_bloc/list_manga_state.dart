@@ -5,19 +5,19 @@ enum ListMangaScreenStatus { initial, success, failure }
 class ListMangaState extends Equatable {
   const ListMangaState({
     this.status = ListMangaScreenStatus.initial,
-    this.listManga = const <MangaModel>[],
+    this.listManga = const <Manga>[],
     this.hasReachedMax = false,
     this.page = 1,
   });
 
   final ListMangaScreenStatus status;
-  final List<MangaModel> listManga;
+  final List<Manga> listManga;
   final bool hasReachedMax;
   final int page;
 
   ListMangaState copyWith({
     ListMangaScreenStatus? status,
-    List<MangaModel>? listManga,
+    List<Manga>? listManga,
     bool? hasReachedMax,
     int? page,
   }) {

@@ -16,10 +16,10 @@ class ListChapterWidget extends StatelessWidget {
       child: BlocBuilder<ChapterScreenCubit, ChapterScreenState>(
         builder: (context, state) {
           return ScrollablePositionedList.builder(
-            itemCount: state.mangaDetail!.listChapter!.length,
+            itemCount: state.mangaDetail!.listChapter.length,
             // itemScrollController: controller,
             itemBuilder: (context, index) {
-              final chapter = state.mangaDetail!.listChapter![index];
+              final chapter = state.mangaDetail!.listChapter[index];
               final isSelect = state.chapter?.endpoint == chapter.endpoint;
               return ListTile(
                 title: Text(

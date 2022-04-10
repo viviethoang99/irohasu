@@ -15,11 +15,11 @@ class MangaDetailSuccessState extends MangaDetailState {
     this.chapterReading = const [],
   });
 
-  final MangaDetailModel mangaDetail;
+  final MangaDetail mangaDetail;
   final List<String> chapterReading;
 
   MangaDetailSuccessState copyWith({
-    MangaDetailModel? mangaDetail,
+    MangaDetail? mangaDetail,
     List<String>? chapterReading,
   }) {
     return MangaDetailSuccessState(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../data/model/chapter_item_model.dart';
+import '../../../../domain/entities/chapter_item.dart';
 import '../../../blocs/download_bloc/download_bloc.dart';
 
 class DownloadButtonWidget extends StatelessWidget {

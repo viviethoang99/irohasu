@@ -14,7 +14,7 @@ class SearchScreenLoadingState extends SearchScreenState {}
 class SearchScreenLoadedState extends SearchScreenState {
   const SearchScreenLoadedState({required this.list});
 
-  final List<MangaModel> list;
+  final List<Manga> list;
 
   @override
   List<Object> get props => [list];

@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../data/model/manga_list_model.dart';
+import '../../../domain/entities/manga.dart';
 import '../../../domain/usecaes/list_manga/find_manga_by_query_usecase.dart';
 
 part 'search_screen_event.dart';

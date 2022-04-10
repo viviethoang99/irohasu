@@ -73,7 +73,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                               ),
                             ),
                             DetailItemWidget(
-                              item: item.listChapter!.first,
+                              item: item.listChapter.first,
                               titleManga: item.title,
                               urlManga: item.endpoint,
                               idManga: item.idManga,

@@ -1,19 +1,19 @@
 import 'package:html/dom.dart';
 
 import '../../../core/core.dart';
-import 'manga_list_model.dart';
+import '../dtos/dtos.dart';
 
-class ListSearchMangaModel {
-  const ListSearchMangaModel({required this.listManga});
+class ListSearchMangaDto {
+  const ListSearchMangaDto({required this.listManga});
 
-  factory ListSearchMangaModel.fromMap(Document data) {
+  factory ListSearchMangaDto.fromMap(Document data) {
     final item = data.querySelectorAll('div.list span.tiptip.fs-12.ellipsis');
     final image = data.querySelectorAll('div.list-manga-bycate img');
     
-    return ListSearchMangaModel(
-      listManga: List<MangaModel>.from(
-        item.mapIndexed<MangaModel>(
-          (manga, index) => MangaModel.listSearch(
+    return ListSearchMangaDto(
+      listManga: List<MangaSearchDto>.from(
+        item.mapIndexed<MangaSearchDto>(
+          (manga, index) => MangaSearchDto.fromHtml(
             manga,
             image[index].attributes['src'] ?? '',
           ),
@@ -22,5 +22,5 @@ class ListSearchMangaModel {
     );
   }
 
-  final List<MangaModel> listManga;
+  final List<MangaSearchDto> listManga;
 }

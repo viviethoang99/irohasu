@@ -10,7 +10,7 @@ class DownloadChapterEvent extends DownloadEvent {
     this.titleManga,
     this.idManga,
   });
-  
+
   final String? titleManga;
   final String? idManga;
   final ChapterItem chapterModel;

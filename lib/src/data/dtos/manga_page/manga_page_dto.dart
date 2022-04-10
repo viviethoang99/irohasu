@@ -1,18 +1,21 @@
-import 'package:equatable/equatable.dart';
 import 'package:html/dom.dart';
 
-class MangaModel extends Equatable {
-  const MangaModel({
+import '../../../domain/entities/manga.dart';
+
+typedef MangaPageDtoList = List<MangaPageDto>;
+
+class MangaPageDto {
+  const MangaPageDto({
     this.idManga,
     this.title,
     this.thumbnailUrl,
     this.endpoint,
   });
 
-  factory MangaModel.listManga(Element data) {
+  factory MangaPageDto.listManga(Element data) {
     final infoManga = data.children;
     final endpoint = infoManga.first.querySelector('a')?.attributes['href'];
-    return MangaModel(
+    return MangaPageDto(
       idManga: endpoint?.split('/')[1],
       title: infoManga.first.querySelector('a')?.attributes['title'],
       thumbnailUrl: infoManga.first.querySelector('img')?.attributes['src'],
@@ -20,13 +23,12 @@ class MangaModel extends Equatable {
     );
   }
 
-  factory MangaModel.listSearch(Element data, String urlImage) {
-    final linkHref = data.querySelector('a');
-    return MangaModel(
-      idManga: linkHref?.attributes['href']?.split('/')[1],
-      title: linkHref?.text,
-      thumbnailUrl: urlImage,
-      endpoint: linkHref?.attributes['href'],
+  Manga toEntity() {
+    return Manga(
+      idManga: idManga ?? '',
+      title: title ?? '',
+      thumbnailUrl: thumbnailUrl ?? '',
+      endpoint: endpoint ?? '',
     );
   }
 
@@ -34,7 +36,8 @@ class MangaModel extends Equatable {
   final String? title;
   final String? thumbnailUrl;
   final String? endpoint;
+}
 
-  @override
-  List<Object?> get props => [title, title, thumbnailUrl, endpoint];
+extension MangaPageDtoListX on MangaPageDtoList {
+  ListManga toEntities() => map((genres) => genres.toEntity()).toList();
 }

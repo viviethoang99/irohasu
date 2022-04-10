@@ -8,3 +8,5 @@ abstract class LibraryScreenEvent extends Equatable {
 }
 
 class FetchDataLibrary extends LibraryScreenEvent {}
+
+class WatchDataLibrary extends LibraryScreenEvent {}

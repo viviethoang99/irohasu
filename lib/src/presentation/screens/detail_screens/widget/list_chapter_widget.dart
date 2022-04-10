@@ -36,7 +36,7 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
                   builder: (_, state) {
                     if (state is MangaDetailSuccessState) {
                       return Text(
-                        '${state.mangaDetail.listChapter!.length} Chương',
+                        '${state.mangaDetail.listChapter.length} Chương',
                         style: TextStyle(
                           color: Theme.of(context).primaryColor,
                           fontSize: 17,
@@ -100,10 +100,10 @@ class _ListChapterWidget extends StatelessWidget {
                     height: 4,
                   ),
                   shrinkWrap: true,
-                  itemCount: state.mangaDetail.listChapter!.length,
+                  itemCount: state.mangaDetail.listChapter.length,
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (_, index) {
-                    final chapter = state.mangaDetail.listChapter![index];
+                    final chapter = state.mangaDetail.listChapter[index];
                     return ListTile(
                       contentPadding: const EdgeInsets.symmetric(horizontal: 5),
                       dense: true,

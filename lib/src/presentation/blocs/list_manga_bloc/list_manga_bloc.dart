@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart' as rx;
 
-import '../../../data/model/manga_list_model.dart';
+import '../../../domain/entities/manga.dart';
 import '../../../domain/usecaes/list_manga/fetch_list_manga_usecase.dart';
 
 part 'list_manga_event.dart';

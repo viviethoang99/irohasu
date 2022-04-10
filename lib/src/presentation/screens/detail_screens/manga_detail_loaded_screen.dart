@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/core.dart';
 import '../../../config/base_colors.dart';
-import '../../../data/model/manga_detail_model.dart';
+import '../../../domain/entities/manga_detail.dart';
 import 'widget/custom_button_reading_widget.dart';
 import 'widget/description_text_widget.dart';
 import 'widget/header_manga_detail.dart';
@@ -14,7 +14,7 @@ import 'widget/list_chapter_widget.dart';
 class MangaDetailLoadedScreen extends StatefulWidget {
   const MangaDetailLoadedScreen({Key? key, this.data}) : super(key: key);
 
-  final MangaDetailModel? data;
+  final MangaDetail? data;
 
   @override
   _MangaDetailLoadedScreenState createState() =>
@@ -22,7 +22,7 @@ class MangaDetailLoadedScreen extends StatefulWidget {
 }
 
 class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
-  MangaDetailModel get data => widget.data!;
+  MangaDetail get data => widget.data!;
   late final Color _colorPage;
   late final Random random;
 
@@ -115,7 +115,7 @@ class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: CustomButtonReadingWidget(
-                  lastChapter: data.listChapter!.last,
+                  lastChapter: data.listChapter.last,
                   color: _colorPage,
                 ),
               ),
