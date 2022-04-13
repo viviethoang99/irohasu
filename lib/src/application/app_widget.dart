@@ -11,11 +11,12 @@ import '../presentation/blocs/change_reading_mode_bloc/change_reading_mode_bloc.
 import '../presentation/blocs/change_theme_bloc/change_theme_bloc.dart';
 import '../presentation/blocs/history_screen_bloc/history_screen_bloc.dart';
 import '../presentation/blocs/list_manga_bloc/list_manga_bloc.dart';
+import '../presentation/blocs/manage_favorite_manga/manage_favorite_manga_bloc.dart';
 import '../presentation/screens/index_screen/index_screen.dart';
 
 class AppWidget extends StatefulWidget {
   const AppWidget({Key? key}) : super(key: key);
-  
+
   @override
   _AppWidgetState createState() => _AppWidgetState();
 }
@@ -64,6 +65,9 @@ class _AppWidgetState extends State<AppWidget> {
           BlocProvider(
             create: (_) => getIt<ChangeReadingModeBloc>(),
           ),
+          BlocProvider(
+            create: (_) => getIt<ManageFavoriteMangaBloc>(),
+          )
         ],
         child: BlocBuilder<ChangeThemeBloc, ChangeThemeState>(
           builder: (_, state) {

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../domain/entities/manga_detail.dart';
+import '../../../core/core.dart';
 import '../../domain/repositories/i_manga_repository.dart';
 import '../datasource/local/manga_local_source.dart';
 import '../datasource/remote/manga_api_source.dart';
@@ -65,15 +65,33 @@ class MangaRepository implements IMangaRepository {
   }
 
   @override
-  Future<List<MangaDetail>> getAllManga() async {
-    final repository = await _mangaLocalSource.findAllManga();
-    return repository.toEntities();
+  Future<ListMangaDetailRepository> getAllManga() async {
+    try {
+      final repository = _mangaLocalSource.findAllManga();
+      return right(repository.toEntities());
+    } on CacheException {
+      return Left(CacheFailure());
+    }
   }
 
   @override
-  Stream<ListMangaDetail> watchAllManga() {
-    return _mangaLocalSource
-        .watchAllManga()
-        .map((listManga) => listManga.toEntities());
+  Stream<ListMangaDetailRepository> watchAllManga(List<String> listId) {
+    return _mangaLocalSource.watchAllManga(listId).map(
+          (repository) => repository.fold(
+            (error) => Left(CacheFailure()),
+            (listManga) => Right(listManga.toEntities()),
+          ),
+        );
+  }
+
+  @override
+  Future<ListMangaDetailRepository> findMangaLibrary(
+      List<String> listId) async {
+    try {
+      final repository = _mangaLocalSource.findMangaByQuery(listId);
+      return right(repository.toEntities());
+    } on CacheException {
+      return Left(CacheFailure());
+    }
   }
 }

@@ -37,12 +37,10 @@ class MangaDetailBloc extends Bloc<MangaDetailEvent, MangaDetailState> {
   ) async {
     emit(MangaDetailLoadingState());
     final either = await _fetchMangaDetailUseCase(params: endpoint);
-    either.fold(
-      (error) => emit(
-        MangaDetailFailureState(msg: error.runtimeType.toString()),
-      ),
-      (data) => emit(MangaDetailSuccessState(mangaDetail: data)),
-    );
+    emit(either.fold(
+      (error) => MangaDetailFailureState(msg: error.runtimeType.toString()),
+      (data) => MangaDetailSuccessState(mangaDetail: data),
+    ));
   }
 
   Either<void, MangaDetail> get idManga {

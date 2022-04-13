@@ -1,7 +1,9 @@
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../config/base_content.dart';
+import '../../blocs/manage_favorite_manga/manage_favorite_manga_bloc.dart';
 import '../history_screen/history_screen.dart';
 import '../home_screens/home_screen.dart';
 import '../library_screen/library_screen.dart';
@@ -23,6 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    context.read<ManageFavoriteMangaBloc>().add(GetListFavoriteId());
     _pageController = PageController();
   }
 
@@ -41,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
           onPageChanged: (index) {
             setState(() => _currentIndex = index);
           },
-          children: const <Widget> [
+          children: const <Widget>[
             ListMangaScreen(),
             LibraryScreen(),
             HistoryScreen(),

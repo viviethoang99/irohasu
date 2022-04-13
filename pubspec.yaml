@@ -50,6 +50,7 @@ dependencies:
 
   # logger
   pretty_dio_logger: ^1.1.1
+  logger: ^1.1.0
 
 dev_dependencies:
   flutter_test:

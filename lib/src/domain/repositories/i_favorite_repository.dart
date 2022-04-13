@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../core/core.dart';
+import '../../data/repositories/favorite_repository.dart';
 import '../usecaes/favorite_manga/change_status_favorite_usercase.dart';
 
 abstract class IFavoriteRepository {
@@ -11,4 +12,6 @@ abstract class IFavoriteRepository {
   Either<Failure, void> changeStatusFavorite({
     ChangeStatusFavoriteParams? params,
   });
+
+  ListFavoriteIdRepository watchListFavorite();
 }

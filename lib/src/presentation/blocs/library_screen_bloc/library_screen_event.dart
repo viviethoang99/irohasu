@@ -7,6 +7,20 @@ abstract class LibraryScreenEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class FetchDataLibrary extends LibraryScreenEvent {}
+class FetchDataLibrary extends LibraryScreenEvent {
+  FetchDataLibrary(this.listId);
 
-class WatchDataLibrary extends LibraryScreenEvent {}
+  final List<String> listId;
+
+  @override
+  List<Object> get props => [listId];
+}
+
+class WatchDataLibrary extends LibraryScreenEvent {
+  WatchDataLibrary(this.listId);
+
+  final List<String> listId;
+
+  @override
+  List<Object> get props => [listId];
+}

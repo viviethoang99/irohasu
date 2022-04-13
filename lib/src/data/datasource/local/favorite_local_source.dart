@@ -11,6 +11,8 @@ abstract class IFavoriteLocalSource {
   void deleteFromFavoriteList(String id);
 
   void addToFavoriteList(String id);
+
+  Stream<List<String>> watchListIdFavorite();
 }
 
 @Injectable(as: IFavoriteLocalSource)
@@ -43,5 +45,12 @@ class FavoriteLocalSource implements IFavoriteLocalSource {
   void deleteFromFavoriteList(String id) {
     final listBox = getListFavorite()..removeWhere((item) => id == item);
     _box.put(_kFavoriteManga, listBox);
+  }
+
+  @override
+  Stream<List<String>> watchListIdFavorite() {
+    return _box
+        .watch(key: _kFavoriteManga)
+        .map((_) => getListFavorite());
   }
 }

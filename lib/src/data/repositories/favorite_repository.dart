@@ -6,6 +6,8 @@ import '../../domain/repositories/i_favorite_repository.dart';
 import '../../domain/usecaes/favorite_manga/change_status_favorite_usercase.dart';
 import '../datasource/local/favorite_local_source.dart';
 
+typedef ListFavoriteIdRepository = Either<Failure, Stream<List<String>>>;
+
 @Injectable(as: IFavoriteRepository)
 class FavoriteRepository implements IFavoriteRepository {
   const FavoriteRepository(this._localSource);
@@ -44,5 +46,10 @@ class FavoriteRepository implements IFavoriteRepository {
     } on CacheException {
       throw CacheException();
     }
+  }
+
+  @override
+  ListFavoriteIdRepository watchListFavorite() {
+    return Right(_localSource.watchListIdFavorite());
   }
 }

@@ -2,56 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/core.dart';
+import '../../../domain/entities/manga_detail.dart';
 import '../../blocs/library_screen_bloc/library_screen_bloc.dart';
+import '../../blocs/manage_favorite_manga/manage_favorite_manga_bloc.dart';
 import '../home_screens/widget/appbar_widget.dart';
 import '../home_screens/widget/item_manga.dart';
 
-class LibraryScreen extends StatefulWidget {
+part 'widget/library_screen_success.dart';
+
+class LibraryScreen extends StatelessWidget {
   const LibraryScreen({Key? key}) : super(key: key);
 
   @override
-  _LibraryScreenState createState() => _LibraryScreenState();
-}
-
-class _LibraryScreenState extends State<LibraryScreen> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final listId = context.watch<ManageFavoriteMangaBloc>().state.listId;
     return BlocProvider(
-      create: (_) => getIt<LibraryScreenBloc>()..add(WatchDataLibrary()),
+      create: (_) => getIt<LibraryScreenBloc>()..add(WatchDataLibrary(listId)),
       child: Scaffold(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Theme.of(context).backgroundColor,
         appBar: const AppBarHomeWidget(),
         body: BlocBuilder<LibraryScreenBloc, LibraryScreenState>(
-          builder: (_, state) {
-            return Container(
-              height: double.infinity,
-              color: Theme.of(context).backgroundColor,
-              child: GridView.builder(
-                shrinkWrap: true,
-                padding: const EdgeInsets.all(12),
-                itemCount: state.listManga.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  childAspectRatio: 0.6,
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 2,
-                  mainAxisSpacing: 2,
-                ),
-                itemBuilder: (context, index) {
-                  final manga = state.listManga[index];
-                  return ItemManga(
-                    title: manga.title,
-                    thumbnailUrl: manga.thumbnailUrl,
-                    endpoint: manga.endpoint,
-                    imageCache: true,
-                  );
-                },
-              ),
-            );
+          builder: (context, state) {
+            if (state is LibrarySuccessScreen) {
+              return _LibraryScreenSuccess(
+                listManga: state.listManga,
+              );
+            }
+            return const SizedBox.shrink();
           },
         ),
       ),

@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:injectable/injectable.dart';
 
@@ -5,9 +6,14 @@ import '../../../../core/core.dart';
 import '../../../domain/entities/manga_detail.dart';
 import '../../dtos/dtos.dart';
 
+typedef ListMangaDetailDtoLocal = Either<CacheFailure, ListMangaDetailDto>;
+
 abstract class IMangaLocalSource {
   /// Returns all [MangaDetailDto] in the local storage.
-  Future<List<MangaDetailDto>> findAllManga();
+  List<MangaDetailDto> findAllManga();
+
+  /// Returns list [MangaDetailDto] by query in the local storage.
+  List<MangaDetailDto> findMangaByQuery(List<String> listId);
 
   /// Returns [MangaDetailDto] matching the given [endpoint].
   Future<MangaDetailDto?> findAlbumDetail(String endpoint);
@@ -25,7 +31,7 @@ abstract class IMangaLocalSource {
   ///
   /// A new event will be emitted whenever an [MangaDetail] is updated,
   /// removed, or a new [MangaDetailDto] is stored.
-  Stream<List<MangaDetailDto>> watchAllManga();
+  Stream<ListMangaDetailDtoLocal> watchAllManga(List<String> listId);
 }
 
 @Injectable(as: IMangaLocalSource)
@@ -42,7 +48,7 @@ class MangaLocalSource implements IMangaLocalSource {
   }
 
   @override
-  Future<List<MangaDetailDto>> findAllManga() async {
+  List<MangaDetailDto> findAllManga() {
     return _box.values.toList();
   }
 
@@ -62,7 +68,14 @@ class MangaLocalSource implements IMangaLocalSource {
   }
 
   @override
-  Stream<List<MangaDetailDto>> watchAllManga() {
-    return _box.watch().map((_) => _box.values.toList());
+  Stream<ListMangaDetailDtoLocal> watchAllManga(List<String> listId) {
+    return _box.watch().map((_) => Right(findMangaByQuery(listId)));
+  }
+
+  @override
+  List<MangaDetailDto> findMangaByQuery(List<String> listId) {
+    return _box.values
+        .where((manga) => listId.contains(manga.idManga))
+        .toList();
   }
 }

@@ -39,8 +39,10 @@ class ItemManga extends StatelessWidget {
                 ),
                 child: imageCache
                     ? CachedNetworkImage(
-                        placeholder: (_, url) =>
-                            const CircularProgressIndicator(),
+                        placeholder: (_, url) => Container(
+                          color: Theme.of(context).backgroundColor,
+                          child: const SizedBox.expand(),
+                        ),
                         fit: BoxFit.cover,
                         imageUrl: thumbnailUrl!,
                       )
