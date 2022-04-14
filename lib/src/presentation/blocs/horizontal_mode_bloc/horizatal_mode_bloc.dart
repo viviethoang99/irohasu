@@ -33,4 +33,10 @@ class HorizatalModeBloc extends Bloc<HorizatalModeEvent, HorizatalModeState> {
     final isShowDialog = !state.showInfo;
     emit(HorizatalModeState(showInfo: isShowDialog));
   }
+
+  double get opacityProcess {
+    if (state.currentPosition < 50) return 1;
+    final value = 1 - state.sheetHeight * 2;
+    return value < 0 || value > 1 ? value.round().toDouble() : value;
+  }
 }

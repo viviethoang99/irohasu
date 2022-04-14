@@ -32,7 +32,14 @@ class CustomButtonReadingWidget extends StatelessWidget {
           ),
         ),
       ),
-      onPressed: () => openChapter(context: context),
+      onPressed: () {
+        Navigator.of(context).pushNamed(
+          ChapterScreen.routeName,
+          arguments: ChapterScreen(
+            data: context.read<MangaDetailBloc>().params(lastChapter.endpoint!),
+          ),
+        );
+      },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 5),
         child: BlocBuilder<MangaDetailBloc, MangaDetailState>(
@@ -50,13 +57,6 @@ class CustomButtonReadingWidget extends StatelessWidget {
           },
         ),
       ),
-    );
-  }
-
-  void openChapter({required BuildContext context}) {
-    Navigator.of(context).pushNamed(
-      ChapterScreen.routeName,
-      arguments: ChapterScreen(endpoint: lastChapter.endpoint!),
     );
   }
 }

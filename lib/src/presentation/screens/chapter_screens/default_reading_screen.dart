@@ -11,8 +11,13 @@ import '../../../../env.dart';
 import '../../../config/config.dart';
 import '../../blocs/chapter_screen/chapter_screen_cubit.dart';
 import '../../blocs/horizontal_mode_bloc/horizatal_mode_bloc.dart';
+import '../../blocs/manage_page_in_chapter/manage_page_in_chapter_cubit.dart';
+import '../../blocs/manga_info_bloc/manga_info_cubit.dart';
 import 'default_screen_widget/list_chaper_widget.dart';
 import 'default_screen_widget/process.dart';
+
+part 'default_screen_widget/app_bar_widget.dart';
+part 'default_screen_widget/show_chapter_from_api.dart';
 
 class HorizontalReadingWidget extends StatefulWidget {
   const HorizontalReadingWidget({Key? key}) : super(key: key);
@@ -39,8 +44,19 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<HorizatalModeBloc>(
-      create: (context) => _cubit,
+    final page = context.watch<ChapterScreenCubit>().state.chapter?.listImage;
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<HorizatalModeBloc>(
+          create: (context) => _cubit,
+        ),
+        BlocProvider(
+          create: (_) => getIt<ManagePagesCubit>(
+            param1: 0,
+            param2: page?.length ?? 1,
+          ),
+        ),
+      ],
       child: Scaffold(
         body: Stack(
           alignment: Alignment.center,
@@ -48,8 +64,7 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
             SnappingSheet(
               controller: snappingSheetController,
               lockOverflowDrag: true,
-              onSnapStart: (positionData, snappingPosition) {},
-              snappingPositions:const  [
+              snappingPositions: const [
                 SnappingPosition.factor(
                   snappingCurve: Curves.elasticOut,
                   snappingDuration: Duration(milliseconds: 1750),
@@ -94,7 +109,7 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
                     snappingSheetController.setSnappingSheetFactor(-.5);
                   }
                 },
-                child: const ShowImageFromAPI(),
+                child: const _ShowChapterFromAPI(),
               ),
             ),
             const _AppBarWidget(),
@@ -102,184 +117,6 @@ class _HorizontalReadingWidgetState extends State<HorizontalReadingWidget>
           ],
         ),
       ),
-    );
-  }
-
-  // Widget _imageLocalWidget() {
-  //   return Container();
-    // return ExtendedImageGesturePageView.builder(
-    //   itemCount: countImage,
-    //   scrollDirection: Axis.horizontal,
-    //   controller: _pageController,
-    //   itemBuilder: (context, index) {
-    //     return ExtendedImage.file(
-    //       file[index],
-    //       onDoubleTap: (state) {
-    //         Offset? pointerDownPosition;
-    //         pointerDownPosition = state.pointerDownPosition;
-    //         final begin = state.gestureDetails!.totalScale;
-    //         final end = (begin == 1.0) ? 2.0 : 1.0;
-
-    //         _animation?.removeListener(_animationListener);
-    //         _animationController!
-    //           ..stop()
-    //           ..reset();
-
-    //         _animationListener = () {
-    //           state.handleDoubleTap(
-    //               scale: _animation!.value,
-    //               doubleTapPosition: pointerDownPosition);
-    //         };
-
-    //         _animation = _animationController!.drive(Tween<double>(
-    //           begin: begin,
-    //           end: end,
-    //         ));
-    //         _animationController!
-    //           ..addListener(_animationListener)
-    //           ..forward();
-    //       },
-    //       mode: ExtendedImageMode.gesture,
-    //       initGestureConfigHandler: (state) => ImageGestureConfig.configDefault,
-    //     );
-    //   },
-    //   onPageChanged: context.read<HorizontalReadingCubit>().changeIndexPage,
-    //   physics: const BouncingScrollPhysics(),
-    // );
-  // }
-}
-
-class _AppBarWidget extends StatelessWidget {
-  const _AppBarWidget({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<HorizatalModeBloc, HorizatalModeState>(
-      builder: (context, state) {
-        final theme = Theme.of(context);
-        return AnimatedPositioned(
-          duration: const Duration(milliseconds: 500),
-          top: state.showInfo ? 0 : -200,
-          width: SizeConfig.screenWidth,
-          height: Constants.heightAppBar,
-          child: AppBar(
-            leading: IconButton(
-              icon: Icon(
-                Icons.arrow_back,
-                color: theme.primaryColor,
-              ),
-              onPressed: () => Navigator.pop(context),
-            ),
-            centerTitle: true,
-            backgroundColor: theme.backgroundColor.withOpacity(0.9),
-            elevation: 0,
-            title: BlocBuilder<ChapterScreenCubit, ChapterScreenState>(
-              builder: (context, state) {
-                return Column(
-                  children: <Widget>[
-                    Text(
-                      state.mangaDetail!.title.length > 30
-                          ? '${state.mangaDetail!.title.substring(0, 30)}..'
-                          : state.mangaDetail!.title,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        color: theme.primaryColor,
-                        fontSize: 17,
-                      ),
-                    ),
-                    Text(
-                      context.read<ChapterScreenCubit>().nameChapter,
-                      style: TextStyle(
-                        color: theme.primaryColor.withOpacity(0.5),
-                        fontSize: 15,
-                      ),
-                    ),
-                    // const SizedBox(height: 20)
-                  ],
-                );
-              },
-            ),
-          ),
-        );
-      },
-    );
-  }
-}
-
-class ShowImageFromAPI extends StatefulWidget {
-  const ShowImageFromAPI({Key? key}) : super(key: key);
-
-  @override
-  State<ShowImageFromAPI> createState() => _ShowImageFromAPIState();
-}
-
-class _ShowImageFromAPIState extends State<ShowImageFromAPI> {
-  late final PageController _pageController;
-  late int page;
-
-  @override
-  void initState() {
-    _pageController = PageController();
-    page = 0;
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final prePage = SizeConfig.screenWidth * 0.3;
-    final nextPage = SizeConfig.screenWidth * 0.7;
-    return BlocBuilder<ChapterScreenCubit, ChapterScreenState>(
-      builder: (_, state) {
-        return GestureDetector(
-          onTapDown: (details) {
-            final possion = details.globalPosition.dx;
-            if (possion < prePage) {
-              _pageController.jumpToPage(page - 1);
-            } else if (possion > nextPage) {
-              _pageController.jumpToPage(page + 1);
-            } else {
-              context.read<HorizatalModeBloc>().add(ShowInfo());
-            }
-          },
-          child: PhotoViewGallery.builder(
-            itemCount: state.chapter!.listImage!.length,
-            pageController: _pageController,
-            scrollPhysics: const BouncingScrollPhysics(),
-            builder: (context, index) {
-              final image = state.chapter?.listImage?[index];
-              return PhotoViewGalleryPageOptions(
-                imageProvider: NetworkImage(
-                  image?.chapterImageLink ?? '',
-                  headers: ENV.headersBuilder,
-                ),
-                minScale: PhotoViewComputedScale.contained,
-                maxScale: PhotoViewComputedScale.contained * 2,
-                initialScale: PhotoViewComputedScale.contained,
-                heroAttributes: PhotoViewHeroAttributes(
-                  tag: image!.number!,
-                ),
-              );
-            },
-            scrollDirection: Axis.horizontal,
-            onPageChanged: (value) {
-              setState(() => page = value);
-            },
-            loadingBuilder: (context, event) => const Center(
-              child: SizedBox(
-                width: 20.0,
-                height: 20.0,
-                child: CircularProgressIndicator(),
-              ),
-            ),
-          ),
-        );
-      },
     );
   }
 }

@@ -5,6 +5,7 @@ import 'package:injectable/injectable.dart';
 
 import '../../../config/base_content.dart';
 import '../../../config/config.dart';
+import '../../../data/model/chapter_screen/chapter_screen_params.dart';
 import '../../../domain/entities/manga_detail.dart';
 import '../../../domain/usecaes/manga_detail/fetch_manga_detail_usecase.dart';
 
@@ -79,5 +80,13 @@ class MangaDetailBloc extends Bloc<MangaDetailEvent, MangaDetailState> {
       }
     }
     return ConstantStrings.startReading.toUpperCase();
+  }
+
+  ChapterScreenParams params(String endpoint) {
+    return ChapterScreenParams(
+      endpoint: endpoint,
+      listChap: currentState!.mangaDetail.listChapter,
+      name: currentState!.mangaDetail.title,
+    );
   }
 }

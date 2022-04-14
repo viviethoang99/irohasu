@@ -6,10 +6,7 @@ import '../../../blocs/manga_detail_bloc/manga_detail_bloc.dart';
 import '../../chapter_screens/chapter_screen.dart';
 
 class ListChapterWidget extends StatefulWidget {
-  const ListChapterWidget({
-    Key? key,
-    required this.color,
-  }) : super(key: key);
+  const ListChapterWidget({Key? key, required this.color}) : super(key: key);
   final Color color;
 
   @override
@@ -49,9 +46,14 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
                 ),
                 IconButton(
                   icon: _isReversed
-                      ? Icon(Icons.swap_vertical_circle, color: widget.color)
-                      : Icon(Icons.swap_vert,
-                          color: Theme.of(context).primaryColor),
+                      ? Icon(
+                          Icons.swap_vertical_circle,
+                          color: widget.color,
+                        )
+                      : Icon(
+                          Icons.swap_vert,
+                          color: Theme.of(context).primaryColor,
+                        ),
                   onPressed: () {
                     setState(() => _isReversed = !_isReversed);
                   },
@@ -131,7 +133,11 @@ class _ListChapterWidget extends StatelessWidget {
                       onTap: () {
                         Navigator.of(context).pushNamed(
                           ChapterScreen.routeName,
-                          arguments: ChapterScreen(endpoint: chapter.endpoint!),
+                          arguments: ChapterScreen(
+                            data: context
+                                .read<MangaDetailBloc>()
+                                .params(chapter.endpoint!),
+                          ),
                         );
                       },
                     );

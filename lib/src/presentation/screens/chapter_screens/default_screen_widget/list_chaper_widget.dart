@@ -4,6 +4,7 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../../../../core/core.dart';
 import '../../../blocs/chapter_screen/chapter_screen_cubit.dart';
+import '../../../blocs/manga_info_bloc/manga_info_cubit.dart';
 
 class ListChapterWidget extends StatelessWidget {
   const ListChapterWidget({Key? key}) : super(key: key);
@@ -13,14 +14,13 @@ class ListChapterWidget extends StatelessWidget {
     final theme = Theme.of(context);
     return Container(
       color: theme.backgroundColor,
-      child: BlocBuilder<ChapterScreenCubit, ChapterScreenState>(
+      child: BlocBuilder<MangaInfoCubit, MangaInfoState>(
         builder: (context, state) {
           return ScrollablePositionedList.builder(
-            itemCount: state.mangaDetail!.listChapter.length,
-            // itemScrollController: controller,
+            itemCount: state.listChapter!.length,
             itemBuilder: (context, index) {
-              final chapter = state.mangaDetail!.listChapter[index];
-              final isSelect = state.chapter?.endpoint == chapter.endpoint;
+              final chapter = state.listChapter![index];
+              final isSelect = state.endpoint == chapter.endpoint;
               return ListTile(
                 title: Text(
                   chapter.title?.trim() ?? '',

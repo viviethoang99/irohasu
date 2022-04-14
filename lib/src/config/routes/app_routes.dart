@@ -44,7 +44,7 @@ class AppRoutes {
         var data = args as ChapterScreen;
         return _pageRoute(
             routeSettings: routeSettings,
-            builder: ChapterScreen(endpoint: data.endpoint));
+            builder: ChapterScreen(data: data.data));
       case SettingChapter.routeName:
         return _pageRoute(
           routeSettings: routeSettings,

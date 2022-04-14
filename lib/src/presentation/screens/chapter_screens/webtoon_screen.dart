@@ -8,7 +8,7 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../../../core/core.dart';
 import '../../../../env.dart';
-import '../../../data/model/chapter/chapter_model.dart';
+import '../../../domain/entities/chapter.dart';
 import '../../../domain/entities/chapter_item.dart';
 import 'webtoon_screen_widget/app_bar_widget.dart';
 import 'webtoon_screen_widget/bottom_bar_widget.dart';
@@ -22,7 +22,7 @@ class ChapterLoadedScreen extends StatefulWidget {
     required this.getIndexChapter,
   }) : super(key: key);
 
-  final ChapterModel? data;
+  final Chapter? data;
   final List<ChapterItem>? chapterList;
   final int getIndexChapter;
 
@@ -33,7 +33,7 @@ class ChapterLoadedScreen extends StatefulWidget {
 class _ChapterLoadedScreenState extends State<ChapterLoadedScreen> {
   List get _getChapterList => widget.chapterList!.toList();
 
-  ChapterModel? get data => widget.data;
+  Chapter? get data => widget.data;
   int get getIndex => widget.getIndexChapter;
 
   late final ScrollController _scrollController;
@@ -123,7 +123,7 @@ class _ChapterLoadedScreenState extends State<ChapterLoadedScreen> {
         shrinkWrap: true,
         itemBuilder: (context, index) {
           return CachedNetworkImage(
-            imageUrl: data!.listImage![index].chapterImageLink!,
+            imageUrl: data!.listImage![index].urlImage!,
             httpHeaders: ENV.headersBuilder,
             placeholder: (context, string) => SizedBox(
               height: SizeConfig.screenHeight,

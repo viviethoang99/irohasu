@@ -38,13 +38,7 @@ class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
     _colorPage = AppColors.listColors[indexColor];
     super.initState();
   }
-
-  @override
-  void didUpdateWidget(covariant MangaDetailLoadedScreen oldWidget) {
-    // continueReading();
-    super.didUpdateWidget(oldWidget);
-  }
-
+  
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);

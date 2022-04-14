@@ -2,9 +2,9 @@ import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../core/core.dart';
+import '../../domain/entities/chapter.dart';
 import '../../domain/repositories/i_chaper_repository.dart';
 import '../datasource/remote/chapter_api_source.dart';
-import '../model/chapter/chapter_model.dart';
 
 @LazySingleton(as: IChapterRepository)
 class ChapterRepositoryImp implements IChapterRepository {
@@ -13,13 +13,11 @@ class ChapterRepositoryImp implements IChapterRepository {
   final ChapterApiSource chapterServices;
 
   @override
-  Future<Either<Failure, ChapterModel>> fetchDataChapter(
-      String endpoint) async {
-    try {
-      final data = await chapterServices.getDataChapter(endpoint);
-      return Right(data);
-    } on ServerException {
-      return Left(ServerFailure());
-    }
+  Future<Either<Failure, Chapter>> getChapter(String endpoint) async {
+    final repository = await chapterServices.getChapter(endpoint);
+    return repository.fold(
+      (l) => Left(ServerFailure()),
+      (r) => Right(r.toEntity()),
+    );
   }
 }
