@@ -141,10 +141,10 @@ class _DrawerSearchScreenState extends State<DrawerSearchScreen> {
                   });
                 },
                 textColor: Colors.redAccent,
-                highlightedBorderColor: theme.buttonColor,
+                highlightedBorderColor: theme.primaryColor,
                 shape: RoundedRectangleBorder(
                   side: BorderSide(
-                      color: theme.buttonColor,
+                      color: theme.primaryColor,
                       width: 4,
                       style: BorderStyle.solid),
                   borderRadius: BorderRadius.circular(30.0),
@@ -166,11 +166,11 @@ class _DrawerSearchScreenState extends State<DrawerSearchScreen> {
                   );
                   widget.showDrawer!();
                 },
-                textColor: theme.buttonColor,
-                highlightedBorderColor: theme.buttonColor,
+                textColor: theme.primaryColor,
+                highlightedBorderColor: theme.primaryColor,
                 shape: RoundedRectangleBorder(
                     side: BorderSide(
-                        color: theme.buttonColor,
+                        color: theme.primaryColor,
                         width: 4,
                         style: BorderStyle.solid),
                     borderRadius: BorderRadius.circular(30.0)),
@@ -193,7 +193,7 @@ class _DrawerSearchScreenState extends State<DrawerSearchScreen> {
     if (_listAddGenres.contains(valueGenres)) {
       return StatusCheckBox(
         icon: Icons.check,
-        color: Theme.of(context).buttonColor,
+        color: Theme.of(context).primaryColor,
       );
     }
     if (_listRemoveGenres.contains(valueGenres)) {

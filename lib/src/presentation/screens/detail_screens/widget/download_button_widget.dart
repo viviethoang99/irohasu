@@ -28,7 +28,7 @@ class DownloadButtonWidget extends StatelessWidget {
                   child: RawMaterialButton(
                     onPressed: () {},
                     elevation: 2.0,
-                    fillColor: Theme.of(context).buttonColor,
+                    fillColor: Theme.of(context).primaryColor,
                     shape: const CircleBorder(),
                     child: Icon(
                       Icons.arrow_downward,
@@ -51,7 +51,7 @@ class DownloadButtonWidget extends StatelessWidget {
                   child: Center(
                     child: CircularProgressIndicator(
                       valueColor: AlwaysStoppedAnimation<Color>(
-                          Theme.of(context).buttonColor),
+                          Theme.of(context).primaryColor),
                     ),
                   ),
                 ),
@@ -64,7 +64,7 @@ class DownloadButtonWidget extends StatelessWidget {
               icon: Icon(
                 Icons.arrow_circle_down,
                 size: 37,
-                color: Theme.of(context).buttonColor,
+                color: Theme.of(context).primaryColor,
               ),
               onPressed: () => BlocProvider.of<DownloadBloc>(context).add(
                 DownloadChapterEvent(
@@ -98,7 +98,7 @@ class DownloadButtonWidget extends StatelessWidget {
                             backgroundColor: Colors.white.withOpacity(0.0),
                             value: state.downloadPercentageCompleted,
                             valueColor: AlwaysStoppedAnimation<Color>(
-                                Theme.of(context).buttonColor),
+                                Theme.of(context).primaryColor),
                           ),
                           const Icon(
                             Icons.stop,
@@ -117,7 +117,7 @@ class DownloadButtonWidget extends StatelessWidget {
             icon: Icon(
               Icons.arrow_circle_down,
               size: 37,
-              color: Theme.of(context).buttonColor,
+              color: Theme.of(context).primaryColor,
             ),
             onPressed: () => context.read<DownloadBloc>().add(
                   DownloadChapterEvent(

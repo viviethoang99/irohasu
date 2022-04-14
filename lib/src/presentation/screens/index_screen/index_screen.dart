@@ -47,7 +47,6 @@ class _HomeScreenState extends State<HomeScreen> {
           children: const <Widget>[
             ListMangaScreen(),
             LibraryScreen(),
-            HistoryScreen(),
             SettingScreen(),
           ],
         ),
@@ -77,13 +76,6 @@ class _HomeScreenState extends State<HomeScreen> {
               style: TextStyle(fontSize: 15),
             ),
             icon: const Icon(Icons.library_books),
-          ),
-          BottomNavyBarItem(
-            title: const Text(
-              ConstantStrings.history,
-              style: TextStyle(fontSize: 15),
-            ),
-            icon: const Icon(Icons.history),
           ),
           BottomNavyBarItem(
             title: const Text(

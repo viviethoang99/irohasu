@@ -156,7 +156,7 @@ class DetailItemWidget extends StatelessWidget {
                       title: Text(
                         'Xóa tất cả.',
                         style: TextStyle(
-                          color: _value ? theme.buttonColor : Colors.red,
+                          color: _value ? theme.primaryColor : Colors.red,
                           fontSize: 20,
                         ),
                       ),
@@ -166,7 +166,7 @@ class DetailItemWidget extends StatelessWidget {
                           _value = !_value;
                         });
                       },
-                      activeColor: theme.buttonColor,
+                      activeColor: theme.primaryColor,
                       controlAffinity: ListTileControlAffinity.leading,
                     ),
                   ],
@@ -189,18 +189,12 @@ class DetailItemWidget extends StatelessWidget {
                     ),
                     TextButton(
                       onPressed: () async {
-                        // var statusRemove = await HistoryData.removeHistory(
-                        //     idChapter: _value ? 'all' : idChapter,
-                        //     idManga: idManga);
-                        // if (statusRemove) {
-                        //   context.read<HistoryScreenCubit>().fetchData();
-                        // }
                         Navigator.of(context, rootNavigator: true).pop(true);
                       },
                       child: Text(
                         'ĐÚNG',
                         style: TextStyle(
-                          color: theme.buttonColor,
+                          color: theme.primaryColor,
                           fontSize: 18,
                         ),
                       ),

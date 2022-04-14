@@ -1,0 +1,19 @@
+name: Test, push, pull_request
+
+on: 
+  push:
+    banches: [develop]
+
+jobs:
+  build:
+    name: Automatic test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '2.10.4'
+      - run: flutter --version      
+      - run: flutter pub get
+      - run: flutter analyze
+      - run: flutter test ----coverage

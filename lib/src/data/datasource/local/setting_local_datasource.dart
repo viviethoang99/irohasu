@@ -30,7 +30,7 @@ class SettingLocalDataSource implements ISettingLocalDataSource {
 
   @override
   String getThemeApp() {
-    return _box.get(_kThemeApp) ?? Constants.listTheme.first.name;
+    return _box.get(_kThemeApp) ?? Constants.listTheme.first.type.name;
   }
 
   @override
@@ -46,7 +46,7 @@ class SettingLocalDataSource implements ISettingLocalDataSource {
 
   @override
   String getReadingMode() {
-    return _box.get(_kReadingMode) ?? Constants.listReadingMode.first.name;
+    return _box.get(_kReadingMode) ?? Constants.listReadingMode.first.type.name;
   }
 
   @override
@@ -57,7 +57,7 @@ class SettingLocalDataSource implements ISettingLocalDataSource {
   @override
   String getBackgroundReading() {
     return _box.get(_kBackgroundReading) ??
-        Constants.listBackgroundColor.first.name;
+        Constants.listBackgroundColor.first.type.name;
   }
 
   @override

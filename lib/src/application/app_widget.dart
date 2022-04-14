@@ -9,7 +9,6 @@ import '../domain/repositories/i_manga_repository.dart';
 import '../presentation/blocs/change_background_color_bloc/change_background_bloc.dart';
 import '../presentation/blocs/change_reading_mode_bloc/change_reading_mode_bloc.dart';
 import '../presentation/blocs/change_theme_bloc/change_theme_bloc.dart';
-import '../presentation/blocs/history_screen_bloc/history_screen_bloc.dart';
 import '../presentation/blocs/list_manga_bloc/list_manga_bloc.dart';
 import '../presentation/blocs/manage_favorite_manga/manage_favorite_manga_bloc.dart';
 import '../presentation/screens/index_screen/index_screen.dart';
@@ -50,9 +49,6 @@ class _AppWidgetState extends State<AppWidget> {
       ],
       child: MultiBlocProvider(
         providers: [
-          BlocProvider<HistoryScreenBloc>(
-            create: (context) => HistoryScreenBloc(mangaRepository),
-          ),
           BlocProvider<ListMangaBloc>(
             create: (_) => getIt<ListMangaBloc>(),
           ),

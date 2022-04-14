@@ -36,20 +36,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: InkWell(
-                    onTap: () {
-                      // HistoryData.addChapToHistory(
-                      //   idManga: cacheData.data.idManga,
-                      //   idChapter: lastChapter!.id,
-                      // );
-                      // BlocProvider.of<HistoryBloc>(context)
-                      //     .add(FetchDataHistoryEvent());
-                      // Navigator.of(context).pushNamed(
-                      //   ChapterScreen.routeName,
-                      //   arguments: ChapterScreen(
-                      //     endpoint: lastChapter.endpoint,
-                      //   ),
-                      // );
-                    },
+                    onTap: () {},
                     child: Card(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15),
