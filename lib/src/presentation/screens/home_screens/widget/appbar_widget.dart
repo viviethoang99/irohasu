@@ -43,17 +43,6 @@ class AppBarHomeWidget extends StatelessWidget implements PreferredSizeWidget {
             onPressed: () {
               context.read<ListMangaBloc>().add(RefreshMangaEvent());
             }),
-        Container(
-          margin: const EdgeInsets.only(right: 8),
-          child: IconButton(
-            icon: Icon(
-              Icons.dashboard,
-              size: 30,
-              color: theme.primaryColor,
-            ),
-            onPressed: () {},
-          ),
-        ),
       ],
     );
   }

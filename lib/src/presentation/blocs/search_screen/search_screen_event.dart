@@ -8,7 +8,7 @@ abstract class SearchScreenEvent extends Equatable {
 }
 
 class FetchDataSearchEvent extends SearchScreenEvent {
-  const FetchDataSearchEvent({required this.query});
+  const FetchDataSearchEvent(this.query);
 
   final String query;
 

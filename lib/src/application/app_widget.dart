@@ -41,43 +41,36 @@ class _AppWidgetState extends State<AppWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiRepositoryProvider(
+    return MultiBlocProvider(
       providers: [
-        RepositoryProvider<IMangaRepository>(
-          create: (context) => mangaRepository,
+        BlocProvider<ListMangaBloc>(
+          create: (_) => getIt<ListMangaBloc>(),
         ),
+        BlocProvider<ChangeBackgroundBloc>(
+          create: (_) => getIt<ChangeBackgroundBloc>(),
+        ),
+        BlocProvider<ChangeThemeBloc>(
+          create: (_) => getIt<ChangeThemeBloc>()..add(GetTheme()),
+        ),
+        BlocProvider(
+          create: (_) => getIt<ChangeReadingModeBloc>(),
+        ),
+        BlocProvider(
+          create: (_) => getIt<ManageFavoriteMangaBloc>(),
+        )
       ],
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider<ListMangaBloc>(
-            create: (_) => getIt<ListMangaBloc>(),
-          ),
-          BlocProvider<ChangeBackgroundBloc>(
-            create: (_) => getIt<ChangeBackgroundBloc>(),
-          ),
-          BlocProvider<ChangeThemeBloc>(
-            create: (_) => getIt<ChangeThemeBloc>()..add(GetTheme()),
-          ),
-          BlocProvider(
-            create: (_) => getIt<ChangeReadingModeBloc>(),
-          ),
-          BlocProvider(
-            create: (_) => getIt<ManageFavoriteMangaBloc>(),
-          )
-        ],
-        child: BlocBuilder<ChangeThemeBloc, ChangeThemeState>(
-          builder: (_, state) {
-            return MaterialApp(
-              debugShowCheckedModeBanner: false,
-              scrollBehavior: CustomScrollBehavior(),
-              title: ENV.nameApp,
-              theme: state.themeLight,
-              darkTheme: state.themeDark,
-              initialRoute: HomeScreen.routeName,
-              onGenerateRoute: AppRoutes.generateRoute,
-            );
-          },
-        ),
+      child: BlocBuilder<ChangeThemeBloc, ChangeThemeState>(
+        builder: (_, state) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            scrollBehavior: CustomScrollBehavior(),
+            title: ENV.nameApp,
+            theme: state.themeLight,
+            darkTheme: state.themeDark,
+            initialRoute: HomeScreen.routeName,
+            onGenerateRoute: AppRoutes.generateRoute,
+          );
+        },
       ),
     );
   }

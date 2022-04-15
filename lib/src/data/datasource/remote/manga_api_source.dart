@@ -5,7 +5,7 @@ import 'package:injectable/injectable.dart';
 import '../../../../core/core.dart';
 import '../../../domain/entities/manga_detail.dart';
 import '../../dtos/dtos.dart';
-import '../../model/search_manga_model.dart';
+import '../../dtos/manga_search/list_search_manga_dto.dart';
 
 typedef ListMangaPageRemote = Either<Failure, MangaPageDtoList>;
 

@@ -41,112 +41,128 @@ class _SearchScreenState extends State<SearchScreen> {
     final theme = Theme.of(context);
     final getWidth = ScreenHelper.getWidth(context);
     final getHeight = ScreenHelper.getSafeHeight(context);
-    return Scaffold(
-      backgroundColor: theme.backgroundColor,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        title: TextField(
-          textInputAction: TextInputAction.search,
-          autofocus: true,
-          autocorrect: false,
-          controller: _controllerSearch,
-          decoration: InputDecoration(
-            hintText: 'Nhập tên truyện.',
-            border: InputBorder.none,
-            suffixIcon: IconButton(
-              icon: const Icon(Icons.clear),
-              onPressed: _controllerSearch.clear,
-              color: theme.primaryColor.withOpacity(0.5),
-              splashColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-            ),
-          ),
-          style: TextStyle(
-            color: theme.primaryColor,
-            fontSize: 20,
-          ),
-          onSubmitted: (value) {
-            context.read<SearchScreenBloc>().add(FetchDataSearchEvent(
-              query: value,
-            ));
-          },
-        ),
-        leading: IconButton(
-          splashColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () =>
-              Navigator.of(context, rootNavigator: true).pop(false),
-        ),
-      ),
-      body: Stack(
-        children: [
-          BlocBuilder<SearchScreenBloc, SearchScreenState>(
+    return BlocProvider(
+      create: (_) => getIt<SearchScreenBloc>(),
+      child: Scaffold(
+        backgroundColor: theme.backgroundColor,
+        appBar: AppBar(
+          backgroundColor: theme.backgroundColor,
+          title: BlocBuilder<SearchScreenBloc, SearchScreenState>(
             builder: (context, state) {
-              if (state is SearchScreenInitial) {
-                return const Center();
-              }
-              if (state is SearchScreenLoadingState) {
-                return const LoadingScreen();
-              }
-              if (state is SearchScreenLoadedState) {
-                return Container(
-                  height: double.infinity,
-                  color: Theme.of(context).backgroundColor,
-                  child: GridView.builder(
-                    // reverse: true,
-                    shrinkWrap: true,
-                    padding: const EdgeInsets.all(12),
-                    itemCount: state.list.length,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      childAspectRatio: 0.6,
-                      crossAxisCount: 3,
-                      crossAxisSpacing: 2,
-                      mainAxisSpacing: 2,
-                    ),
-                    itemBuilder: (context, index) {
-                      final manga = state.list[index];
-                      return ItemManga(
-                        title: manga.title,
-                        thumbnailUrl: manga.thumbnailUrl,
-                        endpoint: manga.endpoint,
-                      );
-                    },
+              return TextField(
+                textInputAction: TextInputAction.search,
+                autofocus: true,
+                autocorrect: false,
+                controller: _controllerSearch,
+                decoration: InputDecoration(
+                  hintText: 'Nhập tên truyện',
+                  border: InputBorder.none,
+                  suffixIcon: IconButton(
+                    icon: const Icon(Icons.clear),
+                    onPressed: _controllerSearch.clear,
+                    color: theme.primaryColor.withOpacity(0.5),
+                    splashColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
                   ),
-                );
-              }
-              return const Center(child: Text('Other states..'));
+                ),
+                style: TextStyle(
+                  color: theme.primaryColor,
+                  fontSize: 20,
+                ),
+                onSubmitted: (value) {
+                  context.read<SearchScreenBloc>().add(
+                        FetchDataSearchEvent(value),
+                      );
+                },
+              );
             },
           ),
-          if (_showDrawer)
-            AnimatedOpacity(
-              opacity: 1.0,
-              duration: const Duration(
-                milliseconds: 500,
-              ),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaY: 5.0, sigmaX: 5.0),
-                child: Container(
-                  color: Colors.black.withOpacity(0.5),
+          leading: IconButton(
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+            icon: Icon(
+              Icons.arrow_back,
+              color: theme.primaryColor,
+            ),
+            onPressed: () =>
+                Navigator.of(context, rootNavigator: true).pop(false),
+          ),
+        ),
+        body: Stack(
+          children: [
+            BlocBuilder<SearchScreenBloc, SearchScreenState>(
+              builder: (context, state) {
+                if (state is SearchScreenInitial) {
+                  return Container(
+                    color: theme.backgroundColor,
+                    child: const Center(),
+                  );
+                }
+                if (state is SearchScreenLoadingState) {
+                  return const LoadingScreen();
+                }
+                if (state is SearchScreenLoadedState) {
+                  return Container(
+                    height: double.infinity,
+                    color: theme.backgroundColor,
+                    child: GridView.builder(
+                      shrinkWrap: true,
+                      padding: const EdgeInsets.all(12).copyWith(bottom: 70),
+                      itemCount: state.list.length,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        childAspectRatio: 0.6,
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 2,
+                        mainAxisSpacing: 2,
+                      ),
+                      itemBuilder: (context, index) {
+                        final manga = state.list[index];
+                        return ItemManga(
+                          title: manga.title,
+                          thumbnailUrl: manga.thumbnailUrl,
+                          endpoint: manga.endpoint,
+                        );
+                      },
+                    ),
+                  );
+                }
+                return const Center(child: Text('Other states..'));
+              },
+            ),
+            if (_showDrawer)
+              AnimatedOpacity(
+                opacity: 1.0,
+                duration: const Duration(
+                  milliseconds: 500,
+                ),
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaY: 5.0, sigmaX: 5.0),
+                  child: Container(
+                    color: Colors.black.withOpacity(0.5),
+                  ),
                 ),
               ),
-            ),
-          AnimatedPositioned(
-            curve: Curves.easeInOut,
-            duration: const Duration(milliseconds: 300),
-            bottom: _showDrawer ? 0 : -getHeight + 70,
-            left: 0,
-            child: ClipRRect(
-              borderRadius: const BorderRadius.all(Radius.circular(20)),
+            AnimatedPositioned(
+              curve: Curves.easeInOut,
+              duration: const Duration(milliseconds: 500),
+              bottom: _showDrawer ? 0 : -getHeight + 50,
+              left: 0,
               child: AnimatedContainer(
+                decoration: BoxDecoration(
+                  color: theme.backgroundColor,
+                  border: Border.all(
+                    color: theme.primaryColor,
+                  ),
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                  ),
+                ),
                 duration: const Duration(milliseconds: 150),
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 width: getWidth,
                 height: getHeight,
-                color: _showDrawer
-                    ? theme.backgroundColor
-                    : theme.primaryColor.withOpacity(0.8),
                 child: DrawerSearchScreen(
                   isShowDrawer: _showDrawer,
                   searchAdvanced: (
@@ -171,8 +187,8 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

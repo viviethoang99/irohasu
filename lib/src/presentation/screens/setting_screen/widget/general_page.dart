@@ -24,11 +24,14 @@ class _GeneralSettingState extends State<GeneralSetting> {
       backgroundColor: theme.backgroundColor,
       appBar: AppBar(
         backgroundColor: theme.backgroundColor,
-        elevation: 20,
         title: Text(
           'Cài đặt chung',
-          style: theme.textTheme.headline5,
+          style: TextStyle(
+            color: theme.primaryColor,
+            fontSize: 20,
+          ),
         ),
+        centerTitle: true,
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
@@ -60,49 +63,10 @@ class _GeneralSettingState extends State<GeneralSetting> {
                 },
               ),
             ),
-            ListTile(
-              onTap: _clearCache,
-              title: Text(
-                'Xoá bộ nhớ cache',
-                style: TextStyle(
-                    fontWeight: FontWeight.bold, color: theme.primaryColor),
-              ),
-              subtitle: Text(
-                'Xoá tất cả cache hiện tại trong máy',
-                style: theme.textTheme.subtitle1,
-              ),
-              isThreeLine: true,
-            ),
           ],
         ),
       ),
     );
-  }
-
-  void _clearCache() {
-    showDialog<bool>(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
-            content: const Text('Bạn có muốn xoá toàn bộ dữ liệu'),
-            actions: [
-              TextButton(
-                onPressed: () =>
-                    Navigator.of(context, rootNavigator: true).pop(false),
-                child: const Text('Không'),
-              ),
-              TextButton(
-                onPressed: () async {
-                  Navigator.of(context, rootNavigator: true).pop(true);
-                },
-                child: const Text('Có'),
-              )
-            ],
-          );
-        });
   }
 
   void _showDialogChangeTheme() {
@@ -110,7 +74,7 @@ class _GeneralSettingState extends State<GeneralSetting> {
         context: context,
         builder: (_) {
           return BlocBuilder<ChangeThemeBloc, ChangeThemeState>(
-              builder: (BuildContext context, state) {
+              builder: (context, state) {
             return AlertDialog(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),

@@ -1,5 +1,5 @@
 class FilterSearch {
-  static Map<String, int> listGenresApp = {
+  static const listGenres = <String, int>{
     '16+': 54,
     '18+': 45,
     'Action': 1,

@@ -1,5 +1,3 @@
-import 'package:irohasu/src/domain/repositories/i_manga_repository.dart';
-
 const mangaDetailRepository = ''' 
 
 <!DOCTYPE html>

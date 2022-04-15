@@ -11,7 +11,6 @@ class SettingScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: theme.backgroundColor,
       appBar: AppBar(
-        elevation: 20,
         backgroundColor: theme.backgroundColor,
         iconTheme: const IconThemeData(color: Colors.black),
         title: Text(
@@ -21,6 +20,7 @@ class SettingScreen extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -45,10 +45,6 @@ class SettingScreen extends StatelessWidget {
                 leading: CircleAvatar(
                   backgroundImage:
                       AssetImage('assets/images/default_image.jpeg'),
-                ),
-                trailing: Icon(
-                  Icons.edit,
-                  color: Colors.white,
                 ),
               ),
             ),

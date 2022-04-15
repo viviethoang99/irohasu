@@ -36,22 +36,6 @@ class ChapterScreen extends StatelessWidget {
             return const LoadingScreen();
           } else if (state.chapter != null) {
             return const HorizontalReadingWidget();
-            // return BlocBuilder<ChangeReadingModeBloc, ChangeReadingModeState>(
-            //   builder: (_, stateReading) {
-            //     if (stateReading is AdvancedReadingModeState) {
-            //       return const HorizontalReadingWidget();
-            //     }
-            //     if (stateReading is WebtoonModeState) {
-            //       return ChapterLoadedScreen(
-            //         data: state.chapter,
-            //         chapterList: state.mangaDetail!.listChapter,
-            //         getIndexChapter: 1,
-            //         openChapter: nextChapter,
-            //       );
-            //     }
-            //     return const SizedBox.shrink();
-            //   },
-            // );
           }
           return const SizedBox.shrink();
         },

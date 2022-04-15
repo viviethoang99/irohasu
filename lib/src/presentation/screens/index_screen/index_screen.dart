@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../config/base_content.dart';
 import '../../blocs/manage_favorite_manga/manage_favorite_manga_bloc.dart';
-import '../history_screen/history_screen.dart';
 import '../home_screens/home_screen.dart';
 import '../library_screen/library_screen.dart';
 import '../setting_screen/setting_screen.dart';

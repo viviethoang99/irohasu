@@ -23,13 +23,13 @@ class SearchScreenBloc extends Bloc<SearchScreenEvent, SearchScreenState> {
     Emitter<SearchScreenState> emit,
   ) async {
     emit(SearchScreenLoadingState());
-    final list = await _findMangaByQueryUseCase(
+    final list = await _findMangaByQueryUseCase.call(
       params: '/1/0/-1/-1?txt=${event.query.replaceAll(' ', '%20')}',
     );
-    list.fold(
-      (l) => emit(SearchScreenFailureState(msg: l.toString())),
-      (list) => emit(SearchScreenLoadedState(list: list)),
-    );
+    emit(list.fold(
+      (error) => SearchScreenFailureState(msg: error.toString()),
+      (list) => SearchScreenLoadedState(list: list),
+    ));
   }
 
   Future<void> _searchAdvanced(
@@ -44,9 +44,9 @@ class SearchScreenBloc extends Bloc<SearchScreenEvent, SearchScreenState> {
           '&aut=${event.author!.replaceAll(' ', '%20')}';
     }
     final list = await _findMangaByQueryUseCase(params: query);
-    list.fold(
-      (l) => emit(SearchScreenFailureState(msg: l.toString())),
-      (list) => emit(SearchScreenLoadedState(list: list)),
-    );
+    emit(list.fold(
+      (error) => SearchScreenFailureState(msg: error.toString()),
+      (list) => SearchScreenLoadedState(list: list),
+    ));
   }
 }

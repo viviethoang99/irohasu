@@ -23,12 +23,15 @@ class _SettingChapterState extends State<SettingChapter> {
     return Scaffold(
       backgroundColor: theme.backgroundColor,
       appBar: AppBar(
-        elevation: 20,
         backgroundColor: theme.backgroundColor,
         title: Text(
           ConstantStrings.settings,
-          style: theme.textTheme.headline5,
+          style: TextStyle(
+            color: theme.primaryColor,
+            fontSize: 20,
+          ),
         ),
+        centerTitle: true,
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
@@ -48,6 +51,7 @@ class _SettingChapterState extends State<SettingChapter> {
                 style: TextStyle(
                   color: theme.primaryColor,
                   fontSize: 23,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
               generalSetting(),
@@ -68,10 +72,10 @@ class _SettingChapterState extends State<SettingChapter> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(
-                'Chế độ đọc',
+                'Chế độ đọc:',
                 style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
                   color: theme.primaryColor,
                 ),
               ),
@@ -97,7 +101,7 @@ class _SettingChapterState extends State<SettingChapter> {
                     child: Text(
                       state.toString(),
                       style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 18,
                         color: theme.primaryColor,
                       ),
                     ),
@@ -113,10 +117,10 @@ class _SettingChapterState extends State<SettingChapter> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(
-                'Màu nền',
+                'Màu nền:',
                 style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
                   color: theme.primaryColor,
                 ),
               ),
@@ -127,23 +131,22 @@ class _SettingChapterState extends State<SettingChapter> {
                   itemBuilder: (context) {
                     return Constants.listBackgroundColor
                         .map((BackgroundReadingOption choice) {
-                          return PopupMenuItem<BackgroundReadingOption>(
-                              value: choice,
-                              child: Text(
-                                choice.name,
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  color: theme.primaryColor,
-                                ),
-                              ),
-                            );
-                        })
-                        .toList();
+                      return PopupMenuItem<BackgroundReadingOption>(
+                        value: choice,
+                        child: Text(
+                          choice.name,
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: theme.primaryColor,
+                          ),
+                        ),
+                      );
+                    }).toList();
                   },
                   child: Text(
                     state.name!,
                     style: TextStyle(
-                      fontSize: 20,
+                      fontSize: 18,
                       color: theme.primaryColor,
                     ),
                   ),

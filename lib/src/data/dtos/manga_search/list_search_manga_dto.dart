@@ -1,7 +1,7 @@
 import 'package:html/dom.dart';
 
-import '../../../core/core.dart';
-import '../dtos/dtos.dart';
+import '../../../../core/core.dart';
+import '../dtos.dart';
 
 class ListSearchMangaDto {
   const ListSearchMangaDto({required this.listManga});
