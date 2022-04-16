@@ -6,28 +6,26 @@
 
 Building a manga reader app on the process of learning bloc. Project unfinished.
 
-The API is still in development.
-
-# Future
-
-- Manga list (infinite scroll).
-- Switch theme [white, dark, black] or system as the default.
-- Bookmarks Manga.
-- Check history reading.
-- Advanced search manga.
-- Read chapter vertically or horizontally.
-- Local reading of downloaded manga.
-- Webview.
-
 # Demo
 
 |             Library Screen             |               History Screen                |             Detail Screen              |
 | :------------------------------------: | :-----------------------------------------: | :------------------------------------: |
-| ![](.github/readme-images/library.png) | ![](.github/readme-images/MangaDetails.png) | ![](.github/readme-images/history.png) |
+| ![library tab](.github/readme-images/library.png) | ![manga detail screen](.github/readme-images/MangaDetails.png) | |
 
 |             Search Screen             |           Vertically Screen            |          Horizontally Screen           |
 | :-----------------------------------: | :------------------------------------: | :------------------------------------: |
-| ![](.github/readme-images/search.png) | ![](.github/readme-images/chapter.png) | ![](.github/readme-images/webtoon.png) |
+| ![search_advanced](.github/readme-images/search.png) | ![list_chapter](.github/readme-images/chapter.png) | ![webtoon mode](.github/readme-images/webtoon.png) |
+
+## Getting Started
+
+Once you have added the annotations to your code you then need to run the code generator to generate the missing `.g.dart` generated dart files.
+
+```shell
+# Run
+$ flutter run --dart-define=API_KEY=PUT_YOUR_API_KEY_HERE
+
+# Build
+$ flutter build --dart-define=API_KEY=PUT_YOUR_API_KEY_HERE
 
 # Code Dependencies
 

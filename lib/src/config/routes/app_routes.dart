@@ -4,6 +4,7 @@ import '../../presentation/screens/detail_screens/manga_detail_screen.dart';
 import '../../presentation/screens/index_screen/index_screen.dart';
 import '../../presentation/screens/search_screen/search_screen.dart';
 import '../../presentation/screens/setting_screen/widget/general_page.dart';
+import '../../presentation/screens/setting_screen/widget/info_screen.dart';
 import '../../presentation/screens/setting_screen/widget/setting_chapter.dart';
 
 class AppRoutes {
@@ -59,6 +60,9 @@ class AppRoutes {
       case SearchScreen.routeName:
         return _pageRoute(
             routeSettings: routeSettings, builder: const SearchScreen());
+      case InfoScreen.routeName:
+        return _pageRoute(
+            routeSettings: routeSettings, builder: const InfoScreen(),);
       default:
         return _pageRoute(
           routeSettings: routeSettings,

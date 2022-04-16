@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../setting_screen/widget/general_page.dart';
 import '../setting_screen/widget/setting_chapter.dart';
+import 'widget/info_screen.dart';
 
 class SettingScreen extends StatelessWidget {
   const SettingScreen({Key? key}) : super(key: key);
@@ -31,20 +32,21 @@ class SettingScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10.0),
               ),
               margin: const EdgeInsets.all(8).copyWith(top: 15),
-              color: theme.primaryColor,
-              child: const ListTile(
+              color: theme.primaryColor.withOpacity(0.5),
+              child: ListTile(
                 onTap: null, // TO DO
                 title: Text(
                   'Khách lạ',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: theme.backgroundColor,
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                leading: CircleAvatar(
-                  backgroundImage:
-                      AssetImage('assets/images/default_image.jpeg'),
+                leading: const CircleAvatar(
+                  backgroundImage: AssetImage(
+                    'assets/images/default_image.jpeg',
+                  ),
                 ),
               ),
             ),
@@ -86,7 +88,9 @@ class SettingScreen extends StatelessWidget {
                   ),
                   const _BuildDivider(),
                   ListTile(
-                    onTap: null, // TO DO
+                    onTap: () {
+                      Navigator.of(context).pushNamed(InfoScreen.routeName);
+                    },
                     title: Text(
                       'Thông tin',
                       style: theme.textTheme.bodyText1,

@@ -17,7 +17,7 @@ void main() {
   });
 
   group('Find manga by page', () {
-    final tPage = 1;
+    const tPage = 1;
     test('should return list manga when success', () async {
       when(() => dio.get('/page-$tPage')).thenAnswer(
         (_) async => FakeResponse.success(listMangaResponse),
@@ -39,7 +39,7 @@ void main() {
   });
 
   group('Find manga detail by endpoint', () {
-    final endpoint = '63632/one-piece-63632';
+    const endpoint = '63632/one-piece-63632';
     test('should return list manga when success', () async {
       when(() => dio.get(endpoint)).thenAnswer(
         (_) async => FakeResponse.success(mangaDetailRepository),

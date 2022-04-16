@@ -8,7 +8,7 @@ abstract class LibraryScreenEvent extends Equatable {
 }
 
 class FetchDataLibrary extends LibraryScreenEvent {
-  FetchDataLibrary(this.listId);
+  const FetchDataLibrary(this.listId);
 
   final List<String> listId;
 
@@ -17,7 +17,7 @@ class FetchDataLibrary extends LibraryScreenEvent {
 }
 
 class WatchDataLibrary extends LibraryScreenEvent {
-  WatchDataLibrary(this.listId);
+  const WatchDataLibrary(this.listId);
 
   final List<String> listId;
 

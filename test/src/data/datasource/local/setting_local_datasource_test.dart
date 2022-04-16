@@ -16,7 +16,7 @@ void main() {
 
     group('getThemeApp', () {
       test('There are data in the box', () async {
-        final id = 'CACHED_THEME_APP';
+        const id = 'CACHED_THEME_APP';
         when(() => settingBox.get(id)).thenAnswer(
           (_) => 'white',
         );
@@ -25,7 +25,7 @@ void main() {
       });
 
       test('No data in the box', () async {
-        final id = 'CACHED_THEME_APP';
+        const id = 'CACHED_THEME_APP';
         when(() => settingBox.get(id)).thenAnswer(
           (_) => null,
         );

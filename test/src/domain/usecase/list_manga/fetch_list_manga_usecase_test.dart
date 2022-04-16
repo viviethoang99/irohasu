@@ -16,7 +16,7 @@ void main() {
     usecase = FetchListMangaUseCase(mockRepository);
   });
 
-  final tPage = 1;
+  const tPage = 1;
   final tListManga = List.generate(
     20,
     (index) => Manga(

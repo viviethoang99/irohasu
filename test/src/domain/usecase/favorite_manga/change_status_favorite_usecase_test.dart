@@ -15,7 +15,7 @@ void main() {
     usecase = ChangeStatusFavoriteUseCase(repository);
   });
 
-  final params = const ChangeStatusFavoriteParams(
+  const params = ChangeStatusFavoriteParams(
     id: '1604',
     isFavorite: true,
   );
