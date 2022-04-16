@@ -8,6 +8,7 @@ import 'src/application/app_widget.dart';
 import 'src/config/bloc/bloc.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   await registerDependencies();
   await SystemChrome.setPreferredOrientations(

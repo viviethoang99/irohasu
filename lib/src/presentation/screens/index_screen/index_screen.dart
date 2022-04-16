@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../config/base_content.dart';
+import '../../blocs/check_update_app/check_update_app_cubit.dart';
 import '../../blocs/manage_favorite_manga/manage_favorite_manga_bloc.dart';
 import '../home_screens/home_screen.dart';
 import '../library_screen/library_screen.dart';
@@ -25,6 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     context.read<ManageFavoriteMangaBloc>().add(GetListFavoriteId());
+    context.read<CheckUpdateAppCubit>().init();
     _pageController = PageController();
   }
 
