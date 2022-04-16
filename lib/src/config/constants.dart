@@ -1,15 +1,24 @@
-import '../models/setting_model.dart';
+import '../../core/core.dart';
+import '../data/model/setting_model/setting_model.dart';
 
 class Constants {
-  static final List<ThemeModel> listTheme = [
-    ThemeModel(index: 0, name: 'Mặc định'),
-    ThemeModel(index: 1, name: 'Màu đen'),
-    ThemeModel(index: 2, name: 'Màu tối'),
-    ThemeModel(index: 3, name: 'Theo hệ thống (Màu trắng và tối)'),
-    ThemeModel(index: 4, name: 'Theo hệ thống (Màu trắng và đen)'),
+  static const List<ThemeOption> listTheme = [
+    ThemeOption(type: ThemeApp.light, name: 'Màu sáng'),
+    ThemeOption(type: ThemeApp.dark, name: 'Màu đen'),
+    ThemeOption(type: ThemeApp.black, name: 'Màu tối'),
+    ThemeOption(type: ThemeApp.system, name: 'Theo hệ thống'),
   ];
 
-  static const heightAppBar = 110.0;
+  static const heightAppBar = 80.0;
 
   static const keywordChapter = ['chương', 'chapter', 'chap'];
+
+  static const List<ReadingOption> listReadingMode = [
+    ReadingOption(type: ReadMode.webtoon, name: 'Mặc định'),
+    ReadingOption(type: ReadMode.vertical, name: 'Webtoon'),
+  ];
+  static const List<BackgroundReadingOption> listBackgroundColor = [
+    BackgroundReadingOption(type: BackgroundReading.black, name: 'Nền đen'),
+    BackgroundReadingOption(type: BackgroundReading.white, name: 'Nền trắng'),
+  ];
 }

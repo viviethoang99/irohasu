@@ -1,0 +1,4 @@
+enum BackgroundReading {
+  black,
+  white,
+}
