@@ -16,8 +16,6 @@ class AssetReleaseAppDto {
     this.name,
     this.contentType,
     this.size,
-    this.createdAt,
-    this.updatedAt,
     this.browserDownloadUrl,
   );
 
@@ -30,25 +28,23 @@ class AssetReleaseAppDto {
     return AssetReleaseApp(
       id: id,
       url: url,
-      nodeId: nodeId,
+      nodeId: nodeId ?? '',
       name: name,
       contentType: contentType,
       size: size,
-      createdAt: createdAt,
-      updatedAt: updatedAt,
-      browserDownloadUrl: browserDownloadUrl,
+      browserDownloadUrl: browserDownloadUrl ?? '',
     );
   }
 
   final String url;
   final int id;
-  final String nodeId;
+  final String? nodeId;
   final String name;
+  @JsonKey(defaultValue: BuildAppType.apk)
   final BuildAppType contentType;
   final int size;
-  final DateTime createdAt;
-  final DateTime updatedAt;
-  final String browserDownloadUrl;
+  @JsonKey(name: 'browser_download_url')
+  final String? browserDownloadUrl;
 }
 
 extension ListAssetReleaseAppDtoX on ListAssetReleaseAppDto {

@@ -1,0 +1,1 @@
+export 'dialog_update_app/dialog_check_version.dart';

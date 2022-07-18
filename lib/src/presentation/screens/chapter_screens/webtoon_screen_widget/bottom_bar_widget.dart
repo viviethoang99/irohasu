@@ -90,7 +90,7 @@ class _BottomBarChapterScreenState extends State<BottomBarChapterScreen> {
               iconSize: 30,
               onPressed: () {
                 Scaffold.of(context).openDrawer();
-                SchedulerBinding.instance!.addPostFrameCallback((_) {
+                SchedulerBinding.instance.addPostFrameCallback((_) {
                   widget.scrollListController!
                       .jumpTo(index: widget.getIndex!, alignment: 0.5);
                 });

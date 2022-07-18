@@ -1,7 +1,6 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../core/core.dart';
-import '../../data/model/setting_model/setting_app.dart';
 import '../usecaes/setting_app/update_background_reading_usecase.dart';
 import '../usecaes/setting_app/update_reading_mode_usecase.dart';
 import '../usecaes/setting_app/update_setting_app_usecase.dart';
@@ -35,5 +34,5 @@ abstract class ISettingAppRepository {
   Future<Either<Failure, void>> setBackgroundReading(
       SetBackgroundReadingParams params);
 
-  Future<Either<Failure, SettingApp>> setDefault();
+  Future<Either<Failure, String>> getdownloadPath();
 }

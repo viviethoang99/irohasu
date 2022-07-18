@@ -2,8 +2,8 @@ import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../features/features.dart';
 import '../../../config/base_content.dart';
-import '../../blocs/check_update_app/check_update_app_cubit.dart';
 import '../../blocs/manage_favorite_manga/manage_favorite_manga_bloc.dart';
 import '../home_screens/home_screen.dart';
 import '../library_screen/library_screen.dart';
@@ -26,7 +26,6 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     context.read<ManageFavoriteMangaBloc>().add(GetListFavoriteId());
-    context.read<CheckUpdateAppCubit>().init();
     _pageController = PageController();
   }
 
@@ -38,57 +37,81 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SizedBox.expand(
-        child: PageView(
-          controller: _pageController,
-          onPageChanged: (index) {
+    return BlocListener<UpdateAppCubit, UpdateAppState>(
+      listener: (context, state) {
+        if (state is UpdateAppUndefined) {
+          _showDialog(context);
+        }
+      },
+      child: Scaffold(
+        body: SizedBox.expand(
+          child: PageView(
+            controller: _pageController,
+            onPageChanged: (index) {
+              setState(() => _currentIndex = index);
+            },
+            children: const <Widget>[
+              ListMangaScreen(),
+              LibraryScreen(),
+              SettingScreen(),
+            ],
+          ),
+        ),
+        bottomNavigationBar: BottomNavyBar(
+          animationDuration: const Duration(milliseconds: 500),
+          backgroundColor: Theme.of(context).backgroundColor,
+          showElevation: true,
+          selectedIndex: _currentIndex,
+          iconSize: 30,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          onItemSelected: (index) {
             setState(() => _currentIndex = index);
+            _pageController!.jumpToPage(index);
           },
-          children: const <Widget>[
-            ListMangaScreen(),
-            LibraryScreen(),
-            SettingScreen(),
+          items: <BottomNavyBarItem>[
+            BottomNavyBarItem(
+              title: const Text(
+                ConstantStrings.home,
+                style: TextStyle(fontSize: 15),
+              ),
+              icon: const Icon(Icons.home),
+            ),
+            BottomNavyBarItem(
+              title: const Text(
+                ConstantStrings.library,
+                style: TextStyle(fontSize: 15),
+              ),
+              icon: const Icon(Icons.library_books),
+            ),
+            BottomNavyBarItem(
+              title: const Text(
+                ConstantStrings.settings,
+                style: TextStyle(fontSize: 15),
+              ),
+              icon: const Icon(
+                Icons.settings,
+              ),
+            ),
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavyBar(
-        animationDuration: const Duration(milliseconds: 500),
-        backgroundColor: Theme.of(context).backgroundColor,
-        showElevation: true,
-        selectedIndex: _currentIndex,
-        iconSize: 30,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        onItemSelected: (index) {
-          setState(() => _currentIndex = index);
-          _pageController!.jumpToPage(index);
-        },
-        items: <BottomNavyBarItem>[
-          BottomNavyBarItem(
-            title: const Text(
-              ConstantStrings.home,
-              style: TextStyle(fontSize: 15),
-            ),
-            icon: const Icon(Icons.home),
-          ),
-          BottomNavyBarItem(
-            title: const Text(
-              ConstantStrings.library,
-              style: TextStyle(fontSize: 15),
-            ),
-            icon: const Icon(Icons.library_books),
-          ),
-          BottomNavyBarItem(
-            title: const Text(
-              ConstantStrings.settings,
-              style: TextStyle(fontSize: 15),
-            ),
-            icon: const Icon(
-              Icons.settings,
-            ),
-          ),
-        ],
-      ),
     );
+  }
+
+  void _showDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (_) => BlocBuilder<UpdateAppCubit, UpdateAppState>(
+        builder: (context, state) {
+          if (state is UpdateAppUndefined) {
+            return DialogCheckUpdateApp(
+              tagName: state.appInfo.tagName,
+              content: state.appInfo.body,
+            );
+          }
+          return const SizedBox.shrink();
+        },
+      ),
+    ).then((value) => context.read<UpdateAppCubit>().downloadFunction(value));
   }
 }

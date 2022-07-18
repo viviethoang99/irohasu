@@ -4,13 +4,14 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../core/core.dart';
 import '../../../../env.dart';
+import '../../dtos/github/github.dart';
 
 typedef GithubRemoteSource = Either<Failure, Response>;
 
 abstract class IGithubApiSource {
-  Future<GithubRemoteSource> getReleases();
+  Future<Either<Failure, List<ReleaseAppDto>>> getReleases();
 
-  Future<GithubRemoteSource> getLatestRelease();
+  Future<Either<Failure, ReleaseAppDto>> getLatestRelease();
 }
 
 @Injectable(as: IGithubApiSource)
@@ -20,23 +21,28 @@ class GithubApiSource implements IGithubApiSource {
   final Dio _dio;
 
   @override
-  Future<GithubRemoteSource> getLatestRelease() async {
-    return request('/repos/viviethoang9/irohasu/releases/latest');
-  }
-
-  @override
-  Future<GithubRemoteSource> getReleases() async {
-    return request('/repos/viviethoang9/irohasu/releases');
-  }
-
-  Future<GithubRemoteSource> request(String url) async {
-    _dio.options.baseUrl = ENV.uriGithub;
-
+  Future<Either<Failure, ReleaseAppDto>> getLatestRelease() async {
     try {
-      final response = await _dio.get(url);
-      return Right(response);
+      final response = await request('/releases/latest');
+      return Right(ReleaseAppDto.fromJson(response.data));
     } on DioError {
       return Left(ServerFailure());
     }
+  }
+
+  @override
+  Future<Either<Failure, List<ReleaseAppDto>>> getReleases() async {
+    try {
+      final response = await request('/releases/');
+      final listRelease = List<Map<String, dynamic>>.from(response.data);
+      return Right(listRelease.map(ReleaseAppDto.fromJson).toList());
+    } on DioError {
+      return Left(ServerFailure());
+    }
+  }
+
+  Future<Response> request(String url) async {
+    _dio.options.baseUrl = ENV.uriGithub;
+    return _dio.get(url);
   }
 }

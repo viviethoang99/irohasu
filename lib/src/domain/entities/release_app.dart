@@ -2,6 +2,8 @@ import '../../../core/type/builld_app_type.dart';
 
 typedef ListAssetReleaseApp = List<AssetReleaseApp>;
 
+typedef ListReleaseApp = List<ReleaseApp>;
+
 class ReleaseApp {
   const ReleaseApp({
     this.url = '',
@@ -9,8 +11,6 @@ class ReleaseApp {
     this.nodeId = '',
     this.tagName = '',
     this.name = ' ',
-    this.createdAt,
-    this.publishedAt,
     this.assets = const [],
     this.body = '',
     this.discussionUrl = '',
@@ -21,8 +21,6 @@ class ReleaseApp {
   final String nodeId;
   final String tagName;
   final String name;
-  final DateTime? createdAt;
-  final DateTime? publishedAt;
   final List<AssetReleaseApp> assets;
   final String body;
   final String discussionUrl;

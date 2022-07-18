@@ -4,11 +4,11 @@ import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../config/config.dart';
-import '../../model/setting_model/setting_app.dart';
 
 const String _kThemeApp = 'CACHED_THEME_APP';
 const String _kReadingMode = 'CACHED_READING_MODE';
 const String _kBackgroundReading = 'CACHED_BACKGROUND_READING';
+const String _downloadPath = 'DOWNLOAD_PATH';
 
 abstract class ISettingLocalDataSource {
   Future<void> setThemeApp(String value);
@@ -17,7 +17,10 @@ abstract class ISettingLocalDataSource {
   String getReadingMode();
   Future<void> setBackgroundReading(String value);
   String getBackgroundReading();
-  Future<SettingApp> setDefault();
+
+  // Download path
+  Future<String?> getdownloadPath();
+  Future<void> setdownloadPath(String downloadPath);
 }
 
 @Injectable(as: ISettingLocalDataSource)
@@ -31,12 +34,6 @@ class SettingLocalDataSource implements ISettingLocalDataSource {
   @override
   String getThemeApp() {
     return _box.get(_kThemeApp) ?? Constants.listTheme.first.type.name;
-  }
-
-  @override
-  Future<SettingApp> setDefault() async {
-    const setting = SettingApp();
-    return setting;
   }
 
   @override
@@ -63,5 +60,15 @@ class SettingLocalDataSource implements ISettingLocalDataSource {
   @override
   Future<void> setBackgroundReading(String value) async {
     await _box.put(_kBackgroundReading, value);
+  }
+
+  @override
+  Future<String?> getdownloadPath() async {
+    return _box.get(_downloadPath);
+  }
+
+  @override
+  Future<void> setdownloadPath(String downloadPath) {
+    return _box.put(_downloadPath, downloadPath);
   }
 }

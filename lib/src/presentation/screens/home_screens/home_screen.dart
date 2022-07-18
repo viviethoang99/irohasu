@@ -21,7 +21,7 @@ class _ListMangaScreenState extends State<ListMangaScreen> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<ListMangaBloc>(context).add(InitialFetchMangaEvent());
+    context.read<ListMangaBloc>().add(InitialFetchMangaEvent());
     _scrollController = ScrollController()
       ..addListener(() {
         final maxScrollExtent = _scrollController!.position.maxScrollExtent;

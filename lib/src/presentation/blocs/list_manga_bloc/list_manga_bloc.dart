@@ -50,7 +50,10 @@ class ListMangaBloc extends Bloc<ListMangaEvent, ListMangaState> {
     emit(const ListMangaState());
     final either = await _fetchData(params: state.page);
     either.fold(
-      (error) => emit(const ListMangaState()),
+      (error) => emit(const ListMangaState(
+        listManga: [],
+        status: ListMangaScreenStatus.failure,
+      )),
       (data) => {
         emit(state.copyWith(
           listManga: data,
