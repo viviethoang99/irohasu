@@ -17,7 +17,7 @@ class ListMangaWidget extends StatefulWidget {
   final bool? hasReachedEnd;
 
   @override
-  _ListMangaWidgetState createState() => _ListMangaWidgetState();
+  State<ListMangaWidget> createState() => _ListMangaWidgetState();
 }
 
 class _ListMangaWidgetState extends State<ListMangaWidget> {

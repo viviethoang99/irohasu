@@ -15,7 +15,7 @@ class SearchScreen extends StatefulWidget {
   static const routeName = '/search';
 
   @override
-  _SearchScreenState createState() => _SearchScreenState();
+  State<SearchScreen> createState() => _SearchScreenState();
 }
 
 class _SearchScreenState extends State<SearchScreen> {

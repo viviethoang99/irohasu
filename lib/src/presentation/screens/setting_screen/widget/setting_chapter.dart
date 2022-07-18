@@ -13,7 +13,7 @@ class SettingChapter extends StatefulWidget {
   static const routeName = '/chapterSetting';
 
   @override
-  _SettingChapterState createState() => _SettingChapterState();
+  State<SettingChapter> createState() => _SettingChapterState();
 }
 
 class _SettingChapterState extends State<SettingChapter> {

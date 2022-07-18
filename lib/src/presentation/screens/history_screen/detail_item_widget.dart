@@ -121,7 +121,7 @@ class DetailItemWidget extends StatelessWidget {
     showDialog<void>(
         context: context,
         builder: (BuildContext context) {
-          var _value = false;
+          var value = false;
           return StatefulBuilder(builder: (context, setState) {
             final theme = Theme.of(context);
             return AlertDialog(
@@ -156,14 +156,14 @@ class DetailItemWidget extends StatelessWidget {
                       title: Text(
                         'Xóa tất cả.',
                         style: TextStyle(
-                          color: _value ? theme.primaryColor : Colors.red,
+                          color: value ? theme.primaryColor : Colors.red,
                           fontSize: 20,
                         ),
                       ),
-                      value: _value,
+                      value: value,
                       onChanged: (newValue) {
                         setState(() {
-                          _value = !_value;
+                          value = !value;
                         });
                       },
                       activeColor: theme.primaryColor,

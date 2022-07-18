@@ -11,7 +11,7 @@ class GeneralSetting extends StatefulWidget {
   static const routeName = '/setting/generaSetting';
 
   @override
-  _GeneralSettingState createState() => _GeneralSettingState();
+  State<GeneralSetting> createState() => _GeneralSettingState();
 }
 
 class _GeneralSettingState extends State<GeneralSetting> {

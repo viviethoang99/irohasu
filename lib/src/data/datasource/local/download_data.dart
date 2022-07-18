@@ -7,22 +7,22 @@ class DownloadData {
       {String folder = 'download'}) async {
     try {
       //Get this App Document Directory
-      final _appDocDir = await getApplicationDocumentsDirectory();
+      final appDocDir = await getApplicationDocumentsDirectory();
 
       //App Document Directory + folder save + folder name
-      final _appDocDirFolder = Directory(
+      final appDocDirFolder = Directory(
         (name == null)
-            ? '${_appDocDir.absolute.path}/$folder'
-            : '${_appDocDir.absolute.path}/$folder/$name',
+            ? '${appDocDir.absolute.path}/$folder'
+            : '${appDocDir.absolute.path}/$folder/$name',
       );
 
-      if (await _appDocDirFolder.exists()) {
+      if (await appDocDirFolder.exists()) {
         // if folder already exists return path
-        return _appDocDirFolder.path;
+        return appDocDirFolder.path;
       } else {
         // if folder not exists create folder and then return its path
-        final _appDirNewFolder = await _appDocDirFolder.create(recursive: true);
-        return _appDirNewFolder.path;
+        final appDirNewFolder = await appDocDirFolder.create(recursive: true);
+        return appDirNewFolder.path;
       }
     } catch (e) {
       return null;
@@ -31,11 +31,11 @@ class DownloadData {
 
   Future<bool> removeFolder({required String url}) async {
     //Get this App Document Directory
-    final _appDocDir = await getApplicationDocumentsDirectory();
+    final appDocDir = await getApplicationDocumentsDirectory();
     //App Document Directory + folder name
-    final _appDocDirFolder = Directory(_appDocDir.absolute.path + url);
-    if (await _appDocDirFolder.exists()) {
-      _appDocDirFolder.deleteSync(recursive: true);
+    final appDocDirFolder = Directory(appDocDir.absolute.path + url);
+    if (await appDocDirFolder.exists()) {
+      appDocDirFolder.deleteSync(recursive: true);
       return true;
     }
     return false;
@@ -73,8 +73,8 @@ class DownloadData {
   }
 
   Future<String> relativePathChapter({required String uri}) async {
-    final _appDocDir = await getApplicationDocumentsDirectory();
-    uri = uri.replaceAll(_appDocDir.absolute.path, '').trim();
+    final appDocDir = await getApplicationDocumentsDirectory();
+    uri = uri.replaceAll(appDocDir.absolute.path, '').trim();
     return uri;
   }
 

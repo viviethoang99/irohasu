@@ -18,15 +18,15 @@ class AppBlocObserver extends BlocObserver {
     super.onError(bloc, error, stackTrace);
   }
 
-  // @override
-  // void onCreate(BlocBase bloc) {
-  //   log('${bloc.runtimeType} created');
-  //   super.onCreate(bloc);
-  // }
+  @override
+  void onCreate(BlocBase bloc) {
+    log('${bloc.runtimeType} created');
+    super.onCreate(bloc);
+  }
 
-  // @override
-  // void onClose(BlocBase bloc) {
-  //   log('${bloc.runtimeType}  closed');
-  //   super.onClose(bloc);
-  // }
+  @override
+  void onClose(BlocBase bloc) {
+    log('${bloc.runtimeType}  closed');
+    super.onClose(bloc);
+  }
 }

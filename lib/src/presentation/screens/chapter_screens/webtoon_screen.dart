@@ -27,7 +27,7 @@ class ChapterLoadedScreen extends StatefulWidget {
   final int getIndexChapter;
 
   @override
-  _ChapterLoadedScreenState createState() => _ChapterLoadedScreenState();
+  State<ChapterLoadedScreen> createState() => _ChapterLoadedScreenState();
 }
 
 class _ChapterLoadedScreenState extends State<ChapterLoadedScreen> {

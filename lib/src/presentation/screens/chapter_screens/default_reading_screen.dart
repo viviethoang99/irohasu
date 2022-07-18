@@ -23,7 +23,7 @@ class HorizontalReadingWidget extends StatefulWidget {
   const HorizontalReadingWidget({Key? key}) : super(key: key);
 
   @override
-  _HorizontalReadingWidgetState createState() =>
+  State<HorizontalReadingWidget> createState() =>
       _HorizontalReadingWidgetState();
 }
 

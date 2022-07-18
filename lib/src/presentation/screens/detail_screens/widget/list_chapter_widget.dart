@@ -10,7 +10,7 @@ class ListChapterWidget extends StatefulWidget {
   final Color color;
 
   @override
-  _ListChapterWidgetState createState() => _ListChapterWidgetState();
+  State<ListChapterWidget> createState() => _ListChapterWidgetState();
 }
 
 class _ListChapterWidgetState extends State<ListChapterWidget> {

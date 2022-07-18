@@ -43,12 +43,12 @@ class DownloadBloc extends Bloc<DownloadEvent, DownloadState> {
         downloadPercentageCompleted: event.percentage,
       );
       if (event.percentage == 1) {
-        var _isSuccess = await addChapToDownload(
+        var isSuccess = await addChapToDownload(
           url: await (_path as FutureOr<String>),
           idManga: event.idManga,
           idChapter: event.idChapter,
         );
-        if (_isSuccess) {
+        if (isSuccess) {
           yield DownloadedState(data: await _path);
         }
       }
@@ -58,8 +58,8 @@ class DownloadBloc extends Bloc<DownloadEvent, DownloadState> {
       var urlDownload = event.chapter?.isDownload;
       if (urlDownload != null) {
         try {
-          var _isRemove = await _downloadData.removeFolder(url: urlDownload);
-          if (_isRemove) {
+          var isRemove = await _downloadData.removeFolder(url: urlDownload);
+          if (isRemove) {
             await removeChapToDownload(idChapter: event.chapter!.id);
           }
           yield DownloadInitialState();

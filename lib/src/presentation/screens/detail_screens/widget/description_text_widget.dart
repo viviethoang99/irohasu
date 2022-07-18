@@ -13,7 +13,7 @@ class DescriptionTextWidget extends StatefulWidget {
   final Color color;
 
   @override
-  _DescriptionTextWidgetState createState() => _DescriptionTextWidgetState();
+  State<DescriptionTextWidget> createState() => _DescriptionTextWidgetState();
 }
 
 class _DescriptionTextWidgetState extends State<DescriptionTextWidget>

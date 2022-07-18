@@ -12,7 +12,7 @@ class AppBarChapterScreen extends StatefulWidget {
   final ScrollController? scrollController;
 
   @override
-  _AppBarChapterScreenState createState() => _AppBarChapterScreenState();
+  State<AppBarChapterScreen> createState() => _AppBarChapterScreenState();
 }
 
 class _AppBarChapterScreenState extends State<AppBarChapterScreen> {

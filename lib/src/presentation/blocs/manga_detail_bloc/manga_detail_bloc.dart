@@ -69,13 +69,13 @@ class MangaDetailBloc extends Bloc<MangaDetailEvent, MangaDetailState> {
           .firstWhere((chap) => chap.id == currentState!.chapterReading.last)
           .title!
           .split(' ');
-      final _index = title.indexWhere(
+      final index = title.indexWhere(
               (e) => Constants.keywordChapter.contains(e.toLowerCase())) +
           1;
-      if (_index == 0) {
+      if (index == 0) {
         return 'TIẾP TỤC ĐỌC'.toUpperCase();
       } else {
-        final lastChapter = title[_index].replaceAll(':', '').trim();
+        final lastChapter = title[index].replaceAll(':', '').trim();
         return 'TIẾP TỤC ĐỌC TỪ CHƯƠNG $lastChapter'.toUpperCase();
       }
     }

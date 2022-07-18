@@ -20,8 +20,8 @@ class ListMangaBloc extends Bloc<ListMangaEvent, ListMangaState> {
   final FetchListMangaUseCase _fetchData;
 
   EventTransformer<T> _debounce<T>() {
-    const _duration = Duration(milliseconds: 500);
-    return (events, mapper) => events.debounceTime(_duration).flatMap(mapper);
+    const duration = Duration(milliseconds: 500);
+    return (events, mapper) => events.debounceTime(duration).flatMap(mapper);
   }
 
   Future<void> _fetchListManga(

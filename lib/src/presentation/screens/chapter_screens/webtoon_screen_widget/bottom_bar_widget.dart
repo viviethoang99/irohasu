@@ -19,7 +19,7 @@ class BottomBarChapterScreen extends StatefulWidget {
   final ItemScrollController? scrollListController;
 
   @override
-  _BottomBarChapterScreenState createState() => _BottomBarChapterScreenState();
+  State<BottomBarChapterScreen> createState() => _BottomBarChapterScreenState();
 }
 
 class _BottomBarChapterScreenState extends State<BottomBarChapterScreen> {

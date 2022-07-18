@@ -11,7 +11,7 @@ class ListMangaScreen extends StatefulWidget {
   static const routeName = '/home';
 
   @override
-  _ListMangaScreenState createState() => _ListMangaScreenState();
+  State<ListMangaScreen> createState() => _ListMangaScreenState();
 }
 
 class _ListMangaScreenState extends State<ListMangaScreen> {

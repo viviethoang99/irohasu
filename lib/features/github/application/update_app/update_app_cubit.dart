@@ -37,11 +37,11 @@ class UpdateAppCubit extends Cubit<UpdateAppState> {
   Future<void> _checkVersionApp() async {
     emit(UpdateAppInitial());
     final packageInfo = await PackageInfo.fromPlatform();
-    final _currentVersion = packageInfo.version;
+    final currentVersion = packageInfo.version;
     final repository = await _latestReleaseUseCase.call();
     return repository.fold(
       (l) => emit(UpdateAppSuccess()),
-      (r) => checkUpdate(_currentVersion, r),
+      (r) => checkUpdate(currentVersion, r),
     );
   }
 
@@ -80,7 +80,7 @@ class UpdateAppCubit extends Cubit<UpdateAppState> {
 
     final deviceInfo = DeviceInfoPlugin();
     final androidInfo = await deviceInfo.androidInfo;
-    if (androidInfo.version.sdkInt! <= 28) {
+    if (androidInfo.version.sdkInt <= 28) {
       final status = await Permission.storage.status;
       if (status != PermissionStatus.granted) {
         final result = await Permission.storage.request();
@@ -101,8 +101,8 @@ class UpdateAppCubit extends Cubit<UpdateAppState> {
     final currentState = state;
     final userSelect = value ?? false;
     if (currentState is UpdateAppUndefined && userSelect && checkPer) {
-      final _repository = await _getDownloadPathUseCase.call();
-      return _repository.fold(
+      final repository = await _getDownloadPathUseCase.call();
+      return repository.fold(
         (error) => null,
         (localPath) => _requestDownload(
           currentState.urlFile,

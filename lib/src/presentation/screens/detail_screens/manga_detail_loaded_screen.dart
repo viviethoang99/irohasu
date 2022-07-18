@@ -17,7 +17,7 @@ class MangaDetailLoadedScreen extends StatefulWidget {
   final MangaDetail? data;
 
   @override
-  _MangaDetailLoadedScreenState createState() =>
+  State<MangaDetailLoadedScreen> createState() =>
       _MangaDetailLoadedScreenState();
 }
 
@@ -38,7 +38,7 @@ class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
     _colorPage = AppColors.listColors[indexColor];
     super.initState();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
