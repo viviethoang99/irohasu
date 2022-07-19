@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:irohasu/src/domain/entities/manga.dart';
-import 'package:irohasu/src/domain/repositories/i_manga_repository.dart';
-import 'package:irohasu/src/domain/usecaes/list_manga/fetch_list_manga_usecase.dart';
+import 'package:irohasu/features/manga/domain/usecase/list_manga/fetch_list_manga_usecase.dart';
+import 'package:irohasu/features/manga/manga.dart';
+
 import 'package:mocktail/mocktail.dart';
 
 class MockMangaRepository extends Mock implements IMangaRepository {}

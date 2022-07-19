@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:irohasu/src/config/config.dart';
-import 'package:irohasu/src/data/datasource/local/setting_local_datasource.dart';
+import 'package:irohasu/config/config.dart';
+import 'package:irohasu/features/shared/data/datasource/local/setting_local_datasource.dart';
 import 'package:mocktail/mocktail.dart';
 
 void main() {
