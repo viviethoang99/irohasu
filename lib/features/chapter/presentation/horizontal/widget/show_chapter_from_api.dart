@@ -31,7 +31,11 @@ class __ShowChapterFromAPIState extends State<_ShowChapterFromAPI> {
         return previous.currentPage != current.currentPage;
       },
       listener: (_, state) {
-        _pageController.jumpToPage(state.currentPage);
+        _pageController.animateToPage(
+          state.currentPage,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        );
       },
       builder: (context, state) {
         return GestureDetector(

@@ -36,7 +36,7 @@ class _AppBarWidget extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  context.watch<ChapterScreenCubit>().nameChapter,
+                  context.watch<ChapterScreenCubit>().state.nameChapter,
                   style: TextStyle(
                     color: theme.primaryColor.withOpacity(0.5),
                     fontSize: 15,

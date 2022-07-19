@@ -31,7 +31,7 @@ class UpdateAppCubit extends Cubit<UpdateAppState> {
 
   Future<void> init() async {
     _bindBackgroundIsolate();
-    await _checkVersionApp();
+    return _checkVersionApp();
   }
 
   Future<void> _checkVersionApp() async {

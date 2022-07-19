@@ -6,7 +6,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'application/app_widget.dart';
 import 'bootstrap.dart';
 import 'core/core.dart';
-import 'core/utils/tool_methods.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

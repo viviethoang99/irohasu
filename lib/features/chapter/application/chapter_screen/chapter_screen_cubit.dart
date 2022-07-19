@@ -19,12 +19,9 @@ class ChapterScreenCubit extends Cubit<ChapterScreenState> {
     await fetchDataFromApi(endpoint);
   }
 
-  String get nameChapter =>
-      state.chapter?.title!
-          .replaceAll(state.chapter!.nameManga!, '')
-          .trim()
-          .capitalize() ??
-      '';
+  void nextChap() => fetchDataFromApi(state.chapter!.nextChapter!);
+
+  void prevChap() => fetchDataFromApi(state.chapter!.prevChapter!);
 
   Future<void> fetchDataFromApi(String endpoint) async {
     emit(const ChapterScreenState(

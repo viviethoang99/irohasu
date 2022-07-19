@@ -10,6 +10,8 @@ class Chapter extends Equatable {
     this.listImage,
     this.mangaEndpoint,
     this.nameManga,
+    this.nextChapter,
+    this.prevChapter,
   });
 
   final String? id;
@@ -18,6 +20,8 @@ class Chapter extends Equatable {
   final String? mangaEndpoint;
   final String? nameManga;
   final List<ChapterImage>? listImage;
+  final String? prevChapter;
+  final String? nextChapter;
 
   @override
   List<Object?> get props => [

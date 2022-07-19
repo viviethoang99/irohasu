@@ -23,6 +23,10 @@ class ChapterScreenState extends Equatable {
     );
   }
 
+  String get nameChapter =>
+      chapter?.title?.replaceAll(chapter!.nameManga!, '').trim().capitalize() ??
+      '';
+
   @override
   List<Object?> get props => [
         chapter,

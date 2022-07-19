@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../core/core.dart';
 import '../../../chapter.dart';
 
-
 class ProcessReadingChapter extends StatelessWidget {
   const ProcessReadingChapter({Key? key}) : super(key: key);
 
@@ -47,8 +46,24 @@ class _ControlWidget extends StatelessWidget {
 
     return Row(
       children: [
-        const Icon(
-          Icons.skip_previous,
+        BlocSelector<ChapterScreenCubit, ChapterScreenState, String?>(
+          selector: (state) => state.chapter?.prevChapter ?? '',
+          builder: (context, state) {
+            print(state);
+
+            if (state?.isEmpty ?? true) {
+              return const Icon(
+                Icons.skip_previous,
+                color: Colors.grey,
+              );
+            }
+            return InkWell(
+              onTap: context.read<ChapterScreenCubit>().prevChap,
+              child: const Icon(
+                Icons.skip_previous,
+              ),
+            );
+          },
         ),
         const SizedBox(width: 15),
         Text(
@@ -80,9 +95,23 @@ class _ControlWidget extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 15),
-        Icon(
-          Icons.skip_next,
-          color: theme.primaryColor,
+        BlocSelector<ChapterScreenCubit, ChapterScreenState, String?>(
+          selector: (state) => state.chapter?.nextChapter ?? '',
+          builder: (context, state) {
+            print(state);
+            if (state?.isEmpty ?? true) {
+              return const Icon(
+                Icons.skip_next,
+                color: Colors.grey,
+              );
+            }
+            return InkWell(
+              onTap: context.read<ChapterScreenCubit>().nextChap,
+              child: const Icon(
+                Icons.skip_next,
+              ),
+            );
+          },
         ),
       ],
     );

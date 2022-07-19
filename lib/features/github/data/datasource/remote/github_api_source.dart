@@ -43,7 +43,6 @@ class GithubApiSource implements IGithubApiSource {
   }
 
   Future<Response> request(String url) async {
-    _dio.options.baseUrl = ENV.uriGithub;
-    return _dio.get(url);
+    return _dio.get(ENV.uriGithub + url);
   }
 }

@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:html/parser.dart';
 import 'package:injectable/injectable.dart';
 import '../../../../../core/core.dart';
 import '../../dtos/manga_detail/manga_detail_dto.dart';
@@ -39,8 +38,7 @@ class MangaApiSource implements IMangaApiSource {
   Future<ListMangaPageRemote> findMangaByPage({int? page}) async {
     try {
       final response = await _dio.get('/page-$page');
-      final document = parse(response.data);
-      final responseData = document.getElementsByClassName('storyitem');
+      final responseData = DartSoup(response.data).findAllByClass('storyitem');
       final listManga = List<MangaPageDto>.from(
         responseData.map<MangaPageDto>(MangaPageDto.listManga),
       );
@@ -54,8 +52,7 @@ class MangaApiSource implements IMangaApiSource {
   Future<ListMangaSearchRemote> findMangaByQuery({String? query}) async {
     try {
       final response = await _dio.get('/timkiem/nangcao/$query');
-      final document = parse(response.data);
-      var data = ListSearchMangaDto.fromMap(document);
+      var data = ListSearchMangaDto.fromMap(DartSoup(response.data));
       return Right(data.listManga);
     } on Exception {
       return Left(ServerFailure());
@@ -66,8 +63,10 @@ class MangaApiSource implements IMangaApiSource {
   Future<MangaDetailRemote> findMangaDetail(String endpoint) async {
     try {
       final response = await _dio.get(endpoint);
-      final document = parse(response.data);
-      final mangaDetail = MangaDetailDto.fromHTML(document, endpoint);
+      final mangaDetail = MangaDetailDto.fromHTML(
+        DartSoup(response.data),
+        endpoint,
+      );
       return Right(mangaDetail);
     } on Exception {
       return Left(ServerFailure());

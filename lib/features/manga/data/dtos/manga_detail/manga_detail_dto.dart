@@ -1,5 +1,4 @@
 import 'package:hive/hive.dart';
-import 'package:html/dom.dart';
 
 import '../../../../../config/base_content.dart';
 import '../../../../../core/core.dart';
@@ -28,32 +27,27 @@ class MangaDetailDto {
     this.description,
   });
 
-  factory MangaDetailDto.fromHTML(Document data, String endpoint) {
-    final description = data.querySelectorAll('div.description > p');
-    final getTotalLike =
-        data.querySelector('.total-vote')?.attributes['ng-init'];
-    final countLike = MangaDetailHelper.countTotalLike(getTotalLike);
-    final getAuthor = MangaDetailHelper.findElement(description, 'Tác giả')
-        ?.querySelectorAll('a');
-    final getListChapters = data.querySelectorAll('#list-chapters > p');
-    final getListGenres = MangaDetailHelper.findElement(description, 'Thể loại')
-        ?.querySelectorAll('span a');
-    final urlThumb = data.querySelector('.thumbnail img')?.attributes['src'];
-    final title = data
-        .querySelector('Title')!
-        .text
-        .replaceFirst('| BlogTruyen.VN', '')
-        .trim();
+  factory MangaDetailDto.fromHTML(DartSoup data, String endpoint) {
+    final description = data.findAll('div.description > p');
+    final getTotalLike = data.call('.total-vote')?.attributes['ng-init'];
+    final countLike = data.countTotalLike(getTotalLike);
+    final getAuthor =
+        data.findByText(description, 'Tác giả')?.querySelectorAll('a');
+    final getListChapters = data.findAll('#list-chapters > p');
+    final getListGenres =
+        data.findByText(description, 'Thể loại')?.querySelectorAll('span a');
+
     return MangaDetailDto(
       idManga: endpoint.toId,
-      title: title,
-      thumbnailUrl: urlThumb ?? '',
+      title: data.call('Title')!.text.replaceFirst('| BlogTruyen.VN', ''),
+      thumbnailUrl: data.call('.thumbnail img')?.attributes['src'] ?? '',
       endpoint: endpoint,
-      author: MangaDetailHelper.getElement(getAuthor),
-      description: data.querySelector('div.detail > div.content')?.text.trim(),
+      author: data.listElementToString(getAuthor),
+      description: data.call('div.detail > div.content')?.text.trim(),
       like: countLike['TotalLike'],
       dislike: countLike['TotalDisLike'],
-      status: MangaDetailHelper.findElement(description, ConstantStrings.status)
+      status: data
+          .findByText(description, ConstantStrings.status)
           ?.querySelector('span.color-red')
           ?.text,
       listChapter: List<ChapterItemDto>.from(

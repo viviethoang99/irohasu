@@ -1,9 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:html/parser.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../core/error/error.dart';
+import '../../../../../core/core.dart';
 import '../../../chapter.dart';
 
 /// A class responsible for fetching chapter data from website using an
@@ -23,7 +22,7 @@ class ChapterApiSource implements IChapterApiSource {
   Future<Either<Failure, ChapterDto>> getChapter(String endpoint) async {
     try {
       final response = await _dio.get(endpoint);
-      final document = parse(response.data);
+      final document = DartSoup(response.data);
       return Right(ChapterDto.fromHTML(document, endpoint));
     } on Exception {
       return Left(ServerFailure());
