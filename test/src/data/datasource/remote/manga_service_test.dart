@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:irohasu/src/data/datasource/remote/manga_api_source.dart';
+import 'package:irohasu/features/manga/data/datasource/remote/manga_api_source.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../helper/dio_helpers.dart';

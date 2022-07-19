@@ -4,10 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import 'application/app_widget.dart';
+import 'config/bloc/bloc.dart';
 import 'core/core.dart';
 import 'core/utils/tool_methods.dart';
-import 'src/application/app_widget.dart';
-import 'src/config/bloc/bloc.dart';
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -2,8 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/core.dart';
-import '../../domain/domain.dart';
-import '../data.dart';
+import '../../github.dart';
 
 
 @Injectable(as: IGithubRepository)
