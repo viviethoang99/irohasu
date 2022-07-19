@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
 
 import '../../core/core.dart';
 import '../../env.dart';
@@ -10,19 +9,8 @@ import '../features/chapter/chapter.dart';
 import '../features/manga/manga.dart';
 import '../features/shared/shared.dart';
 
-class AppWidget extends StatefulWidget {
-  const AppWidget({Key? key}) : super(key: key);
-
-  @override
-  State<AppWidget> createState() => _AppWidgetState();
-}
-
-class _AppWidgetState extends State<AppWidget> {
-  @override
-  void dispose() {
-    Hive.close();
-    super.dispose();
-  }
+class Application extends StatelessWidget {
+  const Application({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
