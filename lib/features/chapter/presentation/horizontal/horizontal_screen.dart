@@ -45,7 +45,7 @@ class _HorizontalScreenState extends State<HorizontalScreen>
         BlocProvider(
           create: (_) => getIt<ManagePagesCubit>(
             param1: 0,
-            param2: page?.length ?? 1,
+            param2: page?.length ?? 2,
           ),
         ),
       ],

@@ -1,6 +1,6 @@
+import 'package:collection/collection.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
-import 'package:collection/collection.dart';
 
 class DartSoup {
   DartSoup(String htmlDoc) : doc = parse(htmlDoc);

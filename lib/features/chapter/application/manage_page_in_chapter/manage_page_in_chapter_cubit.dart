@@ -11,7 +11,7 @@ class ManagePagesCubit extends Cubit<ManagePagesState> {
     @factoryParam this.totalPages,
   ) : super(ManagePagesState(
           currentPage: currentPage,
-          totalPages: totalPages,
+          totalPages: totalPages - 1,
         ));
 
   final int currentPage;
@@ -25,9 +25,17 @@ class ManagePagesCubit extends Cubit<ManagePagesState> {
     emit(state.copyWith(currentPage: value.round()));
   }
 
-  void prePage() => changePage(state.currentPage - 1);
+  void prePage() {
+    if (state.currentPage != 0) {
+      changePage(state.currentPage - 1);
+    }
+  }
 
-  void nextPage() => changePage(state.currentPage + 1);
+  void nextPage() {
+    if (current != total) {
+      changePage(state.currentPage + 1);
+    }
+  }
 }
 
 extension on int {

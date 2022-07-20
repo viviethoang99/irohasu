@@ -49,8 +49,6 @@ class _ControlWidget extends StatelessWidget {
         BlocSelector<ChapterScreenCubit, ChapterScreenState, String?>(
           selector: (state) => state.chapter?.prevChapter ?? '',
           builder: (context, state) {
-            print(state);
-
             if (state?.isEmpty ?? true) {
               return const Icon(
                 Icons.skip_previous,
@@ -98,7 +96,6 @@ class _ControlWidget extends StatelessWidget {
         BlocSelector<ChapterScreenCubit, ChapterScreenState, String?>(
           selector: (state) => state.chapter?.nextChapter ?? '',
           builder: (context, state) {
-            print(state);
             if (state?.isEmpty ?? true) {
               return const Icon(
                 Icons.skip_next,
