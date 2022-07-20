@@ -2,13 +2,13 @@ import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/core.dart';
-import '../../../../shared/domain/repositories/i_setting_app_repository.dart';
+import '../../../github.dart';
 
 @lazySingleton
 class GetDownloadPathUseCase implements UseCase<void, String> {
   GetDownloadPathUseCase(this.repository);
 
-  final ISettingAppRepository repository;
+  final IGithubRepository repository;
 
   @override
   Future<Either<Failure, String>> call({void params}) {

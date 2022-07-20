@@ -5,15 +5,15 @@ import 'package:injectable/injectable.dart';
 
 const String _downloadPath = 'DOWNLOAD_PATH';
 
-abstract class ISettingLocalDataSource {
+abstract class IGithubLocalDataSource {
   // Download path
   Future<String?> getdownloadPath();
   Future<void> setdownloadPath(String downloadPath);
 }
 
-@Injectable(as: ISettingLocalDataSource)
-class SettingLocalDataSource implements ISettingLocalDataSource {
-  const SettingLocalDataSource(
+@Injectable(as: IGithubLocalDataSource)
+class GithubLocalDataSource implements IGithubLocalDataSource {
+  const GithubLocalDataSource(
     @Named('setting_box') this._box,
   );
 
