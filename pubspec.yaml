@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 publish_to: "none"
 
-version: 0.0.1
+version: 0.5.0
 
 environment:
   sdk: ">=2.17.6 <3.0.0"
@@ -62,7 +62,7 @@ dependencies:
   flutter_downloader: ^1.7.4
 
   # Markdown renderer
-  flutter_markdown: ^0.6.10
+  flutter_markdown: ^0.6.10+3
 
   # Permission app
   permission_handler: ^10.0.0
