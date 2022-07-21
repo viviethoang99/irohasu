@@ -19,6 +19,7 @@ abstract class NetworkModule {
 
   @lazySingleton
   Dio dio(BaseOptions baseOptions, PrettyDioLogger logger) {
+    // final interceptors = <Interceptor>[if (kDebugMode) logger];
     return Dio(baseOptions);
   }
 

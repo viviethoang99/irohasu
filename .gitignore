@@ -40,5 +40,5 @@ app.*.symbols
 # Obfuscation related
 app.*.map.json
 
-*.g.dart
-*.config.dart
+## coverage file
+coverage/

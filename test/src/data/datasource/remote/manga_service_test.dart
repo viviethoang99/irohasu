@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:irohasu/src/data/datasource/remote/manga_api_source.dart';
+import 'package:irohasu/features/manga/data/datasource/remote/manga_api_source.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../helper/dio_helpers.dart';
@@ -8,12 +8,12 @@ import 'list_manga_reponse_fixture.dart';
 import 'manga_detail_reponse_fixture.dart';
 
 void main() {
-  late MangaApiSource _service;
+  late MangaApiSource service;
   late Dio dio;
 
   setUp(() {
     dio = MockDio();
-    _service = MangaApiSource(dio);
+    service = MangaApiSource(dio);
   });
 
   group('Find manga by page', () {
@@ -22,7 +22,7 @@ void main() {
       when(() => dio.get('/page-$tPage')).thenAnswer(
         (_) async => FakeResponse.success(listMangaResponse),
       );
-      final result = await _service.findMangaByPage(page: 1);
+      final result = await service.findMangaByPage(page: 1);
       expect(result.isRight(), isTrue);
     });
 
@@ -32,7 +32,7 @@ void main() {
         FakeDioError(DioErrorType.cancel),
       );
       // Act
-      final result = await _service.findMangaByPage(page: 1);
+      final result = await service.findMangaByPage(page: 1);
       // Result
       expect(result.isLeft(), isTrue);
     });
@@ -44,7 +44,7 @@ void main() {
       when(() => dio.get(endpoint)).thenAnswer(
         (_) async => FakeResponse.success(mangaDetailRepository),
       );
-      final result = await _service.findMangaDetail(endpoint);
+      final result = await service.findMangaDetail(endpoint);
       expect(result.isRight(), isTrue);
     });
 
@@ -54,7 +54,7 @@ void main() {
         FakeDioError(DioErrorType.cancel),
       );
       // Act
-      final result = await _service.findMangaDetail(endpoint);
+      final result = await service.findMangaDetail(endpoint);
       // Result
       expect(result.isLeft(), isTrue);
     });

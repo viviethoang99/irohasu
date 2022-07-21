@@ -1,7 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:irohasu/src/domain/repositories/i_favorite_repository.dart';
-import 'package:irohasu/src/domain/usecaes/favorite_manga/change_status_favorite_usercase.dart';
+import 'package:irohasu/features/manga/domain/usecase/favorite_manga/change_status_favorite_usercase.dart';
+import 'package:irohasu/features/manga/manga.dart';
+
 import 'package:mocktail/mocktail.dart';
 
 class MockFavoriteRepository extends Mock implements IFavoriteRepository {}

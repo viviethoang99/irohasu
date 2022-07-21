@@ -2,7 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../src/data/dtos/dtos.dart';
+import '../../features/manga/manga.dart';
 import 'dependency_injection.config.dart';
 
 final getIt = GetIt.instance;
