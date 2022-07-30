@@ -33,6 +33,9 @@ class Application extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) => getIt<UpdateAppCubit>(),
+        ),
+        BlocProvider(
+          create: (_) => getIt<ManageDownloadBloc>(),
         )
       ],
       child: BlocBuilder<ChangeThemeBloc, ChangeThemeState>(

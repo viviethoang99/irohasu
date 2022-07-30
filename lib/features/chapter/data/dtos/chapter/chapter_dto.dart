@@ -1,7 +1,6 @@
 import '../../../../../core/core.dart';
 import '../../../../../env.dart';
-import '../../../domain/domain.dart';
-import 'chapter_image_dto.dart';
+import '../../../chapter.dart';
 
 class ChapterDto {
   const ChapterDto({
@@ -43,6 +42,18 @@ class ChapterDto {
     );
   }
 
+  factory ChapterDto.fromEntitie(Chapter chapter) {
+    return ChapterDto(
+      id: chapter.id,
+      title: chapter.title,
+      endpoint: chapter.endpoint,
+      nameManga: chapter.nameManga,
+      listImage: [],
+      nextChapter: chapter.nextChapter
+
+    );
+  }
+
   Chapter toEntity() {
     return Chapter(
       id: id,
@@ -55,6 +66,8 @@ class ChapterDto {
       nextChapter: nextChapter,
     );
   }
+
+  String get idManga => mangaEndpoint?.split('/')[0] ?? 'valid';
 
   final String? id;
   final String? title;

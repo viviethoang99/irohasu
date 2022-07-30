@@ -1,32 +1,41 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'setting_app.dart';
+part of 'download_chapter_dto.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class SettingAppAdapter extends TypeAdapter<SettingApp> {
+class DownloadChapterDtoAdapter extends TypeAdapter<DownloadChapterDto> {
   @override
   final int typeId = 3;
 
   @override
-  SettingApp read(BinaryReader reader) {
+  DownloadChapterDto read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return SettingApp(
-      theme: fields[0] as String?,
+    return DownloadChapterDto(
+      title: fields[0] as String,
+      idManga: fields[1] as String,
+      idChapter: fields[2] as String,
+      tasks: (fields[3] as List).cast<String>(),
     );
   }
 
   @override
-  void write(BinaryWriter writer, SettingApp obj) {
+  void write(BinaryWriter writer, DownloadChapterDto obj) {
     writer
-      ..writeByte(1)
+      ..writeByte(4)
       ..writeByte(0)
-      ..write(obj.theme);
+      ..write(obj.title)
+      ..writeByte(1)
+      ..write(obj.idManga)
+      ..writeByte(2)
+      ..write(obj.idChapter)
+      ..writeByte(3)
+      ..write(obj.tasks);
   }
 
   @override
@@ -35,7 +44,7 @@ class SettingAppAdapter extends TypeAdapter<SettingApp> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is SettingAppAdapter &&
+      other is DownloadChapterDtoAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
