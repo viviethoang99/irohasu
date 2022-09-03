@@ -23,6 +23,28 @@ class Chapter extends Equatable {
   final String? prevChapter;
   final String? nextChapter;
 
+  Chapter copyWith({
+    String? id,
+    String? title,
+    String? endpoint,
+    String? mangaEndpoint,
+    String? nameManga,
+    List<ChapterImage>? listImage,
+    String? prevChapter,
+    String? nextChapter,
+  }) {
+    return Chapter(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      endpoint: endpoint ?? this.endpoint,
+      mangaEndpoint: mangaEndpoint ?? this.mangaEndpoint,
+      nameManga: nameManga ?? this.nameManga,
+      listImage: listImage ?? this.listImage,
+      prevChapter: prevChapter ?? this.prevChapter,
+      nextChapter: nextChapter ?? this.nextChapter,
+    );
+  }
+
   @override
   List<Object?> get props => [
         id,

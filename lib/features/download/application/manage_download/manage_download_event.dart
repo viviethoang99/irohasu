@@ -9,7 +9,7 @@ abstract class ManageDownloadEvent extends Equatable {
 
 class AddChapterEvent extends ManageDownloadEvent {
   const AddChapterEvent(this.endpoint);
-  
+
   final String endpoint;
 
   @override
@@ -21,3 +21,12 @@ class AddMangaEvent extends ManageDownloadEvent {}
 class DeleteMangaEvent extends ManageDownloadEvent {}
 
 class DeleteChapterEvent extends ManageDownloadEvent {}
+
+class DownloadChapterEvent extends ManageDownloadEvent {
+  const DownloadChapterEvent(this.endpoint);
+  
+  final String endpoint;
+
+  @override
+  List<Object> get props => [endpoint];
+}

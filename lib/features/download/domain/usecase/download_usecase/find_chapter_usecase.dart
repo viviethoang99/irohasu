@@ -4,16 +4,16 @@ import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/core.dart';
-import '../../../chapter.dart';
+import '../../../../chapter/chapter.dart';
 
-@injectable
-class FindChapterUsecase extends UseCase<DownloadChapter, String> {
+@lazySingleton
+class FindChapterUsecase extends UseCase<Chapter?, String> {
   FindChapterUsecase(this._repository);
 
   final IChapterRepository _repository;
 
   @override
-  FutureOr<Either<Failure, DownloadChapter>> call({String? params}) {
+  FutureOr<Either<Failure, Chapter?>> call({String? params}) async {
     return _repository.findChapter(params!);
   }
 }

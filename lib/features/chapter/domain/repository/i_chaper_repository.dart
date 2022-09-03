@@ -3,21 +3,17 @@ import 'package:dartz/dartz.dart';
 import '../../../../core/core.dart';
 import '../domain.dart';
 
-typedef DownloadChapRepository = Either<Failure, DownloadChapter>;
-
 abstract class IChapterRepository {
   Future<Either<Failure, Chapter>> getChapter(String endpoint);
 
-  Future<DownloadChapter> saveChapter(DownloadChapter chapter);
+  Future<Chapter> saveChapter(Chapter chapter);
 
-  Future<Either<Failure, DownloadChapter>> findChapter(String idChapter);
+  Future<Either<Failure, Chapter>> findChapter(String idChapter);
 
   Future<bool> deteleChapter(String idChapter);
 
-  Future<List<DownloadChapter>> getAllChapter(String mangaId);
+  Future<List<Chapter>> getAllChapter(String mangaId);
 
-  Future<Either<Failure, Stream<DownloadChapter?>>> watchDownloadChapterItem(
+  Future<Either<Failure, Stream<Chapter?>>> watchDownloadChapterItem(
       String idChapter);
-
-  Future<DownloadChapRepository> downloadChap(DownloadChapParams params);
 }

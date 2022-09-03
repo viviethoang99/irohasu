@@ -24,5 +24,6 @@ void _registerHiveTypeAdapters() {
     ..registerAdapter<MangaDetailDto>(MangaDetailDtoAdapter())
     ..registerAdapter<ChapterItemDto>(ChapterItemDtoAdapter())
     ..registerAdapter<GenresDto>(GenresDtoAdapter())
-    ..registerAdapter<DownloadChapterDto>(DownloadChapterDtoAdapter());
+    ..registerAdapter<ChapterDto>(ChapterDtoAdapter())
+    ..registerAdapter<ChapterImageDto>(ChapterImageDtoAdapter());
 }

@@ -4,7 +4,8 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../chapter.dart';
+import '../../../chapter/chapter.dart';
+import '../../download.dart';
 
 part 'download_chap_state.dart';
 
@@ -42,7 +43,7 @@ class DownloadChapCubit extends Cubit<DownloadChapState> {
     );
   }
 
-  DownloadChapState changeStatus(DownloadChapter? event) {
+  DownloadChapState changeStatus(Chapter? event) {
     return event != null ? DownloadingState(event) : DownloadChapInitial();
   }
 }

@@ -6,6 +6,7 @@ import '../../env.dart';
 import '../../features/features.dart';
 import '../config/routes/app_routes.dart';
 import '../features/chapter/chapter.dart';
+import '../features/download/download.dart';
 import '../features/manga/manga.dart';
 import '../features/shared/shared.dart';
 

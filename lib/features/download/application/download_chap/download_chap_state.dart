@@ -12,7 +12,7 @@ class DownloadChapInitial extends DownloadChapState {}
 class DownloadingState extends DownloadChapState {
   const DownloadingState(this.chapter);
 
-  final DownloadChapter? chapter;
+  final Chapter? chapter;
 
   @override
   List<Object?> get props => [chapter];

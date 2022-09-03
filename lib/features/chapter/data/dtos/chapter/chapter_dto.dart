@@ -1,7 +1,12 @@
+import 'package:hive_flutter/adapters.dart';
+
 import '../../../../../core/core.dart';
 import '../../../../../env.dart';
 import '../../../chapter.dart';
 
+part 'chapter_dto.g.dart';
+
+@HiveType(typeId: 3)
 class ChapterDto {
   const ChapterDto({
     this.id,
@@ -44,14 +49,12 @@ class ChapterDto {
 
   factory ChapterDto.fromEntitie(Chapter chapter) {
     return ChapterDto(
-      id: chapter.id,
-      title: chapter.title,
-      endpoint: chapter.endpoint,
-      nameManga: chapter.nameManga,
-      listImage: [],
-      nextChapter: chapter.nextChapter
-
-    );
+        id: chapter.id,
+        title: chapter.title,
+        endpoint: chapter.endpoint,
+        nameManga: chapter.nameManga,
+        listImage: [],
+        nextChapter: chapter.nextChapter);
   }
 
   Chapter toEntity() {
@@ -69,12 +72,24 @@ class ChapterDto {
 
   String get idManga => mangaEndpoint?.split('/')[0] ?? 'valid';
 
+  @HiveField(0)
   final String? id;
+  @HiveField(1)
   final String? title;
+  @HiveField(2)
   final String? endpoint;
+  @HiveField(3)
   final String? mangaEndpoint;
+  @HiveField(4)
   final String? nameManga;
+  @HiveField(5)
   final List<ChapterImageDto> listImage;
+  @HiveField(6)
   final String? prevChapter;
+  @HiveField(7)
   final String? nextChapter;
+}
+
+extension ListChapterDtoX on List<ChapterDto> {
+  List<Chapter> toEntities() => map((chapter) => chapter.toEntity()).toList();
 }

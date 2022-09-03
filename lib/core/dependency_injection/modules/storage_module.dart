@@ -23,8 +23,8 @@ abstract class StorageModule {
   @preResolve
   @lazySingleton
   @Named('download_chapter_box')
-  Future<Box<DownloadChapterDto>> get chapterBox async {
-    return Hive.openBox<DownloadChapterDto>('download_chapter_box');
+  Future<Box<ChapterDto>> get chapterBox async {
+    return Hive.openBox<ChapterDto>('download_chapter_box');
   }
 
   @preResolve

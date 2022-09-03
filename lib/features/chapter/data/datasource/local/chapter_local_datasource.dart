@@ -4,15 +4,15 @@ import 'package:injectable/injectable.dart';
 import '../../../chapter.dart';
 
 abstract class IChapterLocalDatasource {
-  DownloadChapterDto saveChapter(DownloadChapterDto chapter);
+  ChapterDto saveChapter(ChapterDto chapter);
 
-  DownloadChapterDto? findChapter(String idChapter);
+  ChapterDto? findChapter(String idChapter);
 
-  Stream<DownloadChapterDto?> watchChapterDownload(String idChapter);
+  Stream<ChapterDto?> watchChapterDownload(String idChapter);
 
   Future<bool> deteleChapter(String idChapter);
 
-  List<DownloadChapterDto> getAllChapter(String mangaId);
+  List<ChapterDto> getAllChapter(String mangaId);
 }
 
 @Injectable(as: IChapterLocalDatasource)
@@ -21,7 +21,7 @@ class ChapterLocalDatasource implements IChapterLocalDatasource {
     @Named('download_chapter_box') this._box,
   );
 
-  final Box<DownloadChapterDto> _box;
+  final Box<ChapterDto> _box;
 
   @override
   Future<bool> deteleChapter(String idChapter) async {
@@ -34,23 +34,23 @@ class ChapterLocalDatasource implements IChapterLocalDatasource {
   }
 
   @override
-  DownloadChapterDto? findChapter(String idChapter) {
+  ChapterDto? findChapter(String idChapter) {
     return _box.get(idChapter);
   }
 
   @override
-  List<DownloadChapterDto> getAllChapter(String mangaId) {
+  List<ChapterDto> getAllChapter(String mangaId) {
     return _box.values.where((chapter) => chapter.idManga == mangaId).toList();
   }
 
   @override
-  DownloadChapterDto saveChapter(DownloadChapterDto chapter) {
-    _box.put(chapter.idChapter, chapter);
+  ChapterDto saveChapter(ChapterDto chapter) {
+    _box.put(chapter.id, chapter);
     return chapter;
   }
 
   @override
-  Stream<DownloadChapterDto?> watchChapterDownload(String idChapter) {
+  Stream<ChapterDto?> watchChapterDownload(String idChapter) {
     return _box.watch(key: idChapter).map((_) => findChapter(idChapter));
   }
 }
