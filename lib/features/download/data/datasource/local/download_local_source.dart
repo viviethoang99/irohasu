@@ -1,7 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
+
+import '../../../../chapter/chapter.dart';
 
 abstract class IDownloadLocalSource {
   Future<List<String>> getPathsImageChapter(List<String> tasks);
@@ -9,10 +12,20 @@ abstract class IDownloadLocalSource {
   Future<int> getProgress(List<String> tasks);
 
   Future<bool> deleteImageChapter(List<String> paths);
+
+  Stream<List<String>> watchListChapterDownload(String idManga);
+
+  List<String> findAllChapterDownload(String idManga);
 }
 
 @Injectable(as: IDownloadLocalSource)
 class DownloadLocalSourceImpl implements IDownloadLocalSource {
+  const DownloadLocalSourceImpl(
+    @Named('download_chapter_box') this._box,
+  );
+
+  final Box<ChapterDto> _box;
+
   @override
   Future<List<String>> getPathsImageChapter(List<String> tasks) async {
     var paths = <String>[];
@@ -52,5 +65,18 @@ class DownloadLocalSourceImpl implements IDownloadLocalSource {
     } catch (_) {
       return false;
     }
+  }
+
+  @override
+  Stream<List<String>> watchListChapterDownload(String idManga) {
+    return _box.watch().map((_) => findAllChapterDownload(idManga));
+  }
+
+  @override
+  List<String> findAllChapterDownload(String idManga) {
+    return _box.values
+        .where((chapter) => chapter.idManga == idManga)
+        .map((chap) => chap.id ?? '')
+        .toList();
   }
 }

@@ -17,6 +17,7 @@ class ChapterDto {
     this.nameManga,
     this.nextChapter,
     this.prevChapter,
+    this.isDataLocal = false,
   });
 
   factory ChapterDto.fromHTML(DartSoup data, String endpoint) {
@@ -24,7 +25,7 @@ class ChapterDto {
     final responseLink = data.findAll('.linkchapter > a');
 
     return ChapterDto(
-      id: endpoint.substring(1),
+      id: endpoint.toId,
       title: data.call('header > h1')?.text,
       endpoint: endpoint,
       mangaEndpoint: responseLink[3].attributes['href'],
@@ -44,17 +45,24 @@ class ChapterDto {
           .searchListByAttr(id: 'head > link', attr: 'rel', equal: 'Next')
           ?.attributes['href']
           ?.replaceAll(ENV.webPage, ''),
+      isDataLocal: false,
     );
   }
 
   factory ChapterDto.fromEntitie(Chapter chapter) {
     return ChapterDto(
-        id: chapter.id,
-        title: chapter.title,
-        endpoint: chapter.endpoint,
-        nameManga: chapter.nameManga,
-        listImage: [],
-        nextChapter: chapter.nextChapter);
+      id: chapter.id,
+      title: chapter.title,
+      endpoint: chapter.endpoint,
+      nameManga: chapter.nameManga,
+      mangaEndpoint: chapter.mangaEndpoint,
+      listImage: List<ChapterImageDto>.from(
+        (chapter.listImage ?? []).map(ChapterImageDto.fromModel),
+      ),
+      nextChapter: chapter.nextChapter,
+      prevChapter: chapter.prevChapter,
+      isDataLocal: true,
+    );
   }
 
   Chapter toEntity() {
@@ -67,10 +75,11 @@ class ChapterDto {
       listImage: listImage.toPages(),
       prevChapter: prevChapter,
       nextChapter: nextChapter,
+      isDataLocal: isDataLocal,
     );
   }
 
-  String get idManga => mangaEndpoint?.split('/')[0] ?? 'valid';
+  String get idManga => mangaEndpoint?.split('/')[1] ?? 'valid';
 
   @HiveField(0)
   final String? id;
@@ -88,6 +97,8 @@ class ChapterDto {
   final String? prevChapter;
   @HiveField(7)
   final String? nextChapter;
+  @HiveField(8)
+  final bool isDataLocal;
 }
 
 extension ListChapterDtoX on List<ChapterDto> {

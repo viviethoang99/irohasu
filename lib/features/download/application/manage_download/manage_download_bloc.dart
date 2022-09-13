@@ -19,6 +19,7 @@ class ManageDownloadBloc
   ) : super(const ManageDownloadState()) {
     on<AddChapterEvent>(_addChapter);
     on<DownloadChapterEvent>(_downloadChapter);
+    on<AddMangaEvent>(_downloadManga);
   }
 
   final FetchDataChapterUsecase _fetchDataChapterUsecase;
@@ -58,8 +59,19 @@ class ManageDownloadBloc
     if (state.chapterWait.isNotEmpty) {
       final url = state.chapterWait.first;
       emit(state.removeChapterWaitByEndpoint(url));
-
       add(DownloadChapterEvent(url));
+    }
+  }
+
+  Future<void> _downloadManga(
+    AddMangaEvent event,
+    Emitter<ManageDownloadState> emit,
+  ) async {
+    emit(state.copyWith(
+      chapterWait: [...state.chapterWait, ...event.listEndpoint],
+    ));
+    if (state.chapterDownload.length < 2) {
+      add(DownloadChapterEvent(state.chapterWait.first));
     }
   }
 }

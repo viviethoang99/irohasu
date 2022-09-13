@@ -16,6 +16,11 @@ class ChapterRepositoryImp implements IChapterRepository {
 
   @override
   Future<Either<Failure, Chapter>> getChapter(String endpoint) async {
+    late final ChapterDto? chapter;
+    chapter = chapterLocal.findChapter(endpoint.toId);
+    if (chapter != null) {
+      return Right(chapter.toEntity());
+    }
     final repository = await chapterServices.getChapter(endpoint);
     return repository.fold(
       (l) => Left(ServerFailure()),
@@ -29,9 +34,9 @@ class ChapterRepositoryImp implements IChapterRepository {
   }
 
   @override
-  Future<Either<Failure, Chapter>> findChapter(String idChapter) async {
+  Future<Chapter?> findChapter(String idChapter) async {
     final result = chapterLocal.findChapter(idChapter);
-    return result != null ? Right(result.toEntity()) : Left(CacheFailure());
+    return result?.toEntity();
   }
 
   @override
@@ -44,14 +49,5 @@ class ChapterRepositoryImp implements IChapterRepository {
   Future<List<Chapter>> getAllChapter(String mangaId) async {
     final response = chapterLocal.getAllChapter(mangaId);
     return response.map((chapter) => chapter.toEntity()).toList();
-  }
-
-  @override
-  Future<Either<Failure, Stream<Chapter?>>> watchDownloadChapterItem(
-      String idChapter) async {
-    return right(chapterLocal
-            .watchChapterDownload(idChapter)
-            .map((event) => event?.toEntity()))
-        .fold((l) => Left(ServerFailure()), Right.new);
   }
 }

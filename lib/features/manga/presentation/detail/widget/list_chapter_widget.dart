@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/core.dart';
 import '../../../../chapter/presentation/chapter_screens/chapter_screen.dart';
+import '../../../../download/presentation/widget/download_button_widget.dart';
 import '../../../manga.dart';
 
 class ListChapterWidget extends StatefulWidget {
@@ -68,7 +69,10 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
               height: 5,
             ),
           ),
-          _ListChapterWidget(isReversed: _isReversed),
+          _ListChapterWidget(
+            isReversed: _isReversed,
+            color: widget.color,
+          ),
         ],
       ),
     );
@@ -79,10 +83,12 @@ class _ListChapterWidget extends StatelessWidget {
   const _ListChapterWidget({
     Key? key,
     required bool isReversed,
+    required this.color,
   })  : _isReversed = isReversed,
         super(key: key);
 
   final bool _isReversed;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -129,6 +135,11 @@ class _ListChapterWidget extends StatelessWidget {
                         chapter.createAt.dateToString(),
                         style:
                             theme.textTheme.subtitle1?.copyWith(fontSize: 12),
+                      ),
+                      trailing: DownloadButtonWidget(
+                        key: ValueKey('CHAPTER_ITEM_${chapter.id}'),
+                        item: chapter,
+                        color: color,
                       ),
                       onTap: () {
                         Navigator.of(context).pushNamed(

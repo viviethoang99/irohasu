@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:isolate';
-import 'dart:ui';
 
 import 'package:bloc/bloc.dart';
 import 'package:device_info/device_info.dart';
@@ -10,12 +9,9 @@ import 'package:injectable/injectable.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import '../../../../core/utils/tool_methods.dart';
 import '../../github.dart';
 
 part 'update_app_state.dart';
-
-ReceivePort _port = ReceivePort();
 
 @injectable
 class UpdateAppCubit extends Cubit<UpdateAppState> {
@@ -28,9 +24,9 @@ class UpdateAppCubit extends Cubit<UpdateAppState> {
 
   final GetLatestReleaseUseCase _latestReleaseUseCase;
   final GetDownloadPathUseCase _getDownloadPathUseCase;
+  final ReceivePort _port = ReceivePort();
 
   Future<void> init() async {
-    _bindBackgroundIsolate();
     return _checkVersionApp();
   }
 
@@ -43,26 +39,6 @@ class UpdateAppCubit extends Cubit<UpdateAppState> {
       (l) => emit(UpdateAppSuccess()),
       (r) => checkUpdate(currentVersion, r),
     );
-  }
-
-  void _bindBackgroundIsolate() {
-    final isSuccess = IsolateNameServer.registerPortWithName(
-      _port.sendPort,
-      'downloader_send_port',
-    );
-    if (!isSuccess) {
-      ToolMethods.unbindBackgroundIsolate();
-      _bindBackgroundIsolate();
-      return;
-    }
-    _port.listen((dynamic data) {
-      final taskId = (data as List<dynamic>)[0] as String;
-      final status = data[1] as DownloadTaskStatus;
-
-      if (status == DownloadTaskStatus.complete) {
-        _openDownloadedFile(taskId);
-      }
-    });
   }
 
   Future<void> checkUpdate(String currentVersion, ReleaseApp appInfo) async {
@@ -114,12 +90,20 @@ class UpdateAppCubit extends Cubit<UpdateAppState> {
 
   Future<void> _requestDownload(String url, String localPath) async {
     await prepareSaveDir(localPath);
-    await FlutterDownloader.enqueue(
+    final id = await FlutterDownloader.enqueue(
       url: url,
       savedDir: localPath,
       saveInPublicStorage: true,
       openFileFromNotification: true,
     );
+    _port.listen((dynamic data) {
+      final taskId = (data as List<dynamic>)[0] as String;
+      final status = data[1] as DownloadTaskStatus;
+
+      if (status == DownloadTaskStatus.complete && taskId == id) {
+        _openDownloadedFile(taskId);
+      }
+    });
   }
 
   Future<bool> _openDownloadedFile(String? taskId) {
@@ -140,7 +124,6 @@ class UpdateAppCubit extends Cubit<UpdateAppState> {
 
   @override
   Future<void> close() {
-    ToolMethods.unbindBackgroundIsolate();
     _port.close();
     return super.close();
   }

@@ -25,13 +25,14 @@ class ChapterDtoAdapter extends TypeAdapter<ChapterDto> {
       nameManga: fields[4] as String?,
       nextChapter: fields[7] as String?,
       prevChapter: fields[6] as String?,
+      isDataLocal: fields[8] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, ChapterDto obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -47,7 +48,9 @@ class ChapterDtoAdapter extends TypeAdapter<ChapterDto> {
       ..writeByte(6)
       ..write(obj.prevChapter)
       ..writeByte(7)
-      ..write(obj.nextChapter);
+      ..write(obj.nextChapter)
+      ..writeByte(8)
+      ..write(obj.isDataLocal);
   }
 
   @override

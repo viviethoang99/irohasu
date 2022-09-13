@@ -8,12 +8,9 @@ abstract class IChapterRepository {
 
   Future<Chapter> saveChapter(Chapter chapter);
 
-  Future<Either<Failure, Chapter>> findChapter(String idChapter);
+  Future<Chapter?> findChapter(String idChapter);
 
   Future<bool> deteleChapter(String idChapter);
 
   Future<List<Chapter>> getAllChapter(String mangaId);
-
-  Future<Either<Failure, Stream<Chapter?>>> watchDownloadChapterItem(
-      String idChapter);
 }

@@ -8,6 +8,7 @@ class ChapterItem extends Equatable {
     required this.title,
     required this.endpoint,
     required this.createAt,
+    this.processDownload = 0,
     this.isDownload = '',
     this.isReading = false,
     this.progressReading = 0,
@@ -27,6 +28,7 @@ class ChapterItem extends Equatable {
   final String? endpoint;
   final DateTime? createAt;
   final int progressReading;
+  final int processDownload;
   final bool isReading;
   final String? isDownload;
   final String? title;
@@ -41,6 +43,7 @@ class ChapterItem extends Equatable {
         progressReading,
         isReading,
         isDownload,
+        processDownload,
         timeReading,
       ];
 }

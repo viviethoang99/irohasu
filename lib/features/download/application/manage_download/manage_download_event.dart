@@ -16,7 +16,14 @@ class AddChapterEvent extends ManageDownloadEvent {
   List<Object> get props => [endpoint];
 }
 
-class AddMangaEvent extends ManageDownloadEvent {}
+class AddMangaEvent extends ManageDownloadEvent {
+  const AddMangaEvent(this.listEndpoint);
+
+  final List<String> listEndpoint;
+
+  @override
+  List<Object> get props => [listEndpoint];
+}
 
 class DeleteMangaEvent extends ManageDownloadEvent {}
 
@@ -24,7 +31,7 @@ class DeleteChapterEvent extends ManageDownloadEvent {}
 
 class DownloadChapterEvent extends ManageDownloadEvent {
   const DownloadChapterEvent(this.endpoint);
-  
+
   final String endpoint;
 
   @override

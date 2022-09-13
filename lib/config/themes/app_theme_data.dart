@@ -13,8 +13,6 @@ class AppTheme {
       fontFamily: _fontFamily,
       textButtonTheme: TextButtonThemeData(
           style: TextButton.styleFrom(
-        primary: Colors.teal,
-        onSurface: Colors.red,
         side: const BorderSide(
           color: AppColors.blue,
           width: 3,

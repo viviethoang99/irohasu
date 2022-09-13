@@ -3,6 +3,7 @@ import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/core.dart';
+import '../../../../../env.dart';
 import '../../../domain/domain.dart';
 import '../../dtos/dtos.dart';
 
@@ -23,11 +24,12 @@ class DownloadApiSourceImpl implements IDownloadApiSource {
       var data = <String>[];
       for (final item in params.chapter.listImage ?? []) {
         final taskId = await FlutterDownloader.enqueue(
+          headers: ENV.headersBuilder,
           url: item.urlImage!,
           savedDir: params.saveDirPath,
-          fileName: item.number.toString(),
           showNotification: false,
           openFileFromNotification: false,
+          requiresStorageNotLow: false,
         );
         data.add(taskId ?? '');
       }

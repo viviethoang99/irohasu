@@ -21,6 +21,13 @@ class ChapterImageDto {
     );
   }
 
+  factory ChapterImageDto.fromModel(ChapterImage image) {
+    return ChapterImageDto(
+      number: image.number,
+      urlImage: image.urlImage,
+    );
+  }
+
   ChapterImage toModel() {
     return ChapterImage(
       number: number,

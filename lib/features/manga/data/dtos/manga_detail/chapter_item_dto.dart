@@ -24,7 +24,7 @@ class ChapterItemDto {
     final dateToString = DateFormat('dd/MM/yyyy hh:mm').parse(dateTime ?? '');
     final endpoint = data.querySelector('.title > a')?.attributes['href'];
     return ChapterItemDto(
-      id: endpoint?.substring(2, 8),
+      id: endpoint?.split('/')[1],
       title: data.querySelector('.title > a')?.text,
       endpoint: endpoint,
       createAt: dateToString,

@@ -8,8 +8,6 @@ abstract class IChapterLocalDatasource {
 
   ChapterDto? findChapter(String idChapter);
 
-  Stream<ChapterDto?> watchChapterDownload(String idChapter);
-
   Future<bool> deteleChapter(String idChapter);
 
   List<ChapterDto> getAllChapter(String mangaId);
@@ -47,10 +45,5 @@ class ChapterLocalDatasource implements IChapterLocalDatasource {
   ChapterDto saveChapter(ChapterDto chapter) {
     _box.put(chapter.id, chapter);
     return chapter;
-  }
-
-  @override
-  Stream<ChapterDto?> watchChapterDownload(String idChapter) {
-    return _box.watch(key: idChapter).map((_) => findChapter(idChapter));
   }
 }

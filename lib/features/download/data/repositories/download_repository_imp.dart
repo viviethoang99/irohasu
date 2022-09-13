@@ -1,6 +1,8 @@
+import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../chapter/chapter.dart';
 import '../../domain/repository/repository.dart';
 import '../../domain/usecase/download_usecase/download_chap_usecase.dart';
 import '../datasource/local/download_local_source.dart';
@@ -28,12 +30,30 @@ class DownloadRepositoryImpl implements IDownloadRepository {
   }
 
   @override
-  Future<List<String>> getPathsImage(List<String> tasks) {
-    return _localSource.getPathsImageChapter(tasks);
+  Future<List<ChapterImage>> getPathsImage(List<String>? tasks) async {
+    if (tasks?.isEmpty ?? true) {
+      return Future.value([]);
+    }
+    final listPath = await _localSource.getPathsImageChapter(tasks!);
+    return List<ChapterImage>.from(
+      listPath.mapIndexed(
+        (index, element) => ChapterImage(urlImage: element, number: index),
+      ),
+    );
   }
 
   @override
   Future<int> getProgress(List<String> tasks) {
     return _localSource.getProgress(tasks);
+  }
+
+  @override
+  Stream<List<String>> watchListChapterDownload(String idManga) {
+    return _localSource.watchListChapterDownload(idManga);
+  }
+
+  @override
+  List<String> findAllChapterDownload(String idManga) {
+    return _localSource.findAllChapterDownload(idManga);
   }
 }
