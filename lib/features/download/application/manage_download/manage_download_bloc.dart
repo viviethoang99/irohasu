@@ -4,27 +4,35 @@ import 'package:injectable/injectable.dart';
 
 import '../../../chapter/domain/usecase/chapter_usecase/fetch_data_chapter_usecase.dart';
 import '../../../github/domain/usecase/setting_usecase/get_download_path_usecase.dart';
+import '../../domain/usecase/download_usecase/delete_chapter_usecase.dart';
+import '../../domain/usecase/download_usecase/delete_manga_usecase.dart';
 import '../../domain/usecase/download_usecase/download_chap_usecase.dart';
 
 part 'manage_download_event.dart';
 part 'manage_download_state.dart';
 
-@injectable
+@lazySingleton
 class ManageDownloadBloc
     extends Bloc<ManageDownloadEvent, ManageDownloadState> {
   ManageDownloadBloc(
     this._fetchDataChapterUsecase,
     this._downloadChapUsecase,
     this._getDownloadPathUseCase,
+    this._deleteChapUsecase,
+    this._deleteMangaUsecase,
   ) : super(const ManageDownloadState()) {
     on<AddChapterEvent>(_addChapter);
     on<DownloadChapterEvent>(_downloadChapter);
     on<AddMangaEvent>(_downloadManga);
+    on<DeleteChapterEvent>(_deleteChapter);
+    on<DeleteMangaEvent>(_deleteManga);
   }
 
   final FetchDataChapterUsecase _fetchDataChapterUsecase;
   final DownloadChapUsecase _downloadChapUsecase;
   final GetDownloadPathUseCase _getDownloadPathUseCase;
+  final DeleteMangaUsecase _deleteMangaUsecase;
+  final DeleteChapUsecase _deleteChapUsecase;
 
   Future<void> _addChapter(
     AddChapterEvent event,
@@ -73,5 +81,19 @@ class ManageDownloadBloc
     if (state.chapterDownload.length < 2) {
       add(DownloadChapterEvent(state.chapterWait.first));
     }
+  }
+
+  Future<void> _deleteChapter(
+    DeleteChapterEvent event,
+    Emitter<ManageDownloadState> emit,
+  ) async {
+    _deleteChapUsecase.call(params: event.idChapter);
+  }
+
+  Future<void> _deleteManga(
+    DeleteMangaEvent event,
+    Emitter<ManageDownloadState> emit,
+  ) async {
+    _deleteMangaUsecase.call(params: event.idManga);
   }
 }

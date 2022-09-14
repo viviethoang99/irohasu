@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
@@ -16,6 +14,8 @@ abstract class IDownloadLocalSource {
   Stream<List<String>> watchListChapterDownload(String idManga);
 
   List<String> findAllChapterDownload(String idManga);
+
+  Future<ChapterDto?> deleteChapter(String idChapter);
 }
 
 @Injectable(as: IDownloadLocalSource)
@@ -55,11 +55,11 @@ class DownloadLocalSourceImpl implements IDownloadLocalSource {
   @override
   Future<bool> deleteImageChapter(List<String> paths) async {
     try {
-      for (var path in paths) {
-        final file = File(path);
-        if (await file.exists()) {
-          await file.delete();
-        }
+      for (var taskId in paths) {
+        await FlutterDownloader.remove(
+          taskId: taskId,
+          shouldDeleteContent: true,
+        );
       }
       return true;
     } catch (_) {
@@ -78,5 +78,15 @@ class DownloadLocalSourceImpl implements IDownloadLocalSource {
         .where((chapter) => chapter.idManga == idManga)
         .map((chap) => chap.id ?? '')
         .toList();
+  }
+
+  @override
+  Future<ChapterDto?> deleteChapter(String idChapter) async {
+    if (_box.containsKey(idChapter)) {
+      final chapter = _box.get(idChapter);
+      await _box.delete(idChapter);
+      return chapter;
+    }
+    return Future.value();
   }
 }

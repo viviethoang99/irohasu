@@ -25,9 +25,23 @@ class AddMangaEvent extends ManageDownloadEvent {
   List<Object> get props => [listEndpoint];
 }
 
-class DeleteMangaEvent extends ManageDownloadEvent {}
+class DeleteMangaEvent extends ManageDownloadEvent {
+  const DeleteMangaEvent(this.idManga);
 
-class DeleteChapterEvent extends ManageDownloadEvent {}
+  final String idManga;
+
+  @override
+  List<Object> get props => [idManga];
+}
+
+class DeleteChapterEvent extends ManageDownloadEvent {
+  const DeleteChapterEvent(this.idChapter);
+  
+  final String idChapter;
+
+  @override
+  List<Object> get props => [idChapter];
+}
 
 class DownloadChapterEvent extends ManageDownloadEvent {
   const DownloadChapterEvent(this.endpoint);

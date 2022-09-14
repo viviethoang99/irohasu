@@ -56,4 +56,21 @@ class DownloadRepositoryImpl implements IDownloadRepository {
   List<String> findAllChapterDownload(String idManga) {
     return _localSource.findAllChapterDownload(idManga);
   }
+
+  @override
+  Future<void> deleteChapter(String idChapter) async {
+    final chapter = await _localSource.deleteChapter(idChapter);
+    final listTask = chapter?.listImage.map((e) => e.urlImage ?? '').toList();
+    await _localSource.deleteImageChapter(listTask ?? []);
+    return Future.value();
+  }
+
+  @override
+  Future<void> deleteManga(String idManga) async {
+    final listChap = _localSource.findAllChapterDownload(idManga);
+    for (var chap in listChap) {
+      await deleteChapter(chap);
+    }
+    return Future.value();
+  }
 }

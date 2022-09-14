@@ -20,17 +20,24 @@ class DownloadButtonWidget extends StatelessWidget {
       selector: (state) => state.contains(item.id),
       builder: (context, state) {
         if (state) {
-          return Container(
-            height: 25,
-            width: 25,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: color,
-            ),
-            child: const Icon(
-              Icons.arrow_downward,
-              size: 20,
-              color: Colors.white,
+          return GestureDetector(
+            onTap: () {
+              context
+                  .read<ManageDownloadBloc>()
+                  .add(DeleteChapterEvent(item.endpoint!));
+            },
+            child: Container(
+              height: 25,
+              width: 25,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: color,
+              ),
+              child: const Icon(
+                Icons.arrow_downward,
+                size: 20,
+                color: Colors.white,
+              ),
             ),
           );
         }

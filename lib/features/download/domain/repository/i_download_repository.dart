@@ -18,4 +18,8 @@ abstract class IDownloadRepository {
   Stream<List<String>> watchListChapterDownload(String idManga);
 
   List<String> findAllChapterDownload(String idManga);
+
+  Future<void> deleteChapter(String idChapter);
+
+  Future<void> deleteManga(String idManga);
 }
