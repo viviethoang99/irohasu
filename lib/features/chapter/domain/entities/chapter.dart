@@ -12,6 +12,7 @@ class Chapter extends Equatable {
     this.nameManga,
     this.nextChapter,
     this.prevChapter,
+    required this.isDataLocal,
   });
 
   final String? id;
@@ -22,6 +23,31 @@ class Chapter extends Equatable {
   final List<ChapterImage>? listImage;
   final String? prevChapter;
   final String? nextChapter;
+  final bool isDataLocal;
+
+  Chapter copyWith({
+    String? id,
+    String? title,
+    String? endpoint,
+    String? mangaEndpoint,
+    String? nameManga,
+    List<ChapterImage>? listImage,
+    String? prevChapter,
+    String? nextChapter,
+    bool? isDataLocal,
+  }) {
+    return Chapter(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      endpoint: endpoint ?? this.endpoint,
+      mangaEndpoint: mangaEndpoint ?? this.mangaEndpoint,
+      nameManga: nameManga ?? this.nameManga,
+      listImage: listImage ?? this.listImage,
+      prevChapter: prevChapter ?? this.prevChapter,
+      nextChapter: nextChapter ?? this.nextChapter,
+      isDataLocal: isDataLocal ?? this.isDataLocal,
+    );
+  }
 
   @override
   List<Object?> get props => [
@@ -31,6 +57,8 @@ class Chapter extends Equatable {
         mangaEndpoint,
         nameManga,
         listImage,
+        prevChapter,
+        nextChapter,
       ];
 }
 

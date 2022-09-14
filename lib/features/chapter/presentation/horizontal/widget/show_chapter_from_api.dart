@@ -27,9 +27,7 @@ class __ShowChapterFromAPIState extends State<_ShowChapterFromAPI> {
     final prePage = SizeConfig.screenWidth * 0.3;
     final nextPage = SizeConfig.screenWidth * 0.7;
     return BlocConsumer<ManagePagesCubit, ManagePagesState>(
-      listenWhen: (previous, current) {
-        return previous.currentPage != current.currentPage;
-      },
+      listenWhen: (pre, cur) => pre.currentPage != cur.currentPage,
       listener: (_, state) {
         _pageController.animateToPage(
           state.currentPage,
@@ -58,15 +56,17 @@ class __ShowChapterFromAPIState extends State<_ShowChapterFromAPI> {
                 builder: (context, index) {
                   final image = state.chapter?.listImage?[index];
                   return PhotoViewGalleryPageOptions(
-                    imageProvider: NetworkImage(
-                      image?.urlImage ?? '',
-                      headers: ENV.headersBuilder,
-                    ),
+                    imageProvider: state.chapter!.isDataLocal
+                        ? FileImage(File(image!.urlImage!)) as ImageProvider
+                        : NetworkImage(
+                            image!.urlImage!,
+                            headers: ENV.headersBuilder,
+                          ),
                     minScale: PhotoViewComputedScale.contained,
                     maxScale: PhotoViewComputedScale.contained * 2,
                     initialScale: PhotoViewComputedScale.contained,
                     heroAttributes: PhotoViewHeroAttributes(
-                      tag: image!.number!,
+                      tag: image.number!,
                     ),
                   );
                 },

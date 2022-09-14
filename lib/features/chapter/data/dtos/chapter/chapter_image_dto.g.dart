@@ -1,32 +1,35 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'setting_app.dart';
+part of 'chapter_image_dto.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class SettingAppAdapter extends TypeAdapter<SettingApp> {
+class ChapterImageDtoAdapter extends TypeAdapter<ChapterImageDto> {
   @override
-  final int typeId = 3;
+  final int typeId = 4;
 
   @override
-  SettingApp read(BinaryReader reader) {
+  ChapterImageDto read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return SettingApp(
-      theme: fields[0] as String?,
+    return ChapterImageDto(
+      urlImage: fields[0] as String?,
+      number: fields[1] as int?,
     );
   }
 
   @override
-  void write(BinaryWriter writer, SettingApp obj) {
+  void write(BinaryWriter writer, ChapterImageDto obj) {
     writer
-      ..writeByte(1)
+      ..writeByte(2)
       ..writeByte(0)
-      ..write(obj.theme);
+      ..write(obj.urlImage)
+      ..writeByte(1)
+      ..write(obj.number);
   }
 
   @override
@@ -35,7 +38,7 @@ class SettingAppAdapter extends TypeAdapter<SettingApp> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is SettingAppAdapter &&
+      other is ChapterImageDtoAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

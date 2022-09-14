@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/core.dart';
+import '../../../download/download.dart';
 import '../../../shared/shared.dart';
 import '../../manga.dart';
 
@@ -28,6 +29,10 @@ class MangaDetailScreen extends StatelessWidget {
           create: (_) => getIt<FavoriteMangaDetailBloc>(param1: endpoint)
             ..add(GetStatusFavoriteManga()),
         ),
+        BlocProvider(
+          create: (_) =>
+              getIt<DownloadMangaCubit>(param1: endpoint.toId)..watchManga(),
+        )
       ],
       child: BlocConsumer<MangaDetailBloc, MangaDetailState>(
         listenWhen: (pre, cur) => pre.runtimeType != cur.runtimeType,

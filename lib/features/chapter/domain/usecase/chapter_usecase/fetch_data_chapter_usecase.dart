@@ -4,7 +4,7 @@ import 'package:injectable/injectable.dart';
 import '../../../../../core/core.dart';
 import '../../domain.dart';
 
-@lazySingleton
+@injectable
 class FetchDataChapterUsecase implements UseCase<Chapter, String> {
   const FetchDataChapterUsecase(this._repository);
 

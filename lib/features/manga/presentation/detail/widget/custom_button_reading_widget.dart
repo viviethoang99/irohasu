@@ -19,8 +19,6 @@ class CustomButtonReadingWidget extends StatelessWidget {
     return TextButton(
       style: TextButton.styleFrom(
         backgroundColor: color,
-        primary: Colors.teal,
-        onSurface: Colors.red,
         side: const BorderSide(
           width: 0,
           color: Colors.transparent,

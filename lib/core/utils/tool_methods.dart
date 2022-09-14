@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:logger/logger.dart';
@@ -18,5 +19,12 @@ class ToolMethods {
 
   static void unbindBackgroundIsolate() {
     IsolateNameServer.removePortNameMapping('downloader_send_port');
+  }
+
+  static Future<void> createFolder(String path) async {
+    final directory = Directory(path);
+    if (!await directory.exists()) {
+      await directory.create(recursive: true);
+    }
   }
 }

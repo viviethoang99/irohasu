@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/core.dart';
-import '../../repositories/repository.dart';
+import '../../repositories/i_setting_app_repository.dart';
 
 @lazySingleton
 class SetBackgroundReadingUseCase

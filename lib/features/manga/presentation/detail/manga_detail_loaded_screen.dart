@@ -2,9 +2,11 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../config/base_colors.dart';
 import '../../../../core/core.dart';
+import '../../../download/download.dart';
 import '../../manga.dart';
 import 'widget/custom_button_reading_widget.dart';
 import 'widget/description_text_widget.dart';
@@ -51,46 +53,59 @@ class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
         floatHeaderSlivers: true,
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [
-            SliverAppBar(
-              elevation: 0,
-              leading: IconButton(
-                icon: Icon(
-                  Icons.arrow_back,
-                  color: theme.primaryColor,
-                ),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-              backgroundColor: innerBoxIsScrolled
-                  ? Theme.of(context).backgroundColor
-                  : Colors.transparent,
-              floating: true,
-              actions: <Widget>[
-                IconButton(
-                  icon: Icon(
-                    Icons.search,
-                    color: theme.primaryColor,
+            BlocBuilder<MangaDetailBloc, MangaDetailState>(
+              builder: (context, state) {
+                return SliverAppBar(
+                  elevation: 0,
+                  leading: IconButton(
+                    icon: Icon(
+                      Icons.arrow_back,
+                      color: theme.primaryColor,
+                    ),
+                    onPressed: () => Navigator.of(context).pop(),
                   ),
-                  onPressed: null,
-                ),
-                IconButton(
-                  icon: Icon(
-                    Icons.get_app,
-                    color: theme.primaryColor,
+                  backgroundColor: innerBoxIsScrolled
+                      ? Theme.of(context).backgroundColor
+                      : Colors.transparent,
+                  floating: true,
+                  actions: <Widget>[
+                    IconButton(
+                      icon: Icon(
+                        Icons.search,
+                        color: theme.primaryColor,
+                      ),
+                      onPressed: null,
+                    ),
+                    IconButton(
+                      icon: Icon(
+                        Icons.get_app,
+                        color: theme.primaryColor,
+                      ),
+                      onPressed: () {
+                        if (state is MangaDetailSuccessState) {
+                          final listEndpoint = state.mangaDetail.listChapter
+                              .map((e) => e.endpoint!)
+                              .toList();
+                          context
+                              .read<ManageDownloadBloc>()
+                              .add(AddMangaEvent(listEndpoint));
+                        }
+                      },
+                    ),
+                    IconButton(
+                      icon: Icon(
+                        Icons.more_vert,
+                        color: theme.primaryColor,
+                      ),
+                      onPressed: null,
+                    ),
+                  ],
+                  title: Text(
+                    innerBoxIsScrolled ? data.title : '',
+                    style: Theme.of(context).textTheme.bodyText1,
                   ),
-                  onPressed: null,
-                ),
-                IconButton(
-                  icon: Icon(
-                    Icons.more_vert,
-                    color: theme.primaryColor,
-                  ),
-                  onPressed: null,
-                ),
-              ],
-              title: Text(
-                innerBoxIsScrolled ? data.title : '',
-                style: Theme.of(context).textTheme.bodyText1,
-              ),
+                );
+              },
             )
           ];
         },

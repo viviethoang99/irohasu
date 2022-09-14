@@ -1,9 +1,13 @@
+import 'package:hive/hive.dart';
 import 'package:html/dom.dart';
 
 import '../../../domain/entities/chapter.dart';
 
+part 'chapter_image_dto.g.dart';
+
 typedef ListPageDto = List<ChapterImageDto>;
 
+@HiveType(typeId: 4)
 class ChapterImageDto {
   const ChapterImageDto({
     required this.urlImage,
@@ -17,6 +21,13 @@ class ChapterImageDto {
     );
   }
 
+  factory ChapterImageDto.fromModel(ChapterImage image) {
+    return ChapterImageDto(
+      number: image.number,
+      urlImage: image.urlImage,
+    );
+  }
+
   ChapterImage toModel() {
     return ChapterImage(
       number: number,
@@ -24,7 +35,9 @@ class ChapterImageDto {
     );
   }
 
+  @HiveField(0)
   final String? urlImage;
+  @HiveField(1)
   final int? number;
 }
 
