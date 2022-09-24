@@ -1,0 +1,1 @@
+export 'iroha_shimmer.dart';

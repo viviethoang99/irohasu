@@ -4,33 +4,71 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/core.dart';
 import '../../../../../env.dart';
+import '../../../../shared/shared.dart';
 import '../../../manga.dart';
 import 'btn_vote_widget.dart';
 
 class HeaderMangaDetail extends StatelessWidget {
-  const HeaderMangaDetail({
-    Key? key,
-    required this.color,
-  }) : super(key: key);
+  const HeaderMangaDetail({super.key});
 
-  final Color color;
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        _ImageBackgroundWidget(color: color),
-        Column(
-          children: [
-            const SizedBox(height: 50),
-            const _InfomationMangaWidget(),
-            btnSocialWidget(),
-          ],
-        ),
-      ],
+    return BlocBuilder<MangaDetailBloc, MangaDetailState>(
+      builder: (context, state) {
+        if (state is MangaDetailLoadingState) {
+          final data = state.params;
+          return Stack(
+            children: <Widget>[
+              _ImageBackgroundWidget(
+                key: ValueKey('$_ImageBackgroundWidget ${data.urlImage}'),
+                color: state.colorManga,
+                thumbnailUrl: data.urlImage,
+              ),
+              Column(
+                children: [
+                  const SizedBox(height: 50),
+                  _InfomationMangaWidget(
+                    key: ValueKey(data.endpoint.toId),
+                    thumbnailUrl: data.urlImage,
+                    title: data.name,
+                  ),
+                  btnSocialWidget(state.colorManga),
+                ],
+              ),
+            ],
+          );
+        }
+        if (state is MangaDetailSuccessState) {
+          final data = state.mangaDetail;
+          return Stack(
+            children: <Widget>[
+              _ImageBackgroundWidget(
+                key: ValueKey('$_ImageBackgroundWidget ${data.thumbnailUrl}'),
+                color: state.colorManga,
+                thumbnailUrl: data.thumbnailUrl,
+              ),
+              Column(
+                children: [
+                  const SizedBox(height: 50),
+                  _InfomationMangaWidget(
+                    key: ValueKey(data.endpoint.toId),
+                    status: data.status,
+                    thumbnailUrl: data.thumbnailUrl,
+                    author: data.author,
+                    title: data.title,
+                  ),
+                  btnSocialWidget(state.colorManga),
+                ],
+              ),
+            ],
+          );
+        }
+        return const SizedBox.shrink();
+      },
     );
   }
 
-  Widget btnSocialWidget() {
+  Widget btnSocialWidget(Color color) {
     return Padding(
       padding: const EdgeInsets.only(left: 12),
       child: Row(
@@ -72,85 +110,93 @@ class HeaderMangaDetail extends StatelessWidget {
 }
 
 class _InfomationMangaWidget extends StatelessWidget {
-  const _InfomationMangaWidget({Key? key}) : super(key: key);
+  const _InfomationMangaWidget({
+    super.key,
+    this.author = '',
+    this.status = '',
+    this.title = '',
+    this.thumbnailUrl = '',
+  });
+
+  final String? title;
+  final String? thumbnailUrl;
+  final String? author;
+  final String? status;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MangaDetailBloc, MangaDetailState>(
-      buildWhen: (pre, cur) => pre.runtimeType != cur.runtimeType,
-      builder: (context, state) {
-        if (state is MangaDetailSuccessState) {
-          return Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                padding: const EdgeInsets.all(15),
-                alignment: Alignment.topCenter,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: CachedNetworkImage(
-                    imageUrl: state.mangaDetail.thumbnailUrl,
-                    httpHeaders: ENV.headersBuilder,
-                    fit: BoxFit.cover,
-                    height: SizeConfig.screenHeight / 5,
-                    width: SizeConfig.screenWidth / 3.5,
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Hero(
+          tag: thumbnailUrl ?? DateTime.now().toString(),
+          child: Container(
+            padding: const EdgeInsets.all(15),
+            alignment: Alignment.topCenter,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: CachedNetworkImage(
+                imageUrl: thumbnailUrl!,
+                httpHeaders: ENV.headersBuilder,
+                fit: BoxFit.cover,
+                height: SizeConfig.screenHeight / 5,
+                width: SizeConfig.screenWidth / 3.5,
+              ),
+            ),
+          ),
+        ),
+        Flexible(
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(right: 10, top: 10),
+                  child: Text(
+                    title!,
+                    style: TextStyle(
+                      fontSize: 17,
+                      color: Theme.of(context).primaryColor,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
-              ),
-              Flexible(
-                child: Align(
-                  alignment: Alignment.topCenter,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(right: 10, top: 10),
-                        child: Text(
-                          state.mangaDetail.title,
-                          style: TextStyle(
-                            fontSize: 17,
-                            color: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                      Text(
-                        state.mangaDetail.author ?? '',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                        state.mangaDetail.status!,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color:
-                              Theme.of(context).primaryColor.withOpacity(0.8),
-                        ),
-                      ),
-                      const BtnVoteWidget()
-                    ],
+                Text(
+                  author!,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Theme.of(context).primaryColor,
                   ),
                 ),
-              ),
-            ],
-          );
-        }
-        return const SizedBox.shrink();
-      },
+                const SizedBox(height: 5),
+                Text(
+                  status!,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Theme.of(context).primaryColor.withOpacity(0.8),
+                  ),
+                ),
+                const BtnVoteWidget()
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
 
 class _ImageBackgroundWidget extends StatelessWidget {
   const _ImageBackgroundWidget({
-    Key? key,
+    super.key,
+    this.thumbnailUrl = '',
     required this.color,
-  }) : super(key: key);
+  });
 
+  final String thumbnailUrl;
   final Color color;
+
   @override
   Widget build(BuildContext context) {
     return ShaderMask(
@@ -164,34 +210,34 @@ class _ImageBackgroundWidget extends StatelessWidget {
         );
       },
       blendMode: BlendMode.dstIn,
-      child: BlocBuilder<MangaDetailBloc, MangaDetailState>(
-        buildWhen: (pre, cur) => pre.runtimeType != cur.runtimeType,
-        builder: (context, state) {
-          if (state is MangaDetailSuccessState) {
-            return CachedNetworkImage(
-              imageUrl: state.mangaDetail.thumbnailUrl,
-              imageBuilder: (context, imageProvider) => Container(
-                width: SizeConfig.screenWidth,
-                height: SizeConfig.screenHeight / 2.5,
-                decoration: BoxDecoration(
-                  color: color,
-                  image: DecorationImage(
-                    image: imageProvider,
-                    fit: BoxFit.fitWidth,
-                    colorFilter: ColorFilter.mode(
-                      Colors.black.withOpacity(0.35),
-                      BlendMode.dstATop,
-                    ),
-                  ),
-                ),
+      child: CachedNetworkImage(
+        imageUrl: thumbnailUrl,
+        imageBuilder: (context, imageProvider) => Container(
+          width: SizeConfig.screenWidth,
+          height: SizeConfig.screenHeight / 2.5,
+          decoration: BoxDecoration(
+            color: color,
+            image: DecorationImage(
+              image: imageProvider,
+              fit: BoxFit.fitWidth,
+              colorFilter: ColorFilter.mode(
+                Colors.black.withOpacity(0.35),
+                BlendMode.dstATop,
               ),
-              httpHeaders: ENV.headersBuilder,
-              placeholder: (context, url) => const CircularProgressIndicator(),
-              errorWidget: (_, url, error) => const Icon(Icons.error),
-            );
-          }
-          return const SizedBox.shrink();
-        },
+            ),
+          ),
+        ),
+        httpHeaders: ENV.headersBuilder,
+        placeholder: (context, url) => IrohaShimmer(
+          child: Container(
+            width: SizeConfig.screenWidth,
+            height: SizeConfig.screenHeight / 2.5,
+            decoration: BoxDecoration(
+              color: color,
+            ),
+          ),
+        ),
+        errorWidget: (_, url, error) => const Icon(Icons.error),
       ),
     );
   }

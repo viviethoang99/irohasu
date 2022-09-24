@@ -33,7 +33,9 @@ class CustomButtonReadingWidget extends StatelessWidget {
         Navigator.of(context).pushNamed(
           ChapterScreen.routeName,
           arguments: ChapterScreen(
-            data: context.read<MangaDetailBloc>().params(lastChapter.endpoint!),
+            data: context
+                .read<MangaDetailBloc>()
+                .paramsChapter(lastChapter.endpoint!),
           ),
         );
       },

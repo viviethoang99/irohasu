@@ -39,7 +39,7 @@ class AppRoutes {
 
         return _pageRoute(
           routeSettings: routeSettings,
-          builder: MangaDetailScreen(endpoint: data.endpoint),
+          builder: MangaDetailScreen(params: data.params),
         );
       case ChapterScreen.routeName:
         var data = args as ChapterScreen;

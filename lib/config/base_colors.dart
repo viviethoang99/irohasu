@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 class AppColors {
@@ -55,4 +57,10 @@ class AppColors {
     AppColors.semiGrey,
     AppColors.violet
   ];
+
+  static Color randomColor() {
+    final random = Random();
+    final index = random.nextInt(AppColors.listColors.length);
+    return AppColors.listColors[index];
+  }
 }

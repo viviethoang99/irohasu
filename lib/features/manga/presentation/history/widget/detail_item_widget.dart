@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../core/core.dart';
 import '../../../manga.dart';
-
+import '../../detail/model/manga_detail_screen_params.dart';
 
 class DetailItemWidget extends StatelessWidget {
   const DetailItemWidget({
@@ -31,11 +31,6 @@ class DetailItemWidget extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              /*
-                  1, Title Chapter;
-                  2, Title Manga
-                  3, Last reading
-               */
               Text(
                 ChapHelper.removeNameManga(
                   titleChapter: item!.title!,
@@ -77,7 +72,12 @@ class DetailItemWidget extends StatelessWidget {
                     onPressed: () {
                       Navigator.of(context).pushNamed(
                         MangaDetailScreen.routeName,
-                        arguments: MangaDetailScreen(endpoint: urlManga!),
+                        arguments: MangaDetailScreen(
+                          params: MangaDetailScreenParams(
+                              endpoint: urlManga!,
+                              name: titleManga!,
+                              urlImage: ''),
+                        ),
                       );
                     },
                     child: const Text(

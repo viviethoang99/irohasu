@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:logger/logger.dart';
 
+
 class ToolMethods {
   @pragma('vm:entry-point')
   static void downloadCallback(id, status, progress) {

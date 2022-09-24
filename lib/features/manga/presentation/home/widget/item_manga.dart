@@ -2,7 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../env.dart';
+import '../../../../shared/shared.dart';
 import '../../detail/manga_detail_screen.dart';
+import '../../detail/model/manga_detail_screen_params.dart';
 
 class ItemManga extends StatelessWidget {
   const ItemManga({
@@ -20,11 +22,17 @@ class ItemManga extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return IrohaButtonOpacity(
       onTap: () {
         Navigator.of(context).pushNamed(
           MangaDetailScreen.routeName,
-          arguments: MangaDetailScreen(endpoint: endpoint!),
+          arguments: MangaDetailScreen(
+            params: MangaDetailScreenParams(
+              endpoint: endpoint!,
+              urlImage: thumbnailUrl!,
+              name: title!,
+            ),
+          ),
         );
       },
       child: Card(
@@ -32,28 +40,31 @@ class ItemManga extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Expanded(
-              child: ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(5),
-                  topRight: Radius.circular(5),
-                ),
-                child: imageCache
-                    ? CachedNetworkImage(
-                        placeholder: (_, url) => Container(
-                          color: Theme.of(context).backgroundColor,
-                          child: const SizedBox.expand(),
+              child: Hero(
+                tag: thumbnailUrl ?? '',
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(5),
+                    topRight: Radius.circular(5),
+                  ),
+                  child: imageCache
+                      ? CachedNetworkImage(
+                          placeholder: (_, url) => Container(
+                            color: Theme.of(context).backgroundColor,
+                            child: const SizedBox.expand(),
+                          ),
+                          fit: BoxFit.cover,
+                          imageUrl: thumbnailUrl!,
+                        )
+                      : Image.network(
+                          thumbnailUrl!,
+                          headers: ENV.headersBuilder,
+                          fit: BoxFit.cover,
+                          errorBuilder: (_, exception, stackTrace) {
+                            return Image.asset('assets/images/404.png');
+                          },
                         ),
-                        fit: BoxFit.cover,
-                        imageUrl: thumbnailUrl!,
-                      )
-                    : Image.network(
-                        thumbnailUrl!,
-                        headers: ENV.headersBuilder,
-                        fit: BoxFit.cover,
-                        errorBuilder: (_, exception, stackTrace) {
-                          return Image.asset('assets/images/404.png');
-                        },
-                      ),
+                ),
               ),
             ),
             Container(

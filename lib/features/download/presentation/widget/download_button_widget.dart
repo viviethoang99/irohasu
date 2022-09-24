@@ -8,17 +8,16 @@ class DownloadButtonWidget extends StatelessWidget {
   const DownloadButtonWidget({
     super.key,
     required this.item,
-    required this.color,
   });
 
   final ChapterItem item;
-  final Color color;
 
   @override
   Widget build(BuildContext context) {
     return BlocSelector<DownloadMangaCubit, List<String>, bool>(
       selector: (state) => state.contains(item.id),
       builder: (context, state) {
+        final color = context.watch<MangaDetailBloc>().state.colorManga;
         if (state) {
           return GestureDetector(
             onTap: () {
@@ -47,8 +46,8 @@ class DownloadButtonWidget extends StatelessWidget {
                 .read<ManageDownloadBloc>()
                 .add(AddChapterEvent(item.endpoint!));
           },
-          child: const _ItemDownload(
-            color: Colors.black,
+          child: _ItemDownload(
+            color: color,
             process: 1,
           ),
         );

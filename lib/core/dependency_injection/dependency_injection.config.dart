@@ -4,6 +4,7 @@
 // InjectableConfigGenerator
 // **************************************************************************
 
+// ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:dio/dio.dart' as _i39;
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:hive/hive.dart' as _i21;
@@ -14,7 +15,7 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart' as _i36;
 import '../../features/chapter/application/change_background_color_bloc/change_background_bloc.dart'
     as _i55;
 import '../../features/chapter/application/change_reading_mode_bloc/change_reading_mode_bloc.dart'
-    as _i68;
+    as _i69;
 import '../../features/chapter/application/chapter_screen/chapter_screen_cubit.dart'
     as _i6;
 import '../../features/chapter/application/manage_page_in_chapter/manage_page_in_chapter_cubit.dart'
@@ -75,7 +76,7 @@ import '../../features/manga/application/manage_favorite_manga/manage_favorite_m
 import '../../features/manga/application/manga_detail_bloc/manga_detail_bloc.dart'
     as _i66;
 import '../../features/manga/application/search_screen/search_screen_bloc.dart'
-    as _i67;
+    as _i68;
 import '../../features/manga/data/datasource/local/favorite_local_source.dart'
     as _i24;
 import '../../features/manga/data/datasource/local/manga_local_source.dart'
@@ -108,8 +109,10 @@ import '../../features/manga/domain/usecase/list_manga/find_manga_by_query_useca
 import '../../features/manga/domain/usecase/manga_detail/fetch_manga_detail_usecase.dart'
     as _i58;
 import '../../features/manga/manga.dart' as _i5;
+import '../../features/manga/presentation/detail/model/manga_detail_screen_params.dart'
+    as _i67;
 import '../../features/shared/application/change_theme_bloc/change_theme_bloc.dart'
-    as _i69;
+    as _i70;
 import '../../features/shared/data/datasource/local/setting_local_datasource.dart'
     as _i32;
 import '../../features/shared/data/repositories/setting_app_repository.dart'
@@ -129,39 +132,60 @@ import '../../features/shared/domain/usecase/setting_app/update_reading_mode_use
     as _i53;
 import '../../features/shared/domain/usecase/setting_app/update_setting_app_usecase.dart'
     as _i54;
-import 'modules/network_module.dart' as _i71;
+import 'modules/network_module.dart' as _i72;
 import 'modules/storage_module.dart'
-    as _i70; // ignore_for_file: unnecessary_lambdas
+    as _i71; // ignore_for_file: unnecessary_lambdas
 
 // ignore_for_file: lines_longer_than_80_chars
 /// initializes the registration of provided dependencies inside of [GetIt]
-Future<_i1.GetIt> $registerDependencies(_i1.GetIt get,
-    {String? environment, _i2.EnvironmentFilter? environmentFilter}) async {
-  final gh = _i2.GetItHelper(get, environment, environmentFilter);
+Future<_i1.GetIt> $registerDependencies(
+  _i1.GetIt get, {
+  String? environment,
+  _i2.EnvironmentFilter? environmentFilter,
+}) async {
+  final gh = _i2.GetItHelper(
+    get,
+    environment,
+    environmentFilter,
+  );
   final storageModule = _$StorageModule();
   final networkModule = _$NetworkModule();
   await gh.lazySingletonAsync<_i3.Box<List<String>>>(
-      () => storageModule.favoriteBox,
-      instanceName: 'favorite_box',
-      preResolve: true);
+    () => storageModule.favoriteBox,
+    instanceName: 'favorite_box',
+    preResolve: true,
+  );
   await gh.lazySingletonAsync<_i3.Box<_i4.ChapterDto>>(
-      () => storageModule.chapterBox,
-      instanceName: 'download_chapter_box',
-      preResolve: true);
+    () => storageModule.chapterBox,
+    instanceName: 'download_chapter_box',
+    preResolve: true,
+  );
   await gh.lazySingletonAsync<_i3.Box<_i5.MangaDetailDto>>(
-      () => storageModule.listMangaBox,
-      instanceName: 'irohasu_iz_bezt_girl',
-      preResolve: true);
-  await gh.lazySingletonAsync<_i3.Box<String>>(() => storageModule.settingBox,
-      instanceName: 'setting_box', preResolve: true);
+    () => storageModule.listMangaBox,
+    instanceName: 'irohasu_iz_bezt_girl',
+    preResolve: true,
+  );
+  await gh.lazySingletonAsync<_i3.Box<String>>(
+    () => storageModule.settingBox,
+    instanceName: 'setting_box',
+    preResolve: true,
+  );
   gh.factory<_i6.ChapterScreenCubit>(() => _i6.ChapterScreenCubit(
-      get<_i4.FetchDataChapterUsecase>(), get<_i7.FindChapterUsecase>()));
+        get<_i4.FetchDataChapterUsecase>(),
+        get<_i7.FindChapterUsecase>(),
+      ));
   gh.lazySingleton<_i8.DeleteChapUsecase>(
       () => _i8.DeleteChapUsecase(get<_i7.IDownloadRepository>()));
   gh.lazySingleton<_i9.DeleteMangaUsecase>(
       () => _i9.DeleteMangaUsecase(get<_i7.IDownloadRepository>()));
-  gh.factoryParam<_i10.DownloadMangaCubit, String, dynamic>((idManga, _) =>
-      _i10.DownloadMangaCubit(idManga, get<_i7.IDownloadRepository>()));
+  gh.factoryParam<_i10.DownloadMangaCubit, String, dynamic>((
+    idManga,
+    _,
+  ) =>
+      _i10.DownloadMangaCubit(
+        idManga,
+        get<_i7.IDownloadRepository>(),
+      ));
   gh.factory<_i11.FetchDataChapterUsecase>(
       () => _i11.FetchDataChapterUsecase(get<_i12.IChapterRepository>()));
   gh.lazySingleton<_i13.GetBackgroundReadingUseCase>(() =>
@@ -171,12 +195,16 @@ Future<_i1.GetIt> $registerDependencies(_i1.GetIt get,
   gh.factory<_i17.IChapterLocalDatasource>(() => _i17.ChapterLocalDatasource(
       get<_i3.Box<_i4.ChapterDto>>(instanceName: 'download_chapter_box')));
   gh.lazySingleton<_i4.IChapterRepository>(() => _i18.ChapterRepositoryImp(
-      get<_i4.ChapterApiSource>(), get<_i4.IChapterLocalDatasource>()));
+        get<_i4.ChapterApiSource>(),
+        get<_i4.IChapterLocalDatasource>(),
+      ));
   gh.factory<_i19.IDownloadApiSource>(() => _i19.DownloadApiSourceImpl());
   gh.factory<_i20.IDownloadLocalSource>(() => _i20.DownloadLocalSourceImpl(
       get<_i21.Box<_i4.ChapterDto>>(instanceName: 'download_chapter_box')));
   gh.lazySingleton<_i22.IDownloadRepository>(() => _i23.DownloadRepositoryImpl(
-      get<_i19.IDownloadApiSource>(), get<_i20.IDownloadLocalSource>()));
+        get<_i19.IDownloadApiSource>(),
+        get<_i20.IDownloadLocalSource>(),
+      ));
   gh.factory<_i24.IFavoriteLocalSource>(() => _i24.FavoriteLocalSource(
       get<_i3.Box<List<String>>>(instanceName: 'favorite_box')));
   gh.factory<_i25.IFavoriteRepository>(
@@ -184,7 +212,9 @@ Future<_i1.GetIt> $registerDependencies(_i1.GetIt get,
   gh.factory<_i27.IGithubLocalDataSource>(() => _i27.GithubLocalDataSource(
       get<_i21.Box<String>>(instanceName: 'setting_box')));
   gh.factory<_i28.IGithubRepository>(() => _i29.GithubRepository(
-      get<_i28.IGithubApiSource>(), get<_i28.IGithubLocalDataSource>()));
+        get<_i28.IGithubApiSource>(),
+        get<_i28.IGithubLocalDataSource>(),
+      ));
   gh.factory<_i30.IMangaLocalSource>(() => _i30.MangaLocalSource(
       get<_i3.Box<_i31.MangaDetailDto>>(instanceName: 'irohasu_iz_bezt_girl')));
   gh.factory<_i32.ISettingLocalDataSource>(() => _i32.SettingLocalDataSource(
@@ -193,44 +223,68 @@ Future<_i1.GetIt> $registerDependencies(_i1.GetIt get,
       () => _i33.IsFavoriteUseCase(get<_i25.IFavoriteRepository>()));
   gh.factory<_i34.ManageFavoriteMangaBloc>(
       () => _i34.ManageFavoriteMangaBloc(get<_i25.IFavoriteRepository>()));
-  gh.factoryParam<_i35.ManagePagesCubit, int, int>((currentPage, totalPages) =>
-      _i35.ManagePagesCubit(currentPage, totalPages));
+  gh.factoryParam<_i35.ManagePagesCubit, int, int>((
+    currentPage,
+    totalPages,
+  ) =>
+      _i35.ManagePagesCubit(
+        currentPage,
+        totalPages,
+      ));
   gh.lazySingleton<_i36.PrettyDioLogger>(() => networkModule.prettyLogger);
-  gh.factory<String>(() => networkModule.baseHttpUrl, instanceName: 'BaseUrl');
+  gh.factory<String>(
+    () => networkModule.baseHttpUrl,
+    instanceName: 'BaseUrl',
+  );
   gh.factory<_i37.UpdateAppCubit>(() => _i37.UpdateAppCubit(
-      get<_i28.GetLatestReleaseUseCase>(), get<_i28.GetDownloadPathUseCase>()));
+        get<_i28.GetLatestReleaseUseCase>(),
+        get<_i28.GetDownloadPathUseCase>(),
+      ));
   gh.lazySingleton<_i38.WatchIdFavoriteTabUseCase>(
       () => _i38.WatchIdFavoriteTabUseCase(get<_i25.IFavoriteRepository>()));
   gh.lazySingleton<_i39.BaseOptions>(
       () => networkModule.dioBaseOptions(get<String>(instanceName: 'BaseUrl')));
   gh.lazySingleton<_i40.ChangeStatusFavoriteUseCase>(
       () => _i40.ChangeStatusFavoriteUseCase(get<_i25.IFavoriteRepository>()));
-  gh.lazySingleton<_i39.Dio>(() =>
-      networkModule.dio(get<_i39.BaseOptions>(), get<_i36.PrettyDioLogger>()));
+  gh.lazySingleton<_i39.Dio>(() => networkModule.dio(
+        get<_i39.BaseOptions>(),
+        get<_i36.PrettyDioLogger>(),
+      ));
   gh.factory<_i41.DownloadChapUsecase>(() => _i41.DownloadChapUsecase(
-      get<_i4.IChapterRepository>(), get<_i7.IDownloadRepository>()));
-  gh.factoryParam<_i42.FavoriteMangaDetailBloc, String, dynamic>(
-      (endpoint, _) => _i42.FavoriteMangaDetailBloc(
-          get<_i40.ChangeStatusFavoriteUseCase>(),
-          get<_i33.IsFavoriteUseCase>(),
-          endpoint));
+        get<_i4.IChapterRepository>(),
+        get<_i7.IDownloadRepository>(),
+      ));
+  gh.factoryParam<_i42.FavoriteMangaDetailBloc, String, dynamic>((
+    endpoint,
+    _,
+  ) =>
+      _i42.FavoriteMangaDetailBloc(
+        get<_i40.ChangeStatusFavoriteUseCase>(),
+        get<_i33.IsFavoriteUseCase>(),
+        endpoint,
+      ));
   gh.lazySingleton<_i43.FindChapterUsecase>(() => _i43.FindChapterUsecase(
-      get<_i4.IChapterRepository>(), get<_i7.IDownloadRepository>()));
+        get<_i4.IChapterRepository>(),
+        get<_i7.IDownloadRepository>(),
+      ));
   gh.lazySingleton<_i44.GetDownloadPathUseCase>(
       () => _i44.GetDownloadPathUseCase(get<_i28.IGithubRepository>()));
   gh.factory<_i45.IGithubApiSource>(
       () => _i45.GithubApiSource(get<_i39.Dio>()));
   gh.factory<_i46.IMangaApiSource>(() => _i46.MangaApiSource(get<_i39.Dio>()));
   gh.lazySingleton<_i47.IMangaRepository>(() => _i48.MangaRepository(
-      get<_i46.IMangaApiSource>(), get<_i30.IMangaLocalSource>()));
+        get<_i46.IMangaApiSource>(),
+        get<_i30.IMangaLocalSource>(),
+      ));
   gh.factory<_i49.ISettingAppRepository>(
       () => _i50.SettingAppRepository(get<_i32.ISettingLocalDataSource>()));
   gh.lazySingleton<_i51.ManageDownloadBloc>(() => _i51.ManageDownloadBloc(
-      get<_i11.FetchDataChapterUsecase>(),
-      get<_i41.DownloadChapUsecase>(),
-      get<_i44.GetDownloadPathUseCase>(),
-      get<_i8.DeleteChapUsecase>(),
-      get<_i9.DeleteMangaUsecase>()));
+        get<_i11.FetchDataChapterUsecase>(),
+        get<_i41.DownloadChapUsecase>(),
+        get<_i44.GetDownloadPathUseCase>(),
+        get<_i8.DeleteChapUsecase>(),
+        get<_i9.DeleteMangaUsecase>(),
+      ));
   gh.lazySingleton<_i52.SetBackgroundReadingUseCase>(() =>
       _i52.SetBackgroundReadingUseCase(get<_i49.ISettingAppRepository>()));
   gh.lazySingleton<_i53.SetReadingModeUseCase>(
@@ -238,8 +292,9 @@ Future<_i1.GetIt> $registerDependencies(_i1.GetIt get,
   gh.lazySingleton<_i54.SetThemeAppUseCase>(
       () => _i54.SetThemeAppUseCase(get<_i49.ISettingAppRepository>()));
   gh.factory<_i55.ChangeBackgroundBloc>(() => _i55.ChangeBackgroundBloc(
-      get<_i13.GetBackgroundReadingUseCase>(),
-      get<_i52.SetBackgroundReadingUseCase>()));
+        get<_i13.GetBackgroundReadingUseCase>(),
+        get<_i52.SetBackgroundReadingUseCase>(),
+      ));
   gh.factory<_i56.ChapterApiSource>(
       () => _i56.ChapterApiSource(get<_i39.Dio>()));
   gh.lazySingleton<_i57.FetchListMangaUseCase>(
@@ -257,21 +312,32 @@ Future<_i1.GetIt> $registerDependencies(_i1.GetIt get,
   gh.lazySingleton<_i63.GetThemeAppUseCase>(
       () => _i63.GetThemeAppUseCase(get<_i49.ISettingAppRepository>()));
   gh.factory<_i64.LibraryScreenBloc>(() => _i64.LibraryScreenBloc(
-      get<_i59.FindListMangaLibraryUseCase>(),
-      get<_i38.WatchIdFavoriteTabUseCase>()));
+        get<_i59.FindListMangaLibraryUseCase>(),
+        get<_i38.WatchIdFavoriteTabUseCase>(),
+      ));
   gh.factory<_i65.ListMangaBloc>(
       () => _i65.ListMangaBloc(get<_i57.FetchListMangaUseCase>()));
-  gh.factoryParam<_i66.MangaDetailBloc, String, dynamic>((endpoint, _) =>
-      _i66.MangaDetailBloc(endpoint, get<_i58.FetchMangaDetailUseCase>()));
-  gh.factory<_i67.SearchScreenBloc>(
-      () => _i67.SearchScreenBloc(get<_i60.FindMangaByQueryUseCase>()));
-  gh.factory<_i68.ChangeReadingModeBloc>(() => _i68.ChangeReadingModeBloc(
-      get<_i62.GetReadingModeUseCase>(), get<_i53.SetReadingModeUseCase>()));
-  gh.factory<_i69.ChangeThemeBloc>(() => _i69.ChangeThemeBloc(
-      get<_i63.GetThemeAppUseCase>(), get<_i54.SetThemeAppUseCase>()));
+  gh.factoryParam<_i66.MangaDetailBloc, _i67.MangaDetailScreenParams, dynamic>((
+    params,
+    _,
+  ) =>
+      _i66.MangaDetailBloc(
+        params,
+        get<_i58.FetchMangaDetailUseCase>(),
+      ));
+  gh.factory<_i68.SearchScreenBloc>(
+      () => _i68.SearchScreenBloc(get<_i60.FindMangaByQueryUseCase>()));
+  gh.factory<_i69.ChangeReadingModeBloc>(() => _i69.ChangeReadingModeBloc(
+        get<_i62.GetReadingModeUseCase>(),
+        get<_i53.SetReadingModeUseCase>(),
+      ));
+  gh.factory<_i70.ChangeThemeBloc>(() => _i70.ChangeThemeBloc(
+        get<_i63.GetThemeAppUseCase>(),
+        get<_i54.SetThemeAppUseCase>(),
+      ));
   return get;
 }
 
-class _$StorageModule extends _i70.StorageModule {}
+class _$StorageModule extends _i71.StorageModule {}
 
-class _$NetworkModule extends _i71.NetworkModule {}
+class _$NetworkModule extends _i72.NetworkModule {}

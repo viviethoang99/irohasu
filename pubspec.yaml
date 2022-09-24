@@ -18,6 +18,7 @@ dependencies:
   snapping_sheet: ^3.1.0
   cached_network_image: ^3.2.2
   photo_view: ^0.14.0
+  shimmer: ^2.0.0
 
   # State management
   bloc: ^8.1.0

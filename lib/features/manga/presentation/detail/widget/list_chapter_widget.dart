@@ -139,7 +139,6 @@ class _ListChapterWidget extends StatelessWidget {
                       trailing: DownloadButtonWidget(
                         key: ValueKey('CHAPTER_ITEM_${chapter.id}'),
                         item: chapter,
-                        color: color,
                       ),
                       onTap: () {
                         Navigator.of(context).pushNamed(
@@ -147,7 +146,7 @@ class _ListChapterWidget extends StatelessWidget {
                           arguments: ChapterScreen(
                             data: context
                                 .read<MangaDetailBloc>()
-                                .params(chapter.endpoint!),
+                                .paramsChapter(chapter.endpoint!),
                           ),
                         );
                       },
