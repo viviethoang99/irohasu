@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:injectable/injectable.dart';
+import 'package:isar/isar.dart';
 
 import '../../../../../core/core.dart';
 import '../../dtos/dtos.dart';
@@ -9,19 +9,19 @@ typedef ListMangaDetailDtoLocal = Either<CacheFailure, ListMangaDetailDto>;
 
 abstract class IMangaLocalSource {
   /// Returns all [MangaDetailDto] in the local storage.
-  List<MangaDetailDto> findAllManga();
+  Future<List<MangaDetailDto>> findMangaByOffset(int offset);
 
   /// Returns list [MangaDetailDto] by query in the local storage.
-  List<MangaDetailDto> findMangaByQuery(List<String> listId);
+  Future<List<MangaDetailDto?>> findMangaByQuery(List<int> listId);
 
-  /// Returns [MangaDetailDto] matching the given [endpoint].
-  Future<MangaDetailDto?> findAlbumDetail(String endpoint);
+  /// Returns [MangaDetailDto] matching the given [id].
+  Future<MangaDetailDto?> findMangaDetail(int id);
 
   /// Stores an [manga] to the local storage and returns the same [manga].
   Future<void> saveManga(MangaDetailDto manga);
 
   /// Deletes a manga from the local storage matching the given [endpoint].
-  Future<void> deleteManga(String endpoint);
+  Future<void> deleteManga(int id);
 
   /// Deletes all manga from the local storage.
   Future<void> deleteAllManga();
@@ -30,51 +30,52 @@ abstract class IMangaLocalSource {
   ///
   /// A new event will be emitted whenever an [MangaDetail] is updated,
   /// removed, or a new [MangaDetailDto] is stored.
-  Stream<ListMangaDetailDtoLocal> watchAllManga(List<String> listId);
+  Stream<ListMangaDetailDtoLocal> watchAllManga(List<int> listId);
 }
 
 @Injectable(as: IMangaLocalSource)
 class MangaLocalSource implements IMangaLocalSource {
   const MangaLocalSource(
-    @Named('irohasu_iz_bezt_girl') this._box,
+    @Named('irohasu_is_bezt_girl') this._isar,
   );
 
-  final Box<MangaDetailDto> _box;
+  final Isar _isar;
 
   @override
-  Future<MangaDetailDto?> findAlbumDetail(String endpoint) async {
-    return _box.get(endpoint.toId);
+  Future<MangaDetailDto?> findMangaDetail(int id) async {
+    return _isar.mangaDetailDtos.where().idMangaEqualTo(id).findFirst();
   }
 
   @override
-  List<MangaDetailDto> findAllManga() {
-    return _box.values.toList();
+  Future<List<MangaDetailDto>> findMangaByOffset(int offset) {
+    return _isar.mangaDetailDtos.where().offset(offset).limit(10).findAll();
   }
 
   @override
   Future<void> saveManga(MangaDetailDto manga) async {
-    return _box.put(manga.endpoint.toId, manga);
+    return _isar.writeTxnSync(() => _isar.mangaDetailDtos.putSync(manga));
   }
 
   @override
-  Future<void> deleteManga(String endpoint) {
-    return _box.delete(endpoint.toId);
+  Future<void> deleteManga(int id) {
+    return _isar.writeTxnSync(() => _isar.mangaDetailDtos.delete(id));
   }
 
+
+  @override
+  Future<List<MangaDetailDto?>> findMangaByQuery(List<int> listId) async {
+    return _isar.mangaDetailDtos.getAll(listId);
+  }
+  
   @override
   Future<void> deleteAllManga() {
-    return _box.clear();
+    // TODO: implement deleteAllManga
+    throw UnimplementedError();
   }
-
+  
   @override
-  Stream<ListMangaDetailDtoLocal> watchAllManga(List<String> listId) {
-    return _box.watch().map((_) => Right(findMangaByQuery(listId)));
-  }
-
-  @override
-  List<MangaDetailDto> findMangaByQuery(List<String> listId) {
-    return _box.values
-        .where((manga) => listId.contains(manga.idManga))
-        .toList();
+  Stream<ListMangaDetailDtoLocal> watchAllManga(List<int> listId) {
+    // TODO: implement watchAllManga
+    throw UnimplementedError();
   }
 }

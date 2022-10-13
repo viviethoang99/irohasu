@@ -1,8 +1,9 @@
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:injectable/injectable.dart';
+import 'package:isar/isar.dart';
 
 import '../../../features/chapter/chapter.dart';
-import '../../../features/manga/manga.dart';
+import '../../../features/manga/data/data.dart';
 
 @module
 abstract class StorageModule {
@@ -22,15 +23,8 @@ abstract class StorageModule {
 
   @preResolve
   @lazySingleton
-  @Named('download_chapter_box')
-  Future<Box<ChapterDto>> get chapterBox async {
-    return Hive.openBox<ChapterDto>('download_chapter_box');
-  }
-
-  @preResolve
-  @lazySingleton
-  @Named('irohasu_iz_bezt_girl')
-  Future<Box<MangaDetailDto>> get listMangaBox async {
-    return Hive.openBox<MangaDetailDto>('irohasu_iz_bezt_girl');
+  @Named('irohasu_is_bezt_girl')
+  Future<Isar> get chapterBox async {
+    return Isar.open([ChapterDtoSchema, MangaDetailDtoSchema]);
   }
 }

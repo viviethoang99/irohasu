@@ -1,4 +1,4 @@
-import 'package:hive_flutter/adapters.dart';
+import 'package:isar/isar.dart';
 
 import '../../../../../core/core.dart';
 import '../../../../../env.dart';
@@ -6,10 +6,10 @@ import '../../../chapter.dart';
 
 part 'chapter_dto.g.dart';
 
-@HiveType(typeId: 3)
+@collection
 class ChapterDto {
   const ChapterDto({
-    this.id,
+    required this.id,
     this.title,
     this.endpoint,
     this.listImage = const [],
@@ -25,7 +25,7 @@ class ChapterDto {
     final responseLink = data.findAll('.linkchapter > a');
 
     return ChapterDto(
-      id: endpoint.toId,
+      id: int.tryParse(endpoint.toId.slice(1)) ?? Isar.autoIncrement,
       title: data.call('header > h1')?.text,
       endpoint: endpoint,
       mangaEndpoint: responseLink[3].attributes['href'],
@@ -51,7 +51,7 @@ class ChapterDto {
 
   factory ChapterDto.fromEntitie(Chapter chapter) {
     return ChapterDto(
-      id: chapter.id,
+      id: int.tryParse(chapter.id ?? 'a') ?? Isar.autoIncrement,
       title: chapter.title,
       endpoint: chapter.endpoint,
       nameManga: chapter.nameManga,
@@ -67,7 +67,7 @@ class ChapterDto {
 
   Chapter toEntity() {
     return Chapter(
-      id: id,
+      id: 'c$id',
       title: title,
       endpoint: endpoint,
       mangaEndpoint: mangaEndpoint,
@@ -81,23 +81,14 @@ class ChapterDto {
 
   String get idManga => mangaEndpoint?.split('/')[1] ?? 'valid';
 
-  @HiveField(0)
-  final String? id;
-  @HiveField(1)
+  final Id id;
   final String? title;
-  @HiveField(2)
   final String? endpoint;
-  @HiveField(3)
   final String? mangaEndpoint;
-  @HiveField(4)
   final String? nameManga;
-  @HiveField(5)
   final List<ChapterImageDto> listImage;
-  @HiveField(6)
   final String? prevChapter;
-  @HiveField(7)
   final String? nextChapter;
-  @HiveField(8)
   final bool isDataLocal;
 }
 

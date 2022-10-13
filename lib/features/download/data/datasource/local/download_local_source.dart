@@ -1,6 +1,6 @@
 import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
+import 'package:isar/isar.dart';
 
 import '../../../../chapter/chapter.dart';
 
@@ -11,20 +11,19 @@ abstract class IDownloadLocalSource {
 
   Future<bool> deleteImageChapter(List<String> paths);
 
-  Stream<List<String>> watchListChapterDownload(String idManga);
+  Stream<List<ChapterDto>> watchListChapterDownload(String idManga);
 
-  List<String> findAllChapterDownload(String idManga);
+  Future<List<ChapterDto>> findAllChapterDownload(String idManga);
 
-  Future<ChapterDto?> deleteChapter(String idChapter);
+  Future<ChapterDto?> deleteChapter(int idChapter);
 }
 
 @Injectable(as: IDownloadLocalSource)
 class DownloadLocalSourceImpl implements IDownloadLocalSource {
   const DownloadLocalSourceImpl(
-    @Named('download_chapter_box') this._box,
+    @Named('irohasu_is_bezt_girl') this._isar,
   );
-
-  final Box<ChapterDto> _box;
+  final Isar _isar;
 
   @override
   Future<List<String>> getPathsImageChapter(List<String> tasks) async {
@@ -68,25 +67,23 @@ class DownloadLocalSourceImpl implements IDownloadLocalSource {
   }
 
   @override
-  Stream<List<String>> watchListChapterDownload(String idManga) {
-    return _box.watch().map((_) => findAllChapterDownload(idManga));
+  Stream<List<ChapterDto>> watchListChapterDownload(String idManga) {
+    final chapters =
+        _isar.chapterDtos.filter().idMangaContains(idManga).build();
+    return chapters.watch(fireImmediately: true);
   }
 
   @override
-  List<String> findAllChapterDownload(String idManga) {
-    return _box.values
-        .where((chapter) => chapter.idManga == idManga)
-        .map((chap) => chap.id ?? '')
-        .toList();
+  Future<List<ChapterDto>> findAllChapterDownload(String idManga) {
+    return _isar.chapterDtos.filter().idMangaContains(idManga).findAll();
   }
 
   @override
-  Future<ChapterDto?> deleteChapter(String idChapter) async {
-    if (_box.containsKey(idChapter)) {
-      final chapter = _box.get(idChapter);
-      await _box.delete(idChapter);
-      return chapter;
-    }
-    return Future.value();
+  Future<ChapterDto?> deleteChapter(int idChapter) async {
+    final contacts = _isar.chapterDtos;
+    return _isar.writeTxn(() async {
+      await contacts.delete(idChapter);
+      return;
+    });
   }
 }

@@ -1,4 +1,4 @@
-import 'package:hive/hive.dart';
+import 'package:isar/isar.dart';
 
 import '../../../../../config/base_content.dart';
 import '../../../../../core/core.dart';
@@ -11,7 +11,7 @@ part 'manga_detail_dto.g.dart';
 
 typedef ListMangaDetailDto = List<MangaDetailDto>;
 
-@HiveType(typeId: 0)
+@collection
 class MangaDetailDto {
   const MangaDetailDto({
     required this.idManga,
@@ -38,7 +38,7 @@ class MangaDetailDto {
         data.findByText(description, 'Thể loại')?.querySelectorAll('span a');
 
     return MangaDetailDto(
-      idManga: endpoint.toId,
+      idManga: int.tryParse(endpoint.toId) ?? Isar.autoIncrement,
       title: data.call('Title')!.text.replaceFirst('| BlogTruyen.VN', ''),
       thumbnailUrl: data.call('.thumbnail img')?.attributes['src'] ?? '',
       endpoint: endpoint,
@@ -75,30 +75,20 @@ class MangaDetailDto {
     );
   }
 
-  @HiveField(0)
-  final String idManga;
-  @HiveField(1)
+  final Id idManga;
   final String title;
-  @HiveField(2)
   final String thumbnailUrl;
-  @HiveField(3)
   final String endpoint;
-  @HiveField(4)
   final String? description;
-  @HiveField(5)
   final String? dislike;
-  @HiveField(6)
   final String? like;
-  @HiveField(7)
   final String? status;
-  @HiveField(8)
   final String? author;
-  @HiveField(9, defaultValue: [])
   final List<ChapterItemDto> listChapter;
-  @HiveField(10, defaultValue: [])
   final List<GenresDto> listGenres;
 }
 
-extension ListMangaDetailDtoX on ListMangaDetailDto {
-  ListMangaDetail toEntities() => map((manga) => manga.toEntity()).toList();
+extension ListMangaDetailDtoX on ListMangaDetailDto? {
+  ListMangaDetail toEntities() =>
+      this?.map((manga) => manga.toEntity()).toList() ?? [];
 }

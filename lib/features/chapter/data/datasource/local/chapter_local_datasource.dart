@@ -1,5 +1,5 @@
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:injectable/injectable.dart';
+import 'package:isar/isar.dart';
 
 import '../../../chapter.dart';
 
@@ -16,34 +16,32 @@ abstract class IChapterLocalDatasource {
 @Injectable(as: IChapterLocalDatasource)
 class ChapterLocalDatasource implements IChapterLocalDatasource {
   const ChapterLocalDatasource(
-    @Named('download_chapter_box') this._box,
+    @Named('irohasu_is_bezt_girl') this._isar,
   );
 
-  final Box<ChapterDto> _box;
+  final Isar _isar;
 
   @override
-  Future<bool> deteleChapter(String idChapter) async {
-    try {
-      await _box.delete(idChapter);
-      return true;
-    } catch (e) {
-      return false;
-    }
+  Future<bool> deteleChapter(String idChapter) {
+    // TODO: implement deteleChapter
+    throw UnimplementedError();
   }
 
   @override
   ChapterDto? findChapter(String idChapter) {
-    return _box.get(idChapter);
+    // TODO: implement findChapter
+    throw UnimplementedError();
   }
 
   @override
   List<ChapterDto> getAllChapter(String mangaId) {
-    return _box.values.where((chapter) => chapter.idManga == mangaId).toList();
+    // TODO: implement getAllChapter
+    throw UnimplementedError();
   }
 
   @override
   ChapterDto saveChapter(ChapterDto chapter) {
-    _box.put(chapter.id, chapter);
-    return chapter;
+    // TODO: implement saveChapter
+    throw UnimplementedError();
   }
 }

@@ -24,7 +24,7 @@ class DownloadMangaCubit extends Cubit<List<String>> {
 
   Future<void> loadChapter() async {
     emit([]);
-    final either = _repositoryImpl.findAllChapterDownload(idManga);
+    final either = await _repositoryImpl.findAllChapterDownload(idManga);
     emit(either);
   }
 

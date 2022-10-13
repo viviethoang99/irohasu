@@ -49,16 +49,19 @@ class DownloadRepositoryImpl implements IDownloadRepository {
 
   @override
   Stream<List<String>> watchListChapterDownload(String idManga) {
-    return _localSource.watchListChapterDownload(idManga);
+    return _localSource
+        .watchListChapterDownload(idManga)
+        .map((event) => event.map((e) => e.endpoint ?? '').toList());
   }
 
   @override
-  List<String> findAllChapterDownload(String idManga) {
-    return _localSource.findAllChapterDownload(idManga);
+  Future<List<String>> findAllChapterDownload(String idManga) async {
+    final data = await _localSource.findAllChapterDownload(idManga);
+    return data.map((e) => e.idManga).toList();
   }
 
   @override
-  Future<void> deleteChapter(String idChapter) async {
+  Future<void> deleteChapter(int idChapter) async {
     final chapter = await _localSource.deleteChapter(idChapter);
     final listTask = chapter?.listImage.map((e) => e.urlImage ?? '').toList();
     await _localSource.deleteImageChapter(listTask ?? []);
@@ -67,9 +70,9 @@ class DownloadRepositoryImpl implements IDownloadRepository {
 
   @override
   Future<void> deleteManga(String idManga) async {
-    final listChap = _localSource.findAllChapterDownload(idManga);
+    final listChap = await _localSource.findAllChapterDownload(idManga);
     for (var chap in listChap) {
-      await deleteChapter(chap);
+      await deleteChapter(chap.id);
     }
     return Future.value();
   }

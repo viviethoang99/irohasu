@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
 import '../../domain/repositories/i_manga_repository.dart';
@@ -57,8 +56,8 @@ class MangaRepository implements IMangaRepository {
   }
 
   @override
-  Future<void> deleteManga(String endpoint) {
-    return _mangaLocalSource.deleteManga(endpoint);
+  Future<void> deleteManga(int id) {
+    return _mangaLocalSource.deleteManga(id);
   }
 
   @override
@@ -67,9 +66,9 @@ class MangaRepository implements IMangaRepository {
   }
 
   @override
-  Future<ListMangaDetailRepository> getAllManga() async {
+  Future<ListMangaDetailRepository> findMangaByOffset({offset = 1}) async {
     try {
-      final repository = _mangaLocalSource.findAllManga();
+      final repository = await _mangaLocalSource.findMangaByOffset(offset);
       return right(repository.toEntities());
     } on CacheException {
       return Left(CacheFailure());
@@ -77,7 +76,7 @@ class MangaRepository implements IMangaRepository {
   }
 
   @override
-  Stream<ListMangaDetailRepository> watchAllManga(List<String> listId) {
+  Stream<ListMangaDetailRepository> watchAllManga(List<int> listId) {
     return _mangaLocalSource.watchAllManga(listId).map(
           (repository) => repository.fold(
             (error) => Left(CacheFailure()),
@@ -87,11 +86,14 @@ class MangaRepository implements IMangaRepository {
   }
 
   @override
-  Future<ListMangaDetailRepository> findMangaLibrary(
-      List<String> listId) async {
+  Future<ListMangaDetailRepository> findMangaLibrary(List<int> listId) async {
     try {
-      final repository = _mangaLocalSource.findMangaByQuery(listId);
-      return right(repository.toEntities());
+      final repository = await _mangaLocalSource.findMangaByQuery(listId);
+      final value = repository
+          .where((element) => element != null)
+          .toList()
+          .cast<MangaDetailDto>();
+      return right(value.toEntities());
     } on CacheException {
       return Left(CacheFailure());
     }

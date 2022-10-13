@@ -29,6 +29,7 @@ class LibraryScreenBloc extends Bloc<LibraryScreenEvent, LibraryScreenState> {
     Emitter<LibraryScreenState> emit,
   ) async {
     emit(const LibraryLoadingScreen());
+    
     final repository = await _getAllMangaUseCase.call(params: event.listId);
     emit(repository.fold(
       LibraryFailureScreen.new,

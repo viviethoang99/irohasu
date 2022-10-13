@@ -16,8 +16,9 @@ class DeleteMangaUsecase extends UseCase<void, String> {
 
   @override
   FutureOr<Either<Failure, void>> call({String? params}) async {
+    final idChapter = params?.toId;
+    if (idChapter == null) return Left(ParamsFailure());
     try {
-      final idChapter = params!.toId;
       await _downloadRepository.deleteManga(idChapter);
       return const Right(null);
     } catch (e) {

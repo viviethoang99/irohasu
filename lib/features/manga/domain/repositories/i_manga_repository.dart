@@ -27,16 +27,16 @@ abstract class IMangaRepository {
   Future<void> saveManga(MangaDetailDto manga);
 
   /// Deletes a manga from the local storage matching the given [endpoint].
-  Future<void> deleteManga(String endpoint);
+  Future<void> deleteManga(int id);
 
   /// Deletes all manga from the local storage.
   Future<void> deleteAllManga();
 
-  Future<ListMangaDetailRepository> getAllManga();
+  Future<ListMangaDetailRepository> findMangaByOffset();
 
-  Future<ListMangaDetailRepository> findMangaLibrary(List<String> listId);
+  Future<ListMangaDetailRepository> findMangaLibrary(List<int> listId);
 
   /// Returns stream of [ListMangaDetail] by listening to updates in the local
   /// storage.
-  Stream<ListMangaDetailRepository> watchAllManga(List<String> listId);
+  Stream<ListMangaDetailRepository> watchAllManga(List<int> listId);
 }

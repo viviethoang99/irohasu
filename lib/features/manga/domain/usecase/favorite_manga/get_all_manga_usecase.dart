@@ -13,6 +13,6 @@ class GetAllMangaUseCase implements UseCase<ListMangaDetail, void> {
 
   @override
   Future<Either<Failure, ListMangaDetail>> call({void params}) {
-    return _repository.getAllManga();
+    return _repository.findMangaByOffset();
   }
 }

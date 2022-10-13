@@ -16,8 +16,9 @@ class DeleteChapUsecase extends UseCase<void, String> {
 
   @override
   FutureOr<Either<Failure, void>> call({String? params}) async {
+    final idChapter = int.tryParse(params?.toId.slice(1) ?? '');
+    if (idChapter == null) return Left(ParamsFailure());
     try {
-      final idChapter = params!.toId;
       await _downloadRepository.deleteChapter(idChapter);
       return const Right(null);
     } catch (e) {

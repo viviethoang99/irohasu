@@ -4,4 +4,13 @@ extension StringExtension on String {
   }
 
   String get toId => split('/')[1];
+
+  String slice(int start, [int end = -1]) {
+    final kStart = start < 0 ? start + length : start;
+    final kEnd = end < 0 ? end + length : end;
+
+    RangeError.checkValidRange(kStart, kEnd, length);
+
+    return substring(kStart, kEnd + 1);
+  }
 }

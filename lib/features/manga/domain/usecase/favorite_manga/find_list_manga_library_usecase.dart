@@ -16,6 +16,7 @@ class FindListMangaLibraryUseCase
 
   @override
   Future<Either<Failure, ListMangaDetail>> call({List<String>? params}) {
-    return _repository.findMangaLibrary(params!);
+    final query = params?.map((e) => int.parse(e.slice(1))).toList() ?? <int>[];
+    return _repository.findMangaLibrary(query);
   }
 }

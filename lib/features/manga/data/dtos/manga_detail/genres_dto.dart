@@ -1,5 +1,5 @@
-import 'package:hive/hive.dart';
 import 'package:html/dom.dart';
+import 'package:isar/isar.dart';
 
 import '../../../domain/entities/genres.dart';
 
@@ -7,7 +7,7 @@ part 'genres_dto.g.dart';
 
 typedef GenresDtoList = List<GenresDto>;
 
-@HiveType(typeId: 2)
+@embedded
 class GenresDto {
   const GenresDto({
     this.name,
@@ -26,9 +26,7 @@ class GenresDto {
     );
   }
 
-  @HiveField(0)
   final String? name;
-  @HiveField(1)
   final String? url;
 }
 
