@@ -14,18 +14,13 @@ class HeaderMangaDetail extends StatelessWidget {
   }) : super(key: key);
 
   final Color color;
+  
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        _ImageBackgroundWidget(color: color),
-        Column(
-          children: [
-            const SizedBox(height: 50),
-            const _InfomationMangaWidget(),
-            btnSocialWidget(),
-          ],
-        ),
+    return Column(
+      children: [
+        const _InfomationMangaWidget(),
+        btnSocialWidget(),
       ],
     );
   }
@@ -140,59 +135,6 @@ class _InfomationMangaWidget extends StatelessWidget {
         }
         return const SizedBox.shrink();
       },
-    );
-  }
-}
-
-class _ImageBackgroundWidget extends StatelessWidget {
-  const _ImageBackgroundWidget({
-    Key? key,
-    required this.color,
-  }) : super(key: key);
-
-  final Color color;
-  @override
-  Widget build(BuildContext context) {
-    return ShaderMask(
-      shaderCallback: (rectangle) {
-        return const LinearGradient(
-          colors: [Colors.black, Colors.transparent],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-        ).createShader(
-          Rect.fromLTRB(0, 0, rectangle.width, rectangle.height),
-        );
-      },
-      blendMode: BlendMode.dstIn,
-      child: BlocBuilder<MangaDetailBloc, MangaDetailState>(
-        buildWhen: (pre, cur) => pre.runtimeType != cur.runtimeType,
-        builder: (context, state) {
-          if (state is MangaDetailSuccessState) {
-            return CachedNetworkImage(
-              imageUrl: state.mangaDetail.thumbnailUrl,
-              imageBuilder: (context, imageProvider) => Container(
-                width: SizeConfig.screenWidth,
-                height: SizeConfig.screenHeight / 2.5,
-                decoration: BoxDecoration(
-                  color: color,
-                  image: DecorationImage(
-                    image: imageProvider,
-                    fit: BoxFit.fitWidth,
-                    colorFilter: ColorFilter.mode(
-                      Colors.black.withOpacity(0.35),
-                      BlendMode.dstATop,
-                    ),
-                  ),
-                ),
-              ),
-              httpHeaders: ENV.headersBuilder,
-              placeholder: (context, url) => const CircularProgressIndicator(),
-              errorWidget: (_, url, error) => const Icon(Icons.error),
-            );
-          }
-          return const SizedBox.shrink();
-        },
-      ),
     );
   }
 }

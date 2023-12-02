@@ -16,45 +16,54 @@ class CustomButtonReadingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-      style: TextButton.styleFrom(
-        backgroundColor: color,
-        primary: Colors.teal,
-        onSurface: Colors.red,
-        side: const BorderSide(
-          width: 0,
-          color: Colors.transparent,
+    return Container(
+      color: Theme.of(context).backgroundColor,
+      padding: const EdgeInsets.symmetric(
+        horizontal: 15,
+        vertical: 10,
+      ),
+      child: TextButton(
+        style: TextButton.styleFrom(
+          backgroundColor: color,
+          primary: Colors.teal,
+          onSurface: Colors.red,
+          side: const BorderSide(
+            width: 0,
+            color: Colors.transparent,
+          ),
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(25),
+            ),
+          ),
         ),
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(25),
+        onPressed: () => _onPressed(context),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 5),
+          child: BlocBuilder<MangaDetailBloc, MangaDetailState>(
+            builder: (context, state) {
+              return Center(
+                child: Text(
+                  context.read<MangaDetailBloc>().lastChapter,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: Colors.white,
+                  ),
+                ),
+              );
+            },
           ),
         ),
       ),
-      onPressed: () {
-        Navigator.of(context).pushNamed(
-          ChapterScreen.routeName,
-          arguments: ChapterScreen(
-            data: context.read<MangaDetailBloc>().params(lastChapter.endpoint!),
-          ),
-        );
-      },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 5),
-        child: BlocBuilder<MangaDetailBloc, MangaDetailState>(
-          builder: (context, state) {
-            return Center(
-              child: Text(
-                context.read<MangaDetailBloc>().lastChapter,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                  color: Colors.white,
-                ),
-              ),
-            );
-          },
-        ),
+    );
+  }
+
+  void _onPressed(BuildContext context) {
+    Navigator.of(context).pushNamed(
+      ChapterScreen.routeName,
+      arguments: ChapterScreen(
+        data: context.read<MangaDetailBloc>().params(lastChapter.endpoint!),
       ),
     );
   }
