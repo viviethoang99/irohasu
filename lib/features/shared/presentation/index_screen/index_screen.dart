@@ -1,8 +1,10 @@
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../../../../config/base_content.dart';
+import '../../../../core/core.dart';
 import '../../../../features/features.dart';
 import '../../../manga/manga.dart';
 import '../setting_screen/setting_screen.dart';
@@ -23,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<ManageFavoriteMangaBloc>().add(GetListFavoriteId());
+    getIt<ManageFavoriteMangaBloc>().add(GetListFavoriteId());
     _pageController = PageController();
   }
 
@@ -110,6 +112,6 @@ class _HomeScreenState extends State<HomeScreen> {
           return const SizedBox.shrink();
         },
       ),
-    ).then((value) => context.read<UpdateAppCubit>().downloadFunction(value));
+    ).then((value) => getIt<UpdateAppCubit>().downloadFunction(value));
   }
 }

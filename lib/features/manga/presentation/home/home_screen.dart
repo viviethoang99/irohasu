@@ -25,7 +25,7 @@ class _ListMangaScreenState extends State<ListMangaScreen> {
     _scrollController = ScrollController()
       ..addListener(() {
         final maxScrollExtent = _scrollController!.position.maxScrollExtent;
-        final currentScroll = _scrollController!.position.pixels;
+        final currentScroll = _scrollController.position.pixels;
         if (maxScrollExtent - currentScroll <= _scrollThreshold) {
           context.read<ListMangaBloc>().add(FetchListMangaEvent());
         }

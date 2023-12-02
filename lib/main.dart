@@ -15,8 +15,10 @@ Future<void> main() async {
 
 Future<void> _initialized() async {
   await Hive.initFlutter();
-  await registerDependencies();
+  await configureDependencies();
   await FlutterDownloader.initialize(debug: true);
   await FlutterDownloader.registerCallback(ToolMethods.downloadCallback);
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 }
+
+

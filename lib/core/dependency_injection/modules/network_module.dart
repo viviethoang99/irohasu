@@ -29,7 +29,7 @@ abstract class NetworkModule {
   ) {
     return BaseOptions(
       baseUrl: url,
-      connectTimeout: 30000,
+      connectTimeout: const Duration(milliseconds: 30000),
     );
   }
 }

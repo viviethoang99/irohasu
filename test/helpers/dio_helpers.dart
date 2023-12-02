@@ -1,20 +1,20 @@
 import 'package:dio/dio.dart';
 import 'package:mocktail/mocktail.dart';
 
-class FakeDioError extends Fake implements DioError {
+class FakeDioError extends Fake implements DioException {
   FakeDioError(this._type, [this._response]);
 
   factory FakeDioError.response([Response? response]) =>
-      FakeDioError(DioErrorType.response, response);
+      FakeDioError(DioExceptionType.badResponse, response);
 
-  final DioErrorType _type;
+  final DioExceptionType _type;
   final Response? _response;
 
   @override
   Response? get response => _response;
 
   @override
-  DioErrorType get type => _type;
+  DioExceptionType get type => _type;
 }
 
 class FakeResponse<T> extends Fake implements Response<T> {

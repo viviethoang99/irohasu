@@ -7,10 +7,14 @@ import 'dependency_injection.config.dart';
 
 final getIt = GetIt.instance;
 
-@InjectableInit(initializerName: r'$registerDependencies')
-Future<void> registerDependencies() async {
+@InjectableInit(
+  initializerName: 'init', // default
+  preferRelativeImports: true, // default
+  asExtension: true, // default
+)
+Future<void> configureDependencies() async {
   _registerHiveTypeAdapters();
-  await $registerDependencies(getIt);
+  await getIt.init();
 }
 
 void _registerHiveTypeAdapters() {

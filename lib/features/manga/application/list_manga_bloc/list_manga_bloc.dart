@@ -55,13 +55,11 @@ class ListMangaBloc extends Bloc<ListMangaEvent, ListMangaState> {
         listManga: [],
         status: ListMangaScreenStatus.failure,
       )),
-      (data) => {
-        emit(state.copyWith(
+      (data) => emit(state.copyWith(
           listManga: data,
           hasReachedMax: data.length < 20 ? true : false,
           page: data.isNotEmpty ? state.page + 1 : state.page,
-        ))
-      },
+        )),
     );
   }
 
