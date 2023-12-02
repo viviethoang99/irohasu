@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../base/text.dart';
+import '../../../../../config/constants/size.dart';
 import '../../../../../core/core.dart';
 import '../../../../../env.dart';
 import '../../../manga.dart';
@@ -9,12 +11,12 @@ import 'btn_vote_widget.dart';
 
 class HeaderMangaDetail extends StatelessWidget {
   const HeaderMangaDetail({
-    Key? key,
+    super.key,
     required this.color,
-  }) : super(key: key);
+  });
 
   final Color color;
-  
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -67,7 +69,7 @@ class HeaderMangaDetail extends StatelessWidget {
 }
 
 class _InfomationMangaWidget extends StatelessWidget {
-  const _InfomationMangaWidget({Key? key}) : super(key: key);
+  const _InfomationMangaWidget();
 
   @override
   Widget build(BuildContext context) {
@@ -100,30 +102,20 @@ class _InfomationMangaWidget extends StatelessWidget {
                     children: <Widget>[
                       Padding(
                         padding: const EdgeInsets.only(right: 10, top: 10),
-                        child: Text(
+                        child: IrohaText.medium(
                           state.mangaDetail.title,
-                          style: TextStyle(
-                            fontSize: 17,
-                            color: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.w500,
-                          ),
+                          fontSize: FontSizes.s18,
                         ),
                       ),
-                      Text(
+                      IrohaText.regular(
                         state.mangaDetail.author ?? '',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Theme.of(context).primaryColor,
-                        ),
+                        fontSize: 14,
                       ),
                       const SizedBox(height: 5),
-                      Text(
+                      IrohaText.regular(
                         state.mangaDetail.status!,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color:
-                              Theme.of(context).primaryColor.withOpacity(0.8),
-                        ),
+                        fontSize: FontSizes.s14,
+                        color: Theme.of(context).primaryColor.withOpacity(0.8),
                       ),
                       const BtnVoteWidget()
                     ],

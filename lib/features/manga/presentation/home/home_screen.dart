@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../base/text.dart';
+import '../../../../config/config.dart';
 import '../../../shared/shared.dart';
 import '../../manga.dart';
 import 'list_manga_widget.dart';
 
 class ListMangaScreen extends StatefulWidget {
-  const ListMangaScreen({Key? key}) : super(key: key);
+  const ListMangaScreen({super.key});
 
   static const routeName = '/home';
 
@@ -15,84 +17,54 @@ class ListMangaScreen extends StatefulWidget {
 }
 
 class _ListMangaScreenState extends State<ListMangaScreen> {
-  late final ScrollController? _scrollController;
-  final _scrollThreshold = 300.0;
-
   @override
   void initState() {
-    super.initState();
     context.read<ListMangaBloc>().add(InitialFetchMangaEvent());
-    _scrollController = ScrollController()
-      ..addListener(() {
-        final maxScrollExtent = _scrollController!.position.maxScrollExtent;
-        final currentScroll = _scrollController.position.pixels;
-        if (maxScrollExtent - currentScroll <= _scrollThreshold) {
-          context.read<ListMangaBloc>().add(FetchListMangaEvent());
-        }
-      });
-  }
-
-  @override
-  void dispose() {
-    _scrollController?.dispose();
-    super.dispose();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          Scaffold(
-            backgroundColor: Colors.transparent,
-            appBar: const AppBarHomeWidget(),
-            body: BlocBuilder<ListMangaBloc, ListMangaState>(
-                builder: (context, state) {
-              if (state.listManga.isNotEmpty) {
-                return ListMangaWidget(
-                  scrollController: _scrollController,
-                  data: state.listManga,
-                  hasReachedEnd: state.hasReachedMax,
-                );
-              }
-              if (state.listManga.isEmpty) return const LoadingScreen();
+      backgroundColor: Colors.transparent,
+      body: BlocBuilder<ListMangaBloc, ListMangaState>(
+        builder: (context, state) {
+          if (state.listManga.isNotEmpty) {
+            return const ListMangaWidget();
+          }
 
-              if (state.listManga.isEmpty &&
-                  state.status == ListMangaScreenStatus.failure) {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Icon(
-                        Icons.wifi_off,
-                        size: 120,
-                        color: Theme.of(context).primaryColor,
+          if (state.listManga.isEmpty) {
+            if (state.status == ListMangaScreenStatus.failure) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(
+                      Icons.wifi_off,
+                      size: 120,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Flexible(
+                      child: IrohaText.semibold(
+                        'Không thể kết nối mạng. \n'
+                        'Vui lòng thử lại.',
+                        fontSize: FontSizes.s24,
+                        textAlign: TextAlign.center,
                       ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Flexible(
-                        child: Text(
-                          'Không thể kết nối mạng. \n'
-                          'Vui lòng thử lại.',
-                          style: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                            fontSize: 25.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      )
-                    ],
-                  ),
-                );
-              }
+                    )
+                  ],
+                ),
+              );
+            }
+            return const LoadingScreen();
+          }
 
-              //never run this line, only fix warning.
-              return const SizedBox.shrink();
-            }),
-          ),
-        ],
+          //never run this line, only fix warning.
+          return const SizedBox.shrink();
+        },
       ),
     );
   }

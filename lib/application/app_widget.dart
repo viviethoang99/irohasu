@@ -10,7 +10,7 @@ import '../features/manga/manga.dart';
 import '../features/shared/shared.dart';
 
 class Application extends StatelessWidget {
-  const Application({Key? key}) : super(key: key);
+  const Application({super.key});
 
   @override
   Widget build(BuildContext context) {

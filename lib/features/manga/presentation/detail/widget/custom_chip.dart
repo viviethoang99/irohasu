@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../base/text.dart';
+import '../../../../../config/config.dart';
 import '../../../application/application.dart';
 
 class CustomChips extends StatelessWidget {
@@ -18,23 +20,22 @@ class CustomChips extends StatelessWidget {
               spacing: 5,
               runSpacing: 5,
               children: List.generate(
-                  state.mangaDetail.listGenres?.length ?? 0,
-                  (index) => Container(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 7,
-                        horizontal: 20,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Text(
-                        state.mangaDetail.listGenres![index].name!,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                      ))),
+                state.mangaDetail.listGenres?.length ?? 0,
+                (index) => Container(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 7,
+                    horizontal: 20,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: IrohaText.regular(
+                    state.mangaDetail.listGenres![index].name!,
+                    fontSize: FontSizes.s11,
+                  ),
+                ),
+              ),
             );
           }
           return const SizedBox.shrink();

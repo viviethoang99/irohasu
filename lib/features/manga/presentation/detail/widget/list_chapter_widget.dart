@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../base/text.dart';
+import '../../../../../config/config.dart';
 import '../../../../../core/core.dart';
 import '../../../../chapter/presentation/chapter_screens/chapter_screen.dart';
 import '../../../manga.dart';
@@ -18,7 +20,7 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return ColoredBox(
       color: Theme.of(context).backgroundColor,
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -32,13 +34,9 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
                   buildWhen: (pre, cur) => pre.runtimeType != cur.runtimeType,
                   builder: (_, state) {
                     if (state is MangaDetailSuccessState) {
-                      return Text(
+                      return IrohaText.semibold(
                         '${state.mangaDetail.listChapter.length} Chương',
-                        style: TextStyle(
-                          color: Theme.of(context).primaryColor,
-                          fontSize: 17,
-                          letterSpacing: 1.6,
-                        ),
+                        fontSize: FontSizes.s16,
                       );
                     }
                     return const SizedBox.shrink();
@@ -125,10 +123,9 @@ class _ListChapterWidget extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                               ),
                       ),
-                      subtitle: Text(
+                      subtitle: IrohaText.medium(
                         chapter.createAt.dateToString(),
-                        style:
-                            theme.textTheme.subtitle1?.copyWith(fontSize: 12),
+                        fontSize: 12,
                       ),
                       onTap: () {
                         Navigator.of(context).pushNamed(

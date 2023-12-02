@@ -4,7 +4,7 @@ import 'manga.dart';
 
 typedef ListMangaDetail = List<MangaDetail>;
 
-class MangaDetail extends Manga {
+final class MangaDetail extends Manga {
   const MangaDetail({
     idManga,
     title,

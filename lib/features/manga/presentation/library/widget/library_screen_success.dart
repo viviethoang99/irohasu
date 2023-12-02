@@ -2,9 +2,8 @@ part of '../library_screen.dart';
 
 class _LibraryScreenSuccess extends StatelessWidget {
   const _LibraryScreenSuccess({
-    Key? key,
     this.listManga = const [],
-  }) : super(key: key);
+  });
 
   final ListMangaDetail listManga;
 
@@ -14,7 +13,6 @@ class _LibraryScreenSuccess extends StatelessWidget {
       height: double.infinity,
       color: Theme.of(context).backgroundColor,
       child: GridView.builder(
-        shrinkWrap: true,
         padding: const EdgeInsets.all(12),
         itemCount: listManga.length,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -29,7 +27,6 @@ class _LibraryScreenSuccess extends StatelessWidget {
             title: manga.title,
             thumbnailUrl: manga.thumbnailUrl,
             endpoint: manga.endpoint,
-            imageCache: true,
           );
         },
       ),

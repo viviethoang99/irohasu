@@ -1,55 +1,68 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/core.dart';
 import '../../manga.dart';
 import './widget/item_manga.dart';
 
-class ListMangaWidget extends StatefulWidget {
-  const ListMangaWidget({
-    Key? key,
-    this.scrollController,
-    this.data,
-    this.hasReachedEnd,
-  }) : super(key: key);
+const _scrollThreshold = 300.0;
 
-  final ScrollController? scrollController;
-  final List<Manga>? data;
-  final bool? hasReachedEnd;
+final class ListMangaWidget extends StatefulWidget {
+  const ListMangaWidget({super.key});
 
   @override
   State<ListMangaWidget> createState() => _ListMangaWidgetState();
 }
 
 class _ListMangaWidgetState extends State<ListMangaWidget> {
-  List<Manga>? get data => widget.data;
+  late final ScrollController? _scrollController;
 
-  ScrollController? get _scrollController => widget.scrollController;
+  @override
+  void initState() {
+    _scrollController = ScrollController()
+      ..addListener(() {
+        final maxScrollExtent = _scrollController!.position.maxScrollExtent;
+        final currentScroll = _scrollController.position.pixels;
+        if (maxScrollExtent - currentScroll <= _scrollThreshold) {
+          context.read<ListMangaBloc>().add(FetchListMangaEvent());
+        }
+      });
+    super.initState();
+  }
 
-  bool? get hasReachedEnd => widget.hasReachedEnd;
+  @override
+  void dispose() {
+    _scrollController?.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: ScreenHelper.getHeight(context),
-      color: Theme.of(context).backgroundColor,
-      child: GridView.builder(
-        padding: const EdgeInsets.all(12),
-        itemCount: hasReachedEnd! ? data!.length + 20 : data!.length,
-        controller: _scrollController,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          childAspectRatio: 0.6,
-          crossAxisCount: 3,
-          crossAxisSpacing: 8,
-          mainAxisSpacing: 8,
-        ),
-        itemBuilder: (context, index) {
-          return ItemManga(
-            title: data![index].title,
-            thumbnailUrl: data![index].thumbnailUrl,
-            endpoint: data![index].endpoint,
-          );
-        },
-      ),
+    return BlocBuilder<ListMangaBloc, ListMangaState>(
+      builder: (context, state) {
+        return GridView.builder(
+          padding: const EdgeInsets.all(12),
+          itemCount: state.hasReachedMax
+              ? state.listManga.length + 20
+              : state.listManga.length,
+          controller: _scrollController,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            childAspectRatio: 0.6,
+            crossAxisCount: 3,
+            crossAxisSpacing: 8,
+            mainAxisSpacing: 8,
+          ),
+          cacheExtent: 100,
+          itemBuilder: (context, index) {
+            final manga = state.listManga[index];
+            return ItemManga(
+              key: ValueKey(manga.idManga),
+              title: manga.title,
+              thumbnailUrl: manga.thumbnailUrl,
+              endpoint: manga.endpoint,
+            );
+          },
+        );
+      },
     );
   }
 }

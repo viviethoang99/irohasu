@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../base/text.dart';
+import '../../../../../config/constants/size.dart';
 import '../../../../chapter/presentation/chapter_screens/chapter_screen.dart';
 import '../../../manga.dart';
 
@@ -43,13 +45,10 @@ class CustomButtonReadingWidget extends StatelessWidget {
           child: BlocBuilder<MangaDetailBloc, MangaDetailState>(
             builder: (context, state) {
               return Center(
-                child: Text(
+                child: IrohaText.bold(
                   context.read<MangaDetailBloc>().lastChapter,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: Colors.white,
-                  ),
+                  fontSize: FontSizes.s16,
+                  color: Colors.white,
                 ),
               );
             },

@@ -1,14 +1,14 @@
 part of 'list_manga_bloc.dart';
 
-abstract class ListMangaEvent extends Equatable {
+sealed class ListMangaEvent extends Equatable {
   const ListMangaEvent();
 
   @override
   List<Object> get props => [];
 }
 
-class FetchListMangaEvent extends ListMangaEvent {}
+final class FetchListMangaEvent extends ListMangaEvent {}
 
-class InitialFetchMangaEvent extends ListMangaEvent {}
+final class InitialFetchMangaEvent extends ListMangaEvent {}
 
-class RefreshMangaEvent extends ListMangaEvent {}
+final class RefreshMangaEvent extends ListMangaEvent {}

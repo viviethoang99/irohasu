@@ -1,7 +1,6 @@
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rxdart/rxdart.dart';
 
 import '../../../../config/base_content.dart';
 import '../../../../core/core.dart';
@@ -10,7 +9,7 @@ import '../../../manga/manga.dart';
 import '../setting_screen/setting_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   static const routeName = '/';
 

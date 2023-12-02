@@ -133,7 +133,7 @@ class AFThemeExtension extends ThemeExtension<AFThemeExtension> {
   }
 }
 
-enum FlowyTint {
+enum IrohaTint {
   tint1,
   tint2,
   tint3,
@@ -145,33 +145,33 @@ enum FlowyTint {
   tint9;
 
   String toJson() => name;
-  static FlowyTint fromJson(String json) {
+  static IrohaTint fromJson(String json) {
     try {
-      return FlowyTint.values.byName(json);
+      return IrohaTint.values.byName(json);
     } catch (_) {
-      return FlowyTint.tint1;
+      return IrohaTint.tint1;
     }
   }
 
   Color color(BuildContext context) {
     switch (this) {
-      case FlowyTint.tint1:
+      case IrohaTint.tint1:
         return AFThemeExtension.of(context).tint1;
-      case FlowyTint.tint2:
+      case IrohaTint.tint2:
         return AFThemeExtension.of(context).tint2;
-      case FlowyTint.tint3:
+      case IrohaTint.tint3:
         return AFThemeExtension.of(context).tint3;
-      case FlowyTint.tint4:
+      case IrohaTint.tint4:
         return AFThemeExtension.of(context).tint4;
-      case FlowyTint.tint5:
+      case IrohaTint.tint5:
         return AFThemeExtension.of(context).tint5;
-      case FlowyTint.tint6:
+      case IrohaTint.tint6:
         return AFThemeExtension.of(context).tint6;
-      case FlowyTint.tint7:
+      case IrohaTint.tint7:
         return AFThemeExtension.of(context).tint7;
-      case FlowyTint.tint8:
+      case IrohaTint.tint8:
         return AFThemeExtension.of(context).tint8;
-      case FlowyTint.tint9:
+      case IrohaTint.tint9:
         return AFThemeExtension.of(context).tint9;
     }
   }

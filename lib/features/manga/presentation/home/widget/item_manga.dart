@@ -1,22 +1,21 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../env.dart';
+import '../../../../../base/text.dart';
+import '../../../../../config/constants/size.dart';
 import '../../detail/manga_detail_screen.dart';
 
 class ItemManga extends StatelessWidget {
   const ItemManga({
-    Key? key,
+    super.key,
     required this.title,
     required this.thumbnailUrl,
     required this.endpoint,
-    this.imageCache = false,
-  }) : super(key: key);
+  });
 
   final String? title;
   final String? thumbnailUrl;
   final String? endpoint;
-  final bool imageCache;
 
   @override
   Widget build(BuildContext context) {
@@ -32,36 +31,23 @@ class ItemManga extends StatelessWidget {
           Expanded(
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              child: imageCache
-                  ? CachedNetworkImage(
-                      placeholder: (_, url) => Container(
-                        color: Theme.of(context).backgroundColor,
-                        child: const SizedBox.expand(),
-                      ),
-                      fit: BoxFit.cover,
-                      imageUrl: thumbnailUrl!,
-                    )
-                  : Image.network(
-                      thumbnailUrl!,
-                      headers: ENV.headersBuilder,
-                      fit: BoxFit.cover,
-                      errorBuilder: (_, exception, stackTrace) {
-                        return Image.asset('assets/images/404.png');
-                      },
-                    ),
+              child: CachedNetworkImage(
+                placeholder: (_, url) => Container(
+                  color: Theme.of(context).backgroundColor,
+                  child: const SizedBox.expand(),
+                ),
+                fit: BoxFit.cover,
+                imageUrl: thumbnailUrl!,
+              ),
             ),
           ),
           SizedBox(
             height: 35,
-            width: double.infinity,
             child: Padding(
               padding: const EdgeInsets.all(5.0).copyWith(bottom: 0),
-              child: Text(
+              child: IrohaText.regular(
                 title!,
-                style: TextStyle(
-                  color: Theme.of(context).primaryColor,
-                  fontSize: 11,
-                ),
+                fontSize: FontSizes.s11,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),

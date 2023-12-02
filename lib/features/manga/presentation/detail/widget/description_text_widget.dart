@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../base/text.dart';
 import 'custom_chip.dart';
-
 
 class DescriptionTextWidget extends StatefulWidget {
   const DescriptionTextWidget({
-    Key? key,
+    super.key,
     required this.text,
     required this.color,
-  }) : super(key: key);
+  });
 
   final String text;
   final Color color;
@@ -19,6 +19,7 @@ class DescriptionTextWidget extends StatefulWidget {
 
 class _DescriptionTextWidgetState extends State<DescriptionTextWidget>
     with TickerProviderStateMixin {
+      
   String get text => widget.text;
 
   late bool flag;
@@ -34,8 +35,14 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget>
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Theme.of(context).backgroundColor,
       padding: const EdgeInsets.symmetric(horizontal: 20),
+      decoration: BoxDecoration(
+        color: Theme.of(context).backgroundColor,
+        borderRadius: const BorderRadius.only(
+          topRight: Radius.circular(16),
+          topLeft: Radius.circular(16),
+        ),
+      ),
       child: AnimatedSize(
         curve: Curves.easeInSine,
         duration: const Duration(milliseconds: 300),
@@ -63,12 +70,10 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget>
           Stack(
             alignment: Alignment.bottomRight,
             children: [
-              Text(
+              IrohaText.regular(
                 text,
-                style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                      fontSize: 15,
-                      letterSpacing: 0.75,
-                    ),
+                fontSize: 15,
+                letterSpacing: 0.75,
                 maxLines: flag ? 2 : null,
                 overflow: flag ? TextOverflow.ellipsis : null,
               ),
@@ -102,11 +107,11 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget>
 
 class _ButtonShowMore extends StatelessWidget {
   const _ButtonShowMore({
-    Key? key,
+    super.key,
     required this.color,
     required this.icon,
     required this.title,
-  }) : super(key: key);
+  });
 
   final Color color;
   final String title;
@@ -123,13 +128,9 @@ class _ButtonShowMore extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
+          IrohaText.semibold(
             title,
-            style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                  color: color,
-                  fontSize: 12,
-                  letterSpacing: 0.75,
-                ),
+            letterSpacing: 0.75,
           ),
           Icon(icon, color: color),
         ],
