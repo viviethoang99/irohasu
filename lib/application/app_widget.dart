@@ -22,6 +22,9 @@ class Application extends StatelessWidget {
         BlocProvider<ChangeBackgroundBloc>(
           create: (_) => getIt<ChangeBackgroundBloc>(),
         ),
+        BlocProvider<AppearanceCubit>(
+          create: (_) => getIt<AppearanceCubit>(),
+        ),
         BlocProvider<ChangeThemeBloc>(
           create: (_) => getIt<ChangeThemeBloc>()..add(GetTheme()),
         ),
@@ -35,14 +38,14 @@ class Application extends StatelessWidget {
           create: (_) => getIt<UpdateAppCubit>(),
         )
       ],
-      child: BlocBuilder<ChangeThemeBloc, ChangeThemeState>(
-        builder: (_, state) {
+      child: BlocSelector<AppearanceCubit, AppearanceState, ThemeMode>(
+        selector: (state) => state.themeMode,
+        builder: (_, themeMode) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             scrollBehavior: CustomScrollBehavior(),
             title: ENV.nameApp,
-            theme: state.themeLight,
-            darkTheme: state.themeDark,
+            themeMode: themeMode,
             initialRoute: HomeScreen.routeName,
             onGenerateRoute: AppRoutes.generateRoute,
           );

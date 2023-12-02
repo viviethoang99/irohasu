@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
-import './widget/item_manga.dart';
 import '../../../../core/core.dart';
-
 import '../../manga.dart';
+import './widget/item_manga.dart';
 
 class ListMangaWidget extends StatefulWidget {
   const ListMangaWidget({
@@ -35,12 +34,14 @@ class _ListMangaWidgetState extends State<ListMangaWidget> {
       color: Theme.of(context).backgroundColor,
       child: GridView.builder(
         shrinkWrap: true,
-        padding: const EdgeInsets.all(5),
+        padding: const EdgeInsets.all(12),
         itemCount: hasReachedEnd! ? data!.length + 20 : data!.length,
         controller: _scrollController,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           childAspectRatio: 0.6,
           crossAxisCount: 3,
+          crossAxisSpacing: 8,
+          mainAxisSpacing: 8,
         ),
         itemBuilder: (context, index) {
           return ItemManga(
