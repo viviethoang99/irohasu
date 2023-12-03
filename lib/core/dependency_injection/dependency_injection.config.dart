@@ -17,104 +17,102 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart' as _i17;
 
 import '../../features/appearance/application/appearance_cubit.dart' as _i3;
 import '../../features/chapter/application/change_background_color_bloc/change_background_bloc.dart'
-    as _i53;
+    as _i52;
 import '../../features/chapter/application/change_reading_mode_bloc/change_reading_mode_bloc.dart'
-    as _i54;
+    as _i53;
 import '../../features/chapter/application/chapter_screen/chapter_screen_cubit.dart'
-    as _i58;
+    as _i57;
 import '../../features/chapter/application/manage_page_in_chapter/manage_page_in_chapter_cubit.dart'
     as _i16;
-import '../../features/chapter/chapter.dart' as _i59;
+import '../../features/chapter/chapter.dart' as _i58;
 import '../../features/chapter/data/datasource/remote/chapter_api_source.dart'
-    as _i34;
+    as _i33;
 import '../../features/chapter/data/repositories/chapter_repository_imp.dart'
-    as _i47;
-import '../../features/chapter/domain/domain.dart' as _i57;
-import '../../features/chapter/domain/repository/i_chaper_repository.dart'
     as _i46;
+import '../../features/chapter/domain/domain.dart' as _i56;
+import '../../features/chapter/domain/repository/i_chaper_repository.dart'
+    as _i45;
 import '../../features/chapter/domain/usecase/chapter/fetch_data_chapter_usecase.dart'
-    as _i56;
+    as _i55;
 import '../../features/github/application/update_app/update_app_cubit.dart'
-    as _i52;
+    as _i51;
 import '../../features/github/data/datasource/local/github_local_datasource.dart'
     as _i9;
 import '../../features/github/data/datasource/remote/github_api_source.dart'
-    as _i22;
-import '../../features/github/data/repositories/github_repository_imp.dart'
-    as _i24;
-import '../../features/github/domain/repository/i_github_repository.dart'
-    as _i43;
-import '../../features/github/domain/usecase/github_usecase/get_latest_release_usecase.dart'
-    as _i42;
-import '../../features/github/domain/usecase/setting_usecase/get_download_path_usecase.dart'
-    as _i41;
-import '../../features/github/github.dart' as _i23;
-import '../../features/manga/application/favorite_manga_detail_bloc/favorite_manga_detail_bloc.dart'
     as _i21;
+import '../../features/github/data/repositories/github_repository_imp.dart'
+    as _i23;
+import '../../features/github/domain/repository/i_github_repository.dart'
+    as _i42;
+import '../../features/github/domain/usecase/github_usecase/get_latest_release_usecase.dart'
+    as _i41;
+import '../../features/github/domain/usecase/setting_usecase/get_download_path_usecase.dart'
+    as _i40;
+import '../../features/github/github.dart' as _i22;
 import '../../features/manga/application/library_screen_bloc/library_screen_bloc.dart'
-    as _i48;
+    as _i47;
 import '../../features/manga/application/list_manga_bloc/list_manga_bloc.dart'
-    as _i49;
+    as _i48;
 import '../../features/manga/application/manage_favorite_manga/manage_favorite_manga_bloc.dart'
     as _i15;
 import '../../features/manga/application/manga_detail_bloc/manga_detail_bloc.dart'
-    as _i50;
+    as _i49;
 import '../../features/manga/application/search_screen/search_screen_bloc.dart'
-    as _i51;
+    as _i50;
 import '../../features/manga/data/datasource/local/favorite_local_source.dart'
     as _i6;
 import '../../features/manga/data/datasource/local/manga_local_source.dart'
     as _i11;
 import '../../features/manga/data/datasource/remote/manga_api_source.dart'
-    as _i25;
+    as _i24;
 import '../../features/manga/data/dtos/dtos.dart' as _i12;
 import '../../features/manga/data/repositories/favorite_repository.dart' as _i8;
 import '../../features/manga/data/repositories/manga_repository_imp.dart'
-    as _i27;
+    as _i26;
 import '../../features/manga/domain/repositories/i_favorite_repository.dart'
     as _i7;
 import '../../features/manga/domain/repositories/i_manga_repository.dart'
-    as _i26;
+    as _i25;
 import '../../features/manga/domain/usecase/favorite_manga/change_status_favorite_usercase.dart'
     as _i20;
 import '../../features/manga/domain/usecase/favorite_manga/find_list_manga_library_usecase.dart'
-    as _i37;
+    as _i36;
 import '../../features/manga/domain/usecase/favorite_manga/get_all_manga_usecase.dart'
-    as _i39;
+    as _i38;
 import '../../features/manga/domain/usecase/favorite_manga/is_favorite_usecase.dart'
     as _i14;
 import '../../features/manga/domain/usecase/favorite_manga/watch_id_favorite_tab_usecase.dart'
     as _i18;
 import '../../features/manga/domain/usecase/list_manga/fetch_list_manga_usecase.dart'
-    as _i35;
+    as _i34;
 import '../../features/manga/domain/usecase/list_manga/find_manga_by_query_usecase.dart'
-    as _i38;
+    as _i37;
 import '../../features/manga/domain/usecase/manga_detail/fetch_manga_detail_usecase.dart'
-    as _i36;
+    as _i35;
 import '../../features/manga/manga.dart' as _i5;
 import '../../features/shared/application/change_theme_bloc/change_theme_bloc.dart'
-    as _i55;
+    as _i54;
 import '../../features/shared/data/datasource/local/setting_local_datasource.dart'
     as _i13;
 import '../../features/shared/data/repositories/setting_app_repository.dart'
-    as _i29;
-import '../../features/shared/domain/repositories/i_setting_app_repository.dart'
     as _i28;
-import '../../features/shared/domain/repositories/repository.dart' as _i31;
+import '../../features/shared/domain/repositories/i_setting_app_repository.dart'
+    as _i27;
+import '../../features/shared/domain/repositories/repository.dart' as _i30;
 import '../../features/shared/domain/usecase/setting_app/get_background_reading_usecase.dart'
-    as _i40;
+    as _i39;
 import '../../features/shared/domain/usecase/setting_app/get_reading_mode_usecase.dart'
-    as _i44;
+    as _i43;
 import '../../features/shared/domain/usecase/setting_app/get_setting_app_usecase.dart'
-    as _i45;
+    as _i44;
 import '../../features/shared/domain/usecase/setting_app/update_background_reading_usecase.dart'
-    as _i30;
+    as _i29;
 import '../../features/shared/domain/usecase/setting_app/update_reading_mode_usecase.dart'
-    as _i32;
+    as _i31;
 import '../../features/shared/domain/usecase/setting_app/update_setting_app_usecase.dart'
-    as _i33;
-import 'modules/network_module.dart' as _i61;
-import 'modules/storage_module.dart' as _i60;
+    as _i32;
+import 'modules/network_module.dart' as _i60;
+import 'modules/storage_module.dart' as _i59;
 
 extension GetItInjectableX on _i1.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -183,92 +181,86 @@ extension GetItInjectableX on _i1.GetIt {
           gh<_i19.BaseOptions>(),
           gh<_i17.PrettyDioLogger>(),
         ));
-    gh.factoryParam<_i21.FavoriteMangaDetailBloc, String, dynamic>((
-      endpoint,
-      _,
-    ) =>
-        _i21.FavoriteMangaDetailBloc(
-          gh<_i20.ChangeStatusFavoriteUseCase>(),
-          gh<_i14.IsFavoriteUseCase>(),
-          endpoint,
+    gh.factory<_i21.IGithubApiSource>(
+        () => _i21.GithubApiSource(gh<_i19.Dio>()));
+    gh.factory<_i22.IGithubRepository>(() => _i23.GithubRepository(
+          gh<_i22.IGithubApiSource>(),
+          gh<_i22.IGithubLocalDataSource>(),
         ));
-    gh.factory<_i22.IGithubApiSource>(
-        () => _i22.GithubApiSource(gh<_i19.Dio>()));
-    gh.factory<_i23.IGithubRepository>(() => _i24.GithubRepository(
-          gh<_i23.IGithubApiSource>(),
-          gh<_i23.IGithubLocalDataSource>(),
-        ));
-    gh.factory<_i25.IMangaApiSource>(() => _i25.MangaApiSource(gh<_i19.Dio>()));
-    gh.lazySingleton<_i26.IMangaRepository>(() => _i27.MangaRepository(
-          gh<_i25.IMangaApiSource>(),
+    gh.factory<_i24.IMangaApiSource>(() => _i24.MangaApiSource(gh<_i19.Dio>()));
+    gh.lazySingleton<_i25.IMangaRepository>(() => _i26.MangaRepository(
+          gh<_i24.IMangaApiSource>(),
           gh<_i11.IMangaLocalSource>(),
         ));
-    gh.factory<_i28.ISettingAppRepository>(
-        () => _i29.SettingAppRepository(gh<_i13.ISettingLocalDataSource>()));
-    gh.lazySingleton<_i30.SetBackgroundReadingUseCase>(() =>
-        _i30.SetBackgroundReadingUseCase(gh<_i31.ISettingAppRepository>()));
-    gh.lazySingleton<_i32.SetReadingModeUseCase>(
-        () => _i32.SetReadingModeUseCase(gh<_i28.ISettingAppRepository>()));
-    gh.lazySingleton<_i33.SetThemeAppUseCase>(
-        () => _i33.SetThemeAppUseCase(gh<_i28.ISettingAppRepository>()));
-    gh.factory<_i34.ChapterApiSource>(
-        () => _i34.ChapterApiSource(gh<_i19.Dio>()));
-    gh.lazySingleton<_i35.FetchListMangaUseCase>(
-        () => _i35.FetchListMangaUseCase(gh<_i26.IMangaRepository>()));
-    gh.lazySingleton<_i36.FetchMangaDetailUseCase>(
-        () => _i36.FetchMangaDetailUseCase(gh<_i26.IMangaRepository>()));
-    gh.lazySingleton<_i37.FindListMangaLibraryUseCase>(
-        () => _i37.FindListMangaLibraryUseCase(gh<_i26.IMangaRepository>()));
-    gh.lazySingleton<_i38.FindMangaByQueryUseCase>(
-        () => _i38.FindMangaByQueryUseCase(gh<_i26.IMangaRepository>()));
-    gh.lazySingleton<_i39.GetAllMangaUseCase>(
-        () => _i39.GetAllMangaUseCase(gh<_i26.IMangaRepository>()));
-    gh.lazySingleton<_i40.GetBackgroundReadingUseCase>(() =>
-        _i40.GetBackgroundReadingUseCase(gh<_i31.ISettingAppRepository>()));
-    gh.lazySingleton<_i41.GetDownloadPathUseCase>(
-        () => _i41.GetDownloadPathUseCase(gh<_i23.IGithubRepository>()));
-    gh.lazySingleton<_i42.GetLatestReleaseUseCase>(
-        () => _i42.GetLatestReleaseUseCase(gh<_i43.IGithubRepository>()));
-    gh.lazySingleton<_i44.GetReadingModeUseCase>(
-        () => _i44.GetReadingModeUseCase(gh<_i28.ISettingAppRepository>()));
-    gh.lazySingleton<_i45.GetThemeAppUseCase>(
-        () => _i45.GetThemeAppUseCase(gh<_i28.ISettingAppRepository>()));
-    gh.lazySingleton<_i46.IChapterRepository>(
-        () => _i47.ChapterRepositoryImp(gh<_i34.ChapterApiSource>()));
-    gh.factory<_i48.LibraryScreenBloc>(() => _i48.LibraryScreenBloc(
-          gh<_i37.FindListMangaLibraryUseCase>(),
+    gh.factory<_i27.ISettingAppRepository>(
+        () => _i28.SettingAppRepository(gh<_i13.ISettingLocalDataSource>()));
+    gh.lazySingleton<_i29.SetBackgroundReadingUseCase>(() =>
+        _i29.SetBackgroundReadingUseCase(gh<_i30.ISettingAppRepository>()));
+    gh.lazySingleton<_i31.SetReadingModeUseCase>(
+        () => _i31.SetReadingModeUseCase(gh<_i27.ISettingAppRepository>()));
+    gh.lazySingleton<_i32.SetThemeAppUseCase>(
+        () => _i32.SetThemeAppUseCase(gh<_i27.ISettingAppRepository>()));
+    gh.factory<_i33.ChapterApiSource>(
+        () => _i33.ChapterApiSource(gh<_i19.Dio>()));
+    gh.lazySingleton<_i34.FetchListMangaUseCase>(
+        () => _i34.FetchListMangaUseCase(gh<_i25.IMangaRepository>()));
+    gh.lazySingleton<_i35.FetchMangaDetailUseCase>(
+        () => _i35.FetchMangaDetailUseCase(gh<_i25.IMangaRepository>()));
+    gh.lazySingleton<_i36.FindListMangaLibraryUseCase>(
+        () => _i36.FindListMangaLibraryUseCase(gh<_i25.IMangaRepository>()));
+    gh.lazySingleton<_i37.FindMangaByQueryUseCase>(
+        () => _i37.FindMangaByQueryUseCase(gh<_i25.IMangaRepository>()));
+    gh.lazySingleton<_i38.GetAllMangaUseCase>(
+        () => _i38.GetAllMangaUseCase(gh<_i25.IMangaRepository>()));
+    gh.lazySingleton<_i39.GetBackgroundReadingUseCase>(() =>
+        _i39.GetBackgroundReadingUseCase(gh<_i30.ISettingAppRepository>()));
+    gh.lazySingleton<_i40.GetDownloadPathUseCase>(
+        () => _i40.GetDownloadPathUseCase(gh<_i22.IGithubRepository>()));
+    gh.lazySingleton<_i41.GetLatestReleaseUseCase>(
+        () => _i41.GetLatestReleaseUseCase(gh<_i42.IGithubRepository>()));
+    gh.lazySingleton<_i43.GetReadingModeUseCase>(
+        () => _i43.GetReadingModeUseCase(gh<_i27.ISettingAppRepository>()));
+    gh.lazySingleton<_i44.GetThemeAppUseCase>(
+        () => _i44.GetThemeAppUseCase(gh<_i27.ISettingAppRepository>()));
+    gh.lazySingleton<_i45.IChapterRepository>(
+        () => _i46.ChapterRepositoryImp(gh<_i33.ChapterApiSource>()));
+    gh.factory<_i47.LibraryScreenBloc>(() => _i47.LibraryScreenBloc(
+          gh<_i36.FindListMangaLibraryUseCase>(),
           gh<_i18.WatchIdFavoriteTabUseCase>(),
         ));
-    gh.factory<_i49.ListMangaBloc>(
-        () => _i49.ListMangaBloc(gh<_i35.FetchListMangaUseCase>()));
-    gh.factory<_i50.MangaDetailBloc>(
-        () => _i50.MangaDetailBloc(gh<_i36.FetchMangaDetailUseCase>()));
-    gh.factory<_i51.SearchScreenBloc>(
-        () => _i51.SearchScreenBloc(gh<_i38.FindMangaByQueryUseCase>()));
-    gh.factory<_i52.UpdateAppCubit>(() => _i52.UpdateAppCubit(
-          gh<_i23.GetLatestReleaseUseCase>(),
-          gh<_i23.GetDownloadPathUseCase>(),
+    gh.factory<_i48.ListMangaBloc>(
+        () => _i48.ListMangaBloc(gh<_i34.FetchListMangaUseCase>()));
+    gh.factory<_i49.MangaDetailBloc>(() => _i49.MangaDetailBloc(
+          gh<_i35.FetchMangaDetailUseCase>(),
+          gh<_i20.ChangeStatusFavoriteUseCase>(),
+          gh<_i14.IsFavoriteUseCase>(),
         ));
-    gh.factory<_i53.ChangeBackgroundBloc>(() => _i53.ChangeBackgroundBloc(
-          gh<_i40.GetBackgroundReadingUseCase>(),
-          gh<_i30.SetBackgroundReadingUseCase>(),
+    gh.factory<_i50.SearchScreenBloc>(
+        () => _i50.SearchScreenBloc(gh<_i37.FindMangaByQueryUseCase>()));
+    gh.factory<_i51.UpdateAppCubit>(() => _i51.UpdateAppCubit(
+          gh<_i22.GetLatestReleaseUseCase>(),
+          gh<_i22.GetDownloadPathUseCase>(),
         ));
-    gh.factory<_i54.ChangeReadingModeBloc>(() => _i54.ChangeReadingModeBloc(
-          gh<_i44.GetReadingModeUseCase>(),
-          gh<_i32.SetReadingModeUseCase>(),
+    gh.factory<_i52.ChangeBackgroundBloc>(() => _i52.ChangeBackgroundBloc(
+          gh<_i39.GetBackgroundReadingUseCase>(),
+          gh<_i29.SetBackgroundReadingUseCase>(),
         ));
-    gh.factory<_i55.ChangeThemeBloc>(() => _i55.ChangeThemeBloc(
-          gh<_i45.GetThemeAppUseCase>(),
-          gh<_i33.SetThemeAppUseCase>(),
+    gh.factory<_i53.ChangeReadingModeBloc>(() => _i53.ChangeReadingModeBloc(
+          gh<_i43.GetReadingModeUseCase>(),
+          gh<_i31.SetReadingModeUseCase>(),
         ));
-    gh.lazySingleton<_i56.FetchDataChapterUsecase>(
-        () => _i56.FetchDataChapterUsecase(gh<_i57.IChapterRepository>()));
-    gh.factory<_i58.ChapterScreenCubit>(
-        () => _i58.ChapterScreenCubit(gh<_i59.FetchDataChapterUsecase>()));
+    gh.factory<_i54.ChangeThemeBloc>(() => _i54.ChangeThemeBloc(
+          gh<_i44.GetThemeAppUseCase>(),
+          gh<_i32.SetThemeAppUseCase>(),
+        ));
+    gh.lazySingleton<_i55.FetchDataChapterUsecase>(
+        () => _i55.FetchDataChapterUsecase(gh<_i56.IChapterRepository>()));
+    gh.factory<_i57.ChapterScreenCubit>(
+        () => _i57.ChapterScreenCubit(gh<_i58.FetchDataChapterUsecase>()));
     return this;
   }
 }
 
-class _$StorageModule extends _i60.StorageModule {}
+class _$StorageModule extends _i59.StorageModule {}
 
-class _$NetworkModule extends _i61.NetworkModule {}
+class _$NetworkModule extends _i60.NetworkModule {}

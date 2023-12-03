@@ -1,4 +1,3 @@
-export 'favorite_manga_detail_bloc/favorite_manga_detail_bloc.dart';
 export 'history_screen_bloc/history_screen_bloc.dart';
 export 'library_screen_bloc/library_screen_bloc.dart';
 export 'list_manga_bloc/list_manga_bloc.dart';

@@ -33,3 +33,11 @@ final class AddChapterToListReading extends MangaDetailEvent {
   @override
   List<Object?> get props => [idManga];
 }
+
+final class GetStatusFavoriteManga extends MangaDetailEvent {
+  const GetStatusFavoriteManga();
+}
+
+final class SetStatusFavoriteManga extends MangaDetailEvent {
+  const SetStatusFavoriteManga();
+}

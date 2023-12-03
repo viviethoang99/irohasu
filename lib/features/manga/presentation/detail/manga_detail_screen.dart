@@ -48,6 +48,7 @@ class _MangaDetailScreenState extends State<MangaDetailScreen> {
   void _createBloc() {
     _bloc = getIt<MangaDetailBloc>()
       ..add(InitMangaDetailEvent(widget.mangaDetail))
+      ..add(const GetStatusFavoriteManga())
       ..add(FetchMangaDetailEvent(widget.mangaDetail?.endpoint));
   }
 

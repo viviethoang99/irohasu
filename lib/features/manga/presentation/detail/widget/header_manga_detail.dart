@@ -96,20 +96,21 @@ class _ListButtonWidget extends StatelessWidget {
       padding: const EdgeInsets.only(left: 12),
       child: Row(
         children: <Widget>[
-          // BlocBuilder<FavoriteMangaDetailBloc, bool>(
-          //   builder: (context, state) {
-          //     return IconButton(
-          //       icon: Icon(
-          //         state ? Icons.favorite : Icons.favorite_border,
-          //         color: Theme.of(context).canvasColor,
-          //         size: 30,
-          //       ),
-          //       onPressed: () => context
-          //           .read<FavoriteMangaDetailBloc>()
-          //           .add(SetStatusFavoriteManga()),
-          //     );
-          //   },
-          // ),
+          BlocSelector<MangaDetailBloc, MangaDetailState, bool>(
+            selector: (state) => state.isFavoriteManga,
+            builder: (context, state) {
+              return IconButton(
+                icon: Icon(
+                  state ? Icons.favorite : Icons.favorite_border,
+                  color: Theme.of(context).canvasColor,
+                  size: 30,
+                ),
+                onPressed: () => context
+                    .read<MangaDetailBloc>()
+                    .add(const SetStatusFavoriteManga()),
+              );
+            },
+          ),
           IconButton(
             icon: Icon(
               Icons.language,

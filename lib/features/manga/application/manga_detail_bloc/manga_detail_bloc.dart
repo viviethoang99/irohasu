@@ -5,8 +5,11 @@ import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../config/config.dart';
+import '../../../../core/core.dart';
 import '../../../chapter/chapter.dart';
 import '../../domain/domain.dart';
+import '../../domain/usecase/favorite_manga/change_status_favorite_usercase.dart';
+import '../../domain/usecase/favorite_manga/is_favorite_usecase.dart';
 import '../../domain/usecase/manga_detail/fetch_manga_detail_usecase.dart';
 
 part 'manga_detail_event.dart';
@@ -16,13 +19,19 @@ part 'manga_detail_state.dart';
 class MangaDetailBloc extends Bloc<MangaDetailEvent, MangaDetailState> {
   MangaDetailBloc(
     this._fetchMangaDetailUseCase,
+    this._changeStatusFavoriteUseCase,
+    this._isFavoriteUseCase,
   ) : super(const MangaDetailState()) {
     on<FetchMangaDetailEvent>(_fetchMangaDetail);
     on<AddChapterToListReading>(_setLastReadingToChapter);
     on<InitMangaDetailEvent>(_initLoadingManga);
+    on<GetStatusFavoriteManga>(_updateStatus);
+    on<SetStatusFavoriteManga>(_setStatusManga);
   }
 
   final FetchMangaDetailUseCase _fetchMangaDetailUseCase;
+  final IsFavoriteUseCase _isFavoriteUseCase;
+  final ChangeStatusFavoriteUseCase _changeStatusFavoriteUseCase;
 
   Future<void> _fetchMangaDetail(
     FetchMangaDetailEvent event,
@@ -62,6 +71,34 @@ class MangaDetailBloc extends Bloc<MangaDetailEvent, MangaDetailState> {
       ..remove(event.idManga)
       ..add(event.idManga);
     emit(state.copyWith(chapterReading: newList));
+  }
+
+  Future<void> _updateStatus(
+    GetStatusFavoriteManga event,
+    Emitter<MangaDetailState> emit,
+  ) async {
+    final either = await _isFavoriteUseCase(
+      params: state.mangaDetail?.endpoint.toId ?? '',
+    );
+    either.fold(
+      (error) => null,
+      (isFavorite) => emit(state.copyWith(isFavoriteManga: isFavorite)),
+    );
+  }
+
+  Future<void> _setStatusManga(
+    SetStatusFavoriteManga event,
+    Emitter<MangaDetailState> emit,
+  ) async {
+    final params = ChangeStatusFavoriteParams(
+      id: state.mangaDetail?.endpoint.toId ?? '',
+      isFavorite: state.isFavoriteManga,
+    );
+    final either = await _changeStatusFavoriteUseCase(params: params);
+    either.fold(
+      (error) => null,
+      (_) => add(const GetStatusFavoriteManga()),
+    );
   }
 
   String get lastChapter {

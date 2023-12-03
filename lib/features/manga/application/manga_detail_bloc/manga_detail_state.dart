@@ -7,21 +7,25 @@ final class MangaDetailState extends Equatable {
     this.mangaDetail,
     this.chapterReading = const [],
     this.status = MangaDetailStatus.loading,
+    this.isFavoriteManga = false,
   });
 
   final MangaDetail? mangaDetail;
   final MangaDetailStatus status;
   final List<String> chapterReading;
+  final bool isFavoriteManga;
 
   MangaDetailState copyWith({
     MangaDetail? mangaDetail,
     List<String>? chapterReading,
     MangaDetailStatus? status,
+    bool? isFavoriteManga,
   }) {
     return MangaDetailState(
       mangaDetail: mangaDetail ?? this.mangaDetail,
       chapterReading: chapterReading ?? this.chapterReading,
       status: status ?? this.status,
+      isFavoriteManga: isFavoriteManga ?? this.isFavoriteManga,
     );
   }
 
@@ -30,5 +34,6 @@ final class MangaDetailState extends Equatable {
         mangaDetail,
         chapterReading,
         status,
+        isFavoriteManga,
       ];
 }
