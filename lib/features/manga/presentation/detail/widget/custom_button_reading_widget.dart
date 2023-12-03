@@ -17,35 +17,55 @@ class CustomButtonReadingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (lastChapter?.endpoint == null) {
-      return IrohaText.bold(
-        'Truyện hiện tại không cho chương nào',
-        fontSize: FontSizes.s18,
-      );
-    }
-
     return Container(
       color: Theme.of(context).colorScheme.background,
       padding: const EdgeInsets.symmetric(
         horizontal: 15,
         vertical: 10,
       ),
-      child: IrohaButton(
-        decoration: BoxDecoration(
-          color: Theme.of(context).canvasColor,
-          borderRadius: BorderRadius.circular(26),
-        ),
-        onTap: () => _onPressed(context),
-        text: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4),
-          child: Center(
-            child: IrohaText.bold(
-              context.read<MangaDetailBloc>().lastChapter,
-              fontSize: FontSizes.s16,
-              color: Colors.white,
+      child: BlocBuilder<MangaDetailBloc, MangaDetailState>(
+        builder: (context, state) {
+          if (state.status == MangaDetailStatus.loading) {
+            return IrohaButton(
+              decoration: BoxDecoration(
+                color: Theme.of(context).canvasColor,
+                borderRadius: BorderRadius.circular(26),
+              ),
+              onTap: () {},
+              text: const Padding(
+                padding: EdgeInsets.symmetric(vertical: 4),
+                child: Center(
+                  child: SizedBox.shrink(),
+                ),
+              ),
+            );
+          }
+
+          if (lastChapter?.endpoint == null) {
+            return IrohaText.bold(
+              'Truyện hiện tại không có chương nào!',
+              fontSize: FontSizes.s18,
+            );
+          }
+
+          return IrohaButton(
+            decoration: BoxDecoration(
+              color: Theme.of(context).canvasColor,
+              borderRadius: BorderRadius.circular(26),
             ),
-          ),
-        ),
+            onTap: () => _onPressed(context),
+            text: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: Center(
+                child: IrohaText.bold(
+                  context.read<MangaDetailBloc>().lastChapter,
+                  fontSize: FontSizes.s16,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -54,7 +74,7 @@ class CustomButtonReadingWidget extends StatelessWidget {
     final chapterParam = context.read<MangaDetailBloc>().params(
           lastChapter!.endpoint!,
         );
-        
+
     Navigator.of(context).pushNamed(
       ChapterScreen.routeName,
       arguments: ChapterScreen(

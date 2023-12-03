@@ -21,25 +21,39 @@ class CustomChips extends StatelessWidget {
               runSpacing: 5,
               children: List.generate(
                 listGenres.length,
-                (index) => Container(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 7,
-                    horizontal: 20,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: IrohaText.regular(
-                    listGenres[index].name!,
-                    fontSize: FontSizes.s11,
-                  ),
+                (index) => _GenresWidget(
+                  genres: listGenres[index],
                 ),
               ),
             );
           }
+
           return const SizedBox.shrink();
         },
+      ),
+    );
+  }
+}
+
+class _GenresWidget extends StatelessWidget {
+  const _GenresWidget({required this.genres});
+
+  final Genres genres;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        vertical: 7,
+        horizontal: 20,
+      ),
+      decoration: BoxDecoration(
+        color: Theme.of(context).primaryColor.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: IrohaText.regular(
+        genres.name ?? '',
+        fontSize: FontSizes.s11,
       ),
     );
   }
