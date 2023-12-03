@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../base/item_not_found.dart';
 import '../../../../../base/text.dart';
 import '../../../../../config/constants/size.dart';
 import '../../../manga.dart';
@@ -41,7 +42,7 @@ class BtnVoteWidget extends StatelessWidget {
             ],
           );
         }
-        return const SizedBox.shrink();
+        return const ItemNotFound();
       },
     );
   }

@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../base/item_not_found.dart';
 import '../../../../../base/spacing.dart';
 import '../../../../../base/text.dart';
 import '../../../../../config/constants/size.dart';
@@ -81,7 +82,7 @@ class _InfomationMangaWidget extends StatelessWidget {
             ],
           );
         }
-        return const SizedBox.shrink();
+        return const ItemNotFound();
       },
     );
   }

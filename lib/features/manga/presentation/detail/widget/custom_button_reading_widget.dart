@@ -32,10 +32,14 @@ class CustomButtonReadingWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(26),
               ),
               onTap: () {},
-              text: const Padding(
-                padding: EdgeInsets.symmetric(vertical: 4),
+              text: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4),
                 child: Center(
-                  child: SizedBox.shrink(),
+                  child: IrohaText.bold(
+                    '',
+                    fontSize: FontSizes.s16,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             );

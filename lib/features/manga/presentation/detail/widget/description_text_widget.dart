@@ -21,13 +21,13 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget> {
   String get text => widget.text ?? '';
 
   late bool flag;
-  bool _isMoreThan100Characters = false;
+  late bool _isMoreThan100Characters;
 
   @override
   void initState() {
     super.initState();
     flag = false;
-    _isMoreThan100Characters = (text.length >= 100);
+    _isMoreThan100Characters = text.length >= 100;
   }
 
   @override
@@ -127,6 +127,7 @@ class _ButtonShowMore extends StatelessWidget {
         children: [
           IrohaText.semibold(
             title,
+            color: theme.canvasColor,
             letterSpacing: 0.75,
           ),
           Icon(

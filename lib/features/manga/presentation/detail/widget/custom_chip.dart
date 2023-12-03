@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../base/item_not_found.dart';
 import '../../../../../base/text.dart';
 import '../../../../../config/config.dart';
 import '../../../manga.dart';
@@ -28,7 +29,7 @@ class CustomChips extends StatelessWidget {
             );
           }
 
-          return const SizedBox.shrink();
+          return const ItemNotFound();
         },
       ),
     );

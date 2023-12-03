@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../base/item_not_found.dart';
 import '../../../../config/config.dart';
 import '../../../../core/core.dart';
 import '../../manga.dart';
@@ -73,7 +74,7 @@ class _MangaDetailScreenState extends State<MangaDetailScreen> {
                 return MangaDetailView(data: mangaDetail);
               }
 
-              return const SizedBox.shrink();
+              return const ItemNotFound();
             },
           ),
         ),

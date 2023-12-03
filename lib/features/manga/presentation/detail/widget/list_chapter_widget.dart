@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../base/item_not_found.dart';
 import '../../../../../base/text.dart';
 import '../../../../../config/config.dart';
 import '../../../../../core/core.dart';
@@ -65,7 +66,22 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
               height: 5,
             ),
           ),
-          _ListChapterWidget(isReversed: _isReversed),
+          BlocBuilder<MangaDetailBloc, MangaDetailState>(
+            buildWhen: (previous, current) =>
+                previous.mangaDetail?.listChapter !=
+                current.mangaDetail?.listChapter,
+            builder: (context, state) {
+              if (state.mangaDetail?.listChapter.isNotEmpty ?? false) {
+                return _ListChapterWidget(
+                  isReversed: _isReversed,
+                  listChapter: state.mangaDetail?.listChapter ?? [],
+                  nameManga: state.mangaDetail?.title ?? '',
+                );
+              }
+
+              return const ItemNotFound();
+            },
+          )
         ],
       ),
     );
@@ -75,9 +91,13 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
 class _ListChapterWidget extends StatelessWidget {
   const _ListChapterWidget({
     required bool isReversed,
+    this.listChapter = const [],
+    this.nameManga = '',
   }) : _isReversed = isReversed;
 
   final bool _isReversed;
+  final ListChapter listChapter;
+  final String nameManga;
 
   @override
   Widget build(BuildContext context) {
@@ -86,36 +106,26 @@ class _ListChapterWidget extends StatelessWidget {
       context: context,
       removeTop: true,
       child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: BlocBuilder<MangaDetailBloc, MangaDetailState>(
-            buildWhen: (previous, current) =>
-                previous.mangaDetail?.listChapter !=
-                current.mangaDetail?.listChapter,
-            builder: (context, state) {
-              if (state.mangaDetail?.listChapter.isNotEmpty ?? false) {
-                return ListView.separated(
-                  reverse: _isReversed,
-                  separatorBuilder: (_, index) => Divider(
-                    color: theme.canvasColor,
-                    height: 4,
-                  ),
-                  shrinkWrap: true,
-                  itemCount: state.mangaDetail!.listChapter.length,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemBuilder: (_, index) {
-                    final chapter = state.mangaDetail!.listChapter[index];
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: ListView.separated(
+          reverse: _isReversed,
+          separatorBuilder: (_, index) => Divider(
+            color: theme.canvasColor,
+            height: 4,
+          ),
+          shrinkWrap: true,
+          itemCount: listChapter.length,
+          physics: const NeverScrollableScrollPhysics(),
+          itemBuilder: (_, index) {
+            final chapter = listChapter[index];
 
-                    return _ChapterWidget(
-                      chapter: chapter,
-                      nameManga: state.mangaDetail?.title ?? '',
-                    );
-                  },
-                );
-              }
-
-              return const SizedBox.shrink();
-            },
-          )),
+            return _ChapterWidget(
+              chapter: chapter,
+              nameManga: nameManga,
+            );
+          },
+        ),
+      ),
     );
   }
 }
@@ -133,6 +143,7 @@ class _ChapterWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 5),
+      onTap: () => onTap(context),
       dense: true,
       title: IrohaText.bold(
         _title,
@@ -142,14 +153,15 @@ class _ChapterWidget extends StatelessWidget {
         chapter.createAt.dateToString(),
         fontSize: FontSizes.s12,
       ),
-      onTap: () {
-        Navigator.of(context).pushNamed(
-          ChapterScreen.routeName,
-          arguments: ChapterScreen(
-            data: context.read<MangaDetailBloc>().params(chapter.endpoint!),
-          ),
-        );
-      },
+    );
+  }
+
+  void onTap(BuildContext context) {
+    Navigator.of(context).pushNamed(
+      ChapterScreen.routeName,
+      arguments: ChapterScreen(
+        data: context.read<MangaDetailBloc>().params(chapter.endpoint!),
+      ),
     );
   }
 

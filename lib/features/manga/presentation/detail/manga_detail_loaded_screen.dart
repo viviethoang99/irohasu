@@ -21,7 +21,7 @@ class MangaDetailView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    
+
     return Stack(
       children: [
         const _ImageBackgroundWidget(),
@@ -43,6 +43,7 @@ class MangaDetailView extends StatelessWidget {
               children: [
                 const HeaderMangaDetail(),
                 DescriptionTextWidget(
+                  key: ValueKey(data?.description?.length),
                   text: data?.description,
                 ),
                 CustomButtonReadingWidget(
