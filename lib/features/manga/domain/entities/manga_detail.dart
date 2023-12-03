@@ -34,8 +34,8 @@ final class MangaDetail extends Manga {
     String? like,
     String? status,
     String? author,
-    ListChapter listChapter,
-    ListGenres listGenres,
+    ListChapter? listChapter,
+    ListGenres? listGenres,
   }) {
     return MangaDetail(
       idManga: idManga ?? this.idManga,

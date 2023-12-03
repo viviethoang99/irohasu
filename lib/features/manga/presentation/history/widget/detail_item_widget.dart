@@ -6,12 +6,12 @@ import '../../../manga.dart';
 
 class DetailItemWidget extends StatelessWidget {
   const DetailItemWidget({
-    Key? key,
+    super.key,
     required this.item,
     required this.titleManga,
     required this.urlManga,
     required this.idManga,
-  }) : super(key: key);
+  });
 
   final ChapterItem? item;
   final String? titleManga;
@@ -75,10 +75,10 @@ class DetailItemWidget extends StatelessWidget {
                 children: <Widget>[
                   TextButton(
                     onPressed: () {
-                      Navigator.of(context).pushNamed(
-                        MangaDetailScreen.routeName,
-                        arguments: MangaDetailScreen(endpoint: urlManga!),
-                      );
+                      // Navigator.of(context).pushNamed(
+                      //   MangaDetailScreen.routeName,
+                      //   arguments: MangaDetailScreen(endpoint: urlManga!),
+                      // );
                     },
                     child: const Text(
                       'Xem chi tiết',

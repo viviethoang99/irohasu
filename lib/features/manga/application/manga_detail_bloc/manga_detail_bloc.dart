@@ -1,9 +1,9 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
-import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../config/base_content.dart';
 import '../../../../config/config.dart';
 import '../../../chapter/chapter.dart';
 import '../../domain/domain.dart';
@@ -15,61 +15,62 @@ part 'manga_detail_state.dart';
 @injectable
 class MangaDetailBloc extends Bloc<MangaDetailEvent, MangaDetailState> {
   MangaDetailBloc(
-    @factoryParam this.endpoint,
     this._fetchMangaDetailUseCase,
-  ) : super(MangaDetailLoadingState()) {
+  ) : super(const MangaDetailState()) {
     on<FetchMangaDetailEvent>(_fetchMangaDetail);
     on<AddChapterToListReading>(_setLastReadingToChapter);
+    on<InitMangaDetailEvent>(_initLoadingManga);
   }
 
   final FetchMangaDetailUseCase _fetchMangaDetailUseCase;
-  final String endpoint;
-
-  MangaDetailSuccessState? get currentState {
-    if (state is MangaDetailSuccessState) {
-      return state as MangaDetailSuccessState;
-    }
-    return null;
-  }
 
   Future<void> _fetchMangaDetail(
     FetchMangaDetailEvent event,
     Emitter<MangaDetailState> emit,
   ) async {
-    emit(MangaDetailLoadingState());
-    final either = await _fetchMangaDetailUseCase(params: endpoint);
-    emit(either.fold(
-      (error) => MangaDetailFailureState(msg: error.runtimeType.toString()),
-      (data) => MangaDetailSuccessState(mangaDetail: data),
-    ));
+    if (event.endpoint?.isEmpty ?? true) {
+      log('Endpoint empty');
+      return;
+    }
+
+    final either = await _fetchMangaDetailUseCase(params: event.endpoint);
+
+    either.fold(
+      (error) {
+        log(error.toString());
+        emit(state.copyWith(status: MangaDetailStatus.failed));
+      },
+      (data) => emit(state.copyWith(
+        mangaDetail: data,
+        status: MangaDetailStatus.success,
+      )),
+    );
   }
 
-  Either<void, MangaDetail> get idManga {
-    if (state is MangaDetailSuccessState) {
-      final data = (state as MangaDetailSuccessState).mangaDetail;
-      return Right(data);
-    } else {
-      return const Left(null);
-    }
+  Future<void> _initLoadingManga(
+    InitMangaDetailEvent event,
+    Emitter<MangaDetailState> emit,
+  ) async {
+    emit(state.copyWith(mangaDetail: event.mangaDetail));
   }
 
   Future<void> _setLastReadingToChapter(
     AddChapterToListReading event,
     Emitter<MangaDetailState> emit,
   ) async {
-    final newList = currentState!.chapterReading
+    final newList = state.chapterReading
       ..remove(event.idManga)
       ..add(event.idManga);
-    emit(currentState!.copyWith(chapterReading: newList));
+    emit(state.copyWith(chapterReading: newList));
   }
 
   String get lastChapter {
-    if (currentState!.chapterReading.isNotEmpty) {
-      final title = currentState!.mangaDetail.listChapter
-          .firstWhere((chap) => chap.id == currentState!.chapterReading.last)
+    if (state.chapterReading.isNotEmpty) {
+      final title = state.mangaDetail?.listChapter
+          .firstWhere((chap) => chap.id == state.chapterReading.last)
           .title!
           .split(' ');
-      final index = title.indexWhere(
+      final index = title!.indexWhere(
               (e) => Constants.keywordChapter.contains(e.toLowerCase())) +
           1;
       if (index == 0) {
@@ -85,8 +86,8 @@ class MangaDetailBloc extends Bloc<MangaDetailEvent, MangaDetailState> {
   ChapterScreenParams params(String endpoint) {
     return ChapterScreenParams(
       endpoint: endpoint,
-      listChap: currentState!.mangaDetail.listChapter,
-      name: currentState!.mangaDetail.title,
+      listChap: state.mangaDetail!.listChapter,
+      name: state.mangaDetail?.title ?? '',
     );
   }
 }

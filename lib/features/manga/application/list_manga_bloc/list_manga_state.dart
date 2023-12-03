@@ -2,7 +2,7 @@ part of 'list_manga_bloc.dart';
 
 enum ListMangaScreenStatus { initial, success, failure }
 
-class ListMangaState extends Equatable {
+final class ListMangaState extends Equatable {
   const ListMangaState({
     this.status = ListMangaScreenStatus.initial,
     this.listManga = const <Manga>[],

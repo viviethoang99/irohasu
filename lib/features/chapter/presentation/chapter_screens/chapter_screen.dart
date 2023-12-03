@@ -9,9 +9,9 @@ import '../horizontal/horizontal_screen.dart';
 
 class ChapterScreen extends StatelessWidget {
   const ChapterScreen({
-    Key? key,
+    super.key,
     required this.data,
-  }) : super(key: key);
+  });
 
   static const routeName = '/chapterScreen';
 

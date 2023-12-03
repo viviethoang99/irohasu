@@ -26,7 +26,7 @@ class MangaInfoState extends Equatable {
   }) =>
       MangaInfoState(
         nameManga ?? this.nameManga,
-        listChapter ?? listChapter,
+        listChapter ?? this.listChapter,
         endpoint ?? this.endpoint,
         action ?? this.action,
       );

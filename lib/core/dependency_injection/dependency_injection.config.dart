@@ -241,14 +241,8 @@ extension GetItInjectableX on _i1.GetIt {
         ));
     gh.factory<_i49.ListMangaBloc>(
         () => _i49.ListMangaBloc(gh<_i35.FetchListMangaUseCase>()));
-    gh.factoryParam<_i50.MangaDetailBloc, String, dynamic>((
-      endpoint,
-      _,
-    ) =>
-        _i50.MangaDetailBloc(
-          endpoint,
-          gh<_i36.FetchMangaDetailUseCase>(),
-        ));
+    gh.factory<_i50.MangaDetailBloc>(
+        () => _i50.MangaDetailBloc(gh<_i36.FetchMangaDetailUseCase>()));
     gh.factory<_i51.SearchScreenBloc>(
         () => _i51.SearchScreenBloc(gh<_i38.FindMangaByQueryUseCase>()));
     gh.factory<_i52.UpdateAppCubit>(() => _i52.UpdateAppCubit(

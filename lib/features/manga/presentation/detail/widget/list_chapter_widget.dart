@@ -8,8 +8,7 @@ import '../../../../chapter/presentation/chapter_screens/chapter_screen.dart';
 import '../../../manga.dart';
 
 class ListChapterWidget extends StatefulWidget {
-  const ListChapterWidget({Key? key, required this.color}) : super(key: key);
-  final Color color;
+  const ListChapterWidget({super.key});
 
   @override
   State<ListChapterWidget> createState() => _ListChapterWidgetState();
@@ -21,7 +20,7 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
   @override
   Widget build(BuildContext context) {
     return ColoredBox(
-      color: Theme.of(context).backgroundColor,
+      color: Theme.of(context).colorScheme.background,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -30,12 +29,12 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                BlocBuilder<MangaDetailBloc, MangaDetailState>(
-                  buildWhen: (pre, cur) => pre.runtimeType != cur.runtimeType,
-                  builder: (_, state) {
-                    if (state is MangaDetailSuccessState) {
+                BlocSelector<MangaDetailBloc, MangaDetailState, ListChapter>(
+                  selector: (state) => state.mangaDetail?.listChapter ?? [],
+                  builder: (_, listChapter) {
+                    if (listChapter.isNotEmpty) {
                       return IrohaText.semibold(
-                        '${state.mangaDetail.listChapter.length} Chương',
+                        '${listChapter.length} Chương',
                         fontSize: FontSizes.s16,
                       );
                     }
@@ -46,7 +45,7 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
                   icon: _isReversed
                       ? Icon(
                           Icons.swap_vertical_circle,
-                          color: widget.color,
+                          color: Theme.of(context).canvasColor,
                         )
                       : Icon(
                           Icons.swap_vert,
@@ -62,7 +61,7 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Divider(
-              color: widget.color,
+              color: Theme.of(context).canvasColor,
               height: 5,
             ),
           ),
@@ -75,10 +74,8 @@ class _ListChapterWidgetState extends State<ListChapterWidget> {
 
 class _ListChapterWidget extends StatelessWidget {
   const _ListChapterWidget({
-    Key? key,
     required bool isReversed,
-  })  : _isReversed = isReversed,
-        super(key: key);
+  }) : _isReversed = isReversed;
 
   final bool _isReversed;
 
@@ -91,8 +88,11 @@ class _ListChapterWidget extends StatelessWidget {
       child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: BlocBuilder<MangaDetailBloc, MangaDetailState>(
+            buildWhen: (previous, current) =>
+                previous.mangaDetail?.listChapter !=
+                current.mangaDetail?.listChapter,
             builder: (context, state) {
-              if (state is MangaDetailSuccessState) {
+              if (state.mangaDetail?.listChapter.isNotEmpty ?? false) {
                 return ListView.separated(
                   reverse: _isReversed,
                   separatorBuilder: (_, index) => Divider(
@@ -100,50 +100,60 @@ class _ListChapterWidget extends StatelessWidget {
                     height: 4,
                   ),
                   shrinkWrap: true,
-                  itemCount: state.mangaDetail.listChapter.length,
+                  itemCount: state.mangaDetail!.listChapter.length,
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (_, index) {
-                    final chapter = state.mangaDetail.listChapter[index];
-                    return ListTile(
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 5),
-                      dense: true,
-                      title: Text(
-                        chapter.title!
-                            .replaceFirst(state.mangaDetail.title, '')
-                            .trim()
-                            .capitalize(),
-                        style: chapter.isReading
-                            ? theme.textTheme.subtitle1!.copyWith(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              )
-                            : TextStyle(
-                                color: theme.primaryColor,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                      ),
-                      subtitle: IrohaText.medium(
-                        chapter.createAt.dateToString(),
-                        fontSize: 12,
-                      ),
-                      onTap: () {
-                        Navigator.of(context).pushNamed(
-                          ChapterScreen.routeName,
-                          arguments: ChapterScreen(
-                            data: context
-                                .read<MangaDetailBloc>()
-                                .params(chapter.endpoint!),
-                          ),
-                        );
-                      },
+                    final chapter = state.mangaDetail!.listChapter[index];
+
+                    return _ChapterWidget(
+                      chapter: chapter,
+                      nameManga: state.mangaDetail?.title ?? '',
                     );
                   },
                 );
               }
+
               return const SizedBox.shrink();
             },
           )),
     );
+  }
+}
+
+class _ChapterWidget extends StatelessWidget {
+  const _ChapterWidget({
+    required this.chapter,
+    this.nameManga = '',
+  });
+
+  final ChapterItem chapter;
+  final String nameManga;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 5),
+      dense: true,
+      title: IrohaText.bold(
+        _title,
+        fontSize: FontSizes.s16,
+      ),
+      subtitle: IrohaText.medium(
+        chapter.createAt.dateToString(),
+        fontSize: FontSizes.s12,
+      ),
+      onTap: () {
+        Navigator.of(context).pushNamed(
+          ChapterScreen.routeName,
+          arguments: ChapterScreen(
+            data: context.read<MangaDetailBloc>().params(chapter.endpoint!),
+          ),
+        );
+      },
+    );
+  }
+
+  String get _title {
+    return chapter.title?.replaceFirst(nameManga, '').trim().capitalize() ?? '';
   }
 }

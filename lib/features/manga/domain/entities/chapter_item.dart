@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 
-typedef ListChapter = List<ChapterItem>?;
+typedef ListChapter = List<ChapterItem>;
 
-class ChapterItem extends Equatable {
+final class ChapterItem extends Equatable {
   const ChapterItem({
     required this.id,
     required this.title,

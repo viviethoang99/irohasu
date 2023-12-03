@@ -1,4 +1,4 @@
-typedef ListGenres = List<Genres>?;
+typedef ListGenres = List<Genres>;
 
 class Genres {
   const Genres({

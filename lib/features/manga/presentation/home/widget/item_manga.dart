@@ -1,8 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../base/text.dart';
 import '../../../../../config/constants/size.dart';
+import '../../../domain/domain.dart';
 import '../../detail/manga_detail_screen.dart';
 
 class ItemManga extends StatelessWidget {
@@ -20,22 +22,25 @@ class ItemManga extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        Navigator.of(context).pushNamed(
-          MangaDetailScreen.routeName,
-          arguments: MangaDetailScreen(endpoint: endpoint!),
-        );
-      },
+      onTap: () => onPress(context),
       child: Column(
         children: <Widget>[
           Expanded(
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: CachedNetworkImage(
-                placeholder: (_, url) => Container(
-                  color: Theme.of(context).backgroundColor,
-                  child: const SizedBox.expand(),
-                ),
+                placeholder: (BuildContext context, String url) {
+                  return Center(
+                    child: Container(
+                      alignment: Alignment.center,
+                      color: CupertinoDynamicColor.resolve(
+                        CupertinoColors.systemGrey5.withOpacity(0.2),
+                        context,
+                      ),
+                      child: const CupertinoActivityIndicator(),
+                    ),
+                  );
+                },
                 fit: BoxFit.cover,
                 imageUrl: thumbnailUrl!,
               ),
@@ -55,6 +60,20 @@ class ItemManga extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  void onPress(BuildContext context) {
+    final params = MangaDetail(
+      idManga: '123456',
+      thumbnailUrl: thumbnailUrl,
+      endpoint: endpoint,
+      title: title,
+    );
+
+    Navigator.of(context).pushNamed(
+      MangaDetailScreen.routeName,
+      arguments: MangaDetailScreen(mangaDetail: params),
     );
   }
 }

@@ -1,131 +1,118 @@
-// Packages
-import 'dart:math';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../config/base_colors.dart';
+import '../../../../base/text.dart';
+import '../../../../config/config.dart';
 import '../../../../core/core.dart';
 import '../../../../env.dart';
 import '../../manga.dart';
+
 import 'widget/custom_button_reading_widget.dart';
 import 'widget/description_text_widget.dart';
 import 'widget/header_manga_detail.dart';
 import 'widget/list_chapter_widget.dart';
 
-class MangaDetailLoadedScreen extends StatefulWidget {
-  const MangaDetailLoadedScreen({Key? key, this.data}) : super(key: key);
+class MangaDetailView extends StatelessWidget {
+  const MangaDetailView({super.key, this.data});
 
   final MangaDetail? data;
 
   @override
-  State<MangaDetailLoadedScreen> createState() =>
-      _MangaDetailLoadedScreenState();
+  Widget build(BuildContext context) {
+    SizeConfig().init(context);
+    
+    return Stack(
+      children: [
+        const _ImageBackgroundWidget(),
+        NestedScrollView(
+          physics: const NeverScrollableScrollPhysics(),
+          floatHeaderSlivers: true,
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return [
+              _SliverAppBar(
+                innerBoxIsScrolled: innerBoxIsScrolled,
+                title: data?.title ?? '',
+              )
+            ];
+          },
+          body: SingleChildScrollView(
+            physics: const ClampingScrollPhysics(),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const HeaderMangaDetail(),
+                DescriptionTextWidget(
+                  text: data?.description,
+                ),
+                CustomButtonReadingWidget(
+                  lastChapter: (data?.listChapter ?? []).isNotEmpty
+                      ? data!.listChapter.last
+                      : null,
+                ),
+                const ListChapterWidget(),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 }
 
-class _MangaDetailLoadedScreenState extends State<MangaDetailLoadedScreen> {
-  MangaDetail get data => widget.data!;
-  late final Color _colorPage;
-  late final Random random;
+class _SliverAppBar extends StatelessWidget {
+  const _SliverAppBar({
+    this.innerBoxIsScrolled = false,
+    this.title = '',
+  });
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
-  void initState() {
-    random = Random();
-    final indexColor = random.nextInt(AppColors.listColors.length);
-    _colorPage = AppColors.listColors[indexColor];
-    super.initState();
-  }
+  final bool innerBoxIsScrolled;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
     final theme = Theme.of(context);
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: theme.backgroundColor,
-      body: Stack(
-        children: [
-          _ImageBackgroundWidget(color: _colorPage),
-          NestedScrollView(
-            physics: const NeverScrollableScrollPhysics(),
-            floatHeaderSlivers: true,
-            headerSliverBuilder: (context, innerBoxIsScrolled) {
-              return [
-                SliverAppBar(
-                  elevation: 0,
-                  leading: IconButton(
-                    icon: Icon(
-                      Icons.arrow_back,
-                      color: theme.primaryColor,
-                    ),
-                    onPressed: () => Navigator.of(context).pop(),
-                  ),
-                  backgroundColor: innerBoxIsScrolled
-                      ? Theme.of(context).backgroundColor
-                      : Colors.transparent,
-                  floating: true,
-                  actions: <Widget>[
-                    IconButton(
-                      icon: Icon(
-                        Icons.search,
-                        color: theme.primaryColor,
-                      ),
-                      onPressed: null,
-                    ),
-                    IconButton(
-                      icon: Icon(
-                        Icons.more_vert,
-                        color: theme.primaryColor,
-                      ),
-                      onPressed: null,
-                    ),
-                  ],
-                  title: Text(
-                    innerBoxIsScrolled ? data.title : '',
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                )
-              ];
-            },
-            body: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  HeaderMangaDetail(
-                    color: _colorPage,
-                  ),
-                  DescriptionTextWidget(
-                    text: data.description ?? '',
-                    color: _colorPage,
-                  ),
-                  CustomButtonReadingWidget(
-                    lastChapter: data.listChapter.last,
-                    color: _colorPage,
-                  ),
-                  ListChapterWidget(color: _colorPage),
-                ],
-              ),
-            ),
+
+    return SliverAppBar(
+      elevation: 0,
+      leading: IconButton(
+        icon: Icon(
+          Icons.arrow_back,
+          color: theme.primaryColor,
+        ),
+        onPressed: Navigator.of(context).pop,
+      ),
+      backgroundColor: innerBoxIsScrolled
+          ? Theme.of(context).colorScheme.background
+          : Colors.transparent,
+      floating: true,
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(
+            Icons.search,
+            color: theme.primaryColor,
           ),
-        ],
+          onPressed: null,
+        ),
+        IconButton(
+          icon: Icon(
+            Icons.more_vert,
+            color: theme.primaryColor,
+          ),
+          onPressed: null,
+        ),
+      ],
+      title: IrohaText.regular(
+        innerBoxIsScrolled ? title : '',
+        fontSize: FontSizes.s16,
       ),
     );
   }
 }
 
 class _ImageBackgroundWidget extends StatelessWidget {
-  const _ImageBackgroundWidget({
-    Key? key,
-    required this.color,
-  }) : super(key: key);
+  const _ImageBackgroundWidget();
 
-  final Color color;
   @override
   Widget build(BuildContext context) {
     return ShaderMask(
@@ -139,17 +126,17 @@ class _ImageBackgroundWidget extends StatelessWidget {
         );
       },
       blendMode: BlendMode.dstIn,
-      child: BlocBuilder<MangaDetailBloc, MangaDetailState>(
-        buildWhen: (pre, cur) => pre.runtimeType != cur.runtimeType,
-        builder: (context, state) {
-          if (state is MangaDetailSuccessState) {
+      child: BlocSelector<MangaDetailBloc, MangaDetailState, String>(
+        selector: (state) => state.mangaDetail?.thumbnailUrl ?? '',
+        builder: (context, thumbnailUrl) {
+          if (thumbnailUrl.isNotEmpty) {
             return CachedNetworkImage(
-              imageUrl: state.mangaDetail.thumbnailUrl,
+              imageUrl: thumbnailUrl,
               imageBuilder: (context, imageProvider) => Container(
                 width: SizeConfig.screenWidth,
                 height: SizeConfig.screenHeight / 2.5,
                 decoration: BoxDecoration(
-                  color: color,
+                  color: Theme.of(context).canvasColor,
                   image: DecorationImage(
                     image: imageProvider,
                     fit: BoxFit.fitWidth,
@@ -165,6 +152,7 @@ class _ImageBackgroundWidget extends StatelessWidget {
               errorWidget: (_, url, error) => const Icon(Icons.error),
             );
           }
+
           return const SizedBox.shrink();
         },
       ),

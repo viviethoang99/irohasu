@@ -3,24 +3,24 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../base/text.dart';
 import '../../../../../config/config.dart';
-import '../../../application/application.dart';
+import '../../../manga.dart';
 
 class CustomChips extends StatelessWidget {
-  const CustomChips({Key? key}) : super(key: key);
+  const CustomChips({super.key});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      child: BlocBuilder<MangaDetailBloc, MangaDetailState>(
-        buildWhen: (pre, cur) => pre.runtimeType != cur.runtimeType,
-        builder: (_, state) {
-          if (state is MangaDetailSuccessState) {
+      child: BlocSelector<MangaDetailBloc, MangaDetailState, ListGenres>(
+        selector: (state) => state.mangaDetail?.listGenres ?? [],
+        builder: (_, listGenres) {
+          if (listGenres.isNotEmpty) {
             return Wrap(
               spacing: 5,
               runSpacing: 5,
               children: List.generate(
-                state.mangaDetail.listGenres?.length ?? 0,
+                listGenres.length,
                 (index) => Container(
                   padding: const EdgeInsets.symmetric(
                     vertical: 7,
@@ -31,7 +31,7 @@ class CustomChips extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: IrohaText.regular(
-                    state.mangaDetail.listGenres![index].name!,
+                    listGenres[index].name!,
                     fontSize: FontSizes.s11,
                   ),
                 ),
