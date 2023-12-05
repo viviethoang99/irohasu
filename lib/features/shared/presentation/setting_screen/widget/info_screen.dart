@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
 class InfoScreen extends StatelessWidget {
-  const InfoScreen({Key? key}) : super(key: key);
-  
+  const InfoScreen({super.key});
+
   static const routeName = '/infoScreen';
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      backgroundColor: theme.backgroundColor,
+      backgroundColor: theme.colorScheme.background,
       appBar: AppBar(
-        backgroundColor: theme.backgroundColor,
+        backgroundColor: theme.colorScheme.background,
         title: Text(
           'Thông tin',
           style: TextStyle(

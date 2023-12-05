@@ -1,27 +1,23 @@
 import 'package:flutter/material.dart';
 
+import '../../../../base/text.dart';
+import '../../../../config/constants/constant.dart';
 import 'widget/general_page.dart';
 import 'widget/info_screen.dart';
 import 'widget/setting_chapter.dart';
 
 class SettingScreen extends StatelessWidget {
-  const SettingScreen({Key? key}) : super(key: key);
+  const SettingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      backgroundColor: theme.backgroundColor,
+      backgroundColor: theme.colorScheme.background,
       appBar: AppBar(
-        backgroundColor: theme.backgroundColor,
+        backgroundColor: theme.colorScheme.background,
         iconTheme: const IconThemeData(color: Colors.black),
-        title: Text(
-          'Cài đặt',
-          style: TextStyle(
-            color: theme.primaryColor,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        title: const IrohaText.bold('Cài đặt'),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -33,16 +29,12 @@ class SettingScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10.0),
               ),
               margin: const EdgeInsets.all(8).copyWith(top: 15),
-              color: theme.primaryColor.withOpacity(0.5),
+              color: theme.cardColor,
               child: ListTile(
                 onTap: null, // TO DO
-                title: Text(
+                title: IrohaText.bold(
                   'Khách lạ',
-                  style: TextStyle(
-                    color: theme.backgroundColor,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  fontSize: FontSizes.s20,
                 ),
                 leading: const CircleAvatar(
                   backgroundImage: AssetImage(
@@ -56,6 +48,7 @@ class SettingScreen extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
+              color: theme.cardColor,
               margin: const EdgeInsets.symmetric(
                 horizontal: 25.0,
                 vertical: 6.0,
@@ -66,12 +59,18 @@ class SettingScreen extends StatelessWidget {
                     onTap: () {
                       Navigator.of(context).pushNamed(GeneralSetting.routeName);
                     },
-                    title: Text(
+                    title: IrohaText.regular(
                       'Cài đặt chung',
-                      style: theme.textTheme.bodyText1,
+                      fontSize: FontSizes.s16,
                     ),
-                    leading: const Icon(Icons.tune),
-                    trailing: const Icon(Icons.keyboard_arrow_right),
+                    leading: Icon(
+                      Icons.tune,
+                      color: Theme.of(context).textTheme.bodyMedium?.color,
+                    ),
+                    trailing: Icon(
+                      Icons.keyboard_arrow_right,
+                      color: Theme.of(context).textTheme.bodyMedium?.color,
+                    ),
                   ),
                   const _BuildDivider(),
                   ListTile(
@@ -80,24 +79,36 @@ class SettingScreen extends StatelessWidget {
                         SettingChapter.routeName,
                       );
                     },
-                    title: Text(
+                    title: IrohaText.regular(
                       'Thiết lập đọc truyện',
-                      style: theme.textTheme.bodyText1,
+                      fontSize: FontSizes.s16,
                     ),
-                    leading: const Icon(Icons.description),
-                    trailing: const Icon(Icons.keyboard_arrow_right),
+                    leading: Icon(
+                      Icons.description,
+                      color: Theme.of(context).textTheme.bodyMedium?.color,
+                    ),
+                    trailing: Icon(
+                      Icons.keyboard_arrow_right,
+                      color: Theme.of(context).textTheme.bodyMedium?.color,
+                    ),
                   ),
                   const _BuildDivider(),
                   ListTile(
                     onTap: () {
                       Navigator.of(context).pushNamed(InfoScreen.routeName);
                     },
-                    title: Text(
+                    title: IrohaText.regular(
                       'Thông tin',
-                      style: theme.textTheme.bodyText1,
+                      fontSize: FontSizes.s16,
                     ),
-                    leading: const Icon(Icons.info),
-                    trailing: const Icon(Icons.keyboard_arrow_right),
+                    leading: Icon(
+                      Icons.info,
+                      color: Theme.of(context).textTheme.bodyMedium?.color,
+                    ),
+                    trailing: Icon(
+                      Icons.keyboard_arrow_right,
+                      color: Theme.of(context).textTheme.bodyMedium?.color,
+                    ),
                   ),
                 ],
               ),
@@ -110,7 +121,7 @@ class SettingScreen extends StatelessWidget {
 }
 
 class _BuildDivider extends StatelessWidget {
-  const _BuildDivider({Key? key}) : super(key: key);
+  const _BuildDivider();
 
   @override
   Widget build(BuildContext context) {

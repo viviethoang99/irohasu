@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../config/base_content.dart';
+import '../../../../../base/text.dart';
 import '../../../../../config/config.dart';
 import '../../../../chapter/chapter.dart';
 import '../../../data/data.dart';
 
 class SettingChapter extends StatefulWidget {
-  const SettingChapter({Key? key}) : super(key: key);
+  const SettingChapter({super.key});
 
   static const routeName = '/chapterSetting';
 
@@ -20,15 +20,12 @@ class _SettingChapterState extends State<SettingChapter> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      backgroundColor: theme.backgroundColor,
+      backgroundColor: theme.colorScheme.background,
       appBar: AppBar(
-        backgroundColor: theme.backgroundColor,
-        title: Text(
+        backgroundColor: theme.colorScheme.background,
+        title: IrohaText.regular(
           ConstantStrings.settings,
-          style: TextStyle(
-            color: theme.primaryColor,
-            fontSize: 20,
-          ),
+          fontSize: FontSizes.s20,
         ),
         centerTitle: true,
         leading: IconButton(
@@ -36,22 +33,19 @@ class _SettingChapterState extends State<SettingChapter> {
             Icons.arrow_back,
             color: theme.primaryColor,
           ),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: Navigator.of(context).pop,
         ),
       ),
-      body: Container(
+      body: Padding(
         padding: const EdgeInsets.all(15),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
+              IrohaText.bold(
                 'Cài đặt chung',
-                style: TextStyle(
-                  color: theme.primaryColor,
-                  fontSize: 23,
-                  fontWeight: FontWeight.bold,
-                ),
+                color: theme.primaryColor,
+                fontSize: FontSizes.s24,
               ),
               generalSetting(),
             ],
@@ -63,7 +57,7 @@ class _SettingChapterState extends State<SettingChapter> {
 
   Widget generalSetting() {
     final theme = Theme.of(context);
-    return Container(
+    return Padding(
       padding: const EdgeInsets.only(top: 15, left: 10, right: 10),
       child: Column(
         children: <Widget>[
@@ -115,13 +109,10 @@ class _SettingChapterState extends State<SettingChapter> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text(
+              IrohaText.medium(
                 'Màu nền:',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                  color: theme.primaryColor,
-                ),
+                fontSize: FontSizes.s18,
+                color: theme.primaryColor,
               ),
               BlocBuilder<ChangeBackgroundBloc, ChangeBackgroundState>(
                   builder: (context, state) {

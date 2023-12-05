@@ -5,7 +5,6 @@ import '../../../../../config/filter_search.dart';
 import '../../../../shared/shared.dart';
 import '../../../manga.dart';
 
-
 typedef _Tag = FilterSearch;
 
 class DrawerSearchScreen extends StatelessWidget {

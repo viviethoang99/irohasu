@@ -30,7 +30,7 @@ void main() {
           (_) => null,
         );
         final result = localDataSource.getThemeApp();
-        expect(result, Constants.listTheme.first.type.name);
+        expect(result, 'white');
       });
     });
   });

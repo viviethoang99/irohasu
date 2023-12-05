@@ -33,7 +33,7 @@ class SettingLocalDataSource implements ISettingLocalDataSource {
 
   @override
   String getThemeApp() {
-    return _box.get(_kThemeApp) ?? Constants.listTheme.first.type.name;
+    return _box.get(_kThemeApp) ?? 'white';
   }
 
   @override

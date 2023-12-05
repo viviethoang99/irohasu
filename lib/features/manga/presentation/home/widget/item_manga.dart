@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 
 import '../../../../../base/text.dart';
 import '../../../../../config/constants/size.dart';
+import '../../../../../core/core.dart';
 import '../../../domain/domain.dart';
+
 import '../../detail/manga_detail_screen.dart';
 
 class ItemManga extends StatelessWidget {
@@ -23,6 +25,9 @@ class ItemManga extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => onPress(context),
+      customBorder: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+      ),
       child: Column(
         children: <Widget>[
           Expanded(
@@ -65,7 +70,7 @@ class ItemManga extends StatelessWidget {
 
   void onPress(BuildContext context) {
     final params = MangaDetail(
-      idManga: '123456',
+      idManga: endpoint?.toId,
       thumbnailUrl: thumbnailUrl,
       endpoint: endpoint,
       title: title,

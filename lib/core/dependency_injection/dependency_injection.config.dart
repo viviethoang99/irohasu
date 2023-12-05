@@ -21,19 +21,19 @@ import '../../features/chapter/application/change_background_color_bloc/change_b
 import '../../features/chapter/application/change_reading_mode_bloc/change_reading_mode_bloc.dart'
     as _i53;
 import '../../features/chapter/application/chapter_screen/chapter_screen_cubit.dart'
-    as _i57;
+    as _i56;
 import '../../features/chapter/application/manage_page_in_chapter/manage_page_in_chapter_cubit.dart'
     as _i16;
-import '../../features/chapter/chapter.dart' as _i58;
+import '../../features/chapter/chapter.dart' as _i57;
 import '../../features/chapter/data/datasource/remote/chapter_api_source.dart'
     as _i33;
 import '../../features/chapter/data/repositories/chapter_repository_imp.dart'
     as _i46;
-import '../../features/chapter/domain/domain.dart' as _i56;
+import '../../features/chapter/domain/domain.dart' as _i55;
 import '../../features/chapter/domain/repository/i_chaper_repository.dart'
     as _i45;
 import '../../features/chapter/domain/usecase/chapter/fetch_data_chapter_usecase.dart'
-    as _i55;
+    as _i54;
 import '../../features/github/application/update_app/update_app_cubit.dart'
     as _i51;
 import '../../features/github/data/datasource/local/github_local_datasource.dart'
@@ -90,8 +90,6 @@ import '../../features/manga/domain/usecase/list_manga/find_manga_by_query_useca
 import '../../features/manga/domain/usecase/manga_detail/fetch_manga_detail_usecase.dart'
     as _i35;
 import '../../features/manga/manga.dart' as _i5;
-import '../../features/shared/application/change_theme_bloc/change_theme_bloc.dart'
-    as _i54;
 import '../../features/shared/data/datasource/local/setting_local_datasource.dart'
     as _i13;
 import '../../features/shared/data/repositories/setting_app_repository.dart'
@@ -111,8 +109,8 @@ import '../../features/shared/domain/usecase/setting_app/update_reading_mode_use
     as _i31;
 import '../../features/shared/domain/usecase/setting_app/update_setting_app_usecase.dart'
     as _i32;
-import 'modules/network_module.dart' as _i60;
-import 'modules/storage_module.dart' as _i59;
+import 'modules/network_module.dart' as _i59;
+import 'modules/storage_module.dart' as _i58;
 
 extension GetItInjectableX on _i1.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -128,11 +126,6 @@ extension GetItInjectableX on _i1.GetIt {
     final storageModule = _$StorageModule();
     final networkModule = _$NetworkModule();
     gh.singleton<_i3.AppearanceCubit>(_i3.AppearanceCubit());
-    await gh.lazySingletonAsync<_i4.Box<_i5.MangaDetailDto>>(
-      () => storageModule.listMangaBox,
-      instanceName: 'irohasu_iz_bezt_girl',
-      preResolve: true,
-    );
     await gh.lazySingletonAsync<_i4.Box<String>>(
       () => storageModule.settingBox,
       instanceName: 'setting_box',
@@ -141,6 +134,11 @@ extension GetItInjectableX on _i1.GetIt {
     await gh.lazySingletonAsync<_i4.Box<List<String>>>(
       () => storageModule.favoriteBox,
       instanceName: 'favorite_box',
+      preResolve: true,
+    );
+    await gh.lazySingletonAsync<_i4.Box<_i5.MangaDetailDto>>(
+      () => storageModule.listMangaBox,
+      instanceName: 'irohasu_iz_bezt_girl',
       preResolve: true,
     );
     gh.factory<_i6.IFavoriteLocalSource>(() => _i6.FavoriteLocalSource(
@@ -249,18 +247,14 @@ extension GetItInjectableX on _i1.GetIt {
           gh<_i43.GetReadingModeUseCase>(),
           gh<_i31.SetReadingModeUseCase>(),
         ));
-    gh.factory<_i54.ChangeThemeBloc>(() => _i54.ChangeThemeBloc(
-          gh<_i44.GetThemeAppUseCase>(),
-          gh<_i32.SetThemeAppUseCase>(),
-        ));
-    gh.lazySingleton<_i55.FetchDataChapterUsecase>(
-        () => _i55.FetchDataChapterUsecase(gh<_i56.IChapterRepository>()));
-    gh.factory<_i57.ChapterScreenCubit>(
-        () => _i57.ChapterScreenCubit(gh<_i58.FetchDataChapterUsecase>()));
+    gh.lazySingleton<_i54.FetchDataChapterUsecase>(
+        () => _i54.FetchDataChapterUsecase(gh<_i55.IChapterRepository>()));
+    gh.factory<_i56.ChapterScreenCubit>(
+        () => _i56.ChapterScreenCubit(gh<_i57.FetchDataChapterUsecase>()));
     return this;
   }
 }
 
-class _$StorageModule extends _i59.StorageModule {}
+class _$StorageModule extends _i58.StorageModule {}
 
-class _$NetworkModule extends _i60.NetworkModule {}
+class _$NetworkModule extends _i59.NetworkModule {}
